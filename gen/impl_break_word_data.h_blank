@@ -1,0 +1,15 @@
+// Unicode 12.1
+
+#include "internal_defines.h"
+
+UNI_ALGO_IMPL_NAMESPACE_BEGIN
+
+uaix_const_data unsigned char stage1_break_word[] = {
+new_stage1_break_word.txt};
+
+uaix_const_data unsigned char stage2_break_word[] = {
+new_stage2_break_word.txt};
+
+UNI_ALGO_IMPL_NAMESPACE_END
+
+#include "internal_undefs.h"

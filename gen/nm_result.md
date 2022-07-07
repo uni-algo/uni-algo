@@ -1,0 +1,49 @@
+Library version: 0.1.0
+Unicode version: 12.1.0
+
+nm --print-size --size-sort --radix=d cpp_uni_data.cpp.o >nm_result.txt
+
+00000000 00000064 r .rdata$zzz
+00436064 00000416 R __ZN3uni6detail20stage3_special_titleE
+00440416 00000512 R __ZN3uni6detail19stage1_special_foldE
+00437760 00000512 R __ZN3uni6detail20stage1_special_titleE
+00443040 00000512 R __ZN3uni6detail20stage1_special_upperE
+00440928 00000832 R __ZN3uni6detail20stage3_special_upperE
+00438272 00000864 R __ZN3uni6detail19stage3_special_foldE
+00439136 00001280 R __ZN3uni6detail19stage2_special_foldE
+00436480 00001280 R __ZN3uni6detail20stage2_special_titleE
+00441760 00001280 R __ZN3uni6detail20stage2_special_upperE
+00198176 00004864 R __ZN3uni6detail15stage2_comp_cp2E
+00613024 00008704 R __ZN3uni6detail11stage1_foldE
+00030720 00008704 R __ZN3uni6detail11stage1_propE
+00668832 00008704 R __ZN3uni6detail12stage1_lowerE
+00585888 00008704 R __ZN3uni6detail12stage1_titleE
+00642720 00008704 R __ZN3uni6detail12stage1_upperE
+00427360 00008704 R __ZN3uni6detail13stage1_ccc_qcE
+00242464 00008704 R __ZN3uni6detail14stage1_norm_mnE
+00220960 00008704 R __ZN3uni6detail15stage1_comp_cp1E
+00203040 00008704 R __ZN3uni6detail15stage1_comp_cp2E
+00462752 00008704 R __ZN3uni6detail16stage1_case_propE
+00066944 00008704 R __ZN3uni6detail17stage1_break_wordE
+00380512 00008704 R __ZN3uni6detail17stage1_decomp_nfdE
+00336096 00008704 R __ZN3uni6detail18stage1_decomp_nfkdE
+00094464 00008704 R __ZN3uni6detail21stage1_break_graphemeE
+00211744 00009216 R __ZN3uni6detail15stage2_comp_cp1E
+00229664 00012800 R __ZN3uni6detail14stage2_norm_mnE
+00366688 00013824 R __ZN3uni6detail17stage2_decomp_nfdE
+00548000 00017408 R __ZN3uni6detail12stage1_orderE
+00651424 00017408 R __ZN3uni6detail12stage2_lowerE
+00594592 00018432 R __ZN3uni6detail11stage2_foldE
+00075648 00018816 R __ZN3uni6detail21stage2_break_graphemeE
+00443552 00019200 R __ZN3uni6detail16stage2_case_propE
+00565408 00020480 R __ZN3uni6detail12stage2_titleE
+00621728 00020992 R __ZN3uni6detail12stage2_upperE
+00344800 00021888 R __ZN3uni6detail17stage3_decomp_nfdE
+00309984 00026112 R __ZN3uni6detail18stage2_decomp_nfkdE
+00039424 00027520 R __ZN3uni6detail17stage2_break_wordE
+00000000 00030720 R __ZN3uni6detail11stage2_propE
+00389216 00038144 R __ZN3uni6detail13stage2_ccc_qcE
+00251168 00058816 R __ZN3uni6detail18stage3_decomp_nfkdE
+00471456 00076544 R __ZN3uni6detail12stage2_orderE
+00103168 00095008 R __ZN3uni6detail11stage3_compE
+00000000 00677536 r .rdata

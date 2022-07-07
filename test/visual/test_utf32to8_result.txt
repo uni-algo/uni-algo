@@ -1,0 +1,34 @@
+﻿Valid UTF-32
+
+Latin (1 code unit per code point) (00000040 00000041 00000042)
+ABC
+Halfwidth and Fullwidth Forms (1 code unit per code point) (0000FF21 0000FF22 0000FF23)
+ＡＢＣ
+Mathematical Alphanumeric Symbols (1 code unit per code point) (0001D400 0001D401 0001D402)
+𝐀𝐁𝐂
+
+
+Broken UTF-32
+
+1 High surrogate (0000D800)
+�
+2 High surrogates in a row (0000D800 0000DBFF)
+��
+
+1 Low surrogate (0000DC00)
+�
+2 Low surrogates in a row (0000DC00 0000DFFF)
+��
+
+1 Surrogate pair (0000D800 0000DC00)
+��
+2 Surrogate pairs (0000D800 0000DC00 0000DBFF 0000DFFF)
+����
+
+1 Out of range (00110000)
+�
+2 Out of range (00110000 FFFFFFFF)
+��
+
+Surrogate pair and out of range in sequence (00000041 0000D800 0000DC00 00000042 00110000 00000043)
+A��B�C

@@ -1,0 +1,261 @@
+DRAFT
+-------
+
+This file contains a list of all functions/variables of low-level that a wrapper can use.
+And some info how to use them properly.
+-------
+
+Files inside folder impl contain implementations of Unicode algorithms written in most generic way.
+It must be used together with a wrapper that when implemented properly will be using
+pointers in C and iterators + templates in C++.
+That means files inside impl folder are not real .h files and a preprocessor is used to "generate" real C or C++ code.
+Technically only disable a block and replace a string of a preprocessor features are used for this task.
+So even thought a preprocessor "generates" real code, it is not used to do something complex it is just used as usual.
+In C Mode a preprocessor is used also to define a few complex macros because it is the only way to do such things in C.
+In C++ Mode templates are used instead as usual.
+99% of the code is shared beetween C++ Mode and C Mode.
+In most cases only declaration of a function is a bit different.
+All the cases where behaviour of C and C++ may be different is disallowed by what_is_this_language.txt
+
+Implementation details:
+Most low-level functions that a wrapper can use look like this:
+impl_function(first, last, result)
+(first, last) is input iterators and (result) is output iterator.
+Input iterator always advance by 1 forward/backward
+with check after to be compatible with all C++ iterators.
+The same for output iterator but without check.
+Also (last) is only used as a sentinel so it can be a different type.
+When a function used with strings (pointers) then (first, last)
+is a source string and (result) is a destination string.
+
+Note that algorithms in all modules are implemented the same way
+but some of them can have different restrictions.
+
+Note that everything that starts with impl_*, inline_*, type_*
+can be used by a wrapper everything else must not be used.
+inline_* are performance-critical versions of some functions
+for example iterator and break functions and if they are used in a loop
+inline version can be used to achieve a better performance.
+Also only files that start with impl_* can be used by a wrapper.
+Note that in C++ there is no point to use type_char8, type_char16, type_char32
+in a wrapper because in C++ these types are only used to suppress warnings
+but in C these types can be used in some cases in a wrapper
+because they are used to define C pointer based iterators. See impl_types.h
+
+The low-level provides only algorithms.
+This means it never calls any C/C++ functions,
+never allocates memory, has 0 dependencies etc.
+Everything except algoritms must be done in a wrapper.
+
+The implementation is fully portable.
+It works even if all available types are 64-bit with sizeof == 1
+and/or fixed width types are unavailable and/or CHAR_BIT is not 8.
+
+All false positive warnings are suppressed. So any random warning might be a real problem.
+Most warnings are suppressed by casts this means all casts are used only to suppress warnings
+and never affect behaviour.
+
+All functions on low-level are low-level. Use them with care.
+-------
+
+For example convert module has this functions:
+size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf16 result, size_t* error)
+size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, size_t* error)
+size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf32 result, size_t* error)
+size_t impl_utf32to8(it_in_utf32 first, it_end_utf32 last, it_out_utf8 result, size_t* error)
+size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_utf32 result, size_t* error)
+size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_utf16 result, size_t* error)
+
+The functions return a number of code units written to destination (result) string.
+If error is NULL then lenient mode:
+Conversion will never fail and invalid code units will be replaced with replacement character.
+If error is not NULL then strict mode:
+If conversion fails (*error != impl_npos) then *error will be a number of valid code units + 1
+in source (first, last) string.
+Note 1: destination string will never be terminated with null character.
+Note 2: destination string bounds will never be checked.
+Note 3: *error must always be initialized with impl_npos before strict conversion.
+-------
+
+TODO: document these types/variables
+
+type_codept
+
+type_char8
+type_char16
+type_char32
+
+impl_npos
+impl_nullptr
+
+// These types must never be used by a wrapper.
+// In C++ Mode they don't even exist because they just template parameters of a function.
+it_in_utf8
+it_in_utf16
+it_in_utf32
+it_end_utf8
+it_end_utf16
+it_end_utf32
+it_out_utf8
+it_out_utf16
+it_out_utf32
+
+-------
+LIST
+-------
+
+impl_convert.h
+
+size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf16 result, size_t* error)
+size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, size_t* error)
+size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf32 result, size_t* error)
+size_t impl_utf32to8(it_in_utf32 first, it_end_utf32 last, it_out_utf8 result, size_t* error)
+size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_utf32 result, size_t* error)
+size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_utf16 result, size_t* error)
+
+// premultiply values:
+const size_t impl_x_utf8to16
+const size_t impl_x_utf16to8
+const size_t impl_x_utf8to32
+const size_t impl_x_utf32to8
+const size_t impl_x_utf16to32
+const size_t impl_x_utf32to16
+
+-------
+impl_iterator.h
+
+it_in_utf8 impl_utf8_iter(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
+it_in_utf8 impl_utf8_iter_rev(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
+it_in_utf16 impl_utf16_iter(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
+it_in_utf16 impl_utf16_iter_rev(it_in_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
+
+it_in_utf8 inline_utf8_iter(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
+it_in_utf8 inline_utf8_iter_rev(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
+it_in_utf16 inline_utf16_iter(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
+it_in_utf16 inline_utf16_iter_rev(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
+
+// error values:
+const type_codept impl_iter_replacement
+const type_codept impl_iter_error
+
+it_out_utf8 impl_utf8_output(type_codept c, it_out_utf8 dst)
+it_out_utf16 impl_utf16_output(type_codept c, it_out_utf16 dst)
+
+-------
+impl_case.h
+
+size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode)
+int impl_utf8_compare(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless)
+int impl_utf8_collate(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless)
+bool impl_utf8_search(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless, size_t* pos, size_t* end)
+
+size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode)
+int impl_utf16_compare(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless)
+int impl_utf16_collate(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless)
+bool impl_utf16_search(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless, size_t* pos, size_t* end)
+
+// mode values:
+const int impl_casemap_mode_fold
+const int impl_casemap_mode_upper
+const int impl_casemap_mode_lower
+const int impl_casemap_mode_title
+
+// experimental:
+bool impl_utf8_like(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless, type_codept all, type_codept one, type_codept escape)
+size_t impl_utf8_sortkey(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int caseless)
+size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, int caseless)
+
+-------
+impl_case_locale.h
+
+size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int locale)
+size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int locale)
+
+// locale values:
+const int impl_casemap_locale_lower_lt
+const int impl_casemap_locale_lower_tr_az
+const int impl_casemap_locale_upper_lt
+const int impl_casemap_locale_upper_tr_az
+const int impl_casemap_locale_upper_el
+const int impl_casemap_locale_title_lt
+const int impl_casemap_locale_title_tr_az
+const int impl_casemap_locale_title_nl
+
+-------
+impl_norm.h
+
+size_t impl_utf8_nfc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+size_t impl_utf8_nfd(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+size_t impl_utf8_nfkc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+size_t impl_utf8_nfkd(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+size_t impl_utf8_unaccent(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+
+size_t impl_utf16_nfc(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+size_t impl_utf16_nfd(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+size_t impl_utf16_nfkc(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+size_t impl_utf16_nfkd(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+size_t impl_utf16_unaccent(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+
+// premultiply values:
+const size_t impl_x_utf8_nfc
+const size_t impl_x_utf8_nfd
+const size_t impl_x_utf8_nfkc
+const size_t impl_x_utf8_nfkd
+const size_t impl_x_utf8_unaccent
+const size_t impl_x_utf16_nfc
+const size_t impl_x_utf16_nfd
+const size_t impl_x_utf16_nfkc
+const size_t impl_x_utf16_nfkd
+const size_t impl_x_utf16_unaccent
+
+int impl_utf8_is_nfc(it_in_utf8 first, it_end_utf8 last)
+int impl_utf8_is_nfd(it_in_utf8 first, it_end_utf8 last)
+int impl_utf8_is_nfkc(it_in_utf8 first, it_end_utf8 last)
+int impl_utf8_is_nfkd(it_in_utf8 first, it_end_utf8 last)
+
+int impl_utf16_is_nfc(it_in_utf16 first, it_end_utf16 last)
+int impl_utf16_is_nfd(it_in_utf16 first, it_end_utf16 last)
+int impl_utf16_is_nfkc(it_in_utf16 first, it_end_utf16 last)
+int impl_utf16_is_nfkd(it_in_utf16 first, it_end_utf16 last)
+
+// return values:
+const int impl_norm_is_yes
+const int impl_norm_is_ill_formed
+
+struct impl_norm_iter_state
+void inline_norm_iter_state_reset(struct impl_norm_iter_state* s)
+bool inline_norm_iter_ready(struct impl_norm_iter_state* s)
+
+bool inline_norm_iter_nfc(struct impl_norm_iter_state* s, type_codept c)
+bool inline_norm_iter_nfd(struct impl_norm_iter_state* s, type_codept c)
+bool inline_norm_iter_nfkc(struct impl_norm_iter_state* s, type_codept c)
+bool inline_norm_iter_nfkd(struct impl_norm_iter_state* s, type_codept c)
+
+bool inline_norm_iter_next_nfc(struct impl_norm_iter_state* s, type_codept* codepoint)
+bool inline_norm_iter_next_nfd(struct impl_norm_iter_state* s, type_codept* codepoint)
+bool inline_norm_iter_next_nfkc(struct impl_norm_iter_state* s, type_codept* codepoint)
+bool inline_norm_iter_next_nfkd(struct impl_norm_iter_state* s, type_codept* codepoint)
+
+-------
+impl_break_grapheme.h
+
+struct impl_break_grapheme_state
+void impl_break_grapheme_state_reset(struct impl_break_grapheme_state* state)
+
+bool impl_break_grapheme(struct impl_break_state* state, type_codept c)
+
+bool inline_break_grapheme(struct impl_break_state* state, type_codept c)
+
+------
+impl_break_word.h
+
+struct impl_break_word_state
+void impl_break_word_state_reset(struct impl_break_word_state* state)
+
+bool impl_utf8_break_word(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf8 first, it_end_utf8 last)
+bool impl_utf16_break_word(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf16 first, it_end_utf16 last)
+
+bool inline_utf8_break_word(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf8 first, it_end_utf8 last)
+bool inline_utf16_break_word(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf16 first, it_end_utf16 last)
+
+bool impl_break_is_word(type_codept word_prop)

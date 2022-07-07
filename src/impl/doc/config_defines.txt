@@ -1,0 +1,69 @@
+Documentation for configuration defines that low-level uses or reserves for a wrapper.
+Some of the defines should never be used because they are only for self-documentation and/or test purposes.
+
+Every file here is a module that can be used by itself or together with other modules.
+
+impl_convert.h
+UNI_ALGO_DISABLE_CONVERT - Reserved for a wrapper. Can be used to disable this module.
+
+impl_iterator.h
+UNI_ALGO_DISABLE_ITERATOR - Reserved for a wrapper. Can be used to disable this module.
+
+impl_case.h (impl_case_data.h)
+UNI_ALGO_DISABLE_CASE - Reserved for a wrapper. Can be used to disable this module.
+UNI_ALGO_DISABLE_COLLATE - Disable collation functions and data.
+UNI_ALGO_DISABLE_FULL_CASE - Disable full case mapping, enable simple case mapping.
+The define mostly for documentation purposes to see how a function look with simple case mapping
+and test purposes to compare the performance of full case mapping and simple case mapping.
+DEPENDENCY: UNI_ALGO_IMPL_DISABLE_BREAK_WORD - Disable title case functions and data.
+
+impl_norm.h (impl_norm_data.h)
+UNI_ALGO_DISABLE_NORM - Reserved for a wrapper. Can be used to disable this module.
+UNI_ALGO_DISABLE_NFKC_NFKD - Disable NFKC/NFKD normalization forms functions and data.
+DEPENDENCY: UNI_ALGO_IMPL_DISABLE_PROP - Disable unnacent functions.
+
+impl_break.h (impl_break_data.h)
+UNI_ALGO_IMPL_DISABLE_BREAK - Reserved for a wrapper. Can be used to disable this module.
+
+impl_break_grapheme.h (impl_break_grapheme_data.h)
+UNI_ALGO_DISABLE_BREAK_GRAPHEME - Reserved for a wrapper. Can be used to disable this module.
+
+impl_break_word.h (impl_break_word_data.h)
+UNI_ALGO_DISABLE_BREAK_WORD - Reserved for a wrapper. Can be used to disable this module.
+
+Other configuration defines that are reserved for a wrapper.
+Note that they are useful only for C wrapper because in C++ everything is template and won't be compiled if not used.
+UNI_ALGO_DISABLE_UTF16 - Disable UTF-16 functions.
+UNI_ALGO_DISABLE_CONVERT_UTF32 - Disable UTF-32 functions in convert module.
+See examples/c_wrapper for an example how they can be implemented.
+
+Reserved for C++ wrapper.
+UNI_ALGO_DISABLE_CPP_ITERATORS
+UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
+
+Other configuration defines.
+UNI_ALGO_UNICODE_VERSION - See impl_unicode_version.h
+UNI_ALGO_IMPL_VERSION - Reserved.
+UNI_ALGO_CPP_LIB_VERSION - See impl_cpp_lib_version.h
+UNI_ALGO_C_LIB_VERSION - Reserved.
+
+UNI_ALGO_EXPERIMENTAL - Enables experimental stuff.
+
+Test defines.
+UNI_ALGO_TEST_ASSERT - Enable self test ASSERTX must be defined
+UNI_ALGO_TEST_DISABLE_ALWAYS_INLINE_GLOBAL - See internal_defines.h
+UNI_ALGO_TEST_DISABLE_ALWAYS_INLINE_GLOBAL_EX - See internal_defines.h
+UNI_ALGO_TEST_CPP_THROW_ON_ILL_FORMED - Meow
+UNI_ALGO_TEST_CPP_THROW_ASSERT - Meow
+Note 1: don't test always inline defines with just a one function a compiler can
+decide to inline everything into this function even without always inline attribute
+use multiple functions in a row for the proper testing.
+Note 2: always inline defines don't affect impl_convert.h module
+Note 3: Use nm to see the real size of final functions (most of the time functions that start with impl)
+final function means a function after all helper functions was inlined into it
+TODO: This file is not a place for this info move it somewhere else
+
+UNI_ALGO_DOC_GENERATED_UTF16 - Blocks with generated UTF-16 functions protected with this define.
+The define only for documentation purposes and must never be defined. See generator_utf16.txt for more info.
+
+A wrapper must never introduce a define that starts with UNI_ALGO_* and is not mentioned in this file.

@@ -1,0 +1,15 @@
+To generate UTF-16 function from UTF-8 function use
+Notepad.exe -> Replace "utf8" to "utf16" (Match case option is disabled)
+
+All UTF-8 functions that allow to generate UTF16 functions from them must work with such simple generator.
+Use UNI_ALGO_IMPL_DOC_GENERATED_UTF16 define to locate and protect pregenerated functions.
+Note that the define is only used for documentation purposes it is never actually defined.
+
+Note that some UTF-16 functions was partially pregenerated and then changes was made
+to the functions so they use different optimizations for example compared to UTF-8 functions.
+Such functions must not be protected with UNI_ALGO_IMPL_DOC_GENERATED_UTF16 define to avoid confusion.
+Examples:
+impl_case.h:
+impl_utf16_casemap
+impl_utf16_compare
+impl_utf16_collate

@@ -1,0 +1,102 @@
+// Unicode 12.1
+
+#include "internal_defines.h"
+
+UNI_ALGO_IMPL_NAMESPACE_BEGIN
+
+uaix_const_data unsigned char stage1_lower[] = {
+new_stage1_lower.txt};
+
+uaix_const_data type_codept stage2_lower[] = {
+new_stage2_lower.txt};
+
+uaix_const_data unsigned char stage1_upper[] = {
+new_stage1_upper.txt};
+
+uaix_const_data type_codept stage2_upper[] = {
+new_stage2_upper.txt};
+
+uaix_const_data unsigned char stage1_fold[] = {
+new_stage1_fold.txt};
+
+uaix_const_data type_codept stage2_fold[] = {
+new_stage2_fold.txt};
+
+#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+
+uaix_const_data unsigned char stage1_title[] = {
+new_stage1_title.txt};
+
+uaix_const_data type_codept stage2_title[] = {
+new_stage2_title.txt};
+
+#endif // UNI_ALGO_DISABLE_BREAK_WORD
+
+#ifndef UNI_ALGO_DISABLE_COLLATE
+
+uaix_const_data unsigned short stage1_order[] = {
+new_stage1_order.txt};
+
+uaix_const_data unsigned short stage2_order[] = {
+new_stage2_order.txt};
+
+#endif // UNI_ALGO_DISABLE_COLLATE
+
+uaix_const_data unsigned char stage1_case_prop[] = {
+new_stage1_case_prop.txt};
+
+uaix_const_data unsigned char stage2_case_prop[] = {
+new_stage2_case_prop.txt};
+
+#ifndef UNI_ALGO_DISABLE_FULL_CASE
+
+uaix_const_data unsigned char stage1_special_upper[] = {
+new_stage1_special_upper.txt};
+
+uaix_const_data unsigned char stage2_special_upper[] = {
+new_stage2_special_upper.txt};
+
+uaix_const_data unsigned short stage3_special_upper[][4] = {
+new_stage3_special_upper.txt};
+
+uaix_const_data unsigned char stage1_special_fold[] = {
+new_stage1_special_fold.txt};
+
+uaix_const_data unsigned char stage2_special_fold[] = {
+new_stage2_special_fold.txt};
+
+uaix_const_data unsigned short stage3_special_fold[][4] = {
+new_stage3_special_fold.txt};
+
+#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+
+uaix_const_data unsigned char stage1_special_title[] = {
+new_stage1_special_title.txt};
+
+uaix_const_data unsigned char stage2_special_title[] = {
+new_stage2_special_title.txt};
+
+uaix_const_data unsigned short stage3_special_title[][4] = {
+new_stage3_special_title.txt};
+
+#endif // UNI_ALGO_DISABLE_BREAK_WORD
+
+// This is handled in place
+#if 0
+
+uaix_const_data unsigned char stage1_special_lower[] = {
+new_stage1_special_lower.txt};
+
+uaix_const_data unsigned char stage2_special_lower[] = {
+new_stage2_special_lower.txt};
+
+uaix_const_data unsigned short stage3_special_lower[][4] = {
+new_stage3_special_lower.txt};
+
+#endif // 0
+
+#endif // UNI_ALGO_DISABLE_FULL_CASE
+
+UNI_ALGO_IMPL_NAMESPACE_END
+
+#include "internal_undefs.h"

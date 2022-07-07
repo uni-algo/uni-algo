@@ -1,0 +1,54 @@
+# For data files ignore this too: -misc-definitions-in-headers,
+# Never enable any readability crap
+#
+# LLVM 7
+# Everything else
+# LLVM 8
+# -cppcoreguidelines-avoid-*,
+# -cppcoreguidelines-macro-usage,
+# -modernize-avoid-*,
+# -modernize-use-nodiscard,
+# -hicpp-avoid-*,
+# LLVM 9
+# -modernize-use-trailing-return-type,
+# -bugprone-branch-clone,
+# LLVM 10
+# -cppcoreguidelines-init-variables,
+# LLVM 14
+# -hicpp-named-parameter,
+# -bugprone-easily-swappable-parameters,
+#
+# TODO: FIXME: modernize-use-nodiscard, -bugprone-easily-swappable-parameters, cppcoreguidelines-init-variables
+
+Checks: '-*,
+clang-analyzer-*,
+cppcoreguidelines-*,
+-cppcoreguidelines-pro-bounds-*,
+-cppcoreguidelines-avoid-*,
+-cppcoreguidelines-macro-usage,
+-cppcoreguidelines-init-variables,
+modernize-*,
+-modernize-avoid-*,
+-modernize-use-nodiscard,
+-modernize-use-trailing-return-type,
+misc-*,
+performance-*,
+bugprone-*,
+-bugprone-easily-swappable-parameters,
+hicpp-*,
+-hicpp-avoid-*,
+-hicpp-no-*,
+-hicpp-braces-around-statements,
+-hicpp-signed-bitwise,
+-hicpp-named-parameter,
+cert-*,
+-cert-dcl21-cpp,
+google-*,
+-google-readability-*,
+-google-runtime-int,
+-google-runtime-references
+'
+CheckOptions:
+  - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value: '1'
+

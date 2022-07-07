@@ -1,0 +1,180 @@
+ï»¿Valid UTF-8
+
+Latin (1 code unit per code point) (41 42 43)
+ABC
+Cyrilic (2 code units per code point) (D0 90 D0 91 D0 92)
+ĞĞ‘Ğ’
+Halfwidth and Fullwidth Forms (3 code units per code point) (EF BC A1 EF BC A2 EF BC A3)
+ï¼¡ï¼¢ï¼£
+Mathematical Alphanumeric Symbols (4 code units per code point) (F0 9D 90 80 F0 9D 90 81 F0 9D 90 82)
+ğ€ğğ‚
+
+
+Broken UTF-8
+
+Based on file from this article: https://hsivonen.fi/broken-utf-8
+
+Non-shortest forms for lowest single-byte (U+0000)
+
+Two-byte sequence (C0 80)
+À€
+Three-byte sequence (E0 80 80)
+à€€
+Four-byte sequence (F0 80 80 80)
+ğ€€€
+Five-byte sequence (F8 80 80 80 80)
+ø€€€€
+Six-byte sequence (FC 80 80 80 80 80)
+ü€€€€€
+
+Non-shortest forms for highest single-byte (U+007F)
+
+Two-byte sequence (C1 BF)
+Á¿
+Three-byte sequence (E0 81 BF)
+à¿
+Four-byte sequence (F0 80 81 BF)
+ğ€¿
+Five-byte sequence (F8 80 80 81 BF)
+ø€€¿
+Six-byte sequence (FC 80 80 80 81 BF)
+ü€€€¿
+
+Non-shortest forms for lowest two-byte (U+0080)
+
+Three-byte sequence (E0 82 80)
+à‚€
+Four-byte sequence (F0 80 82 80)
+ğ€‚€
+Five-byte sequence (F8 80 80 82 80)
+ø€€‚€
+Six-byte sequence (FC 80 80 80 82 80)
+ü€€€‚€
+
+Non-shortest forms for highest two-byte (U+07FF)
+
+Three-byte sequence (E0 9F BF)
+àŸ¿
+Four-byte sequence (F0 80 9F BF)
+ğ€Ÿ¿
+Five-byte sequence (F8 80 80 9F BF)
+ø€€Ÿ¿
+Six-byte sequence (FC 80 80 80 9F BF)
+ü€€€Ÿ¿
+
+Non-shortest forms for lowest three-byte (U+0800)
+
+Four-byte sequence (F0 80 A0 80)
+ğ€ €
+Five-byte sequence (F8 80 80 A0 80)
+ø€€ €
+Six-byte sequence (FC 80 80 80 A0 80)
+ü€€€ €
+
+Non-shortest forms for highest three-byte (U+FFFF)
+
+Four-byte sequence (F0 8F BF BF)
+ğ¿¿
+Five-byte sequence (F8 80 8F BF BF)
+ø€¿¿¿
+Six-byte sequence (FC 80 80 8F BF BF)
+ü€€¿¿
+
+Non-shortest forms for lowest four-byte (U+10000)
+
+Five-byte sequence (F8 80 90 80 80)
+ø€€€
+Six-byte sequence (FC 80 80 90 80 80)
+ü€€€€
+
+Non-shortest forms for last Unicode (U+10FFFF)
+
+Five-byte sequence (F8 84 8F BF BF)
+ø„¿¿¿
+Six-byte sequence (FC 80 84 8F BF BF)
+ü€„¿¿
+
+Out of range
+
+One past Unicode (F4 90 80 80)
+ô€€
+Longest five-byte sequence (FB BF BF BF BF)
+û¿¿¿¿
+Longest six-byte sequence (FD BF BF BF BF BF)
+ı¿¿¿¿¿
+First surrogate (ED A0 80)
+í €
+Last surrogate (ED BF BF)
+í¿¿
+CESU-8 surrogate pair (ED A0 BD ED B2 A9)
+í ½í²©
+
+Out of range and non-shortest
+
+One past Unicode as five-byte sequence (F8 84 90 80 80)
+ø„€€
+One past Unicode as six-byte sequence (FC 80 84 90 80 80)
+ü€„€€
+First surrogate as four-byte sequence (F0 8D A0 80)
+ğ €
+Last surrogate as four-byte sequence (F0 8D BF BF)
+ğ¿¿
+CESU-8 surrogate pair as two four-byte overlongs (F0 8D A0 BD F0 8D B2 A9)
+ğ ½ğ²©
+
+Lone trails
+
+One (80)
+€
+Two (80 80)
+€€
+Three (80 80 80)
+€€€
+Four (80 80 80 80)
+€€€€
+Five (80 80 80 80 80)
+€€€€€
+Six (80 80 80 80 80 80)
+€€€€€€
+Seven (80 80 80 80 80 80 80)
+€€€€€€€
+After valid two-byte (C2 B6 80)
+Â¶€
+After valid three-byte (E2 98 83 80)
+â˜ƒ€
+After valid four-byte (F0 9F 92 A9 80)
+ğŸ’©€
+After five-byte (FB BF BF BF BF 80)
+û¿¿¿¿€
+After six-byte (FD BF BF BF BF BF 80)
+ı¿¿¿¿¿€
+
+Truncated sequences
+
+Two-byte lead (C2)
+Â
+Three-byte lead (E2)
+â
+Three-byte lead and one trail (E2 98)
+â˜
+Four-byte lead (F0)
+ğ
+Four-byte lead and one trail (F0 9F)
+ğŸ
+Four-byte lead and two trails (F0 9F 92)
+ğŸ’
+Truncated One past Unicode (F4 90 80)
+ô€
+Truncated Non-shortest form (F0 80 A0)
+ğ€ 
+
+Leftovers
+
+FE (FE)
+ş
+FE and trail (FE 80)
+ş€
+FF (FF)
+ÿ
+FF and trail (FF 80)
+ÿ€

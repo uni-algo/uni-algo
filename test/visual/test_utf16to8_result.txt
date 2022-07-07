@@ -1,0 +1,46 @@
+﻿Valid UTF-16
+
+Latin (1 code unit per code point) (0040 0041 0042)
+ABC
+Halfwidth and Fullwidth Forms (1 code unit per code point) (FF21 FF22 FF23)
+ＡＢＣ
+Mathematical Alphanumeric Symbols (2 code units per code point - surrogate pair) (D835 DC00 D835 DC01 D835 DC02)
+𝐀𝐁𝐂
+
+
+Broken UTF-16
+
+1 High surrogate without low (D800)
+�
+2 High surrogates without low in a row (D800 DBFF)
+��
+3 High surrogates without low in a row (D800 D800 DBFF)
+���
+
+1 High surrogate with wrong low (D800 0057)
+�W
+2 High surrogates with wrong low in a row (D800 0057 DBFF FF37)
+�W�Ｗ
+3 High surrogates with wrong low in a row (D800 0057 D800 FF37 DBFF 0057)
+�W�Ｗ�W
+
+1 Leading low sorrogate (DC00)
+�
+2 Leading low sorrogates in a row (DC00 DFFF)
+��
+3 Leading low sorrogates in a row (DC00 DC00 DFFF)
+���
+
+1 Surrogate pair in backward order (DC00 D835)
+��
+2 Surrogate pairs in backward order (DC00 D835 DC01 D835)
+�𝐁�
+3 Surrogate pairs in backward order (DC00 D835 DC01 D835 DC02 D835)
+�𝐁𝐂�
+
+Lone high surrogate in sequence (0041 0042 D800 0043)
+AB�C
+Lone low surrogate in sequence (0041 0042 DC00 0043)
+AB�C
+High surrogate with wrong low in sequence (0041 0042 D800 FF37 0043)
+AB�ＷC

@@ -1,0 +1,53 @@
+Read list_and_info.txt first for details.
+
+Unicode algorithms are written in most generic way so they are compatible with every toaster.
+The algorithms can be compiled in C or C++ mode when compiled in C++ then most functions
+are templates that can be used with most C++ iterators.
+The algorithms use C99 syntax rules with optional C++ templates and many restrictions.
+
+This means:
+1. Any dependencies are not allowed so none of C/C++ functions can be used.
+2. Memory allocations are not allowed.
+3. Pointers can be used only for return parameters.
+5. Any pointer casts are not allowed so a violation of strict aliasing is not possible.
+6. Internal type type_codept must be used for all code point calculations,
+Unicode properties etc. anything related to a code point.
+7. Internal types type_char8, type_char16, type_char32 can be used only to
+suppress warnings by casts any other usage of this types are not allowed.
+8. size_t is allowed but cannot be used for any code point calculations.
+9. int and bool are allowed but cannot be used for any calculations at all.
+10. unsigned char is allowed and it is the only type that can be used together with type_codept.
+11. type_codept, unsigned char and unsigned short are the only types that can be used for
+Unicode data tables and this is the only place where unsigned short must be used.
+12. char* is allowed when it represents an ASCII string for example code point names
+but char type is not allowed (for the future at the moment char is not used anywhere).
+13. Any other types are not allowed.
+14. sizeof is not allowed.
+15. enum is not allowed.
+16. C++ stuff must be protected with #ifdef __cplusplus
+17. #ifdef __cplusplus can be used inside a function only if there is no other way
+to make the function compatible with C and C++ (there is no such places for now).
+18. Preprocessor macros are not allowed (except 1 that is used in C mode only see internal_stages.h).
+19. Preprocessor defines are allowed.
+20. Internal preprocessor defines must be undefined at the end of every module.
+21. Even though low-level has access to assert (thru uaix_assert) it must be used only for
+testing and debugging aid so asserts are discouraged and the code must never rely on asserts.
+255. Probably there are other dangerous things that you can do then it is not allowed too.
+0. These restrictions do not apply to a wrapper.
+
+Everything inside folder impl is called low-level or impl-level and must follow these restrictions.
+Higher level that implements functions from the low-level is called wrapper-level and
+it is wrapper-level responsibility to implement the functions properly and provide them for user-level.
+That means all input/output parameters checks etc. must be done on wrapper-level and not on the low-level.
+
+TLDR
+
+Full list of types that allowed:
+For code point related stuff: type_codept, unsigned char, unsigned short
+For techical stuff: size_t, bool, int
+To suppress warnings: type_char8, type_char16, type_char32
+To represent ASCII string: char*
+
+Full list of keywords that allowed inside functions:
+return, true, false, const, if, else, for, do, while, continue, break, struct, constexpr.
+switch, default, case are allowed but avoid if possible.
