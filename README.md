@@ -1,4 +1,4 @@
-﻿## Table of Contents
+## Table of Contents
 
 - [Introduction](#introduction)
 - [Design](#design)
@@ -112,27 +112,30 @@ uni::error error;
 std::u16string str16 = uni::strict::utf8to16<char, char16_t>("Te\xC2st", error);
 assert(str16.empty() && error && error.pos() == 2);
 
-// Note that most of the functions in the library have template versions because the low-level of the library
-// is type-agnostic it only requires that UTF-16 type is enough to store 16-bit values and UTF-32 is enough
-// to store 32-bit aside from that the low-level doesn't care about the types,
+// Note that most of the functions in the library have template versions because the low-level
+// of the library is type-agnostic it only requires that UTF-16 type is enough to store 16-bit values
+// and UTF-32 is enough to store 32-bit aside from that the low-level doesn't care about the types,
 // so with the template functions you can do some strange stuff like this:
 
 std::basic_string<long long> str16 = uni::utf8to16<char, long long>("😺");
 std::string str8 = uni::utf16to8<long long, char>(str16);
 assert(str8 == "😺");
 
-// This works perfectly fine this is allowed and tested. Of course it is not needed in most situations
-// but it can be used to handle std::wstring and wchar_t properly because the only portable way of using
-// std::wstring is to use it only to store UTF-16 internally and for example on Linux convert
-// it to the real UTF-32 std::wstring when it's needed. It can be done like this:
+// This works perfectly fine this is allowed and tested. Of course it is not needed in most
+// situations but it can be used to handle std::wstring and wchar_t properly because the only
+// portable way of using std::wstring is to use it only to store UTF-16 internally and for example
+// on Linux convert it to the real UTF-32 std::wstring when it's needed. It can be done like this:
 
-std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test"); // Works on Linux, static_assert on Windows
+// Works on Linux, static_assert on Windows
+std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test");
 
-// It can be helpful if you work with a library that actually does this for example: https://github.com/taglib/taglib
+// It can be helpful if you work with a library that actually does this
+// for example: https://github.com/taglib/taglib
 // Aside from such corner cases you should use non-template functions because they are just shorter.
 
-// It's not like only wchar_t is broken char has the same problem you never know what it stores so most of functions
-// in the library start with utf8/utf16/utf32 it shows with what data a function works with, types are irrelevant.
+// It's not like only wchar_t is broken char has the same problem you never know what it stores
+// so most of functions in the library start with utf8/utf16/utf32 it shows with what data
+// a function works with, types are irrelevant.
 
 // Note that there are no short functions for std::u8string at the moment
 // but template functions will work perfectly fine with it.
@@ -308,8 +311,8 @@ str8 += uni::utf32to8(std::u32string{U'😺'}); // This emoji use 1 code point
 
 // But if you need to insert a code point you need Break module too.
 uni::breaks::grapheme::utf8 it{str8.cbegin(), str8.cend()};
-// Insert a code point after 2nd grapheme.
-str8.insert(std::next(it, 2) - it, uni::utf32to8(std::u32string{U'😼'})); // This emoji use 1 code point
+// Insert a code point after 2nd grapheme. This emoji use 1 code point.
+str8.insert(std::next(it, 2) - it, uni::utf32to8(std::u32string{U'😼'}));
 
 // The same way a grapheme can be appended or inserted and of course you don't even need
 // Convert module if your grapheme or code point are already in UTF-8 encoding.
