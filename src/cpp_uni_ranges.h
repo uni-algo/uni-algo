@@ -9,7 +9,7 @@
 #include <cassert>
 #include <memory>
 #include <functional>
-#ifdef __cpp_lib_ranges
+#if defined(__cpp_lib_ranges) && !defined(__clang__)
 #include <ranges>
 #endif
 #ifdef UNI_ALGO_LOG_CPP_ITER
@@ -29,7 +29,7 @@ namespace uni {
 // when a std::view on the right side of operator|
 // https://tristanbrindle.com/posts/rvalue-ranges-and-views
 namespace detail {
-#ifndef __cpp_lib_ranges
+#if !defined(__cpp_lib_ranges) || defined(__clang__)
 struct ranges_view_base {};
 #else
 using ranges_view_base = std::ranges::view_base;
@@ -856,7 +856,7 @@ public:
 
 // For C++17 we implement very simple ref_view that will be used together with uni::views::all_t/uni::views::all
 // It has the similar design as std::views::ref_view so in C++20 we just use that
-#ifndef __cpp_lib_ranges
+#if !defined(__cpp_lib_ranges) || defined(__clang__)
 template<class Range>
 class ref_view : public detail::ranges_view_base
 {
@@ -881,7 +881,7 @@ using ref_view = std::ranges::ref_view<R>;
 // for God sake just make them experimental or something in C++20 and add them to C++23.
 // Now I'm forced to deal with that crap. Thank you so much bros much appreciate it.
 #if !defined(__cpp_lib_ranges) || __cpp_lib_ranges > 202106L
-#ifndef __cpp_lib_ranges
+#if !defined(__cpp_lib_ranges) || defined(__clang__)
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2415r2.html
 template<class Range>
 class owning_view : public detail::ranges_view_base
@@ -929,7 +929,7 @@ namespace detail {
 
 /* ALL_VIEW */
 
-#ifndef __cpp_lib_ranges
+#if !defined(__cpp_lib_ranges) || defined(__clang__)
 struct adaptor_all
 {
     //constexpr adaptor_closure_all() {}
@@ -1188,7 +1188,7 @@ inline constexpr detail::adaptor_drop drop;
 
 // In C++17 use our simple all view that uses our simple ref_view/owning_view
 // In C++20 use facilities provided by the standard library
-#ifndef __cpp_lib_ranges
+#if !defined(__cpp_lib_ranges) || defined(__clang__)
 inline constexpr detail::adaptor_all all;
 template<class Range>
 using all_t = decltype(all(std::declval<Range>()));

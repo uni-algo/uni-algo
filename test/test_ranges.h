@@ -16,10 +16,6 @@ void test_ranges()
     TESTX("789" == (std::u32string_view{U"123"} | uni::views::transform([](char32_t c) -> char32_t { return c + 6; }) | uni::ranges::to_utf8<std::string>()));
     TESTX("789" == (std::u32string_view{U"123"} | uni::views::transform([](char32_t c) { return c + 6; }) | uni::ranges::to_utf8<std::string>()));
 
-// TODO: Clang cannot pass this test when we are using std::ranges instead of our ranges (C++20 with __cpp_lib_ranges)
-// I don't have time to deal with this crap right now.
-#if !(defined(__clang__) && defined(__cpp_lib_ranges))
-
     //std::string result = std::string_view{"12345678900"}
     std::string result = std::string_view{"アイウエオカキクケココ"}
              | uni::views::utf8
@@ -61,16 +57,10 @@ void test_ranges()
     };
     std::u32string result3{range3.begin(), range3.end()};
     TESTX(result3 == U"ココケクキ");
-
-#endif // Clang __cpp_lib_ranges
 }
 
 void test_ranges_ctad()
 {
-// TODO: Clang cannot pass this test when we are using std::ranges instead of our ranges (C++20 with __cpp_lib_ranges)
-// I don't have time to deal with this crap right now.
-#if !(defined(__clang__) && defined(__cpp_lib_ranges))
-
     // If everything works properly none of these constructors and operators must be called
     class my_string
     {
@@ -99,16 +89,10 @@ void test_ranges_ctad()
     // It works this way too (it just breaks compilation)
     // so for views that won't work with std::string just the simple test
     TESTX(*(u"123" | uni::views::utf16).begin() == u'1');
-
-#endif // Clang __cpp_lib_ranges
 }
 
 void test_ranges_static_assert()
 {
-// TODO: Clang cannot pass this test when we are using std::ranges instead of our ranges (C++20 with __cpp_lib_ranges)
-// I don't have time to deal with this crap right now.
-#if !(defined(__clang__) && defined(__cpp_lib_ranges))
-
     static_assert(std::is_same_v<decltype("12345" | uni::views::reverse),
             decltype(uni::ranges::reverse_view{uni::ranges::ref_view{"00000"}})>); // must be ref_view here
     static_assert(std::is_same_v<decltype(std::string_view{"12345"} | uni::views::reverse),
@@ -164,6 +148,4 @@ void test_ranges_static_assert()
         static_assert(std::is_same_v<decltype(str_view | uni::views::reverse),
                 decltype(uni::ranges::reverse_view{str_view})>); // must not be ref_view here
     }
-
-#endif // Clang __cpp_lib_ranges
 }
