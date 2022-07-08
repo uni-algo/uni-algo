@@ -68,8 +68,11 @@ static void new_generator_output(const std::string& file1, const std::string& fi
     // This is recommended by Unicode Standard see chapter 5.1 for more details.
     // This also gives us O(1) complexety always for all Unicode data tables.
 
-    std::ofstream output1(file1, std::ios::binary);
-    std::ofstream output2(file2, std::ios::binary);
+    // All output files must be opened in text mode.
+    // We want platform dependent line ending for them.
+
+    std::ofstream output1(file1);
+    std::ofstream output2(file2);
 
     ASSERTX(output1.is_open() && output2.is_open());
 
@@ -125,12 +128,7 @@ static void new_generator_output(const std::string& file1, const std::string& fi
     for (size_t i = 0; i < vec1.size(); ++i)
     {
         if (i != 0 && i % 8 == 0)
-            output1 << "\r\n";
-        // TODO: Hard coded CRLF is bad. Should probably always open all output files
-        // in text mode and make std::stream deal with it.
-        // But keep opening input files (Unicode files) in binary.
-        // Text mode may cause some problems with them we want the same behavior on all platforms.
-        // This need to be fixed everywhere.
+            output1 << '\n';
 
         char str[64] = {};
         if (stage1_bits == 16) // 16 bit
@@ -157,7 +155,7 @@ static void new_generator_output(const std::string& file1, const std::string& fi
         for (size_t j = 0; j < vec2[i].size(); ++j)
         {
             if (j % 8 == 0)
-                output2 << "\r\n";
+                output2 << '\n';
 
             char str[64] = {};
             if (stage2_bits == 24) // 32 bit (but max code point size)
@@ -182,7 +180,7 @@ static void new_generator_output(const std::string& file1, const std::string& fi
             output2 << str;
         }
 
-        output2 << "\r\n";
+        output2 << '\n';
     }
 }
 
@@ -193,6 +191,10 @@ static void new_generator_unicodedata(const std::string& file1, const std::strin
     // we don't handle it here because it doesn't matter for this data
     // but if this algorithm will be used to get something else
     // for example General_Category then it must be handled.
+
+    // All Unicode data files must be opened in binary mode.
+    // Opening them in text mode shouldn't break anything
+    // but it better to be consistent on all platforms.
 
     // https://www.unicode.org/reports/tr44/#UnicodeData.txt
     std::ifstream input("UnicodeData.txt", std::ios::binary);
@@ -311,7 +313,7 @@ static void new_generator_allkeys(const std::string& file1, const std::string& f
 
 static void new_generator_output1(const std::string& file, const std::vector<uint32_t>& vec)
 {
-    std::ofstream output(file, std::ios::binary);
+    std::ofstream output(file);
     ASSERTX(output.is_open());
 
     for (std::size_t i = 0; i < vec.size(); ++i)
@@ -319,7 +321,7 @@ static void new_generator_output1(const std::string& file, const std::vector<uin
         if (i == 0)
             output << "{";
         else if (i != 0 && i % 4 == 0)
-            output << "},\r\n{";
+            output << "},\n{";
         else
             output << (COMPACT ? "," : ", ");
 
@@ -627,13 +629,13 @@ static void new_generator_case_properties(const std::string& file1, const std::s
 
 static void new_generator_output2(const std::string& file, const std::vector<uint32_t>& vec)
 {
-    std::ofstream output(file, std::ios::binary);
+    std::ofstream output(file);
     ASSERTX(output.is_open());
 
     for (std::size_t i = 0; i < vec.size(); ++i)
     {
         if (i != 0 && i % 8 == 0)
-            output << "\r\n";
+            output << '\n';
 
         ASSERTX(vec[i] <= 0x10FFFF); // 32 bit (but max code point size)
 
@@ -1010,7 +1012,7 @@ static void new_generator_unicodedata_decompose_ccc_qc(const std::string& file1,
 
 static void new_generator_output3(const std::string& file, const std::vector<std::vector<uint32_t>>& vec)
 {
-    std::ofstream output(file, std::ios::binary);
+    std::ofstream output(file);
     ASSERTX(output.is_open());
 
     for (std::size_t i = 0; i < vec.size(); ++i)
@@ -1035,7 +1037,7 @@ static void new_generator_output3(const std::string& file, const std::vector<std
                 output << (COMPACT ? "," : ", ");
         }
 
-        output << "},\r\n";
+        output << "},\n";
     }
 }
 
@@ -1962,7 +1964,7 @@ static void new_merger_replace_string(std::string& data, const std::string& file
     std::string new_str;
     new_str.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
 
-    std::size_t found = new_str.find_last_not_of(" ,\r\n");
+    std::size_t found = new_str.find_last_not_of(" ,\n");
     if (found != std::string::npos)
         new_str.erase(found + 1);
 
