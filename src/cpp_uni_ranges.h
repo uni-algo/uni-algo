@@ -21,6 +21,13 @@
 
 #include "cpp_uni_iterator.h" // TODO: It's only needed for uni::sentinel_t. Don't forget to remove it.
 
+// TODO: Leave here the code for normalization ranges for now
+// it must be moved to cpp_uni_norm.h later.
+// All the normalization code protected with this define.
+#ifdef UNI_ALGO_TEST_RANGES_NORM
+#include "cpp_uni_norm.h"
+#endif
+
 #include "impl/impl_iterator.h"
 
 namespace uni {
@@ -854,6 +861,380 @@ public:
     }
 };
 
+#ifdef UNI_ALGO_TEST_RANGES_NORM
+namespace norm {
+
+template<class Range>
+class nfc_view : public detail::ranges_view_base
+{
+private:
+    template<class Iter, class Sent>
+    class nfc
+    {
+    private:
+        nfc_view* parent = nullptr;
+        Iter it_pos;
+
+        bool stream_end = false;
+
+        detail::type_codept codepoint = 0;
+        detail::impl_norm_iter_state state{};
+
+        void iter_func_nfc()
+        {
+            if (!detail::unstable_norm_iter_ready(&state))
+                while (it_pos != std::end(parent->range) && !detail::unstable_norm_iter_nfc(&state, *it_pos++));
+            if (!detail::unstable_norm_iter_next_comp(&state, &codepoint))
+                stream_end = true;
+        }
+
+    public:
+        using iterator_category = std::input_iterator_tag;
+        using value_type        = char32_t;
+        using pointer           = void;
+        using reference         = char32_t;
+        using difference_type   = std::ptrdiff_t;
+
+        nfc() = default;
+        explicit nfc(nfc_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin}
+        {
+            detail::impl_norm_iter_state_reset(&state);
+
+            iter_func_nfc(); // Fn call must not be inlined
+        }
+        reference operator*() const noexcept { return codepoint; }
+        nfc& operator++()
+        {
+            iter_func_nfc(); // Fn call must not be inlined
+
+            return *this;
+        }
+        nfc operator++(int)
+        {
+            nfc tmp = *this;
+            operator++();
+            return tmp;
+        }
+        friend constexpr bool operator==(const nfc& x, const nfc& y) { return x.stream_end == y.stream_end; }
+        friend constexpr bool operator!=(const nfc& x, const nfc& y) { return x.stream_end != y.stream_end; }
+        friend constexpr bool operator==(const nfc& x, uni::sentinel_t) { return x.stream_end; }
+        friend constexpr bool operator!=(const nfc& x, uni::sentinel_t) { return !x.stream_end; }
+        friend constexpr bool operator==(uni::sentinel_t, const nfc& x) { return x.stream_end; }
+        friend constexpr bool operator!=(uni::sentinel_t, const nfc& x) { return !x.stream_end; }
+    };
+
+    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
+    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+
+    Range range = Range{};
+    nfc<base_iterator_t, base_sentinel_t> cached_begin_value;
+    bool cached_begin = false;
+
+public:
+    constexpr nfc_view() = default;
+    constexpr nfc_view(Range r) : range{std::move(r)} {}
+    //constexpr Range base() const & { return range; }
+    //constexpr Range base() && { return std::move(range); }
+    constexpr auto begin()
+    {
+        if (cached_begin)
+            return cached_begin_value;
+
+        cached_begin_value = nfc<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin = true;
+
+        return cached_begin_value;
+    }
+    constexpr auto end()
+    {
+        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
+            return nfc<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        else
+            return uni::sentinel;
+    }
+    //constexpr bool empty() { return begin() == end(); }
+    //explicit constexpr operator bool() { return !empty(); }
+};
+
+template<class Range>
+class nfd_view : public detail::ranges_view_base
+{
+private:
+    template<class Iter, class Sent>
+    class nfd
+    {
+    private:
+        nfd_view* parent = nullptr;
+        Iter it_pos;
+
+        bool stream_end = false;
+
+        detail::type_codept codepoint = 0;
+        detail::impl_norm_iter_state state{};
+
+        void iter_func_nfd()
+        {
+            if (!detail::unstable_norm_iter_ready(&state))
+                while (it_pos != std::end(parent->range) && !detail::unstable_norm_iter_nfd(&state, *it_pos++));
+            if (!detail::unstable_norm_iter_next_decomp(&state, &codepoint))
+                stream_end = true;
+        }
+
+    public:
+        using iterator_category = std::input_iterator_tag;
+        using value_type        = char32_t;
+        using pointer           = void;
+        using reference         = char32_t;
+        using difference_type   = std::ptrdiff_t;
+
+        nfd() = default;
+        explicit nfd(nfd_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin}
+        {
+            detail::impl_norm_iter_state_reset(&state);
+
+            iter_func_nfd(); // Fn call must not be inlined
+        }
+        reference operator*() const noexcept { return codepoint; }
+        nfd& operator++()
+        {
+            iter_func_nfd(); // Fn call must not be inlined
+
+            return *this;
+        }
+        nfd operator++(int)
+        {
+            nfd tmp = *this;
+            operator++();
+            return tmp;
+        }
+        friend constexpr bool operator==(const nfd& x, const nfd& y) { return x.stream_end == y.stream_end; }
+        friend constexpr bool operator!=(const nfd& x, const nfd& y) { return x.stream_end != y.stream_end; }
+        friend constexpr bool operator==(const nfd& x, uni::sentinel_t) { return x.stream_end; }
+        friend constexpr bool operator!=(const nfd& x, uni::sentinel_t) { return !x.stream_end; }
+        friend constexpr bool operator==(uni::sentinel_t, const nfd& x) { return x.stream_end; }
+        friend constexpr bool operator!=(uni::sentinel_t, const nfd& x) { return !x.stream_end; }
+    };
+
+    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
+    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+
+    Range range = Range{};
+    nfd<base_iterator_t, base_sentinel_t> cached_begin_value;
+    bool cached_begin = false;
+
+public:
+    constexpr nfd_view() = default;
+    constexpr nfd_view(Range r) : range{std::move(r)} {}
+    //constexpr Range base() const & { return range; }
+    //constexpr Range base() && { return std::move(range); }
+    constexpr auto begin()
+    {
+        if (cached_begin)
+            return cached_begin_value;
+
+        cached_begin_value = nfd<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin = true;
+
+        return cached_begin_value;
+    }
+    constexpr auto end()
+    {
+        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
+            return nfd<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        else
+            return uni::sentinel;
+    }
+    //constexpr bool empty() { return begin() == end(); }
+    //explicit constexpr operator bool() { return !empty(); }
+};
+
+template<class Range>
+class nfkc_view : public detail::ranges_view_base
+{
+private:
+    template<class Iter, class Sent>
+    class nfkc
+    {
+    private:
+        nfkc_view* parent = nullptr;
+        Iter it_pos;
+
+        bool stream_end = false;
+
+        detail::type_codept codepoint = 0;
+        detail::impl_norm_iter_state state{};
+
+        void iter_func_nfkc()
+        {
+            if (!detail::unstable_norm_iter_ready(&state))
+                while (it_pos != std::end(parent->range) && !detail::unstable_norm_iter_nfkc(&state, *it_pos++));
+            if (!detail::unstable_norm_iter_next_comp(&state, &codepoint))
+                stream_end = true;
+        }
+
+    public:
+        using iterator_category = std::input_iterator_tag;
+        using value_type        = char32_t;
+        using pointer           = void;
+        using reference         = char32_t;
+        using difference_type   = std::ptrdiff_t;
+
+        nfkc() = default;
+        explicit nfkc(nfkc_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin}
+        {
+            detail::impl_norm_iter_state_reset(&state);
+
+            iter_func_nfkc(); // Fn call must not be inlined
+        }
+        reference operator*() const noexcept { return codepoint; }
+        nfkc& operator++()
+        {
+            iter_func_nfkc(); // Fn call must not be inlined
+
+            return *this;
+        }
+        nfkc operator++(int)
+        {
+            nfkc tmp = *this;
+            operator++();
+            return tmp;
+        }
+        friend constexpr bool operator==(const nfkc& x, const nfkc& y) { return x.stream_end == y.stream_end; }
+        friend constexpr bool operator!=(const nfkc& x, const nfkc& y) { return x.stream_end != y.stream_end; }
+        friend constexpr bool operator==(const nfkc& x, uni::sentinel_t) { return x.stream_end; }
+        friend constexpr bool operator!=(const nfkc& x, uni::sentinel_t) { return !x.stream_end; }
+        friend constexpr bool operator==(uni::sentinel_t, const nfkc& x) { return x.stream_end; }
+        friend constexpr bool operator!=(uni::sentinel_t, const nfkc& x) { return !x.stream_end; }
+    };
+
+    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
+    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+
+    Range range = Range{};
+    nfkc<base_iterator_t, base_sentinel_t> cached_begin_value;
+    bool cached_begin = false;
+
+public:
+    constexpr nfkc_view() = default;
+    constexpr nfkc_view(Range r) : range{std::move(r)} {}
+    //constexpr Range base() const & { return range; }
+    //constexpr Range base() && { return std::move(range); }
+    constexpr auto begin()
+    {
+        if (cached_begin)
+            return cached_begin_value;
+
+        cached_begin_value = nfkc<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin = true;
+
+        return cached_begin_value;
+    }
+    constexpr auto end()
+    {
+        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
+            return nfkc<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        else
+            return uni::sentinel;
+    }
+    //constexpr bool empty() { return begin() == end(); }
+    //explicit constexpr operator bool() { return !empty(); }
+};
+
+template<class Range>
+class nfkd_view : public detail::ranges_view_base
+{
+private:
+    template<class Iter, class Sent>
+    class nfkd
+    {
+    private:
+        nfkd_view* parent = nullptr;
+        Iter it_pos;
+
+        bool stream_end = false;
+
+        detail::type_codept codepoint = 0;
+        detail::impl_norm_iter_state state{};
+
+        void iter_func_nfkd()
+        {
+            if (!detail::unstable_norm_iter_ready(&state))
+                while (it_pos != std::end(parent->range) && !detail::unstable_norm_iter_nfkd(&state, *it_pos++));
+            if (!detail::unstable_norm_iter_next_decomp(&state, &codepoint))
+                stream_end = true;
+        }
+
+    public:
+        using iterator_category = std::input_iterator_tag;
+        using value_type        = char32_t;
+        using pointer           = void;
+        using reference         = char32_t;
+        using difference_type   = std::ptrdiff_t;
+
+        nfkd() = default;
+        explicit nfkd(nfkd_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin}
+        {
+            detail::impl_norm_iter_state_reset(&state);
+
+            iter_func_nfkd(); // Fn call must not be inlined
+        }
+        reference operator*() const noexcept { return codepoint; }
+        nfkd& operator++()
+        {
+            iter_func_nfkd(); // Fn call must not be inlined
+
+            return *this;
+        }
+        nfkd operator++(int)
+        {
+            nfkd tmp = *this;
+            operator++();
+            return tmp;
+        }
+        friend constexpr bool operator==(const nfkd& x, const nfkd& y) { return x.stream_end == y.stream_end; }
+        friend constexpr bool operator!=(const nfkd& x, const nfkd& y) { return x.stream_end != y.stream_end; }
+        friend constexpr bool operator==(const nfkd& x, uni::sentinel_t) { return x.stream_end; }
+        friend constexpr bool operator!=(const nfkd& x, uni::sentinel_t) { return !x.stream_end; }
+        friend constexpr bool operator==(uni::sentinel_t, const nfkd& x) { return x.stream_end; }
+        friend constexpr bool operator!=(uni::sentinel_t, const nfkd& x) { return !x.stream_end; }
+    };
+
+    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
+    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+
+    Range range = Range{};
+    nfkd<base_iterator_t, base_sentinel_t> cached_begin_value;
+    bool cached_begin = false;
+
+public:
+    constexpr nfkd_view() = default;
+    constexpr nfkd_view(Range r) : range{std::move(r)} {}
+    //constexpr Range base() const & { return range; }
+    //constexpr Range base() && { return std::move(range); }
+    constexpr auto begin()
+    {
+        if (cached_begin)
+            return cached_begin_value;
+
+        cached_begin_value = nfkd<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin = true;
+
+        return cached_begin_value;
+    }
+    constexpr auto end()
+    {
+        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
+            return nfkd<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        else
+            return uni::sentinel;
+    }
+    //constexpr bool empty() { return begin() == end(); }
+    //explicit constexpr operator bool() { return !empty(); }
+};
+
+} // namespace norm
+#endif // UNI_ALGO_TEST_RANGES_NORM
+
 // For C++17 we implement very simple ref_view that will be used together with uni::views::all_t/uni::views::all
 // It has the similar design as std::views::ref_view so in C++20 we just use that
 #if !defined(__cpp_lib_ranges) || defined(__clang__)
@@ -1081,6 +1462,48 @@ struct adaptor_transform
     constexpr auto operator()(Func f) const { return adaptor_closure_transform<Func>{std::move(f)}; }
 };
 
+#ifdef UNI_ALGO_TEST_RANGES_NORM
+/* NFC_VIEW */
+
+struct adaptor_nfc
+{
+    template<class R>
+    constexpr auto operator()(R&& r) const { return ranges::norm::nfc_view{std::forward<R>(r)}; }
+};
+template<class R>
+constexpr auto operator|(R&& r, const adaptor_nfc& a) { return a(std::forward<R>(r)); }
+
+/* NFD_VIEW */
+
+struct adaptor_nfd
+{
+    template<class R>
+    constexpr auto operator()(R&& r) const { return ranges::norm::nfd_view{std::forward<R>(r)}; }
+};
+template<class R>
+constexpr auto operator|(R&& r, const adaptor_nfd& a) { return a(std::forward<R>(r)); }
+
+/* NFKC_VIEW */
+
+struct adaptor_nfkc
+{
+    template<class R>
+    constexpr auto operator()(R&& r) const { return ranges::norm::nfkc_view{std::forward<R>(r)}; }
+};
+template<class R>
+constexpr auto operator|(R&& r, const adaptor_nfkc& a) { return a(std::forward<R>(r)); }
+
+/* NFKD_VIEW */
+
+struct adaptor_nfkd
+{
+    template<class R>
+    constexpr auto operator()(R&& r) const { return ranges::norm::nfkd_view{std::forward<R>(r)}; }
+};
+template<class R>
+constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forward<R>(r)); }
+#endif // UNI_ALGO_TEST_RANGES_NORM
+
 #if 0
 /* TO_STRING */
 
@@ -1185,6 +1608,14 @@ inline constexpr detail::adaptor_filter filter;
 inline constexpr detail::adaptor_transform transform;
 inline constexpr detail::adaptor_take take;
 inline constexpr detail::adaptor_drop drop;
+#ifdef UNI_ALGO_TEST_RANGES_NORM
+namespace norm {
+inline constexpr detail::adaptor_nfc nfc;
+inline constexpr detail::adaptor_nfd nfd;
+inline constexpr detail::adaptor_nfkc nfkc;
+inline constexpr detail::adaptor_nfkd nfkd;
+} // namespace norm
+#endif // UNI_ALGO_TEST_RANGES_NORM
 
 // In C++17 use our simple all view that uses our simple ref_view/owning_view
 // In C++20 use facilities provided by the standard library
@@ -1228,6 +1659,19 @@ transform_view(Range&&, Func) -> transform_view<uni::views::all_t<Range>, Func>;
 
 template<class Range>
 take_view(Range&&, std::size_t) -> take_view<uni::views::all_t<Range>>;
+
+#ifdef UNI_ALGO_TEST_RANGES_NORM
+namespace norm {
+template<class Range>
+nfc_view(Range&&) -> nfc_view<uni::views::all_t<Range>>;
+template<class Range>
+nfd_view(Range&&) -> nfd_view<uni::views::all_t<Range>>;
+template<class Range>
+nfkc_view(Range&&) -> nfkc_view<uni::views::all_t<Range>>;
+template<class Range>
+nfkd_view(Range&&) -> nfkd_view<uni::views::all_t<Range>>;
+} // namespace norm
+#endif // UNI_ALGO_TEST_RANGES_NORM
 
 } // namespace ranges
 

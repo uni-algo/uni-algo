@@ -725,6 +725,8 @@ void test_norm_stream_safe()
 
 std::string utf8_nfc(std::string_view str)
 {
+    //return str | uni::views::utf8 | uni::views::norm::nfc | uni::ranges::to_utf8<std::string>();
+
     uni::iter::utf8 it_begin{str.cbegin(), str.cend()};
     uni::iter::utf8 it_end{str.cend(), str.cend()};
 
@@ -742,6 +744,8 @@ std::string utf8_nfc(std::string_view str)
 
 std::string utf8_nfd(std::string_view str)
 {
+    //return str | uni::views::utf8 | uni::views::norm::nfd | uni::ranges::to_utf8<std::string>();
+
     uni::iter::utf8 it_begin{str.cbegin(), str.cend()};
     uni::iter::utf8 it_end{str.cend(), str.cend()};
 
@@ -759,6 +763,8 @@ std::string utf8_nfd(std::string_view str)
 
 std::string utf8_nfkc(std::string_view str)
 {
+    //return str | uni::views::utf8 | uni::views::norm::nfkc | uni::ranges::to_utf8<std::string>();
+
     uni::iter::utf8 it_begin{str.cbegin(), str.cend()};
     uni::iter::utf8 it_end{str.cend(), str.cend()};
 
@@ -776,6 +782,8 @@ std::string utf8_nfkc(std::string_view str)
 
 std::string utf8_nfkd(std::string_view str)
 {
+    //return str | uni::views::utf8 | uni::views::norm::nfkd | uni::ranges::to_utf8<std::string>();
+
     uni::iter::utf8 it_begin{str.cbegin(), str.cend()};
     uni::iter::utf8 it_end{str.cend(), str.cend()};
 
@@ -793,6 +801,8 @@ std::string utf8_nfkd(std::string_view str)
 
 std::u16string utf16_nfc(std::u16string_view str)
 {
+    //return str | uni::views::utf16 | uni::views::norm::nfc | uni::ranges::to_utf16<std::u16string>();
+
     uni::iter::utf16 it_begin{str.cbegin(), str.cend()};
     uni::iter::utf16 it_end{str.cend(), str.cend()};
 
@@ -810,6 +820,8 @@ std::u16string utf16_nfc(std::u16string_view str)
 
 std::u16string utf16_nfd(std::u16string_view str)
 {
+    //return str | uni::views::utf16 | uni::views::norm::nfd | uni::ranges::to_utf16<std::u16string>();
+
     uni::iter::utf16 it_begin{str.cbegin(), str.cend()};
     uni::iter::utf16 it_end{str.cend(), str.cend()};
 
@@ -827,6 +839,8 @@ std::u16string utf16_nfd(std::u16string_view str)
 
 std::u16string utf16_nfkc(std::u16string_view str)
 {
+    //return str | uni::views::utf16 | uni::views::norm::nfkc | uni::ranges::to_utf16<std::u16string>();
+
     uni::iter::utf16 it_begin{str.cbegin(), str.cend()};
     uni::iter::utf16 it_end{str.cend(), str.cend()};
 
@@ -844,6 +858,8 @@ std::u16string utf16_nfkc(std::u16string_view str)
 
 std::u16string utf16_nfkd(std::u16string_view str)
 {
+    //return str | uni::views::utf16 | uni::views::norm::nfkd | uni::ranges::to_utf16<std::u16string>();
+
     uni::iter::utf16 it_begin{str.cbegin(), str.cend()};
     uni::iter::utf16 it_end{str.cend(), str.cend()};
 

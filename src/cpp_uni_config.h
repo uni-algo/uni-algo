@@ -119,4 +119,7 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 //#define UNI_ALGO_IMPL_TEST_CPP_THROW_ON_ILL_FORMED
 //#define UNI_ALGO_IMPL_TEST_CPP_THROW_ASSERT
 
+// TODO: Don't forget to clean this
+//#define UNI_ALGO_TEST_RANGES_NORM
+
 #endif // CPP_UNI_CONFIG_H_UAIX
