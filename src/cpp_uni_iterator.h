@@ -13,6 +13,7 @@
 
 #include "cpp_uni_config.h"
 #include "cpp_uni_version.h"
+#include "internal/cpp_uni_sentinel.h"
 
 #include "impl/impl_iterator.h"
 
@@ -23,9 +24,6 @@ const char32_t replacement = detail::impl_iter_replacement;
 const char32_t error = detail::impl_iter_error;
 }
 */
-
-struct sentinel_t {};
-inline constexpr sentinel_t sentinel;
 
 namespace iter {
 

@@ -18,8 +18,7 @@
 
 #include "cpp_uni_config.h"
 #include "cpp_uni_version.h"
-
-#include "cpp_uni_iterator.h" // TODO: It's only needed for uni::sentinel_t. Don't forget to remove it.
+#include "internal/cpp_uni_sentinel.h"
 
 // TODO: Leave here the code for normalization ranges for now
 // it must be moved to cpp_uni_norm.h later.
