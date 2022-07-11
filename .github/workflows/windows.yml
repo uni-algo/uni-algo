@@ -1,0 +1,31 @@
+name: Windows
+on: workflow_dispatch
+
+jobs:
+  Windows-VS2022-CPP20:
+    name: Windows VS2022 C++20
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: CMake
+        run: cmake -S test -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_CXX_STANDARD=20
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Run tests
+        run: test/bin/Release/uni-algo-test.exe
+
+  Windows-VS2022-CPP17:
+    name: Windows VS2022 C++17
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: CMake
+        run: cmake -S test -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_CXX_STANDARD=17
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Run tests
+        run: test/bin/Release/uni-algo-test.exe

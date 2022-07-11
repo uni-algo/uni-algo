@@ -1,0 +1,37 @@
+name: Linux
+on: workflow_dispatch
+
+jobs:
+  Linux-GCC:
+    name: Linux GCC
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [g++-7,g++-10,g++-12]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: CMake
+        run: cmake -S test -B build -DCMAKE_BUILD_TYPE="Release"
+      - name: Build
+        run: cmake --build build
+      - name: Run tests
+        run: test/bin/uni-algo-test
+
+  Linux-Clang:
+    name: Linux Clang
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [clang++-8,clang++-10,clang++-14]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: CMake
+        run: cmake -S test -B build -DCMAKE_BUILD_TYPE="Release"
+      - name: Build
+        run: cmake --build build
+      - name: Run tests
+        run: test/bin/uni-algo-test
