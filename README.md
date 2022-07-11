@@ -1,3 +1,7 @@
+[![Linux](https://github.com/uni-algo/uni-algo/workflows/Linux/badge.svg)](https://github.com/uni-algo/uni-algo/actions?query=workflow%3ALinux)
+[![Windows](https://github.com/uni-algo/uni-algo/workflows/Windows/badge.svg)](https://github.com/uni-algo/uni-algo/actions?query=workflow%3AWindows)
+[![macOS](https://github.com/uni-algo/uni-algo/workflows/macOS/badge.svg)](https://github.com/uni-algo/uni-algo/actions?query=workflow%3AmacOS)
+
 ## Table of Contents
 
 - [Introduction](#introduction)
