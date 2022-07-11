@@ -40,8 +40,8 @@ void test_case_compare_collate()
     TESTX(uni::casesens::utf8_compare(uni::utf32to8(U"\x10000"), uni::utf32to8(U"\x10001")) != 0);
     TESTX(uni::casesens::utf8_collate(uni::utf32to8(U"\x10000"), uni::utf32to8(U"\x10001")) != 0);
 
-    TESTX(uni::casesens::utf16_compare(uni::utf32to16(U"\x10000"), uni::utf32to16(U"\x10001")) != 0);
-    TESTX(uni::casesens::utf16_collate(uni::utf32to16(U"\x10000"), uni::utf32to16(U"\x10001")) != 0);
+    TESTX(uni::casesens::utf16_compare(uni::utf32to16u(U"\x10000"), uni::utf32to16u(U"\x10001")) != 0);
+    TESTX(uni::casesens::utf16_collate(uni::utf32to16u(U"\x10000"), uni::utf32to16u(U"\x10001")) != 0);
 }
 
 void test_case_search()
