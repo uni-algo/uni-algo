@@ -21,7 +21,7 @@
 //#endif
 
 // Do not use exceptions so it possible to compile the tests with -fno-exceptions
-#define TESTX(x) do {if (!(x)) {std::cout << "TEST FAILED: " << (__FILE__) << ":" << (__LINE__) << '\n'; exit(0);}} while(0)
+#define TESTX(x) do {if (!(x)) {std::cout << "TEST FAILED: " << (__FILE__) << ":" << (__LINE__) << '\n'; exit(111);}} while(0)
 
 // Tests have some big functions so disable -Wstack-usage warning for them
 #ifdef __GNUC__
