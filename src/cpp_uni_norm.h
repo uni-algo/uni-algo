@@ -12,6 +12,7 @@
 #include <type_traits>
 #include <string>
 #include <string_view>
+#include <iterator>
 
 #include "cpp_uni_config.h"
 #include "cpp_uni_version.h"
