@@ -6,6 +6,7 @@
 
 - [Introduction](#introduction)
 - [Design](#design)
+- [Usage](#usage)
 - [Examples](#examples)
   - [Convert Module](#convert-module)
   - [Case Module](#case-module)
@@ -78,6 +79,71 @@ Portability means:
 and/or fixed width types are unavailable and/or CHAR_BIT is not 8.<br />
 Note that this is partially tested so if you find any issues please report them.
 
+## Usage
+
+<details><summary><b>CMake add_subdirectory</b></summary><p>
+
+Add to your CMakeLists.txt
+
+```cmake
+add_subdirectory(lib) # the directory where you extracted this repository
+
+target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
+```
+</p></details>
+
+<details><summary><b>CMake find_package</b></summary><p>
+
+Build and install the library first.
+
+Steps for building and installing in release mode with a single-configuration generator, like the Unix Makefiles one:
+
+```
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+cmake --build build
+cmake --install build
+```
+
+Steps for building and installing in release mode with a multi-configuration generator, like the Visual Studio ones:
+
+```
+cmake -S . -B build
+cmake --build build --config Release
+cmake --install build --config Release
+```
+
+Then add to your CMakeLists.txt
+
+```cmake
+find_package(uni-algo)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
+```
+</p></details>
+
+<details><summary><b>CMake FetchContent</b></summary><p>
+
+Add to your CMakeLists.txt
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(uni-algo
+  GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
+  GIT_TAG v0.1.0) # the version you want to download
+
+FetchContent_MakeAvailable(uni-algo)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
+```
+</p></details>
+
+<details><summary><b>Manual usage</b></summary><p>
+
+Include a header file you want to use from src directory and compile one file `src/uni_algo_data.cpp`
+
+</p></details>
+
 ## Examples
 
 For these examples to work you need to compile them in GCC/Clang with -std=c++17 (or higher)
@@ -92,7 +158,7 @@ Note that the files are called modules because the word is too good in this case
 It has nothing to do with C++20 modules.
 
 ## Convert module
-```
+```cpp
 // The module doesn't require Unicode data so it can be used as header-only
 #include "cpp_uni_convert.h"
 
@@ -145,7 +211,7 @@ std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test");
 // but template functions will work perfectly fine with it.
 ```
 ## Case module
-```
+```cpp
 #include "cpp_uni_case.h" // and compile "cpp_uni_data.cpp"
 
 std::cout << uni::cases::utf8_upper("Straße") << '\n';
@@ -212,7 +278,7 @@ vec8.erase(it, vec8.end());
 // Output: абвгдѓежзѕијклљмнњопрстќуфхцчџш
 ```
 ## Iterator module
-```
+```cpp
 // Be aware that this module will be redesigned in favour of std::ranges
 
 // The module doesn't require Unicode data so it can be used as header-only
@@ -265,7 +331,7 @@ std::cout << "Reverse order:" << '\n';
 // Code point: 128570 at: 0
 ```
 ## Break module
-```
+```cpp
 // Be aware that this module will be redesigned in favour of std::ranges
 
 #include "cpp_uni_break.h" // and compile "cpp_uni_data.cpp"
@@ -324,7 +390,7 @@ str8.insert(std::next(it, 2) - it, uni::utf32to8(std::u32string{U'😼'}));
 // Output: 🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧😼🧙‍♀️😺
 ```
 ## Normalization module
-```
+```cpp
 #include "cpp_uni_norm.h" // and compile "cpp_uni_data.cpp"
 
 // "Z" with acute == "Ź"
@@ -354,7 +420,7 @@ uni::norm::utf8_nfc(it, end, out);
 // Note that the same result can be achieved with iterator chains.
 ```
 ## Iterator chains
-```
+```cpp
 // Be aware that this will be redesigned in favour of std::ranges
 
 // For example we need to remove accents that mark the stressed vowels in a text.
