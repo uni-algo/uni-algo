@@ -69,7 +69,7 @@ Usability means:
 - The library doesn't use exceptions because there are no exceptional situations in
 Unicode algorithms. Unicode Standard always describes what need to be done if an issue occurs.
 Of course C++ Standard Library still can throw if -fno-exceptions isn't used.
-- The only dependency is C++ Standard Library that can be omitted as was mentioned before.
+- The only dependency is C++ Standard Library.
 - The library itself is header-only but Unicode data (one .cpp file) must be compiled.
 - You can disable modules or even a part of a module by using configuration defines
 that can drastically reduce the size of Unicode data that must be compiled.
@@ -99,7 +99,7 @@ Build and install the library first.
 Steps for building and installing in release mode with a single-configuration generator, like the Unix Makefiles one:
 
 ```
-cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 cmake --install build
 ```
@@ -128,9 +128,14 @@ Add to your CMakeLists.txt
 ```cmake
 include(FetchContent)
 
+# Note that you need Git installed for this to work.
 FetchContent_Declare(uni-algo
   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
-  GIT_TAG v0.1.0) # the version you want to download
+  GIT_TAG v0.2.0) # the version you want to download
+
+# Or you can use it like this without Git.
+# FetchContent_Declare(uni-algo
+#   URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.2.0.zip)
 
 FetchContent_MakeAvailable(uni-algo)
 
@@ -140,7 +145,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 
 <details><summary><b>Manual usage</b></summary><p>
 
-Include a header file you want to use from src directory and compile one file `src/uni_algo_data.cpp`
+Include a header file you want to use from src directory and compile one file `src/cpp_uni_data.cpp`
 
 </p></details>
 
