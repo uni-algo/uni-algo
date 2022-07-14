@@ -20,7 +20,7 @@ extern const unsigned char  stage1_comp_cp1[];
 extern const unsigned short stage2_comp_cp1[];
 extern const unsigned char  stage1_comp_cp2[];
 extern const unsigned short stage2_comp_cp2[];
-extern const type_codept    stage3_comp[][63];
+extern const type_codept    stage3_comp[][64];
 extern const unsigned char  stage1_ccc_qc[];
 extern const unsigned short stage2_ccc_qc[];
 

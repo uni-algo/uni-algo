@@ -1,4 +1,4 @@
-// Unicode 12.1
+// Unicode 14.0.0
 
 #include "internal_defines.h"
 
@@ -54,7 +54,7 @@ new_stage1_comp_cp2.txt};
 uaix_const_data unsigned short stage2_comp_cp2[] = {
 new_stage2_comp_cp2.txt};
 
-uaix_const_data type_codept stage3_comp[][63] = {
+uaix_const_data type_codept stage3_comp[][64] = {
 new_stage3_comp.txt};
 
 UNI_ALGO_IMPL_NAMESPACE_END

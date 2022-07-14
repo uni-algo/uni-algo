@@ -1044,7 +1044,7 @@ static void new_generator_unicodedata_compose(const std::string& file1, const st
     }
 
     // If asserts the number must be changed here and in stage3_comp[][SECOND_DIMENSION_SIZE]
-    ASSERTX(vec.size() > 0 && vec[0].size() == 63); // 64 Unicode 14
+    ASSERTX(vec.size() > 0 && vec[0].size() == 64);
 
     new_generator_output(file1, file2, 8, 16, true, map1, 0x10FFFF);
     new_generator_output(file3, file4, 8, 16, true, map2, 0x10FFFF);
