@@ -6,11 +6,14 @@
 #define CPP_UNI_RANGES_H_UAIX
 
 #include <type_traits>
+#include <iterator>
 #include <cassert>
 #include <memory>
 #include <functional>
 #if defined(__cpp_lib_ranges) && !defined(__clang__)
 #include <ranges>
+#else
+#include <string_view>
 #endif
 #ifdef UNI_ALGO_LOG_CPP_ITER
 #include <iostream>
