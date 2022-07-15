@@ -949,10 +949,7 @@ public:
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
-            return nfc<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
-        else
-            return uni::sentinel;
+        return uni::sentinel;
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1041,10 +1038,7 @@ public:
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
-            return nfd<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
-        else
-            return uni::sentinel;
+        return uni::sentinel;
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1133,10 +1127,7 @@ public:
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
-            return nfkc<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
-        else
-            return uni::sentinel;
+        return uni::sentinel;
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1225,10 +1216,7 @@ public:
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
-            return nfkd<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
-        else
-            return uni::sentinel;
+        return uni::sentinel;
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
