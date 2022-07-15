@@ -5,12 +5,21 @@
 #ifndef CPP_UNI_RANGES_H_UAIX
 #define CPP_UNI_RANGES_H_UAIX
 
+// In Clang std::ranges implementation is still partial and doesn't work properly
+// so always force our own implementation of ranges in Clang.
+// TODO: maybe move the define to config later so it will be easier to test in other compilers too
+#ifdef __clang__
+#  ifndef UNI_ALGO_FORCE_CPP17_RANGES
+#    define UNI_ALGO_FORCE_CPP17_RANGES
+#  endif
+#endif
+
 #include <type_traits>
 #include <iterator>
 #include <cassert>
 #include <memory>
 #include <functional>
-#if defined(__cpp_lib_ranges) && !defined(__clang__)
+#if defined(__cpp_lib_ranges) && !defined(UNI_ALGO_FORCE_CPP17_RANGES)
 #include <ranges>
 #else
 #include <string_view>
@@ -38,7 +47,7 @@ namespace uni {
 // when a std::view on the right side of operator|
 // https://tristanbrindle.com/posts/rvalue-ranges-and-views
 namespace detail {
-#if !defined(__cpp_lib_ranges) || defined(__clang__)
+#if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 struct ranges_view_base {};
 #else
 using ranges_view_base = std::ranges::view_base;
@@ -1227,7 +1236,7 @@ public:
 
 // For C++17 we implement very simple ref_view that will be used together with uni::views::all_t/uni::views::all
 // It has the similar design as std::views::ref_view so in C++20 we just use that
-#if !defined(__cpp_lib_ranges) || defined(__clang__)
+#if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class Range>
 class ref_view : public detail::ranges_view_base
 {
@@ -1252,7 +1261,7 @@ using ref_view = std::ranges::ref_view<R>;
 // for God sake just make them experimental or something in C++20 and add them to C++23.
 // Now I'm forced to deal with that crap. Thank you so much bros much appreciate it.
 #if !defined(__cpp_lib_ranges) || __cpp_lib_ranges > 202106L
-#if !defined(__cpp_lib_ranges) || defined(__clang__)
+#if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2415r2.html
 template<class Range>
 class owning_view : public detail::ranges_view_base
@@ -1300,7 +1309,7 @@ namespace detail {
 
 /* ALL_VIEW */
 
-#if !defined(__cpp_lib_ranges) || defined(__clang__)
+#if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 struct adaptor_all
 {
     //constexpr adaptor_closure_all() {}
@@ -1609,7 +1618,7 @@ inline constexpr detail::adaptor_nfkd nfkd;
 
 // In C++17 use our simple all view that uses our simple ref_view/owning_view
 // In C++20 use facilities provided by the standard library
-#if !defined(__cpp_lib_ranges) || defined(__clang__)
+#if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 inline constexpr detail::adaptor_all all;
 template<class Range>
 using all_t = decltype(all(std::declval<Range>()));
