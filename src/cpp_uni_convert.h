@@ -12,6 +12,7 @@
 
 #include "cpp_uni_config.h"
 #include "cpp_uni_version.h"
+#include "internal/cpp_uni_error.h"
 
 #include "impl/impl_convert.h"
 
@@ -66,24 +67,6 @@ DST t_utf(const SRC& source)
 
     return destination;
 }
-
-} // namespace detail
-
-class error
-{
-public:
-    error() noexcept = default;
-    error(bool f, std::size_t p) noexcept : fail(f), position(p) {}
-    explicit operator bool() const noexcept { return fail; }
-    void reset() noexcept { fail = false; position = detail::impl_npos; }
-    bool is_pos() const noexcept { return position != detail::impl_npos; }
-    std::size_t pos() const noexcept { assert(fail); assert(is_pos()); return position; }
-private:
-    bool fail = false;
-    std::size_t position = detail::impl_npos;
-};
-
-namespace detail {
 
 template<typename DST, typename SRC, size_t SZ,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
