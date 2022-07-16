@@ -17,4 +17,6 @@ jobs:
       - name: Build
         run: cmake --build build
       - name: Run tests
-        run: test/bin/uni-algo-test
+        run: |
+          cd build
+          ctest --verbose

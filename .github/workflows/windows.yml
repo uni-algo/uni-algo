@@ -14,7 +14,9 @@ jobs:
       - name: Build
         run: cmake --build build --config Release
       - name: Run tests
-        run: test/bin/Release/uni-algo-test.exe
+        run: |
+          cd build
+          ctest --verbose --build-config Release
 
   Windows-VS2022-CPP17:
     name: Windows VS2022 C++17
@@ -28,4 +30,6 @@ jobs:
       - name: Build
         run: cmake --build build --config Release
       - name: Run tests
-        run: test/bin/Release/uni-algo-test.exe
+        run: |
+          cd build
+          ctest --verbose --build-config Release
