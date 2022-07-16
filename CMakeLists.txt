@@ -15,12 +15,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 target_sources(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp_uni_data.cpp)
 
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-
-# TODO: test/CMakeLists.txt need to be fixed first
-# then use ctest on GitHub Actions and then enable this
-#enable_testing()
-#add_subdirectory(test)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}-targets
