@@ -149,6 +149,29 @@ Include a header file you want to use from src directory and compile one file `s
 
 </p></details>
 
+<details><summary><b>Test</b></summary><p>
+
+Note that test is a CMake project not a subproject so you need to do it like this:
+
+Steps for testing in release mode with a single-configuration generator, like the Unix Makefiles one:
+
+```
+cmake -S test -B build_test -DCMAKE_BUILD_TYPE=Release -DDOWNLOAD_UNICODE_TEST_FILES=ON
+cmake --build build_test
+cd build_test
+ctest --verbose
+```
+
+Steps for testing in release mode with a multi-configuration generator, like the Visual Studio ones:
+
+```
+cmake -S test -B build_test -DDOWNLOAD_UNICODE_TEST_FILES=ON
+cmake --build build_test --config Release
+cd build_test
+ctest --verbose --build-config Release
+```
+</p></details>
+
 ## Examples
 
 For these examples to work you need to compile them in GCC/Clang with -std=c++17 (or higher)
