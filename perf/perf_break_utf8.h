@@ -9,15 +9,6 @@
 
 #ifdef MSVC_COMPILER
 #include "stdafx.h"
-#ifdef ICU_UTF8TO16
-#pragma comment(lib, "icuio.lib")
-#pragma comment(lib, "icuuc.lib")
-#pragma comment(lib, "icuin.lib")
-#endif
-#endif
-#ifdef ENABLE_ICU_TEST
-#include "unicode\ustream.h"
-#include "unicode\errorcode.h"
 #endif
 #include <iostream>
 #include <fstream>
@@ -29,47 +20,25 @@
 #include "../src/cpp_uni_break_word.h"
 #include "../src/cpp_uni_ranges.h"
 
-int break_uni(std::u16string_view str)
+int break_uni(std::string_view str)
 {
-    uni::breaks::grapheme::utf16<decltype(str.cbegin())> it_begin(str.cbegin(), str.cend());
-    uni::breaks::grapheme::utf16<decltype(str.cbegin())> it_end(str.cend());
-    //uni::breaks::word::utf16<decltype(str.cbegin())> it_begin(str.cbegin(), str.cend());
-    //uni::breaks::word::utf16<decltype(str.cbegin())> it_end(str.cend());
+    //uni::breaks::grapheme::utf8<decltype(str.cbegin())> it_begin(str.cbegin(), str.cend());
+    //uni::breaks::grapheme::utf8<decltype(str.cbegin())> it_end(str.cend());
+    //uni::breaks::word::utf8<decltype(str.cbegin())> it_begin(str.cbegin(), str.cend());
+    //uni::breaks::word::utf8<decltype(str.cbegin())> it_end(str.cend());
 
-    int count = std::distance(it_begin, it_end);
+    //int count = std::distance(it_begin, it_end);
 
-    //auto view = uni::views::grapheme::utf16(str);
-    //auto view = uni::views::word::utf16(str);
-    //auto view = uni::views::word_only::utf16(str);
-    //int count = std::distance(view.begin(), view.end());
+    auto view = uni::ranges::grapheme::utf8_view(str);
+    //auto view = uni::ranges::word::utf8_view(str);
+    //auto view = uni::ranges::word_only::utf8_view(str);
+    int count = std::distance(view.begin(), view.end());
 
     return count;
 }
-
-#ifdef ENABLE_ICU_TEST
-UErrorCode icu_status = U_ZERO_ERROR;
-icu::BreakIterator* icu_bi = icu::BreakIterator::createCharacterInstance(icu::Locale::getUS(), icu_status);
-//icu::BreakIterator* icu_bi = icu::BreakIterator::createWordInstance(icu::Locale::getUS(), icu_status);
-int break_ICU(std::u16string_view str)
-{
-    int count = 0;
-    icu::UnicodeString cs(str.data(), str.size());
-
-    icu_bi->setText(cs);
-    int32_t p = icu_bi->first();
-    while (p != icu::BreakIterator::DONE)
-    {
-        //if (icu_bi->getRuleStatus() != UBRK_WORD_NONE)
-            count++;
-        p = icu_bi->next();
-    }
-
-    return count;
-}
-#endif
 
 const size_t number_of_passes = 50000; // Text/File
-std::vector<std::u16string> strs;
+std::vector<std::string> strs;
 
 void fill_1()
 {
@@ -95,7 +64,7 @@ void fill_1()
         {
             str += s1 + s2 + s3 + s4 + s5 + s6 + s7;
         }
-        strs.emplace_back(uni::utf32to16<char32_t, char16_t>(str));
+        strs.emplace_back(uni::utf32to8<char32_t, char>(str));
     }
 }
 
@@ -122,7 +91,7 @@ void fill_2()
     std::string str(std::istreambuf_iterator<char>(stream), eos);
 
     for (size_t i = 0; i < number_of_passes; i++)
-        strs.emplace_back(uni::utf8to16<char, char16_t>(str));
+        strs.emplace_back(str);
 }
 
 void test_performance();
@@ -151,7 +120,6 @@ void test_performance()
             for (size_t i = 0; i < number_of_passes; i++)
             {
                 nothing += break_uni(strs[i]);
-                //nothing += break_ICU(strs[i]);
             }
             auto time2 = std::chrono::steady_clock::now();
             duration1 = std::chrono::duration<double, std::milli>(time2 - time1).count();
@@ -183,17 +151,6 @@ void generate_table()
             auto time2 = std::chrono::steady_clock::now();
             duration1 = std::chrono::duration<double, std::milli>(time2 - time1).count();
         }
-#ifdef ENABLE_ICU_TEST
-        {
-            auto time1 = std::chrono::steady_clock::now();
-            for (size_t i = 0; i < number_of_passes; i++)
-            {
-                nothing += break_ICU(strs[i]);
-            }
-            auto time2 = std::chrono::steady_clock::now();
-            duration2 = std::chrono::duration<double, std::milli>(time2 - time1).count();
-        }
-#endif
 
         std::cout << duration1 << '\t' << duration2 << '\n';
     }
