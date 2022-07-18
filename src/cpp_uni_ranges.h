@@ -38,6 +38,11 @@
 #ifdef UNI_ALGO_TEST_RANGES_NORM
 #include "cpp_uni_norm.h"
 #endif
+// TODO: The same for break ranges
+#ifdef UNI_ALGO_TEST_RANGES_BREAK
+#include "cpp_uni_break_grapheme.h"
+#include "cpp_uni_break_word.h"
+#endif
 
 #include "impl/impl_iterator.h"
 
@@ -1234,6 +1239,708 @@ public:
 } // namespace norm
 #endif // UNI_ALGO_TEST_RANGES_NORM
 
+#ifdef UNI_ALGO_TEST_RANGES_BREAK
+namespace grapheme {
+
+template<class Range>
+class utf8_view : public detail::ranges_view_base
+{
+    template<class Iter, class Sent>
+    class utf8
+    {
+    private:
+        utf8_view* parent = nullptr;
+        Iter it_begin;
+        Iter it_pos;
+        Iter it_next;
+
+        detail::impl_break_grapheme_state state{};
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using pointer           = value_type*;
+        using reference         = value_type;
+        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+
+        void iter_func_grapheme_utf8()
+        {
+            it_begin = it_pos;
+
+            while (it_next != std::end(parent->range))
+            {
+                it_pos = it_next;
+                uni::detail::type_codept codepoint = 0;
+                it_next = detail::inline_utf8_iter(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_break_grapheme(&state, codepoint))
+                    return;
+            }
+
+            if (it_next == std::end(parent->range))
+                it_pos = it_next;
+        }
+
+        utf8() = default;
+        explicit utf8(utf8_view& p, Iter begin, Sent end)
+            : parent{&p}, it_begin{begin}, it_pos{begin}, it_next{begin}
+        {
+            if (begin == end)
+                return;
+
+            detail::impl_break_grapheme_state_reset(&state);
+
+            iter_func_grapheme_utf8();
+        }
+        constexpr reference operator*() const
+        {
+            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+        }
+        constexpr Iter begin() const noexcept { return it_begin; }
+        constexpr Iter end() const noexcept { return it_pos; }
+        utf8& operator++()
+        {
+            iter_func_grapheme_utf8();
+
+            return *this;
+        }
+        utf8 operator++(int)
+        {
+            utf8 tmp = *this;
+            operator++();
+            return tmp;
+        }
+        friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
+        friend bool operator!=(const utf8& x, const utf8& y) { return (x.it_begin != y.it_begin); }
+    private:
+        static constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
+    public:
+        friend constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
+    };
+
+    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
+    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+
+    Range range = Range{};
+    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    bool cached_begin = false;
+
+public:
+    constexpr utf8_view() = default;
+    constexpr utf8_view(Range r) : range{std::move(r)} {}
+    //constexpr Range base() const & { return range; }
+    //constexpr Range base() && { return std::move(range); }
+    constexpr auto begin()
+    {
+        if (cached_begin)
+            return cached_begin_value;
+
+        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin = true;
+
+        return cached_begin_value;
+    }
+    constexpr auto end()
+    {
+        return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+    }
+    //constexpr bool empty() { return begin() == end(); }
+    //explicit constexpr operator bool() { return !empty(); }
+};
+
+template<class Range>
+class utf16_view : public detail::ranges_view_base
+{
+    template<class Iter, class Sent>
+    class utf16
+    {
+    private:
+        utf16_view* parent = nullptr;
+        Iter it_begin;
+        Iter it_pos;
+        Iter it_next;
+
+        detail::impl_break_grapheme_state state{};
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using pointer           = value_type*;
+        using reference         = value_type;
+        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+
+        void iter_func_grapheme_utf16()
+        {
+            it_begin = it_pos;
+
+            while (it_next != std::end(parent->range))
+            {
+                it_pos = it_next;
+                uni::detail::type_codept codepoint = 0;
+                it_next = detail::inline_utf16_iter(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_break_grapheme(&state, codepoint))
+                    return;
+            }
+
+            if (it_next == std::end(parent->range))
+                it_pos = it_next;
+        }
+
+        utf16() = default;
+        explicit utf16(utf16_view& p, Iter begin, Sent end)
+            : parent{&p}, it_begin{begin}, it_pos{begin}, it_next{begin}
+        {
+            if (begin == end)
+                return;
+
+            detail::impl_break_grapheme_state_reset(&state);
+
+            iter_func_grapheme_utf16();
+        }
+        constexpr reference operator*() const
+        {
+            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+        }
+        constexpr Iter begin() const noexcept { return it_begin; }
+        constexpr Iter end() const noexcept { return it_pos; }
+        utf16& operator++()
+        {
+            iter_func_grapheme_utf16();
+
+            return *this;
+        }
+        utf16 operator++(int)
+        {
+            utf16 tmp = *this;
+            operator++();
+            return tmp;
+        }
+        friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
+        friend bool operator!=(const utf16& x, const utf16& y) { return (x.it_begin != y.it_begin); }
+    private:
+        static constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
+    public:
+        friend constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
+    };
+
+    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
+    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+
+    Range range = Range{};
+    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    bool cached_begin = false;
+
+public:
+    constexpr utf16_view() = default;
+    constexpr utf16_view(Range r) : range{std::move(r)} {}
+    //constexpr Range base() const & { return range; }
+    //constexpr Range base() && { return std::move(range); }
+    constexpr auto begin()
+    {
+        if (cached_begin)
+            return cached_begin_value;
+
+        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin = true;
+
+        return cached_begin_value;
+    }
+    constexpr auto end()
+    {
+        return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+    }
+    //constexpr bool empty() { return begin() == end(); }
+    //explicit constexpr operator bool() { return !empty(); }
+};
+
+} // namespace grapheme
+
+namespace word {
+
+template<class Range>
+class utf8_view : public detail::ranges_view_base
+{
+    template<class Iter, class Sent>
+    class utf8
+    {
+    private:
+        utf8_view* parent = nullptr;
+        Iter it_begin;
+        Iter it_pos;
+        Iter it_next;
+        detail::type_codept word_prop = 0;
+        detail::type_codept next_word_prop = 0;
+
+        detail::impl_break_word_state state{};
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using pointer           = void;
+        using reference         = value_type;
+        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+
+        void iter_func_word_utf8()
+        {
+            it_begin = it_pos;
+
+            while (it_next != std::end(parent->range))
+            {
+                it_pos = it_next;
+                word_prop = next_word_prop;
+                detail::type_codept codepoint = 0;
+                it_next = detail::inline_utf8_iter(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_utf8_break_word(&state, codepoint, &next_word_prop, it_next, std::end(parent->range)))
+                    return;
+            }
+
+            if (it_next == std::end(parent->range))
+            {
+                it_pos = it_next;
+                word_prop = next_word_prop;
+            }
+        }
+
+        utf8() = default;
+        explicit utf8(utf8_view& p, Iter begin, Sent end)
+            : parent{&p}, it_begin{begin}, it_pos{begin}, it_next{begin}
+        {
+            if (begin == end)
+                return;
+
+            detail::impl_break_word_state_reset(&state);
+
+            iter_func_word_utf8();
+        }
+        constexpr reference operator*() const
+        {
+            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+        }
+        constexpr Iter begin() const noexcept { return it_begin; }
+        constexpr Iter end() const noexcept { return it_pos; }
+        utf8& operator++()
+        {
+            iter_func_word_utf8();
+
+            return *this;
+        }
+        utf8 operator++(int)
+        {
+            utf8 tmp = *this;
+            operator++();
+            return tmp;
+        }
+        friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
+        friend bool operator!=(const utf8& x, const utf8& y) { return (x.it_begin != y.it_begin); }
+    private:
+        static constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
+    public:
+        friend constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
+    };
+
+    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
+    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+
+    Range range = Range{};
+    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    bool cached_begin = false;
+
+public:
+    constexpr utf8_view() = default;
+    constexpr utf8_view(Range r) : range{std::move(r)} {}
+    //constexpr Range base() const & { return range; }
+    //constexpr Range base() && { return std::move(range); }
+    constexpr auto begin()
+    {
+        if (cached_begin)
+            return cached_begin_value;
+
+        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin = true;
+
+        return cached_begin_value;
+    }
+    constexpr auto end()
+    {
+        return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+    }
+    //constexpr bool empty() { return begin() == end(); }
+    //explicit constexpr operator bool() { return !empty(); }
+};
+
+template<class Range>
+class utf16_view : public detail::ranges_view_base
+{
+    template<class Iter, class Sent>
+    class utf16
+    {
+    private:
+        utf16_view* parent = nullptr;
+        Iter it_begin;
+        Iter it_pos;
+        Iter it_next;
+        detail::type_codept word_prop = 0;
+        detail::type_codept next_word_prop = 0;
+
+        detail::impl_break_word_state state{};
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using pointer           = void;
+        using reference         = value_type;
+        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+
+        void iter_func_word_utf16()
+        {
+            it_begin = it_pos;
+
+            while (it_next != std::end(parent->range))
+            {
+                it_pos = it_next;
+                word_prop = next_word_prop;
+                detail::type_codept codepoint = 0;
+                it_next = detail::inline_utf16_iter(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_utf16_break_word(&state, codepoint, &next_word_prop, it_next, std::end(parent->range)))
+                    return;
+            }
+
+            if (it_next == std::end(parent->range))
+            {
+                it_pos = it_next;
+                word_prop = next_word_prop;
+            }
+        }
+
+        utf16() = default;
+        explicit utf16(utf16_view& p, Iter begin, Sent end)
+            : parent{&p}, it_begin{begin}, it_pos{begin}, it_next{begin}
+        {
+            if (begin == end)
+                return;
+
+            detail::impl_break_word_state_reset(&state);
+
+            iter_func_word_utf16();
+        }
+        constexpr reference operator*() const
+        {
+            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+        }
+        constexpr Iter begin() const noexcept { return it_begin; }
+        constexpr Iter end() const noexcept { return it_pos; }
+        utf16& operator++()
+        {
+            iter_func_word_utf16();
+
+            return *this;
+        }
+        utf16 operator++(int)
+        {
+            utf16 tmp = *this;
+            operator++();
+            return tmp;
+        }
+        friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
+        friend bool operator!=(const utf16& x, const utf16& y) { return (x.it_begin != y.it_begin); }
+    private:
+        static constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
+    public:
+        friend constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
+    };
+
+    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
+    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+
+    Range range = Range{};
+    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    bool cached_begin = false;
+
+public:
+    constexpr utf16_view() = default;
+    constexpr utf16_view(Range r) : range{std::move(r)} {}
+    //constexpr Range base() const & { return range; }
+    //constexpr Range base() && { return std::move(range); }
+    constexpr auto begin()
+    {
+        if (cached_begin)
+            return cached_begin_value;
+
+        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin = true;
+
+        return cached_begin_value;
+    }
+    constexpr auto end()
+    {
+        return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+    }
+    //constexpr bool empty() { return begin() == end(); }
+    //explicit constexpr operator bool() { return !empty(); }
+};
+
+} // namespace word
+
+namespace word_only {
+
+template<class Range>
+class utf8_view : public detail::ranges_view_base
+{
+    template<class Iter, class Sent>
+    class utf8
+    {
+    private:
+        utf8_view* parent = nullptr;
+        Iter it_begin;
+        Iter it_pos;
+        Iter it_next;
+        detail::type_codept word_prop = 0;
+        detail::type_codept next_word_prop = 0;
+
+        detail::impl_break_word_state state{};
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using pointer           = void;
+        using reference         = value_type;
+        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+
+        void iter_func_word_only_utf8()
+        {
+            it_begin = it_pos;
+
+            while (it_next != std::end(parent->range))
+            {
+                it_pos = it_next;
+                word_prop = next_word_prop;
+                detail::type_codept codepoint = 0;
+                it_next = detail::inline_utf8_iter(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_utf8_break_word(&state, codepoint, &next_word_prop, it_next, std::end(parent->range)))
+                {
+                    if (detail::impl_break_is_word(word_prop))
+                        return;
+
+                    it_begin = it_pos;
+                    continue;
+                }
+            }
+
+            if (it_next == std::end(parent->range))
+            {
+                it_pos = it_next;
+                word_prop = next_word_prop;
+                if (!detail::impl_break_is_word(word_prop))
+                    it_begin = it_next;
+            }
+        }
+
+        utf8() = default;
+        explicit utf8(utf8_view& p, Iter begin, Sent end)
+            : parent{&p}, it_begin{begin}, it_pos{begin}, it_next{begin}
+        {
+            if (begin == end)
+                return;
+
+            detail::impl_break_word_state_reset(&state);
+
+            iter_func_word_only_utf8();
+        }
+        constexpr reference operator*() const
+        {
+            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+        }
+        constexpr Iter begin() const noexcept { return it_begin; }
+        constexpr Iter end() const noexcept { return it_pos; }
+        utf8& operator++()
+        {
+            iter_func_word_only_utf8();
+
+            return *this;
+        }
+        utf8 operator++(int)
+        {
+            utf8 tmp = *this;
+            operator++();
+            return tmp;
+        }
+        friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
+        friend bool operator!=(const utf8& x, const utf8& y) { return (x.it_begin != y.it_begin); }
+    private:
+        static constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
+    public:
+        friend constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
+    };
+
+    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
+    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+
+    Range range = Range{};
+    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    bool cached_begin = false;
+
+public:
+    constexpr utf8_view() = default;
+    constexpr utf8_view(Range r) : range{std::move(r)} {}
+    //constexpr Range base() const & { return range; }
+    //constexpr Range base() && { return std::move(range); }
+    constexpr auto begin()
+    {
+        if (cached_begin)
+            return cached_begin_value;
+
+        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin = true;
+
+        return cached_begin_value;
+    }
+    constexpr auto end()
+    {
+        return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+    }
+    //constexpr bool empty() { return begin() == end(); }
+    //explicit constexpr operator bool() { return !empty(); }
+};
+
+template<class Range>
+class utf16_view : public detail::ranges_view_base
+{
+    template<class Iter, class Sent>
+    class utf16
+    {
+    private:
+        utf16_view* parent = nullptr;
+        Iter it_begin;
+        Iter it_pos;
+        Iter it_next;
+        detail::type_codept word_prop = 0;
+        detail::type_codept next_word_prop = 0;
+
+        detail::impl_break_word_state state{};
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using pointer           = void;
+        using reference         = value_type;
+        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+
+        void iter_func_word_only_utf16()
+        {
+            it_begin = it_pos;
+
+            while (it_next != std::end(parent->range))
+            {
+                it_pos = it_next;
+                word_prop = next_word_prop;
+                detail::type_codept codepoint = 0;
+                it_next = detail::inline_utf16_iter(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_utf16_break_word(&state, codepoint, &next_word_prop, it_next, std::end(parent->range)))
+                {
+                    if (detail::impl_break_is_word(word_prop))
+                        return;
+
+                    it_begin = it_pos;
+                    continue;
+                }
+            }
+
+            if (it_next == std::end(parent->range))
+            {
+                it_pos = it_next;
+                word_prop = next_word_prop;
+                if (!detail::impl_break_is_word(word_prop))
+                    it_begin = it_next;
+            }
+        }
+
+        utf16() = default;
+        explicit utf16(utf16_view& p, Iter begin, Sent end)
+            : parent{&p}, it_begin{begin}, it_pos{begin}, it_next{begin}
+        {
+            if (begin == end)
+                return;
+
+            detail::impl_break_word_state_reset(&state);
+
+            iter_func_word_only_utf16();
+        }
+        constexpr reference operator*() const
+        {
+            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+        }
+        constexpr Iter begin() const noexcept { return it_begin; }
+        constexpr Iter end() const noexcept { return it_pos; }
+        utf16& operator++()
+        {
+            iter_func_word_only_utf16();
+
+            return *this;
+        }
+        utf16 operator++(int)
+        {
+            utf16 tmp = *this;
+            operator++();
+            return tmp;
+        }
+        friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
+        friend bool operator!=(const utf16& x, const utf16& y) { return (x.it_begin != y.it_begin); }
+    private:
+        static constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
+    public:
+        friend constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
+        friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
+    };
+
+    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
+    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+
+    Range range = Range{};
+    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    bool cached_begin = false;
+
+public:
+    constexpr utf16_view() = default;
+    constexpr utf16_view(Range r) : range{std::move(r)} {}
+    //constexpr Range base() const & { return range; }
+    //constexpr Range base() && { return std::move(range); }
+    constexpr auto begin()
+    {
+        if (cached_begin)
+            return cached_begin_value;
+
+        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin = true;
+
+        return cached_begin_value;
+    }
+    constexpr auto end()
+    {
+        return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+    }
+    //constexpr bool empty() { return begin() == end(); }
+    //explicit constexpr operator bool() { return !empty(); }
+};
+
+} // namespace word_only
+#endif // UNI_ALGO_TEST_RANGES_BREAK
+
 // For C++17 we implement very simple ref_view that will be used together with uni::views::all_t/uni::views::all
 // It has the similar design as std::views::ref_view so in C++20 we just use that
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
@@ -1503,6 +2210,68 @@ template<class R>
 constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forward<R>(r)); }
 #endif // UNI_ALGO_TEST_RANGES_NORM
 
+#ifdef UNI_ALGO_TEST_RANGES_BREAK
+/* GRAPHEME_UTF8_VIEW */
+
+struct adaptor_grapheme_utf8
+{
+    template<class R>
+    constexpr auto operator()(R&& r) const { return ranges::grapheme::utf8_view{std::forward<R>(r)}; }
+};
+template<class R>
+constexpr auto operator|(R&& r, const adaptor_grapheme_utf8& a) { return a(std::forward<R>(r)); }
+
+/* GRAPHEME_UTF16_VIEW */
+
+struct adaptor_grapheme_utf16
+{
+    template<class R>
+    constexpr auto operator()(R&& r) const { return ranges::grapheme::utf16_view{std::forward<R>(r)}; }
+};
+template<class R>
+constexpr auto operator|(R&& r, const adaptor_grapheme_utf16& a) { return a(std::forward<R>(r)); }
+
+/* WORD_UTF8_VIEW */
+
+struct adaptor_word_utf8
+{
+    template<class R>
+    constexpr auto operator()(R&& r) const { return ranges::word::utf8_view{std::forward<R>(r)}; }
+};
+template<class R>
+constexpr auto operator|(R&& r, const adaptor_word_utf8& a) { return a(std::forward<R>(r)); }
+
+/* WORD_UTF16_VIEW */
+
+struct adaptor_word_utf16
+{
+    template<class R>
+    constexpr auto operator()(R&& r) const { return ranges::word::utf16_view{std::forward<R>(r)}; }
+};
+template<class R>
+constexpr auto operator|(R&& r, const adaptor_word_utf16& a) { return a(std::forward<R>(r)); }
+
+/* WORD_ONLY_UTF8_VIEW */
+
+struct adaptor_word_only_utf8
+{
+    template<class R>
+    constexpr auto operator()(R&& r) const { return ranges::word_only::utf8_view{std::forward<R>(r)}; }
+};
+template<class R>
+constexpr auto operator|(R&& r, const adaptor_word_only_utf8& a) { return a(std::forward<R>(r)); }
+
+/* WORD_ONLY_UTF16_VIEW */
+
+struct adaptor_word_only_utf16
+{
+    template<class R>
+    constexpr auto operator()(R&& r) const { return ranges::word_only::utf16_view{std::forward<R>(r)}; }
+};
+template<class R>
+constexpr auto operator|(R&& r, const adaptor_word_only_utf16& a) { return a(std::forward<R>(r)); }
+#endif // UNI_ALGO_TEST_RANGES_BREAK
+
 #if 0
 /* TO_STRING */
 
@@ -1615,6 +2384,20 @@ inline constexpr detail::adaptor_nfkc nfkc;
 inline constexpr detail::adaptor_nfkd nfkd;
 } // namespace norm
 #endif // UNI_ALGO_TEST_RANGES_NORM
+#ifdef UNI_ALGO_TEST_RANGES_BREAK
+namespace grapheme {
+inline constexpr detail::adaptor_grapheme_utf8 utf8;
+inline constexpr detail::adaptor_grapheme_utf16 utf16;
+}
+namespace word {
+inline constexpr detail::adaptor_word_utf8 utf8;
+inline constexpr detail::adaptor_word_utf16 utf16;
+}
+namespace word_only {
+inline constexpr detail::adaptor_word_only_utf8 utf8;
+inline constexpr detail::adaptor_word_only_utf16 utf16;
+}
+#endif // UNI_ALGO_TEST_RANGES_BREAK
 
 // In C++17 use our simple all view that uses our simple ref_view/owning_view
 // In C++20 use facilities provided by the standard library
@@ -1671,6 +2454,27 @@ template<class Range>
 nfkd_view(Range&&) -> nfkd_view<uni::views::all_t<Range>>;
 } // namespace norm
 #endif // UNI_ALGO_TEST_RANGES_NORM
+
+#ifdef UNI_ALGO_TEST_RANGES_BREAK
+namespace grapheme {
+template<class Range>
+utf8_view(Range&&) -> utf8_view<uni::views::all_t<Range>>;
+template<class Range>
+utf16_view(Range&&) -> utf16_view<uni::views::all_t<Range>>;
+}
+namespace word {
+template<class Range>
+utf8_view(Range&&) -> utf8_view<uni::views::all_t<Range>>;
+template<class Range>
+utf16_view(Range&&) -> utf16_view<uni::views::all_t<Range>>;
+}
+namespace word_only {
+template<class Range>
+utf8_view(Range&&) -> utf8_view<uni::views::all_t<Range>>;
+template<class Range>
+utf16_view(Range&&) -> utf16_view<uni::views::all_t<Range>>;
+}
+#endif // UNI_ALGO_TEST_RANGES_BREAK
 
 } // namespace ranges
 
