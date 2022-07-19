@@ -1293,7 +1293,12 @@ class utf8_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
+            return reference{it_begin, it_pos};
+#else
+            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
+                             static_cast<std::size_t>(it_pos - it_begin)};
+#endif
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1401,7 +1406,12 @@ class utf16_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
+            return reference{it_begin, it_pos};
+#else
+            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
+                             static_cast<std::size_t>(it_pos - it_begin)};
+#endif
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1519,7 +1529,12 @@ class utf8_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
+            return reference{it_begin, it_pos};
+#else
+            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
+                             static_cast<std::size_t>(it_pos - it_begin)};
+#endif
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1633,7 +1648,12 @@ class utf16_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
+            return reference{it_begin, it_pos};
+#else
+            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
+                             static_cast<std::size_t>(it_pos - it_begin)};
+#endif
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1759,7 +1779,12 @@ class utf8_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
+            return reference{it_begin, it_pos};
+#else
+            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
+                             static_cast<std::size_t>(it_pos - it_begin)};
+#endif
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1881,7 +1906,12 @@ class utf16_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-            return reference{it_begin, static_cast<std::size_t>(it_pos - it_begin)};
+#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
+            return reference{it_begin, it_pos};
+#else
+            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
+                             static_cast<std::size_t>(it_pos - it_begin)};
+#endif
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1955,7 +1985,19 @@ public:
     //constexpr Range& base() const { return *range; }
     constexpr auto begin() const { return std::begin(*range); }
     constexpr auto end() const { return std::end(*range); }
+    //template<class = std::enable_if_t<sfinae_has_data<Range>::value>>
+    constexpr auto data() const { return std::data(*range); }
 };
+// TODO: Test more
+// data() should work (it won't compile if Range doesn't have data())
+// even without this SFINAE crap but if it won't then try it
+//template <typename T, typename = void>
+//struct sfinae_has_data : std::false_type {};
+//template <typename T>
+//struct sfinae_has_data<T, decltype(void(std::data(std::declval<T&>())))> : std::true_type {};
+// second ver:
+//template <typename T>
+//struct sfinae_has_data<T, decltype(void(std::declval<T&>().data()))> : std::true_type {};
 #else
 template<class R>
 using ref_view = std::ranges::ref_view<R>;
@@ -1988,6 +2030,8 @@ public:
     constexpr auto end() { return std::end(range); }
     //constexpr auto begin() const { return ranges::begin(range); }
     //constexpr auto end() const { return ranges::end(range); }
+    constexpr auto data() { return std::data(range); }
+    constexpr auto data() const { return std::data(range); }
 };
 #else
 template<class R>
