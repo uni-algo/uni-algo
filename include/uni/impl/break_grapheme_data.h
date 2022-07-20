@@ -1,6 +1,6 @@
 // Unicode 14.0.0
 
-#include "internal_defines.h"
+#include <uni/internal/defines.h>
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
@@ -3631,4 +3631,4 @@ uaix_const_data unsigned char stage2_break_grapheme[] = {
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
-#include "internal_undefs.h"
+#include <uni/internal/undefs.h>

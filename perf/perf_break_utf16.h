@@ -24,10 +24,10 @@
 #include <chrono>
 #include <vector>
 #include <stdexcept>
-#include "../src/cpp_uni_convert.h"
-#include "../src/cpp_uni_break_grapheme.h"
-#include "../src/cpp_uni_break_word.h"
-#include "../src/cpp_uni_ranges.h"
+#include <uni/convert.h>
+#include <uni/break_grapheme.h>
+#include <uni/break_word.h>
+#include <uni/ranges.h>
 
 int break_uni(std::u16string_view str)
 {

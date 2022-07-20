@@ -5,18 +5,18 @@
 #ifndef IMPL_CASE_H_UAIX
 #define IMPL_CASE_H_UAIX
 
-#include "impl_iterator.h"
+#include <uni/impl/iterator.h>
 // Note that title case has cross dependency with break word module
 // and if it's disabled all title case functions must be disabled too
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-#include "impl_break_word.h"
+#include <uni/impl/break_word.h>
 #endif
 
-#include "internal_defines.h"
-#include "internal_stages.h"
+#include <uni/internal/defines.h>
+#include <uni/internal/stages.h>
 
 #ifndef UNI_ALGO_STATIC_DATA
-#include "impl_case_data_extern.h"
+#include <uni/impl/case_data_extern.h>
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
@@ -1534,7 +1534,7 @@ uaix_static size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_o
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
-#include "internal_undefs.h"
+#include <uni/internal/undefs.h>
 
 #endif // IMPL_CASE_H_UAIX
 

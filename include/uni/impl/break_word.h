@@ -5,13 +5,13 @@
 #ifndef IMPL_BREAK_WORD_H_UAIX
 #define IMPL_BREAK_WORD_H_UAIX
 
-#include "impl_iterator.h"
+#include <uni/impl/iterator.h>
 
-#include "internal_defines.h"
-#include "internal_stages.h"
+#include <uni/internal/defines.h>
+#include <uni/internal/stages.h>
 
 #ifndef UNI_ALGO_STATIC_DATA
-#include "impl_break_word_data_extern.h"
+#include <uni/impl/break_word_data_extern.h>
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
@@ -465,7 +465,7 @@ uaix_static bool inline_utf16_break_word(struct impl_break_word_state* state, ty
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
-#include "internal_undefs.h"
+#include <uni/internal/undefs.h>
 
 #endif // IMPL_BREAK_WORD_H_UAIX
 

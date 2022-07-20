@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#include "../src/ext/translit/macedonian_to_latin_docs.h"
-#include "../src/ext/translit/japanese_kana_to_romaji_hepburn.h"
+#include <uni/ext/translit/macedonian_to_latin_docs.h>
+#include <uni/ext/translit/japanese_kana_to_romaji_hepburn.h>
 
 // If it fails a compiler messed up the encoding of this file
 // It the compiler is MSVC then /utf-8 command line option must be used

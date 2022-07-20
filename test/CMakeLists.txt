@@ -22,10 +22,10 @@ if(NOT DOWNLOAD_UNICODE_TEST_FILES)
     target_compile_definitions(${PROJECT_NAME} PRIVATE "TEST_MODE_WITHOUT_UNICODE_TEST_FILES")
 endif()
 
-#target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../src")
+target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../include")
 
 target_sources(${PROJECT_NAME} PRIVATE
-    "${PROJECT_SOURCE_DIR}/../src/cpp_uni_data.cpp"
+    "${PROJECT_SOURCE_DIR}/../include/uni/data.cpp"
     "${PROJECT_SOURCE_DIR}/main.cpp")
 
 if(DOWNLOAD_UNICODE_TEST_FILES)

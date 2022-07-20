@@ -14,10 +14,10 @@
 #include <string_view>
 #include <iterator>
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
+#include <uni/config.h>
+#include <uni/version.h>
 
-#include "impl/impl_norm.h"
+#include <uni/impl/norm.h>
 
 // For info about defines see uni_cpp_convert.h
 

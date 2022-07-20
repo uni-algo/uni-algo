@@ -28,23 +28,23 @@
 #include <iostream>
 #endif
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
-#include "internal/cpp_uni_sentinel.h"
+#include <uni/config.h>
+#include <uni/version.h>
+#include <uni/internal/sentinel.h>
 
 // TODO: Leave here the code for normalization ranges for now
 // it must be moved to cpp_uni_norm.h later.
 // All the normalization code protected with this define.
 #ifdef UNI_ALGO_TEST_RANGES_NORM
-#include "cpp_uni_norm.h"
+#include <uni/norm.h>
 #endif
 // TODO: The same for break ranges
 #ifdef UNI_ALGO_TEST_RANGES_BREAK
-#include "cpp_uni_break_grapheme.h"
-#include "cpp_uni_break_word.h"
+#include <uni/break_grapheme.h>
+#include <uni/break_word.h>
 #endif
 
-#include "impl/impl_iterator.h"
+#include <uni/impl/iterator.h>
 
 namespace uni {
 

@@ -25,8 +25,8 @@
 #include <chrono>
 #include <vector>
 #include <stdexcept>
-#include "../src/cpp_uni_iterator.h"
-#include "../src/cpp_uni_norm.h"
+#include <uni/iterator.h>
+#include <uni/norm.h>
 
 std::u16string trans_uni(std::u16string_view str)
 {

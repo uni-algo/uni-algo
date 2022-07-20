@@ -14,12 +14,12 @@
 #include <string_view>
 #include <cassert>
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
+#include <uni/config.h>
+#include <uni/version.h>
 
-#include "impl/impl_case.h"
+#include <uni/impl/case.h>
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-#include "impl/impl_case_locale.h"
+#include <uni/impl/case_locale.h>
 #endif
 
 // For info about defines see uni_cpp_convert.h

@@ -11,11 +11,11 @@
 #include <iostream>
 #endif
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
-#include "internal/cpp_uni_sentinel.h"
+#include <uni/config.h>
+#include <uni/version.h>
+#include <uni/internal/sentinel.h>
 
-#include "impl/impl_iterator.h"
+#include <uni/impl/iterator.h>
 
 namespace uni {
 /*
