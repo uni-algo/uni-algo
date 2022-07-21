@@ -53,6 +53,7 @@ public:
         else if (s == "nl") lang = language::nl;
         else lang = language::und; // NOLINT
     }
+    language get_lang() const { return lang; }
     friend bool operator==(const locale& lhs, const locale::language& rhs) { return (lhs.lang == rhs); }
     friend bool operator!=(const locale& lhs, const locale::language& rhs) { return (lhs.lang != rhs); }
     friend bool operator==(const locale::language& lhs, const locale& rhs) { return (lhs == rhs.lang); }
@@ -203,90 +204,91 @@ inline std::wstring utf16_fold(std::wstring_view source)
 template<typename UTF8>
 std::basic_string<UTF8> utf8_lower(std::basic_string_view<UTF8> source, const uni::locale& locale)
 {
-    if (locale == uni::locale::language::lt)
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_lower_lt);
-    }
-    if (locale == uni::locale::language::tr || locale == uni::locale::language::az)
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_lower_tr_az);
-    }
+    using language = uni::locale::language;
 
-    return utf8_lower<UTF8>(source);
+    switch (locale.get_lang()) {
+        case language::lt:
+            return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+                    detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+                    detail::impl_casemap_locale_lower_lt);
+        case language::tr:
+        case language::az:
+            return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+                    detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+                    detail::impl_casemap_locale_lower_tr_az);
+        default:
+            return utf8_lower<UTF8>(source);
+    }
 }
 template<typename UTF16>
 std::basic_string<UTF16> utf16_lower(std::basic_string_view<UTF16> source, const uni::locale& locale)
 {
     static_assert(sizeof(UTF16) >= sizeof(char16_t));
 
-    if (locale == uni::locale::language::lt)
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_lower_lt);
-    }
-    if (locale == uni::locale::language::tr || locale == uni::locale::language::az)
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_lower_tr_az);
+    using language = uni::locale::language;
+
+    switch (locale.get_lang()) {
+        case language::lt:
+            return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+                    detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+                    detail::impl_casemap_locale_lower_lt);
+        case language::tr:
+        case language::az:
+            return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+                    detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+                    detail::impl_casemap_locale_lower_tr_az);
+        default:
+            return utf16_lower<UTF16>(source);
     }
 
-    return utf16_lower<UTF16>(source);
 }
 template<typename UTF8>
 std::basic_string<UTF8> utf8_upper(std::basic_string_view<UTF8> source, const uni::locale& locale)
 {
-    if (locale == uni::locale::language::lt)
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_lt);
-    }
-    if (locale == uni::locale::language::tr || locale == uni::locale::language::az)
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_tr_az);
-    }
-    if (locale == uni::locale::language::el)
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_el);
-    }
+    using language = uni::locale::language;
 
-    return utf8_upper<UTF8>(source);
+    switch (locale.get_lang()) {
+        case language::lt:
+            return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+                    detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+                    detail::impl_casemap_locale_upper_lt);
+        case language::tr:
+        case language::az:
+            return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+                    detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+                    detail::impl_casemap_locale_upper_tr_az);
+        case language::el:
+            return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+                    detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+                    detail::impl_casemap_locale_upper_el);
+        default:
+            return utf8_upper<UTF8>(source);
+    }
 }
 template<typename UTF16>
 std::basic_string<UTF16> utf16_upper(std::basic_string_view<UTF16> source, const uni::locale& locale)
 {
     static_assert(sizeof(UTF16) >= sizeof(char16_t));
 
-    if (locale == uni::locale::language::lt)
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_lt);
-    }
-    if (locale == uni::locale::language::tr || locale == uni::locale::language::az)
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_tr_az);
-    }
-    if (locale == uni::locale::language::el)
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_el);
-    }
+    using language = uni::locale::language;
 
-    return utf16_upper<UTF16>(source);
+    switch (locale.get_lang()) {
+        case language::lt:
+            return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+                    detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+                    detail::impl_casemap_locale_upper_lt);
+        case language::tr:
+        case language::az:
+            return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+                    detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+                    detail::impl_casemap_locale_upper_tr_az);
+        case language::el:
+            return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+                    detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+                    detail::impl_casemap_locale_upper_el);
+        default:
+            return utf16_upper<UTF16>(source);
+    }
 }
 inline std::string utf8_lower(std::string_view source, const uni::locale& locale)
 {
@@ -349,50 +351,48 @@ inline std::wstring utf16_title(std::wstring_view source)
 template<typename UTF8>
 std::basic_string<UTF8> utf8_title(std::basic_string_view<UTF8> source, const uni::locale& locale)
 {
-    if (locale == uni::locale::language::lt)
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_title_lt);
-    }
-    if (locale == uni::locale::language::tr || locale == uni::locale::language::az)
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_title_tr_az);
-    }
-    if (locale == uni::locale::language::nl)
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_title_nl);
-    }
+    using language = uni::locale::language;
 
-    return utf8_title<UTF8>(source);
+    switch (locale.get_lang()) {
+        case language::lt:
+            return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+                    detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+                    detail::impl_casemap_locale_title_lt);
+        case language::tr:
+        case language::az:
+            return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+                    detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+                    detail::impl_casemap_locale_title_tr_az);
+        case language::nl:
+            return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+                    detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+                    detail::impl_casemap_locale_title_nl);
+        default:
+            return utf8_title<UTF8>(source);
+    }
 }
 template<typename UTF16>
 std::basic_string<UTF16> utf16_title(std::basic_string_view<UTF16> source, const uni::locale& locale)
 {
-    if (locale == uni::locale::language::lt)
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_title_lt);
-    }
-    if (locale == uni::locale::language::tr || locale == uni::locale::language::az)
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_title_tr_az);
-    }
-    if (locale == uni::locale::language::nl)
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_title_nl);
-    }
+    using language = uni::locale::language;
 
-    return utf16_title<UTF16>(source);
+    switch (locale.get_lang()) {
+        case language::lt:
+            return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+                    detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+                    detail::impl_casemap_locale_title_lt);
+        case language::tr:
+        case language::az:
+            return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+                    detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+                    detail::impl_casemap_locale_title_tr_az);
+        case language::nl:
+            return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+                    detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+                    detail::impl_casemap_locale_title_nl);
+        default:
+            return utf16_title<UTF16>(source);
+    }
 }
 inline std::string utf8_title(std::string_view source, const uni::locale& locale)
 {
