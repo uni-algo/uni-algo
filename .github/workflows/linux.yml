@@ -1,5 +1,11 @@
 name: Linux
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   Linux-GCC:
@@ -7,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        compiler: [g++-7,g++-10,g++-12]
+        compiler: [g++-7, g++-10, g++-12]
 
     steps:
       - name: Checkout
@@ -26,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        compiler: [clang++-8,clang++-10,clang++-14]
+        compiler: [clang++-8, clang++-10, clang++-14]
 
     steps:
       - name: Checkout
