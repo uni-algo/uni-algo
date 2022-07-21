@@ -48,21 +48,92 @@
 
 namespace uni {
 
+namespace detail::ranges {
+
 // We need to use public std::ranges::view_base for compatibility with std::ranges
 // when a std::view on the right side of operator|
 // https://tristanbrindle.com/posts/rvalue-ranges-and-views
-namespace detail {
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
-struct ranges_view_base {};
+struct view_base {};
 #else
-using ranges_view_base = std::ranges::view_base;
+using view_base = std::ranges::view_base;
 #endif
+
+#if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
+template<class Iter>
+using iter_value_t = typename std::iterator_traits<Iter>::value_type;
+template<class Iter>
+using iter_pointer_t = typename std::iterator_traits<Iter>::pointer;
+template<class Iter>
+using iter_reference_t = typename std::iterator_traits<Iter>::reference;
+template<class Iter>
+using iter_difference_t = typename std::iterator_traits<Iter>::difference_type;
+#else
+template<class Iter>
+using iter_value_t = std::iter_value_t<Iter>;
+template<class Iter>
+using iter_pointer_t = std::add_pointer_t<std::iter_reference_t<Iter>>;
+template<class Iter>
+using iter_reference_t = std::iter_reference_t<Iter>;
+template<class Iter>
+using iter_difference_t = std::iter_difference_t<Iter>;
+#endif
+
+template<class Range>
+using iterator_t = decltype(std::begin(std::declval<Range&>())); // std::ranges::iterator_t<Range>
+template<class Range>
+using sentinel_t = decltype(std::end(std::declval<Range&>())); // std::ranges::sentinel_t<Range>
+
+template<class Range>
+using range_value_t = iter_value_t<iterator_t<Range>>; // std::ranges::range_value_t<Range>
+
+#if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
+template<class Iter>
+using iter_tag_random = typename std::iterator_traits<Iter>::iterator_category;
+template<class Iter>
+using iter_tag_bidi = typename std::iterator_traits<Iter>::iterator_category;
+template<class Iter>
+using iter_tag_bidi_only = typename std::iterator_traits<Iter>::iterator_category;
+#else
+template<class Iter>
+using iter_tag_random = typename std::conditional_t<std::random_access_iterator<Iter>,
+    std::random_access_iterator_tag, std::conditional_t<std::bidirectional_iterator<Iter>,
+    std::bidirectional_iterator_tag, std::conditional_t<std::forward_iterator<Iter>,
+    std::forward_iterator_tag, std::input_iterator_tag>>>;
+
+template<class Iter>
+using iter_tag_bidi = typename std::conditional_t<std::bidirectional_iterator<Iter>,
+    std::bidirectional_iterator_tag, std::conditional_t<std::forward_iterator<Iter>,
+    std::forward_iterator_tag, std::input_iterator_tag>>;
+
+template<class Iter>
+using iter_tag_bidi_only = typename std::conditional_t<std::bidirectional_iterator<Iter>,
+    std::bidirectional_iterator_tag, std::input_iterator_tag>;
+#endif
+
+// In C++17 std::string_view doesn't have iterators pair constructor
+// so we use this a bit ugly approach to make it work. It is only used in break ranges.
+#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
+template<class StringViewResult, class Range, class Iter>
+StringViewResult to_string_view(const Range&, Iter it_begin, Iter it_pos)
+{
+    return StringViewResult{it_begin, it_pos};
 }
+#else
+template<class StringViewResult, class Range, class Iter>
+StringViewResult to_string_view(const Range& range, Iter it_begin, Iter it_pos)
+{
+    return StringViewResult{std::data(range) + (it_begin - std::begin(range)),
+                            static_cast<std::size_t>(it_pos - it_begin)};
+}
+#endif
+
+} // namespace detail::ranges
 
 namespace ranges {
 
 template<class Range, char32_t Error = detail::impl_iter_replacement>
-class utf8_view : public detail::ranges_view_base
+class utf8_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -77,11 +148,11 @@ private:
         // Error is only used for tests, do not document it
         static_assert(Error == detail::impl_iter_error || Error == detail::impl_iter_replacement);
 
-        using base_iterator_tag = typename std::iterator_traits<Iter>::iterator_category;
+        using iter_tag = detail::ranges::iter_tag_random<Iter>;
 
-        using is_random_access_or_better = std::is_convertible<base_iterator_tag, std::random_access_iterator_tag>;
-        using is_bidirectional_or_better = std::is_convertible<base_iterator_tag, std::bidirectional_iterator_tag>;
-        using is_forward_or_better       = std::is_convertible<base_iterator_tag, std::forward_iterator_tag>;
+        using is_random_access_or_better = std::is_convertible<iter_tag, std::random_access_iterator_tag>;
+        using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
+        using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
 
     public:
         using iterator_category = std::conditional_t<is_bidirectional_or_better::value,
@@ -90,7 +161,7 @@ private:
         using value_type        = char32_t;
         using pointer           = void; // pointer operator->() is not implemented
         using reference         = char32_t;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         constexpr utf8() = default;
         constexpr explicit utf8(utf8_view& p, Iter begin, Sent end)
@@ -151,11 +222,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>())); // std::ranges::iterator_t<Range>
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>())); // std::ranges::sentinel_t<Range>
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf8<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -168,15 +239,15 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
-            return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>) // std::ranges::common_range<Range>
+            return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
@@ -185,7 +256,7 @@ public:
 };
 
 template<class Range, char32_t Error = detail::impl_iter_replacement>
-class utf16_view : public detail::ranges_view_base
+class utf16_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -200,13 +271,13 @@ private:
         // Error is only used for tests, do not document it
         static_assert(Error == detail::impl_iter_error || Error == detail::impl_iter_replacement);
 
-        static_assert(sizeof(typename std::iterator_traits<Iter>::value_type) >= sizeof(char16_t));
+        static_assert(sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t));
 
-        using base_iterator_tag = typename std::iterator_traits<Iter>::iterator_category;
+        using iter_tag = detail::ranges::iter_tag_random<Iter>;
 
-        using is_random_access_or_better = std::is_convertible<base_iterator_tag, std::random_access_iterator_tag>;
-        using is_bidirectional_or_better = std::is_convertible<base_iterator_tag, std::bidirectional_iterator_tag>;
-        using is_forward_or_better       = std::is_convertible<base_iterator_tag, std::forward_iterator_tag>;
+        using is_random_access_or_better = std::is_convertible<iter_tag, std::random_access_iterator_tag>;
+        using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
+        using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
 
     public:
         using iterator_category = std::conditional_t<is_bidirectional_or_better::value,
@@ -215,7 +286,7 @@ private:
         using value_type        = char32_t;
         using pointer           = void; // pointer operator->() is not implemented
         using reference         = char32_t;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         constexpr utf16() = default;
         constexpr explicit utf16(utf16_view& p, Iter begin, Sent end)
@@ -276,11 +347,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>())); // std::ranges::iterator_t<Range>
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>())); // std::ranges::sentinel_t<Range>
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf16<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -293,15 +364,15 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
-            return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>) // std::ranges::common_range<Range>
+            return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
@@ -310,7 +381,7 @@ public:
 };
 
 template<class Range>
-class reverse_view : public detail::ranges_view_base
+class reverse_view : public detail::ranges::view_base
 {
     // There is a problem with std::views::reverse it is implemented using
     // std::reverse_iterator and operator* looks like this { Iterator tmp = current; return *--tmp; }
@@ -328,18 +399,18 @@ private:
         Iter it_pos;
         bool past_begin = true;
 
-        using base_iterator_tag = typename std::iterator_traits<Iter>::iterator_category;
+        using iter_tag = detail::ranges::iter_tag_bidi_only<Iter>;
 
-        using is_bidirectional_or_better = std::is_convertible<base_iterator_tag, std::bidirectional_iterator_tag>;
+        using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
 
         static_assert(is_bidirectional_or_better::value, "Bidirectional or better range is required");
 
     public:
         using iterator_category = std::bidirectional_iterator_tag;
-        using value_type        = typename std::iterator_traits<Iter>::value_type;
-        using pointer           = typename std::iterator_traits<Iter>::pointer;
-        using reference         = typename std::iterator_traits<Iter>::reference;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using value_type        = detail::ranges::iter_value_t<Iter>;
+        using pointer           = detail::ranges::iter_pointer_t<Iter>;
+        using reference         = detail::ranges::iter_reference_t<Iter>;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         constexpr reverse() = default;
         constexpr explicit reverse(reverse_view& p, Iter begin, Sent end)
@@ -403,11 +474,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const reverse& x) { return !x.past_begin; }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    reverse<base_iterator_t, base_iterator_t> cached_begin_value;
+    reverse<iter_t, iter_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -420,8 +491,8 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>)
-            cached_begin_value = reverse<base_iterator_t, base_iterator_t>{*this, std::begin(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>)
+            cached_begin_value = reverse<iter_t, iter_t>{*this, std::begin(range), std::end(range)};
         else
         {
             // This is to handle case when Range is bidirectional and not std::ranges::common_range
@@ -430,7 +501,7 @@ public:
             // auto it = std::ranges::next(std::ranges::begin(range), std::ranges::end(range));
             auto it = std::begin(range);
             for (auto end = std::end(range); it != end; ++it);
-            cached_begin_value = reverse<base_iterator_t, base_iterator_t>{*this, std::begin(range), it};
+            cached_begin_value = reverse<iter_t, iter_t>{*this, std::begin(range), it};
 
             // std::string_view{"12345678900"} | uni::views::utf8
             // | uni::views::reverse | std::views::take(7) | uni::views::reverse
@@ -442,12 +513,12 @@ public:
     }
     constexpr auto end()
     {
-        return reverse<base_iterator_t, base_iterator_t>{*this, std::begin(range), std::begin(range)};
+        return reverse<iter_t, iter_t>{*this, std::begin(range), std::begin(range)};
     }
 };
 
 template<class Range, class Pred>
-class filter_view : public detail::ranges_view_base
+class filter_view : public detail::ranges::view_base
 {
     // Our filter view is almost the same as std::views::filter
     // so the performance should be the same
@@ -459,19 +530,19 @@ private:
         filter_view* parent = nullptr;
         Iter it_pos;
 
-        using base_iterator_tag = typename std::iterator_traits<Iter>::iterator_category;
+        using iter_tag = detail::ranges::iter_tag_bidi<Iter>;
 
-        using is_bidirectional_or_better = std::is_convertible<base_iterator_tag, std::bidirectional_iterator_tag>;
-        using is_forward_or_better       = std::is_convertible<base_iterator_tag, std::forward_iterator_tag>;
+        using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
+        using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
 
     public:
         using iterator_category = std::conditional_t<is_bidirectional_or_better::value,
             std::bidirectional_iterator_tag, std::conditional_t<is_forward_or_better::value,
             std::forward_iterator_tag, std::input_iterator_tag>>;
-        using value_type        = typename std::iterator_traits<Iter>::value_type;
-        using pointer           = typename std::iterator_traits<Iter>::pointer;
-        using reference         = typename std::iterator_traits<Iter>::reference;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using value_type        = detail::ranges::iter_value_t<Iter>;
+        using pointer           = detail::ranges::iter_pointer_t<Iter>;
+        using reference         = detail::ranges::iter_reference_t<Iter>;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         constexpr filter() = default;
         constexpr explicit filter(filter_view& p, Iter begin, Sent end)
@@ -526,12 +597,12 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const filter& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
     Pred func_filter;
-    filter<base_iterator_t, base_sentinel_t> cached_begin_value;
+    filter<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -545,22 +616,22 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = filter<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = filter<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>)
-            return filter<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>)
+            return filter<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
 };
 
 template<class Range, class Func>
-class transform_view : public detail::ranges_view_base
+class transform_view : public detail::ranges::view_base
 {
     // Our transform_view view is always bidirectional or worse so there are no optimizations
     // if Range is random access because we expect utf8_view/utf16_view before this view.
@@ -573,10 +644,10 @@ private:
         transform_view* parent = nullptr;
         Iter it_pos;
 
-        using base_iterator_tag = typename std::iterator_traits<Iter>::iterator_category;
+        using iter_tag = detail::ranges::iter_tag_bidi<Iter>;
 
-        using is_bidirectional_or_better = std::is_convertible<base_iterator_tag, std::bidirectional_iterator_tag>;
-        using is_forward_or_better       = std::is_convertible<base_iterator_tag, std::forward_iterator_tag>;
+        using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
+        using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
 
     public:
         using iterator_category = std::conditional_t<is_bidirectional_or_better::value,
@@ -584,10 +655,10 @@ private:
             std::forward_iterator_tag, std::input_iterator_tag>>;
         //using value_type        = std::remove_cvref_t<std::invoke_result_t<Func&, typename std::iterator_traits<Iter>::reference>>;
         using value_type        = std::remove_cv_t<std::remove_reference_t<
-            std::invoke_result_t<Func&, typename std::iterator_traits<Iter>::reference>>>;
+            std::invoke_result_t<Func&, detail::ranges::iter_reference_t<Iter>>>>;
         using pointer           = void;
         using reference         = value_type;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         constexpr transform() = default;
         constexpr explicit transform(transform_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin} {}
@@ -635,8 +706,8 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const transform& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
     Func func_transform;
@@ -648,19 +719,19 @@ public:
     //constexpr Range base() && { return std::move(range); }
     constexpr auto begin()
     {
-        return transform<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        return transform<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>)
-            return transform<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>)
+            return transform<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
 };
 
 template<class Range>
-class take_view : public detail::ranges_view_base
+class take_view : public detail::ranges::view_base
 {
     // Our take view is always bidirectional or worse so there are no optimizations
     // if Range is random access because we expect utf8_view/utf16_view before this view.
@@ -675,19 +746,19 @@ private:
         Iter it_pos;
         std::size_t count = 0;
 
-        using base_iterator_tag = typename std::iterator_traits<Iter>::iterator_category;
+        using iter_tag = detail::ranges::iter_tag_bidi<Iter>;
 
-        using is_bidirectional_or_better = std::is_convertible<base_iterator_tag, std::bidirectional_iterator_tag>;
-        using is_forward_or_better       = std::is_convertible<base_iterator_tag, std::forward_iterator_tag>;
+        using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
+        using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
 
     public:
         using iterator_category = std::conditional_t<is_bidirectional_or_better::value,
             std::bidirectional_iterator_tag, std::conditional_t<is_forward_or_better::value,
             std::forward_iterator_tag, std::input_iterator_tag>>;
-        using value_type        = typename std::iterator_traits<Iter>::value_type;
-        using pointer           = typename std::iterator_traits<Iter>::pointer;
-        using reference         = typename std::iterator_traits<Iter>::reference;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using value_type        = detail::ranges::iter_value_t<Iter>;
+        using pointer           = detail::ranges::iter_pointer_t<Iter>;
+        using reference         = detail::ranges::iter_reference_t<Iter>;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         constexpr take() = default;
         constexpr explicit take(take_view& p, Iter begin, Sent, std::size_t n) : parent{&p}, it_pos{begin}, count{n} {}
@@ -743,8 +814,8 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const take& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
     std::size_t count = 0;
@@ -756,7 +827,7 @@ public:
     //constexpr Range base() && { return std::move(range); }
     constexpr auto begin()
     {
-        return take<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range), count};
+        return take<iter_t, sent_t>{*this, std::begin(range), std::end(range), count};
     }
     constexpr auto end()
     {
@@ -765,7 +836,7 @@ public:
 };
 
 template<class Range>
-class drop_view : public detail::ranges_view_base
+class drop_view : public detail::ranges::view_base
 {
     // Our drop view is always bidirectional or worse so there are no optimizations
     // if Range is random access because we expect utf8_view/utf16_view before this view.
@@ -778,19 +849,19 @@ private:
         drop_view* parent = nullptr;
         Iter it_pos;
 
-        using base_iterator_tag = typename std::iterator_traits<Iter>::iterator_category;
+        using iter_tag = detail::ranges::iter_tag_bidi<Iter>;
 
-        using is_bidirectional_or_better = std::is_convertible<base_iterator_tag, std::bidirectional_iterator_tag>;
-        using is_forward_or_better       = std::is_convertible<base_iterator_tag, std::forward_iterator_tag>;
+        using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
+        using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
 
     public:
         using iterator_category = std::conditional_t<is_bidirectional_or_better::value,
             std::bidirectional_iterator_tag, std::conditional_t<is_forward_or_better::value,
             std::forward_iterator_tag, std::input_iterator_tag>>;
-        using value_type        = typename std::iterator_traits<Iter>::value_type;
-        using pointer           = typename std::iterator_traits<Iter>::pointer;
-        using reference         = typename std::iterator_traits<Iter>::reference;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using value_type        = detail::ranges::iter_value_t<Iter>;
+        using pointer           = detail::ranges::iter_pointer_t<Iter>;
+        using reference         = detail::ranges::iter_reference_t<Iter>;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         constexpr drop() = default;
         constexpr explicit drop(drop_view& p, Iter begin, Sent end, std::size_t cnt = 0)
@@ -845,12 +916,12 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const drop& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
     std::size_t count = 0;
-    drop<base_iterator_t, base_sentinel_t> cached_begin_value;
+    drop<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -863,15 +934,15 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = drop<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range), count};
+        cached_begin_value = drop<iter_t, sent_t>{*this, std::begin(range), std::end(range), count};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>)
-            return drop<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>)
+            return drop<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
@@ -881,7 +952,7 @@ public:
 namespace norm {
 
 template<class Range>
-class nfc_view : public detail::ranges_view_base
+class nfc_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -939,11 +1010,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const nfc& x) { return !x.stream_end; }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    nfc<base_iterator_t, base_sentinel_t> cached_begin_value;
+    nfc<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -956,7 +1027,7 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = nfc<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = nfc<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
@@ -970,7 +1041,7 @@ public:
 };
 
 template<class Range>
-class nfd_view : public detail::ranges_view_base
+class nfd_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -1028,11 +1099,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const nfd& x) { return !x.stream_end; }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    nfd<base_iterator_t, base_sentinel_t> cached_begin_value;
+    nfd<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1045,7 +1116,7 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = nfd<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = nfd<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
@@ -1059,7 +1130,7 @@ public:
 };
 
 template<class Range>
-class nfkc_view : public detail::ranges_view_base
+class nfkc_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -1117,11 +1188,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const nfkc& x) { return !x.stream_end; }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    nfkc<base_iterator_t, base_sentinel_t> cached_begin_value;
+    nfkc<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1134,7 +1205,7 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = nfkc<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = nfkc<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
@@ -1148,7 +1219,7 @@ public:
 };
 
 template<class Range>
-class nfkd_view : public detail::ranges_view_base
+class nfkd_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -1206,11 +1277,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const nfkd& x) { return !x.stream_end; }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    nfkd<base_iterator_t, base_sentinel_t> cached_begin_value;
+    nfkd<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1223,7 +1294,7 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = nfkd<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = nfkd<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
@@ -1243,7 +1314,7 @@ public:
 namespace grapheme {
 
 template<class Range>
-class utf8_view : public detail::ranges_view_base
+class utf8_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf8
@@ -1258,10 +1329,10 @@ class utf8_view : public detail::ranges_view_base
 
     public:
         using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = value_type*;
         using reference         = value_type;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         void iter_func_grapheme_utf8()
         {
@@ -1293,12 +1364,7 @@ class utf8_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1325,11 +1391,11 @@ class utf8_view : public detail::ranges_view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf8<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1342,21 +1408,21 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
 };
 
 template<class Range>
-class utf16_view : public detail::ranges_view_base
+class utf16_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf16
@@ -1371,10 +1437,10 @@ class utf16_view : public detail::ranges_view_base
 
     public:
         using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = value_type*;
         using reference         = value_type;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         void iter_func_grapheme_utf16()
         {
@@ -1406,12 +1472,7 @@ class utf16_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1438,11 +1499,11 @@ class utf16_view : public detail::ranges_view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf16<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1455,14 +1516,14 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1473,7 +1534,7 @@ public:
 namespace word {
 
 template<class Range>
-class utf8_view : public detail::ranges_view_base
+class utf8_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf8
@@ -1490,10 +1551,10 @@ class utf8_view : public detail::ranges_view_base
 
     public:
         using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = void;
         using reference         = value_type;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         void iter_func_word_utf8()
         {
@@ -1529,12 +1590,7 @@ class utf8_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1561,11 +1617,11 @@ class utf8_view : public detail::ranges_view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf8<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1578,21 +1634,21 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
 };
 
 template<class Range>
-class utf16_view : public detail::ranges_view_base
+class utf16_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf16
@@ -1609,10 +1665,10 @@ class utf16_view : public detail::ranges_view_base
 
     public:
         using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = void;
         using reference         = value_type;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         void iter_func_word_utf16()
         {
@@ -1648,12 +1704,7 @@ class utf16_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1680,11 +1731,11 @@ class utf16_view : public detail::ranges_view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf16<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1697,14 +1748,14 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1715,7 +1766,7 @@ public:
 namespace word_only {
 
 template<class Range>
-class utf8_view : public detail::ranges_view_base
+class utf8_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf8
@@ -1732,10 +1783,10 @@ class utf8_view : public detail::ranges_view_base
 
     public:
         using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = void;
         using reference         = value_type;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         void iter_func_word_only_utf8()
         {
@@ -1779,12 +1830,7 @@ class utf8_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1811,11 +1857,11 @@ class utf8_view : public detail::ranges_view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf8<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1828,21 +1874,21 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
 };
 
 template<class Range>
-class utf16_view : public detail::ranges_view_base
+class utf16_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf16
@@ -1859,10 +1905,10 @@ class utf16_view : public detail::ranges_view_base
 
     public:
         using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<typename std::iterator_traits<Iter>::value_type>;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = void;
         using reference         = value_type;
-        using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         void iter_func_word_only_utf16()
         {
@@ -1906,12 +1952,7 @@ class utf16_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1938,11 +1979,11 @@ class utf16_view : public detail::ranges_view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = decltype(std::begin(std::declval<Range&>()));
-    using base_sentinel_t = decltype(std::end(std::declval<Range&>()));
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf16<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1955,14 +1996,14 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1975,7 +2016,7 @@ public:
 // It has the similar design as std::views::ref_view so in C++20 we just use that
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class Range>
-class ref_view : public detail::ranges_view_base
+class ref_view : public detail::ranges::view_base
 {
 private:
     Range* range = nullptr;
@@ -2013,7 +2054,7 @@ using ref_view = std::ranges::ref_view<R>;
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2415r2.html
 template<class Range>
-class owning_view : public detail::ranges_view_base
+class owning_view : public detail::ranges::view_base
 {
 private:
     Range range = Range{};
@@ -2073,8 +2114,7 @@ struct adaptor_all
         // and for rvalues we use owning_view as a proxy
         // this is the similar design as std::ranges
 
-        using base_iterator_t = decltype(std::begin(std::declval<R&>()));
-        using base_iterator_v = typename std::iterator_traits<base_iterator_t>::value_type;
+        using range_v = detail::ranges::range_value_t<R>;
 
         // Check if the range is our range or std::ranges::view
         // Note that the better check in C++20 will look like this:
@@ -2082,9 +2122,9 @@ struct adaptor_all
         // but in C++20 it is just better to use all view/ref_view/owning_view provided by the standard library
         // std::decay_t is important here to handle some corner cases properly
         // see: test/test_ranges.h -> test_ranges_static_assert()
-        if constexpr (std::is_base_of_v<detail::ranges_view_base, std::decay_t<R>> ||
+        if constexpr (std::is_base_of_v<detail::ranges::view_base, std::decay_t<R>> ||
                 //std::is_base_of_v<std::ranges::view_interface<std::decay_t<R>>, std::decay_t<R>> || // view_interface check
-                std::is_same_v<std::basic_string_view<base_iterator_v>, std::decay_t<R>>)
+                std::is_same_v<std::basic_string_view<range_v>, std::decay_t<R>>)
             return std::forward<R>(r);
         else if constexpr (std::is_lvalue_reference_v<R>)
             return uni::ranges::ref_view{std::forward<R>(r)};
@@ -2105,7 +2145,7 @@ constexpr auto operator|(R&& r, const adaptor_all& a) { return a(std::forward<R>
 struct adaptor_utf8
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::utf8_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_utf8& a) { return a(std::forward<R>(r)); }
@@ -2115,7 +2155,7 @@ constexpr auto operator|(R&& r, const adaptor_utf8& a) { return a(std::forward<R
 struct adaptor_utf16
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::utf16_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_utf16& a) { return a(std::forward<R>(r)); }
@@ -2128,7 +2168,7 @@ struct adaptor_closure_filter
     Pred p;
     constexpr adaptor_closure_filter(Pred pred) : p{pred} {}
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::filter_view{std::forward<R>(r), p}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::filter_view{std::forward<R>(r), p}; }
 };
 template<class R, class Pred>
 constexpr auto operator|(R&& r, const adaptor_closure_filter<Pred>& a) { return a(std::forward<R>(r)); }
@@ -2136,7 +2176,7 @@ constexpr auto operator|(R&& r, const adaptor_closure_filter<Pred>& a) { return 
 struct adaptor_filter
 {
     template<class R, class Pred>
-    constexpr auto operator()(R&& r, Pred pred) const { return ranges::filter_view{std::forward<R>(r), std::move(pred)}; }
+    constexpr auto operator()(R&& r, Pred pred) const { return uni::ranges::filter_view{std::forward<R>(r), std::move(pred)}; }
     template<class Pred>
     constexpr auto operator()(Pred pred) const { return adaptor_closure_filter<Pred>{std::move(pred)}; }
 };
@@ -2146,7 +2186,7 @@ struct adaptor_filter
 struct adaptor_reverse
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::reverse_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::reverse_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_reverse& a) { return a(std::forward<R>(r)); }
@@ -2159,7 +2199,7 @@ struct adaptor_closure_drop
     constexpr adaptor_closure_drop(std::size_t n): count(n) {}
 
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::drop_view{std::forward<R>(r), count}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::drop_view{std::forward<R>(r), count}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, adaptor_closure_drop const &a) { return a(std::forward<R>(r)); }
@@ -2167,7 +2207,7 @@ constexpr auto operator|(R&& r, adaptor_closure_drop const &a) { return a(std::f
 struct adaptor_drop
 {
     template<class R>
-    constexpr auto operator()(R&& r, std::size_t count) const { return ranges::drop_view{std::forward<R>(r), count}; }
+    constexpr auto operator()(R&& r, std::size_t count) const { return uni::ranges::drop_view{std::forward<R>(r), count}; }
     constexpr auto operator()(std::size_t count) const { return adaptor_closure_drop{count}; }
 };
 
@@ -2179,7 +2219,7 @@ struct adaptor_closure_take
     constexpr adaptor_closure_take(std::size_t n): count(n) {}
 
     template <class R>
-    constexpr auto operator()(R&& r) const { return ranges::take_view{std::forward<R>(r), count}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::take_view{std::forward<R>(r), count}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, adaptor_closure_take const &a) { return a(std::forward<R>(r)); }
@@ -2187,7 +2227,7 @@ constexpr auto operator|(R&& r, adaptor_closure_take const &a) { return a(std::f
 struct adaptor_take
 {
     template<class R>
-    constexpr auto operator()(R&& r, std::size_t count) const { return ranges::take_view{std::forward<R>(r), count}; }
+    constexpr auto operator()(R&& r, std::size_t count) const { return uni::ranges::take_view{std::forward<R>(r), count}; }
     constexpr auto operator()(std::size_t count) const { return adaptor_closure_take{count}; }
 };
 
@@ -2199,7 +2239,7 @@ struct adaptor_closure_transform
     Func f;
     constexpr adaptor_closure_transform(Func func) : f{func} {}
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::transform_view{std::forward<R>(r), f}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::transform_view{std::forward<R>(r), f}; }
 };
 template<class R, class Func>
 constexpr auto operator|(R&& r, const adaptor_closure_transform<Func>& a) { return a(std::forward<R>(r)); }
@@ -2207,7 +2247,7 @@ constexpr auto operator|(R&& r, const adaptor_closure_transform<Func>& a) { retu
 struct adaptor_transform
 {
     template<class R, class Func>
-    constexpr auto operator()(R&& r, Func f) const { return ranges::transform_view{std::forward<R>(r), std::move(f)}; }
+    constexpr auto operator()(R&& r, Func f) const { return uni::ranges::transform_view{std::forward<R>(r), std::move(f)}; }
     template<class Func>
     constexpr auto operator()(Func f) const { return adaptor_closure_transform<Func>{std::move(f)}; }
 };
@@ -2218,7 +2258,7 @@ struct adaptor_transform
 struct adaptor_nfc
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::norm::nfc_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfc_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_nfc& a) { return a(std::forward<R>(r)); }
@@ -2228,7 +2268,7 @@ constexpr auto operator|(R&& r, const adaptor_nfc& a) { return a(std::forward<R>
 struct adaptor_nfd
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::norm::nfd_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfd_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_nfd& a) { return a(std::forward<R>(r)); }
@@ -2238,7 +2278,7 @@ constexpr auto operator|(R&& r, const adaptor_nfd& a) { return a(std::forward<R>
 struct adaptor_nfkc
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::norm::nfkc_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfkc_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_nfkc& a) { return a(std::forward<R>(r)); }
@@ -2248,7 +2288,7 @@ constexpr auto operator|(R&& r, const adaptor_nfkc& a) { return a(std::forward<R
 struct adaptor_nfkd
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::norm::nfkd_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfkd_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forward<R>(r)); }
@@ -2260,7 +2300,7 @@ constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forward<R
 struct adaptor_grapheme_utf8
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::grapheme::utf8_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::grapheme::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_grapheme_utf8& a) { return a(std::forward<R>(r)); }
@@ -2270,7 +2310,7 @@ constexpr auto operator|(R&& r, const adaptor_grapheme_utf8& a) { return a(std::
 struct adaptor_grapheme_utf16
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::grapheme::utf16_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::grapheme::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_grapheme_utf16& a) { return a(std::forward<R>(r)); }
@@ -2280,7 +2320,7 @@ constexpr auto operator|(R&& r, const adaptor_grapheme_utf16& a) { return a(std:
 struct adaptor_word_utf8
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::word::utf8_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::word::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_word_utf8& a) { return a(std::forward<R>(r)); }
@@ -2290,7 +2330,7 @@ constexpr auto operator|(R&& r, const adaptor_word_utf8& a) { return a(std::forw
 struct adaptor_word_utf16
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::word::utf16_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::word::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_word_utf16& a) { return a(std::forward<R>(r)); }
@@ -2300,7 +2340,7 @@ constexpr auto operator|(R&& r, const adaptor_word_utf16& a) { return a(std::for
 struct adaptor_word_only_utf8
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::word_only::utf8_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::word_only::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_word_only_utf8& a) { return a(std::forward<R>(r)); }
@@ -2310,7 +2350,7 @@ constexpr auto operator|(R&& r, const adaptor_word_only_utf8& a) { return a(std:
 struct adaptor_word_only_utf16
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return ranges::word_only::utf16_view{std::forward<R>(r)}; }
+    constexpr auto operator()(R&& r) const { return uni::ranges::word_only::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 constexpr auto operator|(R&& r, const adaptor_word_only_utf16& a) { return a(std::forward<R>(r)); }
@@ -2359,17 +2399,15 @@ struct adaptor_closure_to_utf8
     template<class R>
     constexpr auto operator()(R&& r) const
     {
-        using base_iterator_t = decltype(std::begin(std::declval<R&>())); // std::ranges::iterator_t<R>
-        using base_iterator_v = typename std::iterator_traits<base_iterator_t>::value_type; // std::ranges::range_value_t<R>
-        using result_iterator_t = decltype(std::begin(std::declval<Result&>())); // std::ranges::iterator_t<Result>
-        using result_iterator_v = typename std::iterator_traits<result_iterator_t>::value_type; // std::ranges::range_value_t<Result>
+        using range_v = uni::detail::ranges::range_value_t<R>;
+        using result_v = uni::detail::ranges::range_value_t<Result>;
 
-        // Technically we want this static_assert for base_iterator_v:
-        // static_assert(std::is_same_v<base_iterator_v, char32_t>, "Must be char32_t range");
+        // Technically we want this static_assert for range_v:
+        // static_assert(std::is_same_v<range_v, char32_t>, "Must be char32_t range");
         // but it makes it a bit clanky to use with transform view so use more permissive static_assert
         // See: test/test_ranges.h -> test_ranges()
-        static_assert(std::is_integral_v<base_iterator_v> && !std::is_same_v<base_iterator_v, bool>);
-        static_assert(std::is_integral_v<result_iterator_v> && !std::is_same_v<result_iterator_v, bool>);
+        static_assert(std::is_integral_v<range_v> && !std::is_same_v<range_v, bool>);
+        static_assert(std::is_integral_v<result_v> && !std::is_same_v<result_v, bool>);
 
         Result result;
         std::back_insert_iterator output{result};
@@ -2389,15 +2427,13 @@ struct adaptor_closure_to_utf16
     template<class R>
     constexpr auto operator()(R&& r) const
     {
-        using base_iterator_t = decltype(std::begin(std::declval<R&>())); // std::ranges::iterator_t<R>
-        using base_iterator_v = typename std::iterator_traits<base_iterator_t>::value_type; // std::ranges::range_value_t<R>
-        using result_iterator_t = decltype(std::begin(std::declval<Result&>())); // std::ranges::iterator_t<Result>
-        using result_iterator_v = typename std::iterator_traits<result_iterator_t>::value_type; // std::ranges::range_value_t<Result>
+        using range_v = uni::detail::ranges::range_value_t<R>;
+        using result_v = uni::detail::ranges::range_value_t<Result>;
 
         // See comments in to_utf8 adaptor above
         // static_assert(std::is_same_v<base_iterator_v, char32_t>, "Must be char32_t range");
-        static_assert(std::is_integral_v<base_iterator_v> && !std::is_same_v<base_iterator_v, bool>);
-        static_assert(std::is_integral_v<result_iterator_v> && sizeof(result_iterator_v) >= sizeof(char16_t));
+        static_assert(std::is_integral_v<range_v> && !std::is_same_v<range_v, bool>);
+        static_assert(std::is_integral_v<result_v> && sizeof(result_v) >= sizeof(char16_t));
 
         Result result;
         std::back_insert_iterator output{result};
