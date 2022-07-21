@@ -112,6 +112,23 @@ using iter_tag_bidi_only = typename std::conditional_t<std::bidirectional_iterat
     std::bidirectional_iterator_tag, std::input_iterator_tag>;
 #endif
 
+// In C++17 std::string_view doesn't have iterators pair constructor
+// so we use this a bit ugly approach to make it work. It is only used in break ranges.
+#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
+template<class StringViewResult, class Range, class Iter>
+StringViewResult to_string_view(const Range&, Iter it_begin, Iter it_pos)
+{
+    return StringViewResult{it_begin, it_pos};
+}
+#else
+template<class StringViewResult, class Range, class Iter>
+StringViewResult to_string_view(const Range& range, Iter it_begin, Iter it_pos)
+{
+    return StringViewResult{std::data(range) + (it_begin - std::begin(range)),
+                            static_cast<std::size_t>(it_pos - it_begin)};
+}
+#endif
+
 } // namespace ranges
 } // namespace detail
 
@@ -1349,12 +1366,7 @@ class utf8_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1462,12 +1474,7 @@ class utf16_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1585,12 +1592,7 @@ class utf8_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1704,12 +1706,7 @@ class utf16_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1835,12 +1832,7 @@ class utf8_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
@@ -1962,12 +1954,7 @@ class utf16_view : public detail::ranges_view_base
         }
         constexpr reference operator*() const
         {
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-            return reference{it_begin, it_pos};
-#else
-            return reference{std::data(parent->range) + (it_begin - std::begin(parent->range)),
-                             static_cast<std::size_t>(it_pos - it_begin)};
-#endif
+            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         constexpr Iter begin() const noexcept { return it_begin; }
         constexpr Iter end() const noexcept { return it_pos; }
