@@ -9,6 +9,7 @@
 #include <uni/break_grapheme.h>
 #include <uni/break_word.h>
 #include <uni/ranges.h>
+#include <uni/data.h>
 
 #include <stdexcept>
 #include <iostream>

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 project("uni-algo" VERSION 0.2.0)
 
 # Force STATIC for now
-add_library(${PROJECT_NAME} STATIC)
+add_library(${PROJECT_NAME} INTERFACE)
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 include(GNUInstallDirs)
@@ -11,9 +11,6 @@ include(GNUInstallDirs)
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}>)
-
-target_sources(${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/uni/data.cpp)
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 

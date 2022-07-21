@@ -24,9 +24,7 @@ endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../include")
 
-target_sources(${PROJECT_NAME} PRIVATE
-    "${PROJECT_SOURCE_DIR}/../include/uni/data.cpp"
-    "${PROJECT_SOURCE_DIR}/main.cpp")
+target_sources(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/main.cpp")
 
 if(DOWNLOAD_UNICODE_TEST_FILES)
     # https://stackoverflow.com/questions/61255773/cmake-file-download-ignores-errors
