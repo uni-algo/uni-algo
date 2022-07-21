@@ -48,17 +48,16 @@
 
 namespace uni {
 
+namespace detail::ranges {
+
 // We need to use public std::ranges::view_base for compatibility with std::ranges
 // when a std::view on the right side of operator|
 // https://tristanbrindle.com/posts/rvalue-ranges-and-views
-namespace detail {
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
-struct ranges_view_base {};
+struct view_base {};
 #else
-using ranges_view_base = std::ranges::view_base;
+using view_base = std::ranges::view_base;
 #endif
-
-namespace ranges {
 
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class Iter>
@@ -129,13 +128,12 @@ StringViewResult to_string_view(const Range& range, Iter it_begin, Iter it_pos)
 }
 #endif
 
-} // namespace ranges
-} // namespace detail
+} // namespace detail::ranges
 
 namespace ranges {
 
 template<class Range, char32_t Error = detail::impl_iter_replacement>
-class utf8_view : public detail::ranges_view_base
+class utf8_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -258,7 +256,7 @@ public:
 };
 
 template<class Range, char32_t Error = detail::impl_iter_replacement>
-class utf16_view : public detail::ranges_view_base
+class utf16_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -383,7 +381,7 @@ public:
 };
 
 template<class Range>
-class reverse_view : public detail::ranges_view_base
+class reverse_view : public detail::ranges::view_base
 {
     // There is a problem with std::views::reverse it is implemented using
     // std::reverse_iterator and operator* looks like this { Iterator tmp = current; return *--tmp; }
@@ -520,7 +518,7 @@ public:
 };
 
 template<class Range, class Pred>
-class filter_view : public detail::ranges_view_base
+class filter_view : public detail::ranges::view_base
 {
     // Our filter view is almost the same as std::views::filter
     // so the performance should be the same
@@ -633,7 +631,7 @@ public:
 };
 
 template<class Range, class Func>
-class transform_view : public detail::ranges_view_base
+class transform_view : public detail::ranges::view_base
 {
     // Our transform_view view is always bidirectional or worse so there are no optimizations
     // if Range is random access because we expect utf8_view/utf16_view before this view.
@@ -733,7 +731,7 @@ public:
 };
 
 template<class Range>
-class take_view : public detail::ranges_view_base
+class take_view : public detail::ranges::view_base
 {
     // Our take view is always bidirectional or worse so there are no optimizations
     // if Range is random access because we expect utf8_view/utf16_view before this view.
@@ -838,7 +836,7 @@ public:
 };
 
 template<class Range>
-class drop_view : public detail::ranges_view_base
+class drop_view : public detail::ranges::view_base
 {
     // Our drop view is always bidirectional or worse so there are no optimizations
     // if Range is random access because we expect utf8_view/utf16_view before this view.
@@ -954,7 +952,7 @@ public:
 namespace norm {
 
 template<class Range>
-class nfc_view : public detail::ranges_view_base
+class nfc_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -1043,7 +1041,7 @@ public:
 };
 
 template<class Range>
-class nfd_view : public detail::ranges_view_base
+class nfd_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -1132,7 +1130,7 @@ public:
 };
 
 template<class Range>
-class nfkc_view : public detail::ranges_view_base
+class nfkc_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -1221,7 +1219,7 @@ public:
 };
 
 template<class Range>
-class nfkd_view : public detail::ranges_view_base
+class nfkd_view : public detail::ranges::view_base
 {
 private:
     template<class Iter, class Sent>
@@ -1316,7 +1314,7 @@ public:
 namespace grapheme {
 
 template<class Range>
-class utf8_view : public detail::ranges_view_base
+class utf8_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf8
@@ -1424,7 +1422,7 @@ public:
 };
 
 template<class Range>
-class utf16_view : public detail::ranges_view_base
+class utf16_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf16
@@ -1536,7 +1534,7 @@ public:
 namespace word {
 
 template<class Range>
-class utf8_view : public detail::ranges_view_base
+class utf8_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf8
@@ -1650,7 +1648,7 @@ public:
 };
 
 template<class Range>
-class utf16_view : public detail::ranges_view_base
+class utf16_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf16
@@ -1768,7 +1766,7 @@ public:
 namespace word_only {
 
 template<class Range>
-class utf8_view : public detail::ranges_view_base
+class utf8_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf8
@@ -1890,7 +1888,7 @@ public:
 };
 
 template<class Range>
-class utf16_view : public detail::ranges_view_base
+class utf16_view : public detail::ranges::view_base
 {
     template<class Iter, class Sent>
     class utf16
@@ -2018,7 +2016,7 @@ public:
 // It has the similar design as std::views::ref_view so in C++20 we just use that
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class Range>
-class ref_view : public detail::ranges_view_base
+class ref_view : public detail::ranges::view_base
 {
 private:
     Range* range = nullptr;
@@ -2056,7 +2054,7 @@ using ref_view = std::ranges::ref_view<R>;
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2415r2.html
 template<class Range>
-class owning_view : public detail::ranges_view_base
+class owning_view : public detail::ranges::view_base
 {
 private:
     Range range = Range{};
@@ -2125,7 +2123,7 @@ struct adaptor_all
         // but in C++20 it is just better to use all view/ref_view/owning_view provided by the standard library
         // std::decay_t is important here to handle some corner cases properly
         // see: test/test_ranges.h -> test_ranges_static_assert()
-        if constexpr (std::is_base_of_v<detail::ranges_view_base, std::decay_t<R>> ||
+        if constexpr (std::is_base_of_v<detail::ranges::view_base, std::decay_t<R>> ||
                 //std::is_base_of_v<std::ranges::view_interface<std::decay_t<R>>, std::decay_t<R>> || // view_interface check
                 std::is_same_v<std::basic_string_view<base_iterator_v>, std::decay_t<R>>)
             return std::forward<R>(r);
