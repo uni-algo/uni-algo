@@ -2114,8 +2114,7 @@ struct adaptor_all
         // and for rvalues we use owning_view as a proxy
         // this is the similar design as std::ranges
 
-        using base_iterator_t = decltype(std::begin(std::declval<R&>()));
-        using base_iterator_v = typename std::iterator_traits<base_iterator_t>::value_type;
+        using range_v = detail::ranges::range_value_t<R>;
 
         // Check if the range is our range or std::ranges::view
         // Note that the better check in C++20 will look like this:
@@ -2125,7 +2124,7 @@ struct adaptor_all
         // see: test/test_ranges.h -> test_ranges_static_assert()
         if constexpr (std::is_base_of_v<detail::ranges::view_base, std::decay_t<R>> ||
                 //std::is_base_of_v<std::ranges::view_interface<std::decay_t<R>>, std::decay_t<R>> || // view_interface check
-                std::is_same_v<std::basic_string_view<base_iterator_v>, std::decay_t<R>>)
+                std::is_same_v<std::basic_string_view<range_v>, std::decay_t<R>>)
             return std::forward<R>(r);
         else if constexpr (std::is_lvalue_reference_v<R>)
             return uni::ranges::ref_view{std::forward<R>(r)};
