@@ -222,11 +222,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf8<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -239,15 +239,15 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
-            return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>) // std::ranges::common_range<Range>
+            return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
@@ -347,11 +347,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf16<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -364,15 +364,15 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>) // std::ranges::common_range<Range>
-            return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>) // std::ranges::common_range<Range>
+            return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
@@ -474,11 +474,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const reverse& x) { return !x.past_begin; }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    reverse<base_iterator_t, base_iterator_t> cached_begin_value;
+    reverse<iter_t, iter_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -491,8 +491,8 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>)
-            cached_begin_value = reverse<base_iterator_t, base_iterator_t>{*this, std::begin(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>)
+            cached_begin_value = reverse<iter_t, iter_t>{*this, std::begin(range), std::end(range)};
         else
         {
             // This is to handle case when Range is bidirectional and not std::ranges::common_range
@@ -501,7 +501,7 @@ public:
             // auto it = std::ranges::next(std::ranges::begin(range), std::ranges::end(range));
             auto it = std::begin(range);
             for (auto end = std::end(range); it != end; ++it);
-            cached_begin_value = reverse<base_iterator_t, base_iterator_t>{*this, std::begin(range), it};
+            cached_begin_value = reverse<iter_t, iter_t>{*this, std::begin(range), it};
 
             // std::string_view{"12345678900"} | uni::views::utf8
             // | uni::views::reverse | std::views::take(7) | uni::views::reverse
@@ -513,7 +513,7 @@ public:
     }
     constexpr auto end()
     {
-        return reverse<base_iterator_t, base_iterator_t>{*this, std::begin(range), std::begin(range)};
+        return reverse<iter_t, iter_t>{*this, std::begin(range), std::begin(range)};
     }
 };
 
@@ -597,12 +597,12 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const filter& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
     Pred func_filter;
-    filter<base_iterator_t, base_sentinel_t> cached_begin_value;
+    filter<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -616,15 +616,15 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = filter<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = filter<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>)
-            return filter<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>)
+            return filter<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
@@ -706,8 +706,8 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const transform& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
     Func func_transform;
@@ -719,12 +719,12 @@ public:
     //constexpr Range base() && { return std::move(range); }
     constexpr auto begin()
     {
-        return transform<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        return transform<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>)
-            return transform<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>)
+            return transform<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
@@ -814,8 +814,8 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const take& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
     std::size_t count = 0;
@@ -827,7 +827,7 @@ public:
     //constexpr Range base() && { return std::move(range); }
     constexpr auto begin()
     {
-        return take<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range), count};
+        return take<iter_t, sent_t>{*this, std::begin(range), std::end(range), count};
     }
     constexpr auto end()
     {
@@ -916,12 +916,12 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const drop& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
     std::size_t count = 0;
-    drop<base_iterator_t, base_sentinel_t> cached_begin_value;
+    drop<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -934,15 +934,15 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = drop<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range), count};
+        cached_begin_value = drop<iter_t, sent_t>{*this, std::begin(range), std::end(range), count};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        if constexpr (std::is_same_v<base_iterator_t, base_sentinel_t>)
-            return drop<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        if constexpr (std::is_same_v<iter_t, sent_t>)
+            return drop<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
@@ -1010,11 +1010,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const nfc& x) { return !x.stream_end; }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    nfc<base_iterator_t, base_sentinel_t> cached_begin_value;
+    nfc<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1027,7 +1027,7 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = nfc<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = nfc<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
@@ -1099,11 +1099,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const nfd& x) { return !x.stream_end; }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    nfd<base_iterator_t, base_sentinel_t> cached_begin_value;
+    nfd<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1116,7 +1116,7 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = nfd<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = nfd<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
@@ -1188,11 +1188,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const nfkc& x) { return !x.stream_end; }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    nfkc<base_iterator_t, base_sentinel_t> cached_begin_value;
+    nfkc<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1205,7 +1205,7 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = nfkc<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = nfkc<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
@@ -1277,11 +1277,11 @@ private:
         friend constexpr bool operator!=(uni::sentinel_t, const nfkd& x) { return !x.stream_end; }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    nfkd<base_iterator_t, base_sentinel_t> cached_begin_value;
+    nfkd<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1294,7 +1294,7 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = nfkd<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = nfkd<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
@@ -1391,11 +1391,11 @@ class utf8_view : public detail::ranges::view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf8<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1408,14 +1408,14 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1499,11 +1499,11 @@ class utf16_view : public detail::ranges::view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf16<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1516,14 +1516,14 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1617,11 +1617,11 @@ class utf8_view : public detail::ranges::view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf8<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1634,14 +1634,14 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1731,11 +1731,11 @@ class utf16_view : public detail::ranges::view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf16<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1748,14 +1748,14 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1857,11 +1857,11 @@ class utf8_view : public detail::ranges::view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf8<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf8<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1874,14 +1874,14 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf8<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf8<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
@@ -1979,11 +1979,11 @@ class utf16_view : public detail::ranges::view_base
         friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using base_iterator_t = detail::ranges::iterator_t<Range>;
-    using base_sentinel_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::ranges::iterator_t<Range>;
+    using sent_t = detail::ranges::sentinel_t<Range>;
 
     Range range = Range{};
-    utf16<base_iterator_t, base_sentinel_t> cached_begin_value;
+    utf16<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
@@ -1996,14 +1996,14 @@ public:
         if (cached_begin)
             return cached_begin_value;
 
-        cached_begin_value = utf16<base_iterator_t, base_sentinel_t>{*this, std::begin(range), std::end(range)};
+        cached_begin_value = utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
         cached_begin = true;
 
         return cached_begin_value;
     }
     constexpr auto end()
     {
-        return utf16<base_iterator_t, base_sentinel_t>{*this, std::end(range), std::end(range)};
+        return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
     //constexpr bool empty() { return begin() == end(); }
     //explicit constexpr operator bool() { return !empty(); }
