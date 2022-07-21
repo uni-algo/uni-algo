@@ -12,10 +12,10 @@
 #include <type_traits>
 #include <cassert>
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
+#include <uni/config.h>
+#include <uni/version.h>
 
-#include "impl/impl_break_word.h"
+#include <uni/impl/break_word.h>
 
 namespace uni::breaks::word {
 

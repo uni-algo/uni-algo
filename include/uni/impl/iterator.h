@@ -5,7 +5,7 @@
 #ifndef IMPL_ITERATOR_H_UAIX
 #define IMPL_ITERATOR_H_UAIX
 
-#include "internal_defines.h"
+#include <uni/internal/defines.h>
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
@@ -389,7 +389,7 @@ uaix_static it_out_utf16 impl_utf16_output(type_codept c, it_out_utf16 dst)
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
-#include "internal_undefs.h"
+#include <uni/internal/undefs.h>
 
 #endif // IMPL_ITERATOR_H_UAIX
 

@@ -5,8 +5,8 @@
 #ifndef CPP_UNI_VERSION_H_UAIX
 #define CPP_UNI_VERSION_H_UAIX
 
-#include "impl/impl_cpp_lib_version.h"
-#include "impl/impl_unicode_version.h"
+#include <uni/impl/cpp_lib_version.h>
+#include <uni/impl/unicode_version.h>
 
 namespace uni::version {
 namespace library {

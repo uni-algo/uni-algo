@@ -28,8 +28,8 @@
 #include <chrono>
 #include <vector>
 #include <stdexcept>
-#include "../src/cpp_uni_convert.h"
-#include "../src/cpp_uni_norm.h"
+#include <uni/convert.h>
+#include <uni/norm.h>
 
 #ifdef ENABLE_WINAPI_TEST
 std::u16string norm_WinAPI(std::u16string_view str)

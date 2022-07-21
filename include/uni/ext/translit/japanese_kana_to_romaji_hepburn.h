@@ -9,7 +9,7 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "../../cpp_uni_iterator.h"
+#include <uni/iterator.h>
 //#include "../../cpp_uni_norm.h"
 
 // If it fails a compiler messed up the encoding of this file

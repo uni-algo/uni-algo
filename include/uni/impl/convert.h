@@ -5,7 +5,7 @@
 #ifndef IMPL_CONVERT_H_UAIX
 #define IMPL_CONVERT_H_UAIX
 
-#include "internal_defines.h"
+#include <uni/internal/defines.h>
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
@@ -563,7 +563,7 @@ uaix_static size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_u
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
-#include "internal_undefs.h"
+#include <uni/internal/undefs.h>
 
 #endif // IMPL_CONVERT_H_UAIX
 

@@ -5,13 +5,13 @@
 #ifndef IMPL_BREAK_GRAPHEME_H_UAIX
 #define IMPL_BREAK_GRAPHEME_H_UAIX
 
-#include "impl_iterator.h"
+#include <uni/impl/iterator.h>
 
-#include "internal_defines.h"
-#include "internal_stages.h"
+#include <uni/internal/defines.h>
+#include <uni/internal/stages.h>
 
 #ifndef UNI_ALGO_STATIC_DATA
-#include "impl_break_grapheme_data_extern.h"
+#include <uni/impl/break_grapheme_data_extern.h>
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
@@ -167,7 +167,7 @@ uaix_static bool inline_break_grapheme(struct impl_break_grapheme_state* state, 
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
-#include "internal_undefs.h"
+#include <uni/internal/undefs.h>
 
 #endif // IMPL_BREAK_GRAPHEME_H_UAIX
 

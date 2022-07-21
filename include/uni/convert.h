@@ -10,11 +10,11 @@
 #include <string_view>
 #include <cassert>
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
-#include "internal/cpp_uni_error.h"
+#include <uni/config.h>
+#include <uni/version.h>
+#include <uni/internal/error.h>
 
-#include "impl/impl_convert.h"
+#include <uni/impl/convert.h>
 
 namespace uni {
 

@@ -5,13 +5,13 @@
 #ifndef IMPL_NORM_H_UAIX
 #define IMPL_NORM_H_UAIX
 
-#include "impl_iterator.h"
+#include <uni/impl/iterator.h>
 
-#include "internal_defines.h"
-#include "internal_stages.h"
+#include <uni/internal/defines.h>
+#include <uni/internal/stages.h>
 
 #ifndef UNI_ALGO_STATIC_DATA
-#include "impl_norm_data_extern.h"
+#include <uni/impl/norm_data_extern.h>
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
@@ -1873,7 +1873,7 @@ uaix_static bool unstable_norm_iter_next_decomp(struct impl_norm_iter_state* s, 
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
-#include "internal_undefs.h"
+#include <uni/internal/undefs.h>
 
 #endif // IMPL_NORM_H_UAIX
 

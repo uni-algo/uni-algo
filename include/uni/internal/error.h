@@ -8,7 +8,7 @@
 #include <type_traits>
 #include <cassert>
 
-#include "../cpp_uni_config.h"
+#include <uni/config.h>
 
 namespace uni {
 

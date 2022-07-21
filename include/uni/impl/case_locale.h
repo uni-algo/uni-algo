@@ -10,7 +10,7 @@
 // Many things in the file are generated so edit it with care
 // See SpecialCasing.txt for data and Unicode Standard 3.13 for rules
 
-#include "internal_defines.h"
+#include <uni/internal/defines.h>
 
 #ifdef UNI_ALGO_DISABLE_FULL_CASE
 #error "The file cannot be used if full case mapping is disabled"
@@ -1662,7 +1662,7 @@ uaix_static size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 las
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
-#include "internal_undefs.h"
+#include <uni/internal/undefs.h>
 
 #endif // IMPL_CASE_LOCALE_H_UAIX
 
