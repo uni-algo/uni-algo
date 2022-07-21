@@ -2,15 +2,15 @@ name: macOS
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
     branches:
-    - main
+      - main
 
 jobs:
   macOS-Xcode:
     name: macOS Xcode
-    runs-on: macos-10.15
+    runs-on: macos-11
     strategy:
       matrix:
         xcode: [12.3, 11.7, 10.3]
