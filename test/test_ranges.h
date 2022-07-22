@@ -148,4 +148,10 @@ void test_ranges_static_assert()
         static_assert(std::is_same_v<decltype(str_view | uni::views::reverse),
                 decltype(uni::ranges::reverse_view{str_view})>); // must not be ref_view here
     }
+
+    // Test uni::detail::ranges::iter_pointer_t
+    static_assert(std::is_same_v<char*, uni::detail::ranges::iter_pointer_t<decltype(std::string{"123"}.begin())>>);
+    static_assert(std::is_same_v<const char*, uni::detail::ranges::iter_pointer_t<decltype(std::string{"123"}.cbegin())>>);
+    static_assert(std::is_same_v<const char*, uni::detail::ranges::iter_pointer_t<decltype(std::string_view{"123"}.begin())>>);
+    static_assert(std::is_same_v<const char*, uni::detail::ranges::iter_pointer_t<decltype(std::string_view{"123"}.cbegin())>>);
 }
