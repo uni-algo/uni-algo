@@ -1330,7 +1330,7 @@ class utf8_view : public detail::ranges::view_base
     public:
         using iterator_category = std::forward_iterator_tag;
         using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
-        using pointer           = value_type*;
+        using pointer           = void;
         using reference         = value_type;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
@@ -1438,7 +1438,7 @@ class utf16_view : public detail::ranges::view_base
     public:
         using iterator_category = std::forward_iterator_tag;
         using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
-        using pointer           = value_type*;
+        using pointer           = void;
         using reference         = value_type;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
