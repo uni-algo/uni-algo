@@ -104,21 +104,21 @@ void test_ranges_static_assert()
     // std::decay_t TEST
     /*
         // std::decay_t TEST (see our all view in cpp_uni_ranges.h for details)
-        // Test: std::is_base_of_v<detail::ranges_view_base, std::decay_t<R>>
+        // Test: std::is_base_of_v<detail::ranges::view_base, std::decay_t<R>>
         const std::string_view str_view{"12345"};
         const auto my_view = str_view | uni::views::reverse;
         my_view | uni::views::drop(1) = 0; // must not be ref_view here
-        // Test: std::is_same_v<std::basic_string_view<base_iterator_v>, std::decay_t<R>>
+        // Test: std::is_same_v<std::basic_string_view<range_v>, std::decay_t<R>>
         const std::string_view str_view{"12345"};
         str_view | uni::views::utf8 = 0; // must not be ref_view here
     */
-    { // Test: std::is_base_of_v<detail::ranges_view_base, std::decay_t<R>>
+    { // Test: std::is_base_of_v<detail::ranges::view_base, std::decay_t<R>>
         const std::string_view str_view{"12345"};
         auto my_view = str_view | uni::views::reverse;
         static_assert(std::is_same_v<decltype(my_view | uni::views::drop(1)),
                 decltype(uni::ranges::drop_view{uni::ranges::reverse_view{std::string_view{}}, 1})>); // must not be ref_view here
     }
-    { // Test: std::is_same_v<std::basic_string_view<base_iterator_v>, std::decay_t<R>>
+    { // Test: std::is_same_v<std::basic_string_view<range_v>, std::decay_t<R>>
         const std::string_view str_view{"12345"};
         static_assert(std::is_same_v<decltype(str_view | uni::views::reverse),
                 decltype(uni::ranges::reverse_view{std::string_view{}})>); // must not be ref_view here
