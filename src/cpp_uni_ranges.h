@@ -111,6 +111,23 @@ using iter_tag_bidi_only = typename std::conditional_t<std::bidirectional_iterat
     std::bidirectional_iterator_tag, std::input_iterator_tag>;
 #endif
 
+// Use sa_* types only for static_assert
+#if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
+template<class Iter>
+using sa_iter_bidi_or_better = std::conditional_t<
+    std::is_convertible_v<typename std::iterator_traits<Iter>::iterator_category, std::bidirectional_iterator_tag>,
+    std::true_type, std::false_type>;
+template<class Iter>
+using sa_iter_contiguous = std::conditional_t<
+    std::is_convertible_v<typename std::iterator_traits<Iter>::iterator_category, std::random_access_iterator_tag>,
+    std::true_type, std::false_type>;
+#else
+template<class Iter>
+using sa_iter_bidi_or_better = std::conditional_t<std::bidirectional_iterator<Iter>, std::true_type, std::false_type>;
+template<class Iter>
+using sa_iter_contiguous = std::conditional_t<std::contiguous_iterator<Iter>, std::true_type, std::false_type>;
+#endif
+
 // In C++17 std::string_view doesn't have iterators pair constructor
 // so we use this a bit ugly approach to make it work. It is only used in break ranges.
 #if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
@@ -144,6 +161,10 @@ private:
         Iter it_pos;
         Iter it_next; // This makes the iterator FAT but no one ever pipe more than one utf8_view and the perf is better
         detail::type_codept codepoint = 0;
+
+        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      !std::is_same_v<detail::ranges::iter_value_t<Iter>, bool>,
+                      "utf8 view requires integral UTF-8 range");
 
         // Error is only used for tests, do not document it
         static_assert(Error == detail::impl_iter_error || Error == detail::impl_iter_replacement);
@@ -268,10 +289,12 @@ private:
         Iter it_next; // This makes the iterator FAT but no one ever pipe more than one utf16_view and the perf is better
         detail::type_codept codepoint = 0;
 
+        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t),
+                      "utf16 view requires integral UTF-16 range");
+
         // Error is only used for tests, do not document it
         static_assert(Error == detail::impl_iter_error || Error == detail::impl_iter_replacement);
-
-        static_assert(sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t));
 
         using iter_tag = detail::ranges::iter_tag_random<Iter>;
 
@@ -399,11 +422,8 @@ private:
         Iter it_pos;
         bool past_begin = true;
 
-        using iter_tag = detail::ranges::iter_tag_bidi_only<Iter>;
-
-        using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
-
-        static_assert(is_bidirectional_or_better::value, "Bidirectional or better range is required");
+        static_assert(detail::ranges::sa_iter_bidi_or_better<Iter>::value,
+                      "reverse view requires bidirectional or better range");
 
     public:
         using iterator_category = std::bidirectional_iterator_tag;
@@ -967,6 +987,9 @@ private:
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
 
+        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+                      "norm::nfc view requires char32_t range");
+
         void iter_func_nfc()
         {
             if (!detail::unstable_norm_iter_ready(&state))
@@ -1055,6 +1078,9 @@ private:
 
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
+
+        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+                      "norm::nfd view requires char32_t range");
 
         void iter_func_nfd()
         {
@@ -1145,6 +1171,9 @@ private:
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
 
+        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+                      "norm::nfkc view requires char32_t range");
+
         void iter_func_nfkc()
         {
             if (!detail::unstable_norm_iter_ready(&state))
@@ -1233,6 +1262,9 @@ private:
 
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
+
+        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+                      "norm::nfkd view requires char32_t range");
 
         void iter_func_nfkd()
         {
@@ -1326,6 +1358,9 @@ class utf8_view : public detail::ranges::view_base
         Iter it_next;
 
         detail::impl_break_grapheme_state state{};
+
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "grapheme::utf8 view requires contiguous range");
 
     public:
         using iterator_category = std::forward_iterator_tag;
@@ -1434,6 +1469,9 @@ class utf16_view : public detail::ranges::view_base
         Iter it_next;
 
         detail::impl_break_grapheme_state state{};
+
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "grapheme::utf16 view requires contiguous range");
 
     public:
         using iterator_category = std::forward_iterator_tag;
@@ -1549,6 +1587,9 @@ class utf8_view : public detail::ranges::view_base
 
         detail::impl_break_word_state state{};
 
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "word::utf8 view requires contiguous range");
+
     public:
         using iterator_category = std::forward_iterator_tag;
         using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
@@ -1662,6 +1703,9 @@ class utf16_view : public detail::ranges::view_base
         detail::type_codept next_word_prop = 0;
 
         detail::impl_break_word_state state{};
+
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "word::utf16 view requires contiguous range");
 
     public:
         using iterator_category = std::forward_iterator_tag;
@@ -1780,6 +1824,9 @@ class utf8_view : public detail::ranges::view_base
         detail::type_codept next_word_prop = 0;
 
         detail::impl_break_word_state state{};
+
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "word_only::utf8 view requires contiguous range");
 
     public:
         using iterator_category = std::forward_iterator_tag;
@@ -1902,6 +1949,9 @@ class utf16_view : public detail::ranges::view_base
         detail::type_codept next_word_prop = 0;
 
         detail::impl_break_word_state state{};
+
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "word_only::utf16 view requires contiguous range");
 
     public:
         using iterator_category = std::forward_iterator_tag;
@@ -2403,11 +2453,13 @@ struct adaptor_closure_to_utf8
         using result_v = uni::detail::ranges::range_value_t<Result>;
 
         // Technically we want this static_assert for range_v:
-        // static_assert(std::is_same_v<range_v, char32_t>, "Must be char32_t range");
+        // static_assert(std::is_same_v<range_v, char32_t>, "to_utf8 range requires char32_t range");
         // but it makes it a bit clanky to use with transform view so use more permissive static_assert
         // See: test/test_ranges.h -> test_ranges()
-        static_assert(std::is_integral_v<range_v> && !std::is_same_v<range_v, bool>);
-        static_assert(std::is_integral_v<result_v> && !std::is_same_v<result_v, bool>);
+        static_assert(std::is_integral_v<range_v> && !std::is_same_v<range_v, bool>,
+                      "to_utf8 range requires integral range");
+        static_assert(std::is_integral_v<result_v> && !std::is_same_v<result_v, bool>,
+                      "to_utf8 result type cannot store UTF-8");
 
         Result result;
         std::back_insert_iterator output{result};
@@ -2431,9 +2483,11 @@ struct adaptor_closure_to_utf16
         using result_v = uni::detail::ranges::range_value_t<Result>;
 
         // See comments in to_utf8 adaptor above
-        // static_assert(std::is_same_v<base_iterator_v, char32_t>, "Must be char32_t range");
-        static_assert(std::is_integral_v<range_v> && !std::is_same_v<range_v, bool>);
-        static_assert(std::is_integral_v<result_v> && sizeof(result_v) >= sizeof(char16_t));
+        // static_assert(std::is_same_v<base_iterator_v, char32_t>, "to_utf16 range requires char32_t range");
+        static_assert(std::is_integral_v<range_v> && !std::is_same_v<range_v, bool>,
+                      "to_utf16 range requires integral range");
+        static_assert(std::is_integral_v<result_v> && sizeof(result_v) >= sizeof(char16_t),
+                      "to_utf16 result type cannot store UTF-16");
 
         Result result;
         std::back_insert_iterator output{result};
