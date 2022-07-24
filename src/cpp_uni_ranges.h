@@ -149,18 +149,18 @@ private:
     template<class Iter, class Sent>
     class utf8
     {
-    private:
-        utf8_view* parent = nullptr;
-        Iter it_pos;
-        Iter it_next; // This makes the iterator FAT but no one ever pipe more than one utf8_view and the perf is better
-        detail::type_codept codepoint = 0;
-
         static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
                       !std::is_same_v<detail::ranges::iter_value_t<Iter>, bool>,
                       "utf8 view requires integral UTF-8 range");
 
         // Error is only used for tests, do not document it
         static_assert(Error == detail::impl_iter_error || Error == detail::impl_iter_replacement);
+
+    private:
+        utf8_view* parent = nullptr;
+        Iter it_pos;
+        Iter it_next; // This makes the iterator FAT but no one ever pipe more than one utf8_view and the perf is better
+        detail::type_codept codepoint = 0;
 
         using iter_tag = detail::ranges::iter_tag<Iter>;
 
@@ -276,18 +276,18 @@ private:
     template<class Iter, class Sent>
     class utf16
     {
-    private:
-        utf16_view* parent = nullptr;
-        Iter it_pos;
-        Iter it_next; // This makes the iterator FAT but no one ever pipe more than one utf16_view and the perf is better
-        detail::type_codept codepoint = 0;
-
         static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
                       sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t),
                       "utf16 view requires integral UTF-16 range");
 
         // Error is only used for tests, do not document it
         static_assert(Error == detail::impl_iter_error || Error == detail::impl_iter_replacement);
+
+    private:
+        utf16_view* parent = nullptr;
+        Iter it_pos;
+        Iter it_next; // This makes the iterator FAT but no one ever pipe more than one utf16_view and the perf is better
+        detail::type_codept codepoint = 0;
 
         using iter_tag = detail::ranges::iter_tag<Iter>;
 
@@ -410,13 +410,13 @@ private:
     template<class Iter, class Sent>
     class reverse
     {
+        static_assert(detail::ranges::sa_iter_bidi_or_better<Iter>::value,
+                      "reverse view requires bidirectional or better range");
+
     private:
         reverse_view* parent = nullptr;
         Iter it_pos;
         bool past_begin = true;
-
-        static_assert(detail::ranges::sa_iter_bidi_or_better<Iter>::value,
-                      "reverse view requires bidirectional or better range");
 
     public:
         using iterator_category = std::bidirectional_iterator_tag;
@@ -971,6 +971,9 @@ private:
     template<class Iter, class Sent>
     class nfc
     {
+        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+                      "norm::nfc view requires char32_t range");
+
     private:
         nfc_view* parent = nullptr;
         Iter it_pos;
@@ -979,9 +982,6 @@ private:
 
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
-
-        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
-                      "norm::nfc view requires char32_t range");
 
         void iter_func_nfc()
         {
@@ -1063,6 +1063,9 @@ private:
     template<class Iter, class Sent>
     class nfd
     {
+        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+                      "norm::nfd view requires char32_t range");
+
     private:
         nfd_view* parent = nullptr;
         Iter it_pos;
@@ -1071,9 +1074,6 @@ private:
 
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
-
-        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
-                      "norm::nfd view requires char32_t range");
 
         void iter_func_nfd()
         {
@@ -1155,6 +1155,9 @@ private:
     template<class Iter, class Sent>
     class nfkc
     {
+        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+                      "norm::nfkc view requires char32_t range");
+
     private:
         nfkc_view* parent = nullptr;
         Iter it_pos;
@@ -1163,9 +1166,6 @@ private:
 
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
-
-        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
-                      "norm::nfkc view requires char32_t range");
 
         void iter_func_nfkc()
         {
@@ -1247,6 +1247,9 @@ private:
     template<class Iter, class Sent>
     class nfkd
     {
+        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+                      "norm::nfkd view requires char32_t range");
+
     private:
         nfkd_view* parent = nullptr;
         Iter it_pos;
@@ -1255,9 +1258,6 @@ private:
 
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
-
-        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
-                      "norm::nfkd view requires char32_t range");
 
         void iter_func_nfkd()
         {
@@ -1345,6 +1345,9 @@ private:
     template<class Iter, class Sent>
     class utf8
     {
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "grapheme::utf8 view requires contiguous range");
+
     private:
         utf8_view* parent = nullptr;
         Iter it_begin;
@@ -1352,9 +1355,6 @@ private:
         Iter it_next;
 
         detail::impl_break_grapheme_state state{};
-
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "grapheme::utf8 view requires contiguous range");
 
         void iter_func_grapheme_utf8()
         {
@@ -1457,6 +1457,9 @@ private:
     template<class Iter, class Sent>
     class utf16
     {
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "grapheme::utf16 view requires contiguous range");
+
     private:
         utf16_view* parent = nullptr;
         Iter it_begin;
@@ -1464,9 +1467,6 @@ private:
         Iter it_next;
 
         detail::impl_break_grapheme_state state{};
-
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "grapheme::utf16 view requires contiguous range");
 
         void iter_func_grapheme_utf16()
         {
@@ -1573,6 +1573,9 @@ private:
     template<class Iter, class Sent>
     class utf8
     {
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "word::utf8 view requires contiguous range");
+
     private:
         utf8_view* parent = nullptr;
         Iter it_begin;
@@ -1582,9 +1585,6 @@ private:
         detail::type_codept next_word_prop = 0;
 
         detail::impl_break_word_state state{};
-
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "word::utf8 view requires contiguous range");
 
         void iter_func_word_utf8()
         {
@@ -1691,6 +1691,9 @@ private:
     template<class Iter, class Sent>
     class utf16
     {
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "word::utf16 view requires contiguous range");
+
     private:
         utf16_view* parent = nullptr;
         Iter it_begin;
@@ -1700,9 +1703,6 @@ private:
         detail::type_codept next_word_prop = 0;
 
         detail::impl_break_word_state state{};
-
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "word::utf16 view requires contiguous range");
 
         void iter_func_word_utf16()
         {
@@ -1813,6 +1813,9 @@ private:
     template<class Iter, class Sent>
     class utf8
     {
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "word_only::utf8 view requires contiguous range");
+
     private:
         utf8_view* parent = nullptr;
         Iter it_begin;
@@ -1822,9 +1825,6 @@ private:
         detail::type_codept next_word_prop = 0;
 
         detail::impl_break_word_state state{};
-
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "word_only::utf8 view requires contiguous range");
 
         void iter_func_word_only_utf8()
         {
@@ -1939,6 +1939,9 @@ private:
     template<class Iter, class Sent>
     class utf16
     {
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
+                      "word_only::utf16 view requires contiguous range");
+
     private:
         utf16_view* parent = nullptr;
         Iter it_begin;
@@ -1948,9 +1951,6 @@ private:
         detail::type_codept next_word_prop = 0;
 
         detail::impl_break_word_state state{};
-
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "word_only::utf16 view requires contiguous range");
 
         void iter_func_word_only_utf16()
         {
