@@ -89,26 +89,19 @@ using range_value_t = iter_value_t<iterator_t<Range>>; // std::ranges::range_val
 
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class Iter>
-using iter_tag_random = typename std::iterator_traits<Iter>::iterator_category;
-template<class Iter>
-using iter_tag_bidi = typename std::iterator_traits<Iter>::iterator_category;
-template<class Iter>
-using iter_tag_bidi_only = typename std::iterator_traits<Iter>::iterator_category;
+using iter_tag = typename std::iterator_traits<Iter>::iterator_category;
 #else
 template<class Iter>
-using iter_tag_random = typename std::conditional_t<std::random_access_iterator<Iter>,
+using iter_tag = typename std::conditional_t<std::random_access_iterator<Iter>,
     std::random_access_iterator_tag, std::conditional_t<std::bidirectional_iterator<Iter>,
     std::bidirectional_iterator_tag, std::conditional_t<std::forward_iterator<Iter>,
     std::forward_iterator_tag, std::input_iterator_tag>>>;
 
-template<class Iter>
-using iter_tag_bidi = typename std::conditional_t<std::bidirectional_iterator<Iter>,
-    std::bidirectional_iterator_tag, std::conditional_t<std::forward_iterator<Iter>,
-    std::forward_iterator_tag, std::input_iterator_tag>>;
-
-template<class Iter>
-using iter_tag_bidi_only = typename std::conditional_t<std::bidirectional_iterator<Iter>,
-    std::bidirectional_iterator_tag, std::input_iterator_tag>;
+// TODO: The lowest we need should be bidi but blocked by utf8, utf16 view operator-()
+//template<class Iter>
+//using iter_tag = typename std::conditional_t<std::bidirectional_iterator<Iter>,
+//    std::bidirectional_iterator_tag, std::conditional_t<std::forward_iterator<Iter>,
+//    std::forward_iterator_tag, std::input_iterator_tag>>;
 #endif
 
 // Use sa_* types only for static_assert
@@ -169,7 +162,7 @@ private:
         // Error is only used for tests, do not document it
         static_assert(Error == detail::impl_iter_error || Error == detail::impl_iter_replacement);
 
-        using iter_tag = detail::ranges::iter_tag_random<Iter>;
+        using iter_tag = detail::ranges::iter_tag<Iter>;
 
         using is_random_access_or_better = std::is_convertible<iter_tag, std::random_access_iterator_tag>;
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
@@ -296,7 +289,7 @@ private:
         // Error is only used for tests, do not document it
         static_assert(Error == detail::impl_iter_error || Error == detail::impl_iter_replacement);
 
-        using iter_tag = detail::ranges::iter_tag_random<Iter>;
+        using iter_tag = detail::ranges::iter_tag<Iter>;
 
         using is_random_access_or_better = std::is_convertible<iter_tag, std::random_access_iterator_tag>;
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
@@ -550,7 +543,7 @@ private:
         filter_view* parent = nullptr;
         Iter it_pos;
 
-        using iter_tag = detail::ranges::iter_tag_bidi<Iter>;
+        using iter_tag = detail::ranges::iter_tag<Iter>;
 
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
@@ -664,7 +657,7 @@ private:
         transform_view* parent = nullptr;
         Iter it_pos;
 
-        using iter_tag = detail::ranges::iter_tag_bidi<Iter>;
+        using iter_tag = detail::ranges::iter_tag<Iter>;
 
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
@@ -766,7 +759,7 @@ private:
         Iter it_pos;
         std::size_t count = 0;
 
-        using iter_tag = detail::ranges::iter_tag_bidi<Iter>;
+        using iter_tag = detail::ranges::iter_tag<Iter>;
 
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
@@ -869,7 +862,7 @@ private:
         drop_view* parent = nullptr;
         Iter it_pos;
 
-        using iter_tag = detail::ranges::iter_tag_bidi<Iter>;
+        using iter_tag = detail::ranges::iter_tag<Iter>;
 
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
