@@ -1356,13 +1356,6 @@ private:
         static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
                       "grapheme::utf8 view requires contiguous range");
 
-    public:
-        using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
-        using pointer           = void;
-        using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
-
         void iter_func_grapheme_utf8()
         {
             it_begin = it_pos;
@@ -1379,6 +1372,13 @@ private:
             if (it_next == std::end(parent->range))
                 it_pos = it_next;
         }
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
+        using pointer           = void;
+        using reference         = value_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         utf8() = default;
         explicit utf8(utf8_view& p, Iter begin, Sent end)
@@ -1468,13 +1468,6 @@ private:
         static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
                       "grapheme::utf16 view requires contiguous range");
 
-    public:
-        using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
-        using pointer           = void;
-        using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
-
         void iter_func_grapheme_utf16()
         {
             it_begin = it_pos;
@@ -1491,6 +1484,13 @@ private:
             if (it_next == std::end(parent->range))
                 it_pos = it_next;
         }
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
+        using pointer           = void;
+        using reference         = value_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         utf16() = default;
         explicit utf16(utf16_view& p, Iter begin, Sent end)
@@ -1586,13 +1586,6 @@ private:
         static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
                       "word::utf8 view requires contiguous range");
 
-    public:
-        using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
-        using pointer           = void;
-        using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
-
         void iter_func_word_utf8()
         {
             it_begin = it_pos;
@@ -1613,6 +1606,13 @@ private:
                 word_prop = next_word_prop;
             }
         }
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
+        using pointer           = void;
+        using reference         = value_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         utf8() = default;
         explicit utf8(utf8_view& p, Iter begin, Sent end)
@@ -1704,13 +1704,6 @@ private:
         static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
                       "word::utf16 view requires contiguous range");
 
-    public:
-        using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
-        using pointer           = void;
-        using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
-
         void iter_func_word_utf16()
         {
             it_begin = it_pos;
@@ -1731,6 +1724,13 @@ private:
                 word_prop = next_word_prop;
             }
         }
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
+        using pointer           = void;
+        using reference         = value_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         utf16() = default;
         explicit utf16(utf16_view& p, Iter begin, Sent end)
@@ -1826,13 +1826,6 @@ private:
         static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
                       "word_only::utf8 view requires contiguous range");
 
-    public:
-        using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
-        using pointer           = void;
-        using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
-
         void iter_func_word_only_utf8()
         {
             it_begin = it_pos;
@@ -1861,6 +1854,13 @@ private:
                     it_begin = it_next;
             }
         }
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
+        using pointer           = void;
+        using reference         = value_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         utf8() = default;
         explicit utf8(utf8_view& p, Iter begin, Sent end)
@@ -1952,13 +1952,6 @@ private:
         static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
                       "word_only::utf16 view requires contiguous range");
 
-    public:
-        using iterator_category = std::forward_iterator_tag;
-        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
-        using pointer           = void;
-        using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
-
         void iter_func_word_only_utf16()
         {
             it_begin = it_pos;
@@ -1987,6 +1980,13 @@ private:
                     it_begin = it_next;
             }
         }
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
+        using pointer           = void;
+        using reference         = value_type;
+        using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         utf16() = default;
         explicit utf16(utf16_view& p, Iter begin, Sent end)
