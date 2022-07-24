@@ -1341,6 +1341,7 @@ namespace grapheme {
 template<class Range>
 class utf8_view : public detail::ranges::view_base
 {
+private:
     template<class Iter, class Sent>
     class utf8
     {
@@ -1452,6 +1453,7 @@ public:
 template<class Range>
 class utf16_view : public detail::ranges::view_base
 {
+private:
     template<class Iter, class Sent>
     class utf16
     {
@@ -1567,6 +1569,7 @@ namespace word {
 template<class Range>
 class utf8_view : public detail::ranges::view_base
 {
+private:
     template<class Iter, class Sent>
     class utf8
     {
@@ -1684,6 +1687,7 @@ public:
 template<class Range>
 class utf16_view : public detail::ranges::view_base
 {
+private:
     template<class Iter, class Sent>
     class utf16
     {
@@ -1805,6 +1809,7 @@ namespace word_only {
 template<class Range>
 class utf8_view : public detail::ranges::view_base
 {
+private:
     template<class Iter, class Sent>
     class utf8
     {
@@ -1930,6 +1935,7 @@ public:
 template<class Range>
 class utf16_view : public detail::ranges::view_base
 {
+private:
     template<class Iter, class Sent>
     class utf16
     {
