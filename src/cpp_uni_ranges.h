@@ -1345,8 +1345,10 @@ private:
     template<class Iter, class Sent>
     class utf8
     {
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "grapheme::utf8 view requires contiguous range");
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
+                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      !std::is_same_v<detail::ranges::iter_value_t<Iter>, bool>,
+                      "grapheme::utf8 view requires contiguous UTF-8 range");
 
     private:
         utf8_view* parent = nullptr;
@@ -1457,8 +1459,10 @@ private:
     template<class Iter, class Sent>
     class utf16
     {
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "grapheme::utf16 view requires contiguous range");
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
+                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t),
+                      "grapheme::utf16 view requires contiguous UTF-16 range");
 
     private:
         utf16_view* parent = nullptr;
@@ -1573,8 +1577,10 @@ private:
     template<class Iter, class Sent>
     class utf8
     {
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "word::utf8 view requires contiguous range");
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
+                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      !std::is_same_v<detail::ranges::iter_value_t<Iter>, bool>,
+                      "word::utf8 view requires contiguous UTF-8 range");
 
     private:
         utf8_view* parent = nullptr;
@@ -1691,8 +1697,10 @@ private:
     template<class Iter, class Sent>
     class utf16
     {
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "word::utf16 view requires contiguous range");
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
+                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t),
+                      "word::utf16 view requires contiguous UTF-16 range");
 
     private:
         utf16_view* parent = nullptr;
@@ -1813,8 +1821,10 @@ private:
     template<class Iter, class Sent>
     class utf8
     {
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "word_only::utf8 view requires contiguous range");
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
+                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      !std::is_same_v<detail::ranges::iter_value_t<Iter>, bool>,
+                      "word_only::utf8 view requires contiguous UTF-8 range");
 
     private:
         utf8_view* parent = nullptr;
@@ -1939,8 +1949,10 @@ private:
     template<class Iter, class Sent>
     class utf16
     {
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value,
-                      "word_only::utf16 view requires contiguous range");
+        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
+                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t),
+                      "word_only::utf16 view requires contiguous UTF-16 range");
 
     private:
         utf16_view* parent = nullptr;
