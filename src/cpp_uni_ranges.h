@@ -92,16 +92,15 @@ template<class Iter>
 using iter_tag = typename std::iterator_traits<Iter>::iterator_category;
 #else
 template<class Iter>
-using iter_tag = typename std::conditional_t<std::random_access_iterator<Iter>,
-    std::random_access_iterator_tag, std::conditional_t<std::bidirectional_iterator<Iter>,
+using iter_tag = typename std::conditional_t<std::bidirectional_iterator<Iter>,
     std::bidirectional_iterator_tag, std::conditional_t<std::forward_iterator<Iter>,
-    std::forward_iterator_tag, std::input_iterator_tag>>>;
+    std::forward_iterator_tag, std::input_iterator_tag>>;
 
-// TODO: The lowest we need should be bidi but blocked by utf8, utf16 view operator-()
 //template<class Iter>
-//using iter_tag = typename std::conditional_t<std::bidirectional_iterator<Iter>,
+//using iter_tag = typename std::conditional_t<std::random_access_iterator<Iter>,
+//    std::random_access_iterator_tag, std::conditional_t<std::bidirectional_iterator<Iter>,
 //    std::bidirectional_iterator_tag, std::conditional_t<std::forward_iterator<Iter>,
-//    std::forward_iterator_tag, std::input_iterator_tag>>;
+//    std::forward_iterator_tag, std::input_iterator_tag>>>;
 #endif
 
 // Use sa_* types only for static_assert
