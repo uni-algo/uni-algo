@@ -968,7 +968,8 @@ private:
     template<class Iter, class Sent>
     class nfc
     {
-        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char32_t),
                       "norm::nfc view requires char32_t range");
 
     private:
@@ -1060,7 +1061,8 @@ private:
     template<class Iter, class Sent>
     class nfd
     {
-        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char32_t),
                       "norm::nfd view requires char32_t range");
 
     private:
@@ -1152,7 +1154,8 @@ private:
     template<class Iter, class Sent>
     class nfkc
     {
-        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char32_t),
                       "norm::nfkc view requires char32_t range");
 
     private:
@@ -1244,7 +1247,8 @@ private:
     template<class Iter, class Sent>
     class nfkd
     {
-        static_assert(std::is_same_v<detail::ranges::iter_value_t<Iter>, char32_t>,
+        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
+                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char32_t),
                       "norm::nfkd view requires char32_t range");
 
     private:
@@ -2461,11 +2465,11 @@ struct adaptor_closure_to_utf8
         using result_v = uni::detail::ranges::range_value_t<Result>;
 
         // Technically we want this static_assert for range_v:
-        // static_assert(std::is_same_v<range_v, char32_t>, "to_utf8 range requires char32_t range");
+        // static_assert(std::is_same_v<range_v, char32_t>);
         // but it makes it a bit clanky to use with transform view so use more permissive static_assert
         // See: test/test_ranges.h -> test_ranges()
-        static_assert(std::is_integral_v<range_v> && !std::is_same_v<range_v, bool>,
-                      "to_utf8 range requires integral range");
+        static_assert(std::is_integral_v<range_v> && sizeof(range_v) >= sizeof(char32_t),
+                      "to_utf8 range requires char32_t range");
         static_assert(std::is_integral_v<result_v> && !std::is_same_v<result_v, bool>,
                       "to_utf8 result type cannot store UTF-8");
 
@@ -2491,9 +2495,9 @@ struct adaptor_closure_to_utf16
         using result_v = uni::detail::ranges::range_value_t<Result>;
 
         // See comments in to_utf8 adaptor above
-        // static_assert(std::is_same_v<base_iterator_v, char32_t>, "to_utf16 range requires char32_t range");
-        static_assert(std::is_integral_v<range_v> && !std::is_same_v<range_v, bool>,
-                      "to_utf16 range requires integral range");
+        // static_assert(std::is_same_v<range_v, char32_t>);
+        static_assert(std::is_integral_v<range_v> && sizeof(range_v) >= sizeof(char32_t),
+                      "to_utf16 range requires char32_t range");
         static_assert(std::is_integral_v<result_v> && sizeof(result_v) >= sizeof(char16_t),
                       "to_utf16 result type cannot store UTF-16");
 
