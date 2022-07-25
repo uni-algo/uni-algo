@@ -187,6 +187,8 @@ private:
         //constexpr const Iter& base() const & noexcept { return it_pos; }
         //constexpr Iter base() && { return std::move(it_pos); }
         constexpr reference operator*() const noexcept { return codepoint; }
+        constexpr Iter begin() const noexcept { return it_pos; }
+        constexpr Iter end() const noexcept { return it_next; }
         constexpr utf8& operator++()
         {
 #ifdef UNI_ALGO_LOG_CPP_ITER
@@ -314,6 +316,8 @@ private:
         //constexpr const Iter& base() const & noexcept { return it_pos; }
         //constexpr Iter base() && { return std::move(it_pos); }
         constexpr reference operator*() const noexcept { return codepoint; }
+        constexpr Iter begin() const noexcept { return it_pos; }
+        constexpr Iter end() const noexcept { return it_next; }
         constexpr utf16& operator++()
         {
 #ifdef UNI_ALGO_LOG_CPP_ITER
