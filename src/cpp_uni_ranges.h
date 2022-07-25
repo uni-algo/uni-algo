@@ -164,7 +164,6 @@ private:
 
         using iter_tag = detail::ranges::iter_tag<Iter>;
 
-        using is_random_access_or_better = std::is_convertible<iter_tag, std::random_access_iterator_tag>;
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
 
@@ -225,8 +224,6 @@ private:
             operator--();
             return tmp;
         }
-        template<class T = difference_type> typename std::enable_if_t<is_random_access_or_better::value, T>
-        friend constexpr operator-(const utf8& x, const utf8& y) { return x.it_pos - y.it_pos; } // Use for tests, do not document it
         friend constexpr bool operator==(const utf8& x, const utf8& y) { return x.it_pos == y.it_pos; }
         friend constexpr bool operator!=(const utf8& x, const utf8& y) { return x.it_pos != y.it_pos; }
     private:
@@ -293,7 +290,6 @@ private:
 
         using iter_tag = detail::ranges::iter_tag<Iter>;
 
-        using is_random_access_or_better = std::is_convertible<iter_tag, std::random_access_iterator_tag>;
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
 
@@ -354,8 +350,6 @@ private:
             operator--();
             return tmp;
         }
-        template<class T = difference_type> typename std::enable_if_t<is_random_access_or_better::value, T>
-        friend constexpr operator-(const utf16& x, const utf16& y) { return x.it_pos - y.it_pos; } // Use for tests, do not document it
         friend constexpr bool operator==(const utf16& x, const utf16& y) { return x.it_pos == y.it_pos; }
         friend constexpr bool operator!=(const utf16& x, const utf16& y) { return x.it_pos != y.it_pos; }
     private:
