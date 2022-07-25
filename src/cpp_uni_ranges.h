@@ -148,8 +148,7 @@ private:
     template<class Iter, class Sent>
     class utf8
     {
-        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      !std::is_same_v<detail::ranges::iter_value_t<Iter>, bool>,
+        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>>,
                       "utf8 view requires integral UTF-8 range");
 
         // Error is only used for tests, do not document it
@@ -1347,8 +1346,7 @@ private:
     class utf8
     {
         static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
-                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      !std::is_same_v<detail::ranges::iter_value_t<Iter>, bool>,
+                      std::is_integral_v<detail::ranges::iter_value_t<Iter>>,
                       "grapheme::utf8 view requires contiguous UTF-8 range");
 
     private:
@@ -1579,8 +1577,7 @@ private:
     class utf8
     {
         static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
-                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      !std::is_same_v<detail::ranges::iter_value_t<Iter>, bool>,
+                      std::is_integral_v<detail::ranges::iter_value_t<Iter>>,
                       "word::utf8 view requires contiguous UTF-8 range");
 
     private:
@@ -1823,8 +1820,7 @@ private:
     class utf8
     {
         static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
-                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      !std::is_same_v<detail::ranges::iter_value_t<Iter>, bool>,
+                      std::is_integral_v<detail::ranges::iter_value_t<Iter>>,
                       "word_only::utf8 view requires contiguous UTF-8 range");
 
     private:
@@ -2470,7 +2466,7 @@ struct adaptor_closure_to_utf8
         // See: test/test_ranges.h -> test_ranges()
         static_assert(std::is_integral_v<range_v> && sizeof(range_v) >= sizeof(char32_t),
                       "to_utf8 range requires char32_t range");
-        static_assert(std::is_integral_v<result_v> && !std::is_same_v<result_v, bool>,
+        static_assert(std::is_integral_v<result_v>,
                       "to_utf8 result type cannot store UTF-8");
 
         Result result;
