@@ -121,6 +121,8 @@ namespace norm {
 template<typename UTF8>
 std::basic_string<UTF8> utf8_nfc(std::basic_string_view<UTF8> source)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
     return detail::t_norm<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
             detail::impl_x_utf8_nfc, detail::impl_utf8_nfc>(source);
 }
@@ -128,6 +130,8 @@ std::basic_string<UTF8> utf8_nfc(std::basic_string_view<UTF8> source)
 template<typename UTF8>
 std::basic_string<UTF8> utf8_nfd(std::basic_string_view<UTF8> source)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
     return detail::t_norm<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
             detail::impl_x_utf8_nfd, detail::impl_utf8_nfd>(source);
 }
@@ -136,6 +140,8 @@ std::basic_string<UTF8> utf8_nfd(std::basic_string_view<UTF8> source)
 template<typename UTF8>
 std::basic_string<UTF8> utf8_nfkc(std::basic_string_view<UTF8> source)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
     return detail::t_norm2<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
             detail::impl_utf8_nfkc>(source);
 }
@@ -143,6 +149,8 @@ std::basic_string<UTF8> utf8_nfkc(std::basic_string_view<UTF8> source)
 template<typename UTF8>
 std::basic_string<UTF8> utf8_nfkd(std::basic_string_view<UTF8> source)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
     return detail::t_norm2<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
             detail::impl_utf8_nfkd>(source);
 }
@@ -152,6 +160,8 @@ std::basic_string<UTF8> utf8_nfkd(std::basic_string_view<UTF8> source)
 template<typename UTF8>
 std::basic_string<UTF8> utf8_unaccent(std::basic_string_view<UTF8> source)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
     return detail::t_norm<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
             detail::impl_x_utf8_unaccent, detail::impl_utf8_unaccent>(source);
 }
@@ -160,7 +170,7 @@ std::basic_string<UTF8> utf8_unaccent(std::basic_string_view<UTF8> source)
 template<typename UTF16>
 std::basic_string<UTF16> utf16_nfc(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_norm<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
             detail::impl_x_utf16_nfc, detail::impl_utf16_nfc>(source);
@@ -169,7 +179,7 @@ std::basic_string<UTF16> utf16_nfc(std::basic_string_view<UTF16> source)
 template<typename UTF16>
 std::basic_string<UTF16> utf16_nfd(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_norm<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
             detail::impl_x_utf16_nfd, detail::impl_utf16_nfd>(source);
@@ -179,7 +189,7 @@ std::basic_string<UTF16> utf16_nfd(std::basic_string_view<UTF16> source)
 template<typename UTF16>
 std::basic_string<UTF16> utf16_nfkc(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_norm2<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
             detail::impl_utf16_nfkc>(source);
@@ -188,7 +198,7 @@ std::basic_string<UTF16> utf16_nfkc(std::basic_string_view<UTF16> source)
 template<typename UTF16>
 std::basic_string<UTF16> utf16_nfkd(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_norm2<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
             detail::impl_utf16_nfkd>(source);
@@ -199,7 +209,7 @@ std::basic_string<UTF16> utf16_nfkd(std::basic_string_view<UTF16> source)
 template<typename UTF16>
 std::basic_string<UTF16> utf16_unaccent(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_norm<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
             detail::impl_x_utf16_unaccent, detail::impl_utf16_unaccent>(source);
@@ -209,6 +219,8 @@ std::basic_string<UTF16> utf16_unaccent(std::basic_string_view<UTF16> source)
 template<typename UTF8>
 bool utf8_is_nfc(std::basic_string_view<UTF8> source)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf8_is_nfc(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
 #else
@@ -219,6 +231,8 @@ bool utf8_is_nfc(std::basic_string_view<UTF8> source)
 template<typename UTF8>
 bool utf8_is_nfd(std::basic_string_view<UTF8> source)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf8_is_nfd(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
 #else
@@ -230,6 +244,8 @@ bool utf8_is_nfd(std::basic_string_view<UTF8> source)
 template<typename UTF8>
 bool utf8_is_nfkc(std::basic_string_view<UTF8> source)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf8_is_nfkc(source.data(), source.data() + source.size())  == detail::impl_norm_is_yes;
 #else
@@ -240,6 +256,8 @@ bool utf8_is_nfkc(std::basic_string_view<UTF8> source)
 template<typename UTF8>
 bool utf8_is_nfkd(std::basic_string_view<UTF8> source)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf8_is_nfkd(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
 #else
@@ -251,7 +269,7 @@ bool utf8_is_nfkd(std::basic_string_view<UTF8> source)
 template<typename UTF16>
 bool utf16_is_nfc(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf16_is_nfc(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
@@ -263,7 +281,7 @@ bool utf16_is_nfc(std::basic_string_view<UTF16> source)
 template<typename UTF16>
 bool utf16_is_nfd(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf16_is_nfd(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
@@ -276,7 +294,7 @@ bool utf16_is_nfd(std::basic_string_view<UTF16> source)
 template<typename UTF16>
 bool utf16_is_nfkc(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf16_is_nfkc(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
@@ -288,7 +306,7 @@ bool utf16_is_nfkc(std::basic_string_view<UTF16> source)
 template<typename UTF16>
 bool utf16_is_nfkd(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf16_is_nfkd(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;

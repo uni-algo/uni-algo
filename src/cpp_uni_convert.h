@@ -113,7 +113,8 @@ DST t_utf(const SRC& source, uni::error& error)
 template<typename UTF8, typename UTF16>
 std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_utf<std::basic_string<UTF16>, std::basic_string_view<UTF8>,
             detail::impl_x_utf8to16, detail::impl_utf8to16>(source);
@@ -121,7 +122,8 @@ std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source)
 template<typename UTF16, typename UTF8>
 std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_utf<std::basic_string<UTF8>, std::basic_string_view<UTF16>,
             detail::impl_x_utf16to8, detail::impl_utf16to8>(source);
@@ -129,7 +131,8 @@ std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source)
 template<typename UTF8, typename UTF32>
 std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source)
 {
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
     return detail::t_utf<std::basic_string<UTF32>, std::basic_string_view<UTF8>,
             detail::impl_x_utf8to32, detail::impl_utf8to32>(source);
@@ -137,7 +140,8 @@ std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source)
 template<typename UTF32, typename UTF8>
 std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> source)
 {
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
     return detail::t_utf<std::basic_string<UTF8>, std::basic_string_view<UTF32>,
             detail::impl_x_utf32to8, detail::impl_utf32to8>(source);
@@ -145,8 +149,8 @@ std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> source)
 template<typename UTF16, typename UTF32>
 std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
     return detail::t_utf<std::basic_string<UTF32>, std::basic_string_view<UTF16>,
             detail::impl_x_utf16to32, detail::impl_utf16to32>(source);
@@ -154,8 +158,8 @@ std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source)
 template<typename UTF32, typename UTF16>
 std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
     return detail::t_utf<std::basic_string<UTF16>, std::basic_string_view<UTF32>,
             detail::impl_x_utf32to16, detail::impl_utf32to16>(source);
@@ -231,7 +235,8 @@ namespace strict {
 template<typename UTF8, typename UTF16>
 std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source, uni::error& error)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_utf<std::basic_string<UTF16>, std::basic_string_view<UTF8>,
             detail::impl_x_utf8to16, detail::impl_utf8to16>(source, error);
@@ -239,7 +244,8 @@ std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source, uni::erro
 template<typename UTF16, typename UTF8>
 std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source, uni::error& error)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_utf<std::basic_string<UTF8>, std::basic_string_view<UTF16>,
             detail::impl_x_utf16to8, detail::impl_utf16to8>(source, error);
@@ -247,7 +253,8 @@ std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source, uni::erro
 template<typename UTF8, typename UTF32>
 std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source, uni::error& error)
 {
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
     return detail::t_utf<std::basic_string<UTF32>, std::basic_string_view<UTF8>,
             detail::impl_x_utf8to32, detail::impl_utf8to32>(source, error);
@@ -255,7 +262,8 @@ std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source, uni::erro
 template<typename UTF32, typename UTF8>
 std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> source, uni::error& error)
 {
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
     return detail::t_utf<std::basic_string<UTF8>, std::basic_string_view<UTF32>,
             detail::impl_x_utf32to8, detail::impl_utf32to8>(source, error);
@@ -263,8 +271,8 @@ std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> source, uni::erro
 template<typename UTF16, typename UTF32>
 std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source, uni::error& error)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
     return detail::t_utf<std::basic_string<UTF32>, std::basic_string_view<UTF16>,
             detail::impl_x_utf16to32, detail::impl_utf16to32>(source, error);
@@ -272,8 +280,8 @@ std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source, uni::er
 template<typename UTF32, typename UTF16>
 std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source, uni::error& error)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
     return detail::t_utf<std::basic_string<UTF16>, std::basic_string_view<UTF32>,
             detail::impl_x_utf32to16, detail::impl_utf32to16>(source, error);
