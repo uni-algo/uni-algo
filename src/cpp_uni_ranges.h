@@ -2471,8 +2471,8 @@ struct adaptor_closure_to_utf8
 
         Result result;
         std::back_insert_iterator output{result};
-        for (char32_t c : r)
-            detail::impl_utf8_output(c, output);
+        for (auto c : r)
+            detail::impl_utf8_output(static_cast<char32_t>(c), output);
         return result;
     }
 };
@@ -2499,8 +2499,8 @@ struct adaptor_closure_to_utf16
 
         Result result;
         std::back_insert_iterator output{result};
-        for (char32_t c : r)
-            detail::impl_utf16_output(c, output);
+        for (auto c : r)
+            detail::impl_utf16_output(static_cast<char32_t>(c), output);
         return result;
     }
 };
