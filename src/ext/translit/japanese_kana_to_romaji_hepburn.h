@@ -12,8 +12,8 @@
 #include "../../cpp_uni_iterator.h"
 //#include "../../cpp_uni_norm.h"
 
-// If it fails a compiler messed up the encoding of this file
-// It the compiler is MSVC then /utf-8 command line option must be used
+// If it fails a compiler messed up the UTF-8 encoding of this file.
+// If the compiler is MSVC then /utf-8 command line option must be used.
 static_assert(U'㋡' == 0x32E1);
 
 namespace uni::translit {

@@ -1,12 +1,12 @@
-﻿/* Test for Unicode Algorithms Implementation.
+/* Test for Unicode Algorithms Implementation.
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
 #include "../src/ext/translit/macedonian_to_latin_docs.h"
 #include "../src/ext/translit/japanese_kana_to_romaji_hepburn.h"
 
-// If it fails a compiler messed up the encoding of this file
-// It the compiler is MSVC then /utf-8 command line option must be used
+// If it fails a compiler messed up the UTF-8 encoding of this file.
+// If the compiler is MSVC then /utf-8 command line option must be used.
 static_assert(U'㋡' == 0x32E1);
 
 void test_translit_macedonian_to_latin_docs()
