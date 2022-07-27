@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "../../cpp_uni_iterator.h"
+#include "../../cpp_uni_ranges.h"
 //#include "../../cpp_uni_norm.h"
 
 // If it fails a compiler messed up the UTF-8 encoding of this file.
@@ -19,8 +19,8 @@ static_assert(U'㋡' == 0x32E1);
 
 namespace uni::translit {
 
-// Data and all C++ crap inside the class, the actual translit function at the end of the file
-// Use the same design for all transliterators
+// Data and all C++ stuff inside the class, the actual translit function at the end of the file.
+// Use the same design for all transliterators.
 class macedonian_to_latin_docs
 {
 private:
@@ -65,8 +65,8 @@ private:
     U'ј',U'к',U'л',U'љ',U'м',U'н',U'њ',U'о',U'п',U'р',U'с',
     U'т',U'ќ',U'у',U'ф',U'х',U'ц',U'ч',U'џ',U'ш'};
 
-    template<class Iter, class Sent, class Dest>
-    void translit(Iter first, Sent last, Dest result);
+    template<class Range>
+    auto translit(Range&& range);
 
 public:
     macedonian_to_latin_docs() = default;
@@ -74,14 +74,8 @@ public:
     template<typename UTF8>
     std::basic_string<UTF8> utf8(std::basic_string_view<UTF8> source)
     {
-        uni::iter::utf8 input{source.cbegin(), source.cend()};
-
-        std::basic_string<UTF8> result;
-        result.reserve(source.size());
-
-        uni::iter::output::utf8 output{std::back_inserter(result)};
-
-        translit(input, uni::sentinel, output);
+        // TODO: Find a way to result.reserve(source.size())
+        auto result = translit(uni::ranges::utf8_view{source}) | uni::ranges::to_utf8<std::basic_string<UTF8>>();
 
         result.shrink_to_fit();
         return result;
@@ -89,14 +83,8 @@ public:
     template<typename UTF16>
     std::basic_string<UTF16> utf16(std::basic_string_view<UTF16> source)
     {
-        uni::iter::utf16 input{source.cbegin(), source.cend()};
-
-        std::basic_string<UTF16> result;
-        result.reserve(source.size());
-
-        uni::iter::output::utf16 output{std::back_inserter(result)};
-
-        translit(input, uni::sentinel, output);
+        // TODO: Find a way to result.reserve(source.size())
+        auto result = translit(uni::ranges::utf16_view{source}) | uni::ranges::to_utf16<std::basic_string<UTF16>>();
 
         result.shrink_to_fit();
         return result;
@@ -108,17 +96,18 @@ public:
 #endif
 };
 
-template<class Iter, class Sent, class Dest>
-void macedonian_to_latin_docs::translit(Iter first, Sent last, Dest result)
+template<class Range>
+auto macedonian_to_latin_docs::translit(Range&& range)
 {
     // https://en.wikipedia.org/wiki/Romanization_of_Macedonian
+    // Official Documents/Cadastre rules.
 
-    // Translit iterator is very powerfull it can do everything that
-    // uni::iter:func::filter and uni::iter:func::transform can do
+    // Translit view is very powerfull it can do everything that
+    // uni::ranges::filter_view and uni::ranges::transform_view can do
     // and much more but it can be dangerous for example it's possible
     // to cause an endless loop when it used improperly so it's important
     // what value must be returned in the function below.
-    // This is the reason why the iterator is not available for a user.
+    // This is the reason why the view is not available for a user.
     // Note the function have only one parameter - buffer, you can do whatever
     // you want with the buffer just make sure you return the proper value.
 
@@ -126,7 +115,7 @@ void macedonian_to_latin_docs::translit(Iter first, Sent last, Dest result)
     {
         // Compose ѓ/Ѓ and ќ/Ќ first.
         // In Macedonian there are only 4 cases when letters can be decomposed
-        // we can handle it like this so we don't need to use NFC iterator
+        // we can handle it like this so we don't need to use NFC view
         // it will be faster, even though it won't work in some corner cases
         // but it doesn't matter much for the transliteration.
         if (buffer.size() > 1)
@@ -209,25 +198,23 @@ void macedonian_to_latin_docs::translit(Iter first, Sent last, Dest result)
         // so you must return 2 here to skip both "a".
     };
 
-    // Note that we initialize the iterator with buffer size 2
+    // Note that we initialize the view with buffer size 2
     // because it is enought to translit Macedonian to Latin
     // the smaller the buffer the faster it works.
-    uni::detail::iter::translit func_begin(func, 2, first, last);
+    return uni::detail::ranges::translit_view{range, func, 2};
 
-    // It is possible to use NFC iterator instead of our compose code above.
+    // It is possible to use NFC view instead of our compose code above.
     // it will make it slower but it can handle properly some very rare corner cases.
-    //uni::iter::norm::nfc nfc_begin(first, last);
-    //uni::detail::iter::translit func_begin(func, 2, nfc_begin, uni::sentinel);
+    // return uni::detail::ranges::translit_view{uni::ranges::norm::nfc_view{range}, func, 2};
 
-    // It is also possible to output NFC normalized string if needed. In this case we need NFC iterator after our func.
-    // We can use 2 NFC iterators to get rid of our compose code and output in NFC. Such approach will provide the best possible result.
-    // Note that nfc_begin2 must be used instead of func_begin in for loop below for this to work properly.
-    //uni::iter::norm::nfc nfc_begin1(first, last);
-    //uni::detail::iter::translit func_begin(func, 2, nfc_begin1, uni::sentinel);
-    //uni::iter::norm::nfc nfc_begin2(func_begin, uni::sentinel);
+    // It is also possible to output NFC normalized data if needed. In this case we need NFC view after our func.
+    // We can use 2 NFC views to get rid of our compose code and output in NFC.
+    // Such approach will provide the best possible result.
+    // return uni::ranges::norm::nfc_view{uni::detail::ranges::translit_view{uni::ranges::norm::nfc_view{range}, func, 2}};
 
-    for (auto it = func_begin; it != uni::sentinel; ++it)
-        *result++ = *it;
+    // Note that we use views from uni::ranges instead of adaptors from uni::views
+    // because translit view is internal and doesn't have view adaptor
+    // and we want to maximize the compilation speed.
 }
 
 } // namespace uni::translit

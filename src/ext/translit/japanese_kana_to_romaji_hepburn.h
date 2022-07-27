@@ -9,8 +9,7 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "../../cpp_uni_iterator.h"
-//#include "../../cpp_uni_norm.h"
+#include "../../cpp_uni_ranges.h"
 
 // If it fails a compiler messed up the UTF-8 encoding of this file.
 // If the compiler is MSVC then /utf-8 command line option must be used.
@@ -18,8 +17,8 @@ static_assert(U'㋡' == 0x32E1);
 
 namespace uni::translit {
 
-// Data and all C++ crap inside the class, the actual translit function at the end of the file
-// Use the same design for all transliterators
+// Data and all C++ stuff inside the class, the actual translit function at the end of the file.
+// Use the same design for all transliterators.
 class japanese_kana_to_romaji_hepburn
 {
 private:
@@ -151,8 +150,13 @@ private:
     {U"ぴゅ",U"pyu"},{U"ピュ",U"pyu"},
     {U"ぴょ",U"pyo"},{U"ピョ",U"pyo"}};
 
-    template<class Iter, class Sent, class Dest>
-    void translit(Iter first, Sent last, Dest result);
+    bool is_vowel(char32_t c)
+    {
+        return c == U'a' || c == U'i' || c == U'u' || c == U'e' || c == U'o' || c == U'y';
+    }
+
+    template<class Range>
+    auto translit(Range&& range, bool& prev);
 
 public:
     japanese_kana_to_romaji_hepburn() = default;
@@ -160,14 +164,10 @@ public:
     template<typename UTF8>
     std::basic_string<UTF8> utf8(std::basic_string_view<UTF8> source)
     {
-        uni::iter::utf8 input{source.cbegin(), source.cend()};
+        bool prev = false;
 
-        std::basic_string<UTF8> result;
-        result.reserve(source.size());
-
-        uni::iter::output::utf8 output{std::back_inserter(result)};
-
-        translit(input, uni::sentinel, output);
+        // TODO: Find a way to result.reserve(source.size())
+        auto result = translit(uni::ranges::utf8_view{source}, prev) | uni::ranges::to_utf8<std::basic_string<UTF8>>();
 
         result.shrink_to_fit();
         return result;
@@ -175,14 +175,10 @@ public:
     template<typename UTF16>
     std::basic_string<UTF16> utf16(std::basic_string_view<UTF16> source)
     {
-        uni::iter::utf16 input{source.cbegin(), source.cend()};
+        bool prev = false;
 
-        std::basic_string<UTF16> result;
-        result.reserve(source.size());
-
-        uni::iter::output::utf16 output{std::back_inserter(result)};
-
-        translit(input, uni::sentinel, output);
+        // TODO: Find a way to result.reserve(source.size())
+        auto result = translit(uni::ranges::utf16_view{source}, prev) | uni::ranges::to_utf16<std::basic_string<UTF16>>();
 
         result.shrink_to_fit();
         return result;
@@ -194,8 +190,8 @@ public:
 #endif
 };
 
-template<class Iter, class Sent, class Dest>
-void japanese_kana_to_romaji_hepburn::translit(Iter first, Sent last, Dest result)
+template<class Range>
+auto japanese_kana_to_romaji_hepburn::translit(Range&& range, bool& prev)
 {
     // https://en.wikipedia.org/wiki/Hepburn_romanization#Features
     // https://en.wikipedia.org/wiki/Hepburn_romanization#Romanization_charts
@@ -203,20 +199,11 @@ void japanese_kana_to_romaji_hepburn::translit(Iter first, Sent last, Dest resul
 
     // See macedonian_to_latin_docs.h for details about translit iterator
 
-    // NFC is not needed for Kana but it guaranties that the result will be in NFC
-    // TODO: it doesn't guaranties anything NFC iter should be after translit iter to guaranty it
-    // actually NFC is not needed at all for Kana it just makes the algorithm slower for no reason
-    // TODO: clean this
-    //uni::iter::norm::nfc nfc_begin(first, last);
+    // Note that the algorithm needs additional bool variable prev but it cannot be stored
+    // in this translit function because it doesn't do any processing it just creates a view
+    // so any additional data must be stored outside where the processing is done.
 
-    auto is_vowel = [](char32_t c)
-    {
-        return c == U'a' ||  c == U'i' || c == U'u' || c == U'e' || c == U'o' || c == U'y';
-    };
-
-    bool prev = false;
-
-    auto func = [this, &prev, &is_vowel](std::u32string& buffer) -> std::size_t
+    auto func = [this, &prev](std::u32string& buffer) -> std::size_t
     {
         std::u32string_view view(buffer);
 
@@ -348,11 +335,7 @@ void japanese_kana_to_romaji_hepburn::translit(Iter first, Sent last, Dest resul
     };
 
     // The buffer size 3 is enough for the algorithm
-    //uni::iter::func::translit func_begin(func, 3, nfc_begin, uni::sentinel);
-    uni::detail::iter::translit func_begin(func, 3, first, last);
-
-    for (auto it = func_begin; it != uni::sentinel; ++it)
-        *result++ = *it;
+    return uni::detail::ranges::translit_view{range, func, 3};
 }
 
 } // namespace uni::translit
