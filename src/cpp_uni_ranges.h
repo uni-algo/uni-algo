@@ -159,7 +159,7 @@ private:
     private:
         utf8_view* parent = nullptr;
         Iter it_pos;
-        Iter it_next; // This makes the iterator FAT but no one ever pipe more than one utf8_view and the perf is better
+        Iter it_next;
         detail::type_codept codepoint = 0;
 
         using iter_tag = detail::ranges::iter_tag<Iter>;
@@ -172,7 +172,7 @@ private:
             std::bidirectional_iterator_tag, std::conditional_t<is_forward_or_better::value,
             std::forward_iterator_tag, std::input_iterator_tag>>;
         using value_type        = char32_t;
-        using pointer           = void; // pointer operator->() is not implemented
+        using pointer           = void;
         using reference         = char32_t;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
@@ -285,7 +285,7 @@ private:
     private:
         utf16_view* parent = nullptr;
         Iter it_pos;
-        Iter it_next; // This makes the iterator FAT but no one ever pipe more than one utf16_view and the perf is better
+        Iter it_next;
         detail::type_codept codepoint = 0;
 
         using iter_tag = detail::ranges::iter_tag<Iter>;
@@ -298,7 +298,7 @@ private:
             std::bidirectional_iterator_tag, std::conditional_t<is_forward_or_better::value,
             std::forward_iterator_tag, std::input_iterator_tag>>;
         using value_type        = char32_t;
-        using pointer           = void; // pointer operator->() is not implemented
+        using pointer           = void;
         using reference         = char32_t;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
@@ -2530,39 +2530,6 @@ template<class R>
 constexpr auto operator|(R&& r, const adaptor_word_only_utf16& a) { return a(std::forward<R>(r)); }
 #endif // UNI_ALGO_TEST_RANGES_BREAK
 
-#if 0
-/* TO_STRING */
-
-// https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1206r7.pdf
-
-struct adaptor_closure_to_string
-{
-    // TODO: clang -std=c++17 doesn't like constexpr here GCC/MSVC are fine
-    template<class R>
-    /*constexpr*/ auto operator()(R&& r) const
-    {
-        //using base_iterator_t = decltype(std::begin(std::declval<R&>())); // std::ranges::iterator_t<R>
-        //static_assert(std::is_same_v<typename std::iterator_traits<base_iterator_t>::value_type, char32_t>);
-
-        std::string result;
-        std::back_insert_iterator output{result};
-        for (char32_t c : r)
-            detail::codepoint_to_utf8(c, output);
-        return result;
-    }
-};
-// TODO: clang -std=c++17 doesn't like constexpr here GCC/MSVC are fine
-template<class R>
-/*constexpr*/ auto operator|(R&& r, const adaptor_closure_to_string& a) { return a(std::forward<R>(r)); }
-
-struct adaptor_to_string
-{
-    template<class R>
-    constexpr auto operator()(R&& r) const { return adaptor_closure_to_string{}(r); }
-    constexpr auto operator()() const { return adaptor_closure_to_string{}; }
-};
-#endif
-
 /* TO_UTF8 */
 
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1206r7.pdf
@@ -2743,7 +2710,6 @@ translit_view(Range&&, Func, std::size_t) -> translit_view<uni::views::all_t<Ran
 
 namespace ranges {
 
-//inline constexpr detail::adaptor_to_string to_string;
 template<class Result>
 using to_utf8 = detail::adaptor_closure_to_utf8<Result>;
 template<class Result>
