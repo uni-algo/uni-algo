@@ -176,19 +176,19 @@ private:
         using reference         = char32_t;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
-        constexpr utf8() = default;
-        constexpr explicit utf8(utf8_view& p, Iter begin, Sent end)
+        uaiw_constexpr utf8() = default;
+        uaiw_constexpr explicit utf8(utf8_view& p, Iter begin, Sent end)
             : parent{&p}, it_pos{begin}, it_next{begin}
         {
             if (begin != end)
                 it_next = detail::impl_utf8_iter(it_next, end, &codepoint, Error);
         }
-        //constexpr const Iter& base() const & noexcept { return it_pos; }
-        //constexpr Iter base() && { return std::move(it_pos); }
-        constexpr reference operator*() const noexcept { return codepoint; }
-        constexpr Iter begin() const noexcept { return it_pos; }
-        constexpr Iter end() const noexcept { return it_next; }
-        constexpr utf8& operator++()
+        //uaiw_constexpr const Iter& base() const & noexcept { return it_pos; }
+        //uaiw_constexpr Iter base() && { return std::move(it_pos); }
+        uaiw_constexpr reference operator*() const noexcept { return codepoint; }
+        uaiw_constexpr Iter begin() const noexcept { return it_pos; }
+        uaiw_constexpr Iter end() const noexcept { return it_next; }
+        uaiw_constexpr utf8& operator++()
         {
 #ifdef UNI_ALGO_LOG_CPP_ITER
             std::cout << "uni::views::utf8::operator++() " << this << '\n';
@@ -199,14 +199,14 @@ private:
             it_next = detail::impl_utf8_iter(it_next, std::end(parent->range), &codepoint, Error);
             return *this;
         }
-        constexpr utf8 operator++(int)
+        uaiw_constexpr utf8 operator++(int)
         {
             utf8 tmp = *this;
             operator++();
             return tmp;
         }
         template<class T = utf8&> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--()
+        uaiw_constexpr operator--()
         {
 #ifdef UNI_ALGO_LOG_CPP_ITER
             std::cout << "uni::views::utf8::operator--() " << this << '\n';
@@ -218,21 +218,21 @@ private:
             return *this;
         }
         template<class T = utf8> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--(int)
+        uaiw_constexpr operator--(int)
         {
             utf8 tmp = *this;
             operator--();
             return tmp;
         }
-        friend constexpr bool operator==(const utf8& x, const utf8& y) { return x.it_pos == y.it_pos; }
-        friend constexpr bool operator!=(const utf8& x, const utf8& y) { return x.it_pos != y.it_pos; }
+        friend uaiw_constexpr bool operator==(const utf8& x, const utf8& y) { return x.it_pos == y.it_pos; }
+        friend uaiw_constexpr bool operator!=(const utf8& x, const utf8& y) { return x.it_pos != y.it_pos; }
     private:
-        static constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_pos == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_pos == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -243,11 +243,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr utf8_view() = default;
-    constexpr utf8_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr utf8_view() = default;
+    uaiw_constexpr utf8_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -257,15 +257,15 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         if constexpr (std::is_same_v<iter_t, sent_t>) // std::ranges::common_range<Range>
             return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 template<class Range, char32_t Error = detail::impl_iter_replacement>
@@ -302,19 +302,19 @@ private:
         using reference         = char32_t;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
-        constexpr utf16() = default;
-        constexpr explicit utf16(utf16_view& p, Iter begin, Sent end)
+        uaiw_constexpr utf16() = default;
+        uaiw_constexpr explicit utf16(utf16_view& p, Iter begin, Sent end)
             : parent{&p}, it_pos{begin}, it_next{begin}
         {
             if (begin != end)
                 it_next = detail::impl_utf16_iter(it_next, end, &codepoint, Error);
         }
-        //constexpr const Iter& base() const & noexcept { return it_pos; }
-        //constexpr Iter base() && { return std::move(it_pos); }
-        constexpr reference operator*() const noexcept { return codepoint; }
-        constexpr Iter begin() const noexcept { return it_pos; }
-        constexpr Iter end() const noexcept { return it_next; }
-        constexpr utf16& operator++()
+        //uaiw_constexpr const Iter& base() const & noexcept { return it_pos; }
+        //uaiw_constexpr Iter base() && { return std::move(it_pos); }
+        uaiw_constexpr reference operator*() const noexcept { return codepoint; }
+        uaiw_constexpr Iter begin() const noexcept { return it_pos; }
+        uaiw_constexpr Iter end() const noexcept { return it_next; }
+        uaiw_constexpr utf16& operator++()
         {
 #ifdef UNI_ALGO_LOG_CPP_ITER
             std::cout << "uni::views::utf16::operator++() " << this << '\n';
@@ -325,14 +325,14 @@ private:
             it_next = detail::impl_utf16_iter(it_next, std::end(parent->range), &codepoint, Error);
             return *this;
         }
-        constexpr utf16 operator++(int)
+        uaiw_constexpr utf16 operator++(int)
         {
             utf16 tmp = *this;
             operator++();
             return tmp;
         }
         template<class T = utf16&> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--()
+        uaiw_constexpr operator--()
         {
 #ifdef UNI_ALGO_LOG_CPP_ITER
             std::cout << "uni::views::utf16::operator--() " << this << '\n';
@@ -344,21 +344,21 @@ private:
             return *this;
         }
         template<class T = utf16> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--(int)
+        uaiw_constexpr operator--(int)
         {
             utf16 tmp = *this;
             operator--();
             return tmp;
         }
-        friend constexpr bool operator==(const utf16& x, const utf16& y) { return x.it_pos == y.it_pos; }
-        friend constexpr bool operator!=(const utf16& x, const utf16& y) { return x.it_pos != y.it_pos; }
+        friend uaiw_constexpr bool operator==(const utf16& x, const utf16& y) { return x.it_pos == y.it_pos; }
+        friend uaiw_constexpr bool operator!=(const utf16& x, const utf16& y) { return x.it_pos != y.it_pos; }
     private:
-        static constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_pos == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_pos == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -369,11 +369,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr utf16_view() = default;
-    constexpr utf16_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr utf16_view() = default;
+    uaiw_constexpr utf16_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -383,15 +383,15 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         if constexpr (std::is_same_v<iter_t, sent_t>) // std::ranges::common_range<Range>
             return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
             return uni::sentinel;
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 template<class Range>
@@ -423,8 +423,8 @@ private:
         using reference         = detail::ranges::iter_reference_t<Iter>;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
-        constexpr reverse() = default;
-        constexpr explicit reverse(reverse_view& p, Iter begin, Sent end)
+        uaiw_constexpr reverse() = default;
+        uaiw_constexpr explicit reverse(reverse_view& p, Iter begin, Sent end)
             : parent{&p}, it_pos{end}
         {
             if (begin != end)
@@ -433,9 +433,9 @@ private:
                 past_begin = false;
             }
         }
-        constexpr reference operator*() const { return *it_pos; }
-        constexpr pointer operator->() const { return it_pos; }
-        constexpr reverse& operator++()
+        uaiw_constexpr reference operator*() const { return *it_pos; }
+        uaiw_constexpr pointer operator->() const { return it_pos; }
+        uaiw_constexpr reverse& operator++()
         {
             if (it_pos != std::begin(parent->range))
                 --it_pos;
@@ -444,13 +444,13 @@ private:
 
             return *this;
         }
-        constexpr reverse operator++(int)
+        uaiw_constexpr reverse operator++(int)
         {
             reverse tmp = *this;
             operator++();
             return tmp;
         }
-        constexpr reverse& operator--()
+        uaiw_constexpr reverse& operator--()
         {
 #if 0
             if (past_begin)
@@ -469,20 +469,20 @@ private:
 #endif
             return *this;
         }
-        constexpr reverse operator--(int)
+        uaiw_constexpr reverse operator--(int)
         {
             reverse tmp = *this;
             operator--();
             return tmp;
         }
-        friend constexpr bool operator==(const reverse& x, const reverse& y)
+        friend uaiw_constexpr bool operator==(const reverse& x, const reverse& y)
         { return x.it_pos == y.it_pos && x.past_begin == y.past_begin; }
-        friend constexpr bool operator!=(const reverse& x, const reverse& y)
+        friend uaiw_constexpr bool operator!=(const reverse& x, const reverse& y)
         { return x.it_pos != y.it_pos || x.past_begin != y.past_begin; }
-        friend constexpr bool operator==(const reverse& x, uni::sentinel_t) { return x.past_begin; }
-        friend constexpr bool operator!=(const reverse& x, uni::sentinel_t) { return !x.past_begin; }
-        friend constexpr bool operator==(uni::sentinel_t, const reverse& x) { return x.past_begin; }
-        friend constexpr bool operator!=(uni::sentinel_t, const reverse& x) { return !x.past_begin; }
+        friend uaiw_constexpr bool operator==(const reverse& x, uni::sentinel_t) { return x.past_begin; }
+        friend uaiw_constexpr bool operator!=(const reverse& x, uni::sentinel_t) { return !x.past_begin; }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const reverse& x) { return x.past_begin; }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const reverse& x) { return !x.past_begin; }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -493,11 +493,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr reverse_view() = default;
-    constexpr reverse_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const& { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr reverse_view() = default;
+    uaiw_constexpr reverse_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const& { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -522,7 +522,7 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return reverse<iter_t, iter_t>{*this, std::begin(range), std::begin(range)};
     }
@@ -555,30 +555,30 @@ private:
         using reference         = detail::ranges::iter_reference_t<Iter>;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
-        constexpr filter() = default;
-        constexpr explicit filter(filter_view& p, Iter begin, Sent end)
+        uaiw_constexpr filter() = default;
+        uaiw_constexpr explicit filter(filter_view& p, Iter begin, Sent end)
             : parent{&p}, it_pos{begin}
         {
             if (begin != end)
                 while(!parent->func_filter(*it_pos) && ++it_pos != end);
         }
-        constexpr reference operator*() const { return *it_pos; }
-        constexpr pointer operator->() const { return it_pos; }
-        constexpr filter& operator++()
+        uaiw_constexpr reference operator*() const { return *it_pos; }
+        uaiw_constexpr pointer operator->() const { return it_pos; }
+        uaiw_constexpr filter& operator++()
         {
             if (it_pos != std::end(parent->range))
                 while(++it_pos != std::end(parent->range) && !parent->func_filter(*it_pos));
 
             return *this;
         }
-        constexpr filter operator++(int)
+        uaiw_constexpr filter operator++(int)
         {
             filter tmp = *this;
             operator++();
             return tmp;
         }
         template<class T = filter&> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--()
+        uaiw_constexpr operator--()
         {
 #if 0
             assert(it_pos != std::begin(parent->range));
@@ -591,21 +591,21 @@ private:
             return *this;
         }
         template<class T = filter> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--(int)
+        uaiw_constexpr operator--(int)
         {
             filter tmp = *this;
             operator--();
             return tmp;
         }
-        friend constexpr bool operator==(const filter& x, const filter& y) { return x.it_pos == y.it_pos; }
-        friend constexpr bool operator!=(const filter& x, const filter& y) { return x.it_pos != y.it_pos; }
+        friend uaiw_constexpr bool operator==(const filter& x, const filter& y) { return x.it_pos == y.it_pos; }
+        friend uaiw_constexpr bool operator!=(const filter& x, const filter& y) { return x.it_pos != y.it_pos; }
     private:
-        static constexpr bool friend_compare_sentinel(const filter& x) { return x.it_pos == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const filter& x) { return x.it_pos == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const filter& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const filter& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const filter& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const filter& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const filter& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const filter& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const filter& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const filter& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -617,12 +617,12 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr filter_view() = default;
-    constexpr filter_view(Range r, Pred pred) : range{std::move(r)}, func_filter{std::move(pred)} {}
-    //constexpr Range base() const& { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    //constexpr const Pred& pred() const { return func_filter; }
-    constexpr auto begin()
+    uaiw_constexpr filter_view() = default;
+    uaiw_constexpr filter_view(Range r, Pred pred) : range{std::move(r)}, func_filter{std::move(pred)} {}
+    //uaiw_constexpr Range base() const& { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    //uaiw_constexpr const Pred& pred() const { return func_filter; }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -632,7 +632,7 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         if constexpr (std::is_same_v<iter_t, sent_t>)
             return filter<iter_t, sent_t>{*this, std::end(range), std::end(range)};
@@ -671,24 +671,24 @@ private:
         using reference         = value_type;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
-        constexpr transform() = default;
-        constexpr explicit transform(transform_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin} {}
-        constexpr reference operator*() const { return parent->func_transform(*it_pos); }
-        constexpr transform& operator++()
+        uaiw_constexpr transform() = default;
+        uaiw_constexpr explicit transform(transform_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin} {}
+        uaiw_constexpr reference operator*() const { return parent->func_transform(*it_pos); }
+        uaiw_constexpr transform& operator++()
         {
             if (it_pos != std::end(parent->range))
                 ++it_pos;
 
             return *this;
         }
-        constexpr transform operator++(int)
+        uaiw_constexpr transform operator++(int)
         {
             transform tmp = *this;
             operator++();
             return tmp;
         }
         template<class T = transform&> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--()
+        uaiw_constexpr operator--()
         {
 #if 0
             assert(it_pos != std::begin(parent->range));
@@ -700,21 +700,21 @@ private:
             return *this;
         }
         template<class T = transform> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--(int)
+        uaiw_constexpr operator--(int)
         {
             transform tmp = *this;
             operator--();
             return tmp;
         }
-        friend constexpr bool operator==(const transform& x, const transform& y) { return x.it_pos == y.it_pos; }
-        friend constexpr bool operator!=(const transform& x, const transform& y) { return x.it_pos != y.it_pos; }
+        friend uaiw_constexpr bool operator==(const transform& x, const transform& y) { return x.it_pos == y.it_pos; }
+        friend uaiw_constexpr bool operator!=(const transform& x, const transform& y) { return x.it_pos != y.it_pos; }
     private:
-        static constexpr bool friend_compare_sentinel(const transform& x) { return x.it_pos == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const transform& x) { return x.it_pos == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const transform& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const transform& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const transform& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const transform& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const transform& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const transform& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const transform& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const transform& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -724,15 +724,15 @@ private:
     Func func_transform;
 
 public:
-    constexpr transform_view() = default;
-    constexpr transform_view(Range r, Func fun) : range{std::move(r)}, func_transform{std::move(fun)} {}
-    //constexpr Range base() const& { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr transform_view() = default;
+    uaiw_constexpr transform_view(Range r, Func fun) : range{std::move(r)}, func_transform{std::move(fun)} {}
+    //uaiw_constexpr Range base() const& { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         return transform<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         if constexpr (std::is_same_v<iter_t, sent_t>)
             return transform<iter_t, sent_t>{*this, std::end(range), std::end(range)};
@@ -771,11 +771,11 @@ private:
         using reference         = detail::ranges::iter_reference_t<Iter>;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
-        constexpr take() = default;
-        constexpr explicit take(take_view& p, Iter begin, Sent, std::size_t n) : parent{&p}, it_pos{begin}, count{n} {}
-        constexpr reference operator*() const { return *it_pos; }
-        constexpr pointer operator->() const { return it_pos; }
-        constexpr take& operator++()
+        uaiw_constexpr take() = default;
+        uaiw_constexpr explicit take(take_view& p, Iter begin, Sent, std::size_t n) : parent{&p}, it_pos{begin}, count{n} {}
+        uaiw_constexpr reference operator*() const { return *it_pos; }
+        uaiw_constexpr pointer operator->() const { return it_pos; }
+        uaiw_constexpr take& operator++()
         {
             if (count != 0 && it_pos != std::end(parent->range))
             {
@@ -785,14 +785,14 @@ private:
 
             return *this;
         }
-        constexpr take operator++(int)
+        uaiw_constexpr take operator++(int)
         {
             take tmp = *this;
             operator++();
             return tmp;
         }
         template<class T = take&> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--()
+        uaiw_constexpr operator--()
         {
 #if 0
             assert(it_pos != std::begin(parent->range));
@@ -808,21 +808,21 @@ private:
             return *this;
         }
         template<class T = take> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--(int)
+        uaiw_constexpr operator--(int)
         {
             take tmp = *this;
             operator--();
             return tmp;
         }
-        friend constexpr bool operator==(const take& x, const take& y) { return x.it_pos == y.it_pos; }
-        friend constexpr bool operator!=(const take& x, const take& y) { return x.it_pos != y.it_pos; }
+        friend uaiw_constexpr bool operator==(const take& x, const take& y) { return x.it_pos == y.it_pos; }
+        friend uaiw_constexpr bool operator!=(const take& x, const take& y) { return x.it_pos != y.it_pos; }
     private:
-        static constexpr bool friend_compare_sentinel(const take& x) { return x.count == 0 || x.it_pos == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const take& x) { return x.count == 0 || x.it_pos == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const take& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const take& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const take& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const take& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const take& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const take& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const take& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const take& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -832,15 +832,15 @@ private:
     std::size_t count = 0;
 
 public:
-    constexpr take_view() = default;
-    constexpr take_view(Range r, std::size_t n) : range{std::move(r)}, count{n} {}
-    //constexpr Range base() const& { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr take_view() = default;
+    uaiw_constexpr take_view(Range r, std::size_t n) : range{std::move(r)}, count{n} {}
+    //uaiw_constexpr Range base() const& { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         return take<iter_t, sent_t>{*this, std::begin(range), std::end(range), count};
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return uni::sentinel;
     }
@@ -874,31 +874,31 @@ private:
         using reference         = detail::ranges::iter_reference_t<Iter>;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
-        constexpr drop() = default;
-        constexpr explicit drop(drop_view& p, Iter begin, Sent end, std::size_t cnt = 0)
+        uaiw_constexpr drop() = default;
+        uaiw_constexpr explicit drop(drop_view& p, Iter begin, Sent end, std::size_t cnt = 0)
             : parent{&p}, it_pos{begin}
         {
             if (begin != end && cnt > 0)
                 //while (cnt--) ++it_pos;
                 while (cnt-- && ++it_pos != end);
         }
-        constexpr reference operator*() const { return *it_pos; }
-        constexpr pointer operator->() const { return it_pos; }
-        constexpr drop& operator++()
+        uaiw_constexpr reference operator*() const { return *it_pos; }
+        uaiw_constexpr pointer operator->() const { return it_pos; }
+        uaiw_constexpr drop& operator++()
         {
             if (it_pos != std::end(parent->range))
                 ++it_pos;
 
             return *this;
         }
-        constexpr drop operator++(int)
+        uaiw_constexpr drop operator++(int)
         {
             drop tmp = *this;
             operator++();
             return tmp;
         }
         template<class T = drop&> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--()
+        uaiw_constexpr operator--()
         {
 #if 0
             assert(it_pos != std::begin(parent->range));
@@ -910,21 +910,21 @@ private:
             return *this;
         }
         template<class T = drop> typename std::enable_if_t<is_bidirectional_or_better::value, T>
-        constexpr operator--(int)
+        uaiw_constexpr operator--(int)
         {
             drop tmp = *this;
             operator--();
             return tmp;
         }
-        friend constexpr bool operator==(const drop& x, const drop& y) { return x.it_pos == y.it_pos; }
-        friend constexpr bool operator!=(const drop& x, const drop& y) { return x.it_pos != y.it_pos; }
+        friend uaiw_constexpr bool operator==(const drop& x, const drop& y) { return x.it_pos == y.it_pos; }
+        friend uaiw_constexpr bool operator!=(const drop& x, const drop& y) { return x.it_pos != y.it_pos; }
     private:
-        static constexpr bool friend_compare_sentinel(const drop& x) { return x.it_pos == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const drop& x) { return x.it_pos == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const drop& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const drop& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const drop& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const drop& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const drop& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const drop& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const drop& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const drop& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -936,11 +936,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr drop_view() = default;
-    constexpr drop_view(Range r, std::size_t n) : range{std::move(r)}, count{n} {}
-    //constexpr Range base() const& { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr drop_view() = default;
+    uaiw_constexpr drop_view(Range r, std::size_t n) : range{std::move(r)}, count{n} {}
+    //uaiw_constexpr Range base() const& { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -950,7 +950,7 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         if constexpr (std::is_same_v<iter_t, sent_t>)
             return drop<iter_t, sent_t>{*this, std::end(range), std::end(range)};
@@ -1017,12 +1017,12 @@ private:
             operator++();
             return tmp;
         }
-        friend constexpr bool operator==(const nfc& x, const nfc& y) { return x.stream_end == y.stream_end; }
-        friend constexpr bool operator!=(const nfc& x, const nfc& y) { return x.stream_end != y.stream_end; }
-        friend constexpr bool operator==(const nfc& x, uni::sentinel_t) { return x.stream_end; }
-        friend constexpr bool operator!=(const nfc& x, uni::sentinel_t) { return !x.stream_end; }
-        friend constexpr bool operator==(uni::sentinel_t, const nfc& x) { return x.stream_end; }
-        friend constexpr bool operator!=(uni::sentinel_t, const nfc& x) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfc& x, const nfc& y) { return x.stream_end == y.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfc& x, const nfc& y) { return x.stream_end != y.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfc& x, uni::sentinel_t) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfc& x, uni::sentinel_t) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const nfc& x) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfc& x) { return !x.stream_end; }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -1033,11 +1033,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr nfc_view() = default;
-    constexpr nfc_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr nfc_view() = default;
+    uaiw_constexpr nfc_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -1047,12 +1047,12 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return uni::sentinel;
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 template<class Range>
@@ -1110,12 +1110,12 @@ private:
             operator++();
             return tmp;
         }
-        friend constexpr bool operator==(const nfd& x, const nfd& y) { return x.stream_end == y.stream_end; }
-        friend constexpr bool operator!=(const nfd& x, const nfd& y) { return x.stream_end != y.stream_end; }
-        friend constexpr bool operator==(const nfd& x, uni::sentinel_t) { return x.stream_end; }
-        friend constexpr bool operator!=(const nfd& x, uni::sentinel_t) { return !x.stream_end; }
-        friend constexpr bool operator==(uni::sentinel_t, const nfd& x) { return x.stream_end; }
-        friend constexpr bool operator!=(uni::sentinel_t, const nfd& x) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfd& x, const nfd& y) { return x.stream_end == y.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfd& x, const nfd& y) { return x.stream_end != y.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfd& x, uni::sentinel_t) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfd& x, uni::sentinel_t) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const nfd& x) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfd& x) { return !x.stream_end; }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -1126,11 +1126,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr nfd_view() = default;
-    constexpr nfd_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr nfd_view() = default;
+    uaiw_constexpr nfd_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -1140,12 +1140,12 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return uni::sentinel;
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 template<class Range>
@@ -1203,12 +1203,12 @@ private:
             operator++();
             return tmp;
         }
-        friend constexpr bool operator==(const nfkc& x, const nfkc& y) { return x.stream_end == y.stream_end; }
-        friend constexpr bool operator!=(const nfkc& x, const nfkc& y) { return x.stream_end != y.stream_end; }
-        friend constexpr bool operator==(const nfkc& x, uni::sentinel_t) { return x.stream_end; }
-        friend constexpr bool operator!=(const nfkc& x, uni::sentinel_t) { return !x.stream_end; }
-        friend constexpr bool operator==(uni::sentinel_t, const nfkc& x) { return x.stream_end; }
-        friend constexpr bool operator!=(uni::sentinel_t, const nfkc& x) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfkc& x, const nfkc& y) { return x.stream_end == y.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfkc& x, const nfkc& y) { return x.stream_end != y.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfkc& x, uni::sentinel_t) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfkc& x, uni::sentinel_t) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const nfkc& x) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfkc& x) { return !x.stream_end; }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -1219,11 +1219,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr nfkc_view() = default;
-    constexpr nfkc_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr nfkc_view() = default;
+    uaiw_constexpr nfkc_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -1233,12 +1233,12 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return uni::sentinel;
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 template<class Range>
@@ -1296,12 +1296,12 @@ private:
             operator++();
             return tmp;
         }
-        friend constexpr bool operator==(const nfkd& x, const nfkd& y) { return x.stream_end == y.stream_end; }
-        friend constexpr bool operator!=(const nfkd& x, const nfkd& y) { return x.stream_end != y.stream_end; }
-        friend constexpr bool operator==(const nfkd& x, uni::sentinel_t) { return x.stream_end; }
-        friend constexpr bool operator!=(const nfkd& x, uni::sentinel_t) { return !x.stream_end; }
-        friend constexpr bool operator==(uni::sentinel_t, const nfkd& x) { return x.stream_end; }
-        friend constexpr bool operator!=(uni::sentinel_t, const nfkd& x) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfkd& x, const nfkd& y) { return x.stream_end == y.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfkd& x, const nfkd& y) { return x.stream_end != y.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfkd& x, uni::sentinel_t) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfkd& x, uni::sentinel_t) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const nfkd& x) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfkd& x) { return !x.stream_end; }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -1312,11 +1312,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr nfkd_view() = default;
-    constexpr nfkd_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr nfkd_view() = default;
+    uaiw_constexpr nfkd_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -1326,12 +1326,12 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return uni::sentinel;
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 } // namespace norm
@@ -1394,12 +1394,12 @@ private:
 
             iter_func_grapheme_utf8();
         }
-        constexpr reference operator*() const
+        uaiw_constexpr reference operator*() const
         {
             return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
-        constexpr Iter begin() const noexcept { return it_begin; }
-        constexpr Iter end() const noexcept { return it_pos; }
+        uaiw_constexpr Iter begin() const noexcept { return it_begin; }
+        uaiw_constexpr Iter end() const noexcept { return it_pos; }
         utf8& operator++()
         {
             iter_func_grapheme_utf8();
@@ -1415,12 +1415,12 @@ private:
         friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
         friend bool operator!=(const utf8& x, const utf8& y) { return (x.it_begin != y.it_begin); }
     private:
-        static constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -1431,11 +1431,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr utf8_view() = default;
-    constexpr utf8_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr utf8_view() = default;
+    uaiw_constexpr utf8_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -1445,12 +1445,12 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 template<class Range>
@@ -1508,12 +1508,12 @@ private:
 
             iter_func_grapheme_utf16();
         }
-        constexpr reference operator*() const
+        uaiw_constexpr reference operator*() const
         {
             return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
-        constexpr Iter begin() const noexcept { return it_begin; }
-        constexpr Iter end() const noexcept { return it_pos; }
+        uaiw_constexpr Iter begin() const noexcept { return it_begin; }
+        uaiw_constexpr Iter end() const noexcept { return it_pos; }
         utf16& operator++()
         {
             iter_func_grapheme_utf16();
@@ -1529,12 +1529,12 @@ private:
         friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
         friend bool operator!=(const utf16& x, const utf16& y) { return (x.it_begin != y.it_begin); }
     private:
-        static constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -1545,11 +1545,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr utf16_view() = default;
-    constexpr utf16_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr utf16_view() = default;
+    uaiw_constexpr utf16_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -1559,12 +1559,12 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 } // namespace grapheme
@@ -1631,12 +1631,12 @@ private:
 
             iter_func_word_utf8();
         }
-        constexpr reference operator*() const
+        uaiw_constexpr reference operator*() const
         {
             return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
-        constexpr Iter begin() const noexcept { return it_begin; }
-        constexpr Iter end() const noexcept { return it_pos; }
+        uaiw_constexpr Iter begin() const noexcept { return it_begin; }
+        uaiw_constexpr Iter end() const noexcept { return it_pos; }
         utf8& operator++()
         {
             iter_func_word_utf8();
@@ -1652,12 +1652,12 @@ private:
         friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
         friend bool operator!=(const utf8& x, const utf8& y) { return (x.it_begin != y.it_begin); }
     private:
-        static constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -1668,11 +1668,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr utf8_view() = default;
-    constexpr utf8_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr utf8_view() = default;
+    uaiw_constexpr utf8_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -1682,12 +1682,12 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 template<class Range>
@@ -1751,12 +1751,12 @@ private:
 
             iter_func_word_utf16();
         }
-        constexpr reference operator*() const
+        uaiw_constexpr reference operator*() const
         {
             return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
-        constexpr Iter begin() const noexcept { return it_begin; }
-        constexpr Iter end() const noexcept { return it_pos; }
+        uaiw_constexpr Iter begin() const noexcept { return it_begin; }
+        uaiw_constexpr Iter end() const noexcept { return it_pos; }
         utf16& operator++()
         {
             iter_func_word_utf16();
@@ -1772,12 +1772,12 @@ private:
         friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
         friend bool operator!=(const utf16& x, const utf16& y) { return (x.it_begin != y.it_begin); }
     private:
-        static constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -1788,11 +1788,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr utf16_view() = default;
-    constexpr utf16_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr utf16_view() = default;
+    uaiw_constexpr utf16_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -1802,12 +1802,12 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 } // namespace word
@@ -1882,12 +1882,12 @@ private:
 
             iter_func_word_only_utf8();
         }
-        constexpr reference operator*() const
+        uaiw_constexpr reference operator*() const
         {
             return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
-        constexpr Iter begin() const noexcept { return it_begin; }
-        constexpr Iter end() const noexcept { return it_pos; }
+        uaiw_constexpr Iter begin() const noexcept { return it_begin; }
+        uaiw_constexpr Iter end() const noexcept { return it_pos; }
         utf8& operator++()
         {
             iter_func_word_only_utf8();
@@ -1903,12 +1903,12 @@ private:
         friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
         friend bool operator!=(const utf8& x, const utf8& y) { return (x.it_begin != y.it_begin); }
     private:
-        static constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -1919,11 +1919,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr utf8_view() = default;
-    constexpr utf8_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr utf8_view() = default;
+    uaiw_constexpr utf8_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -1933,12 +1933,12 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 template<class Range>
@@ -2010,12 +2010,12 @@ private:
 
             iter_func_word_only_utf16();
         }
-        constexpr reference operator*() const
+        uaiw_constexpr reference operator*() const
         {
             return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
-        constexpr Iter begin() const noexcept { return it_begin; }
-        constexpr Iter end() const noexcept { return it_pos; }
+        uaiw_constexpr Iter begin() const noexcept { return it_begin; }
+        uaiw_constexpr Iter end() const noexcept { return it_pos; }
         utf16& operator++()
         {
             iter_func_word_only_utf16();
@@ -2031,12 +2031,12 @@ private:
         friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
         friend bool operator!=(const utf16& x, const utf16& y) { return (x.it_begin != y.it_begin); }
     private:
-        static constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
+        static uaiw_constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
     public:
-        friend constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
-        friend constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -2047,11 +2047,11 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr utf16_view() = default;
-    constexpr utf16_view(Range r) : range{std::move(r)} {}
-    //constexpr Range base() const & { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    uaiw_constexpr utf16_view() = default;
+    uaiw_constexpr utf16_view(Range r) : range{std::move(r)} {}
+    //uaiw_constexpr Range base() const & { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -2061,12 +2061,12 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
-    //constexpr bool empty() { return begin() == end(); }
-    //explicit constexpr operator bool() { return !empty(); }
+    //uaiw_constexpr bool empty() { return begin() == end(); }
+    //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
 } // namespace word_only
@@ -2081,13 +2081,13 @@ class ref_view : public detail::ranges::view_base
 private:
     Range* range = nullptr;
 public:
-    constexpr ref_view() = default;
-    constexpr ref_view(Range& r) : range{std::addressof(r)} {}
-    //constexpr Range& base() const { return *range; }
-    constexpr auto begin() const { return std::begin(*range); }
-    constexpr auto end() const { return std::end(*range); }
+    uaiw_constexpr ref_view() = default;
+    uaiw_constexpr ref_view(Range& r) : range{std::addressof(r)} {}
+    //uaiw_constexpr Range& base() const { return *range; }
+    uaiw_constexpr auto begin() const { return std::begin(*range); }
+    uaiw_constexpr auto end() const { return std::end(*range); }
     //template<class = std::enable_if_t<sfinae_has_data<Range>::value>>
-    constexpr auto data() const { return std::data(*range); }
+    uaiw_constexpr auto data() const { return std::data(*range); }
 };
 // TODO: Test more
 // data() should work (it won't compile if Range doesn't have data())
@@ -2119,20 +2119,20 @@ class owning_view : public detail::ranges::view_base
 private:
     Range range = Range{};
 public:
-    constexpr owning_view() = default;
-    constexpr owning_view(Range&& r) : range{std::move(r)} {}
-    //constexpr Range& base() & noexcept { return range; }
-    //constexpr const Range& base() const & noexcept { return range; }
-    //constexpr Range&& base() && noexcept { return std::move(range); }
-    //constexpr const Range&& base() const && noexcept { return std::move(range); }
-    constexpr owning_view(owning_view&&) = default;
-    constexpr owning_view& operator=(owning_view&&) = default;
-    constexpr auto begin() { return std::begin(range); }
-    constexpr auto end() { return std::end(range); }
-    //constexpr auto begin() const { return ranges::begin(range); }
-    //constexpr auto end() const { return ranges::end(range); }
-    constexpr auto data() { return std::data(range); }
-    constexpr auto data() const { return std::data(range); }
+    uaiw_constexpr owning_view() = default;
+    uaiw_constexpr owning_view(Range&& r) : range{std::move(r)} {}
+    //uaiw_constexpr Range& base() & noexcept { return range; }
+    //uaiw_constexpr const Range& base() const & noexcept { return range; }
+    //uaiw_constexpr Range&& base() && noexcept { return std::move(range); }
+    //uaiw_constexpr const Range&& base() const && noexcept { return std::move(range); }
+    uaiw_constexpr owning_view(owning_view&&) = default;
+    uaiw_constexpr owning_view& operator=(owning_view&&) = default;
+    uaiw_constexpr auto begin() { return std::begin(range); }
+    uaiw_constexpr auto end() { return std::end(range); }
+    //uaiw_constexpr auto begin() const { return ranges::begin(range); }
+    //uaiw_constexpr auto end() const { return ranges::end(range); }
+    uaiw_constexpr auto data() { return std::data(range); }
+    uaiw_constexpr auto data() const { return std::data(range); }
 };
 #else
 template<class R>
@@ -2196,31 +2196,31 @@ private:
         using reference         = char32_t;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
-        constexpr translit() = default;
-        constexpr explicit translit(translit_view& p, Iter begin, Sent)
+        uaiw_constexpr translit() = default;
+        uaiw_constexpr explicit translit(translit_view& p, Iter begin, Sent)
             : parent{&p}, it_pos{begin}
         {
             func_translit_impl();
         }
-        constexpr reference operator*() const noexcept { return data[0]; }
-        constexpr translit& operator++()
+        uaiw_constexpr reference operator*() const noexcept { return data[0]; }
+        uaiw_constexpr translit& operator++()
         {
             func_translit_impl();
 
             return *this;
         }
-        constexpr translit operator++(int)
+        uaiw_constexpr translit operator++(int)
         {
             translit tmp = *this;
             operator++();
             return tmp;
         }
-        friend constexpr bool operator==(const translit& x, const translit& y) { return x.stream_end == y.stream_end; }
-        friend constexpr bool operator!=(const translit& x, const translit& y) { return x.stream_end != y.stream_end; }
-        friend constexpr bool operator==(const translit& x, uni::sentinel_t) { return x.stream_end; }
-        friend constexpr bool operator!=(const translit& x, uni::sentinel_t) { return !x.stream_end; }
-        friend constexpr bool operator==(uni::sentinel_t, const translit& x) { return x.stream_end; }
-        friend constexpr bool operator!=(uni::sentinel_t, const translit& x) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(const translit& x, const translit& y) { return x.stream_end == y.stream_end; }
+        friend uaiw_constexpr bool operator!=(const translit& x, const translit& y) { return x.stream_end != y.stream_end; }
+        friend uaiw_constexpr bool operator==(const translit& x, uni::sentinel_t) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(const translit& x, uni::sentinel_t) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(uni::sentinel_t, const translit& x) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const translit& x) { return !x.stream_end; }
     };
 
     using iter_t = detail::ranges::iterator_t<Range>;
@@ -2233,12 +2233,12 @@ private:
     bool cached_begin = false;
 
 public:
-    constexpr translit_view() = default;
-    constexpr translit_view(Range r, Func fun, std::size_t size)
+    uaiw_constexpr translit_view() = default;
+    uaiw_constexpr translit_view(Range r, Func fun, std::size_t size)
         : range{std::move(r)}, func_translit{std::move(fun)}, max_size{size} {}
-    //constexpr Range base() const& { return range; }
-    //constexpr Range base() && { return std::move(range); }
-    constexpr auto begin()
+    //uaiw_constexpr Range base() const& { return range; }
+    //uaiw_constexpr Range base() && { return std::move(range); }
+    uaiw_constexpr auto begin()
     {
         if (cached_begin)
             return cached_begin_value;
@@ -2248,7 +2248,7 @@ public:
 
         return cached_begin_value;
     }
-    constexpr auto end()
+    uaiw_constexpr auto end()
     {
         return uni::sentinel;
     }
@@ -2278,9 +2278,9 @@ namespace detail {
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 struct adaptor_all
 {
-    //constexpr adaptor_closure_all() {}
+    //uaiw_constexpr adaptor_closure_all() {}
     template<class R>
-    constexpr auto operator()(R&& r) const
+    uaiw_constexpr auto operator()(R&& r) const
     {
         // The design of all view is "pretty simple"
         // for known ranges (our ranges) or std::string_view we just std::forward them directly
@@ -2311,7 +2311,7 @@ struct adaptor_all
     }
 };
 template <class R>
-constexpr auto operator|(R&& r, const adaptor_all& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_all& a) { return a(std::forward<R>(r)); }
 #endif
 
 /* UTF8_VIEW */
@@ -2319,20 +2319,20 @@ constexpr auto operator|(R&& r, const adaptor_all& a) { return a(std::forward<R>
 struct adaptor_utf8
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::utf8_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_utf8& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_utf8& a) { return a(std::forward<R>(r)); }
 
 /* UTF16_VIEW */
 
 struct adaptor_utf16
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::utf16_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_utf16& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_utf16& a) { return a(std::forward<R>(r)); }
 
 /* FILTER_VIEW */
 
@@ -2340,19 +2340,19 @@ template<class Pred>
 struct adaptor_closure_filter
 {
     Pred p;
-    constexpr adaptor_closure_filter(Pred pred) : p{pred} {}
+    uaiw_constexpr adaptor_closure_filter(Pred pred) : p{pred} {}
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::filter_view{std::forward<R>(r), p}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::filter_view{std::forward<R>(r), p}; }
 };
 template<class R, class Pred>
-constexpr auto operator|(R&& r, const adaptor_closure_filter<Pred>& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_closure_filter<Pred>& a) { return a(std::forward<R>(r)); }
 
 struct adaptor_filter
 {
     template<class R, class Pred>
-    constexpr auto operator()(R&& r, Pred pred) const { return uni::ranges::filter_view{std::forward<R>(r), std::move(pred)}; }
+    uaiw_constexpr auto operator()(R&& r, Pred pred) const { return uni::ranges::filter_view{std::forward<R>(r), std::move(pred)}; }
     template<class Pred>
-    constexpr auto operator()(Pred pred) const { return adaptor_closure_filter<Pred>{std::move(pred)}; }
+    uaiw_constexpr auto operator()(Pred pred) const { return adaptor_closure_filter<Pred>{std::move(pred)}; }
 };
 
 /* REVERSE_VIEW */
@@ -2360,29 +2360,29 @@ struct adaptor_filter
 struct adaptor_reverse
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::reverse_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::reverse_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_reverse& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_reverse& a) { return a(std::forward<R>(r)); }
 
 /* DROP_VIEW */
 
 struct adaptor_closure_drop
 {
     std::size_t count = 0;
-    constexpr adaptor_closure_drop(std::size_t n): count(n) {}
+    uaiw_constexpr adaptor_closure_drop(std::size_t n): count(n) {}
 
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::drop_view{std::forward<R>(r), count}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::drop_view{std::forward<R>(r), count}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, adaptor_closure_drop const &a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, adaptor_closure_drop const &a) { return a(std::forward<R>(r)); }
 
 struct adaptor_drop
 {
     template<class R>
-    constexpr auto operator()(R&& r, std::size_t count) const { return uni::ranges::drop_view{std::forward<R>(r), count}; }
-    constexpr auto operator()(std::size_t count) const { return adaptor_closure_drop{count}; }
+    uaiw_constexpr auto operator()(R&& r, std::size_t count) const { return uni::ranges::drop_view{std::forward<R>(r), count}; }
+    uaiw_constexpr auto operator()(std::size_t count) const { return adaptor_closure_drop{count}; }
 };
 
 /* TAKE_VIEW */
@@ -2390,19 +2390,19 @@ struct adaptor_drop
 struct adaptor_closure_take
 {
     std::size_t count = 0;
-    constexpr adaptor_closure_take(std::size_t n): count(n) {}
+    uaiw_constexpr adaptor_closure_take(std::size_t n): count(n) {}
 
     template <class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::take_view{std::forward<R>(r), count}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::take_view{std::forward<R>(r), count}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, adaptor_closure_take const &a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, adaptor_closure_take const &a) { return a(std::forward<R>(r)); }
 
 struct adaptor_take
 {
     template<class R>
-    constexpr auto operator()(R&& r, std::size_t count) const { return uni::ranges::take_view{std::forward<R>(r), count}; }
-    constexpr auto operator()(std::size_t count) const { return adaptor_closure_take{count}; }
+    uaiw_constexpr auto operator()(R&& r, std::size_t count) const { return uni::ranges::take_view{std::forward<R>(r), count}; }
+    uaiw_constexpr auto operator()(std::size_t count) const { return adaptor_closure_take{count}; }
 };
 
 /* TRANSFORM_VIEW */
@@ -2411,19 +2411,19 @@ template<class Func>
 struct adaptor_closure_transform
 {
     Func f;
-    constexpr adaptor_closure_transform(Func func) : f{func} {}
+    uaiw_constexpr adaptor_closure_transform(Func func) : f{func} {}
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::transform_view{std::forward<R>(r), f}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::transform_view{std::forward<R>(r), f}; }
 };
 template<class R, class Func>
-constexpr auto operator|(R&& r, const adaptor_closure_transform<Func>& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_closure_transform<Func>& a) { return a(std::forward<R>(r)); }
 
 struct adaptor_transform
 {
     template<class R, class Func>
-    constexpr auto operator()(R&& r, Func f) const { return uni::ranges::transform_view{std::forward<R>(r), std::move(f)}; }
+    uaiw_constexpr auto operator()(R&& r, Func f) const { return uni::ranges::transform_view{std::forward<R>(r), std::move(f)}; }
     template<class Func>
-    constexpr auto operator()(Func f) const { return adaptor_closure_transform<Func>{std::move(f)}; }
+    uaiw_constexpr auto operator()(Func f) const { return adaptor_closure_transform<Func>{std::move(f)}; }
 };
 
 #ifdef UNI_ALGO_TEST_RANGES_NORM
@@ -2432,40 +2432,40 @@ struct adaptor_transform
 struct adaptor_nfc
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfc_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfc_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_nfc& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_nfc& a) { return a(std::forward<R>(r)); }
 
 /* NFD_VIEW */
 
 struct adaptor_nfd
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfd_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfd_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_nfd& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_nfd& a) { return a(std::forward<R>(r)); }
 
 /* NFKC_VIEW */
 
 struct adaptor_nfkc
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfkc_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfkc_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_nfkc& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_nfkc& a) { return a(std::forward<R>(r)); }
 
 /* NFKD_VIEW */
 
 struct adaptor_nfkd
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfkd_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfkd_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forward<R>(r)); }
 #endif // UNI_ALGO_TEST_RANGES_NORM
 
 #ifdef UNI_ALGO_TEST_RANGES_BREAK
@@ -2474,60 +2474,60 @@ constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forward<R
 struct adaptor_grapheme_utf8
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::grapheme::utf8_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::grapheme::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_grapheme_utf8& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_grapheme_utf8& a) { return a(std::forward<R>(r)); }
 
 /* GRAPHEME_UTF16_VIEW */
 
 struct adaptor_grapheme_utf16
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::grapheme::utf16_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::grapheme::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_grapheme_utf16& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_grapheme_utf16& a) { return a(std::forward<R>(r)); }
 
 /* WORD_UTF8_VIEW */
 
 struct adaptor_word_utf8
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::word::utf8_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::word::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_word_utf8& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_word_utf8& a) { return a(std::forward<R>(r)); }
 
 /* WORD_UTF16_VIEW */
 
 struct adaptor_word_utf16
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::word::utf16_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::word::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_word_utf16& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_word_utf16& a) { return a(std::forward<R>(r)); }
 
 /* WORD_ONLY_UTF8_VIEW */
 
 struct adaptor_word_only_utf8
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::word_only::utf8_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::word_only::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_word_only_utf8& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_word_only_utf8& a) { return a(std::forward<R>(r)); }
 
 /* WORD_ONLY_UTF16_VIEW */
 
 struct adaptor_word_only_utf16
 {
     template<class R>
-    constexpr auto operator()(R&& r) const { return uni::ranges::word_only::utf16_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::word_only::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
-constexpr auto operator|(R&& r, const adaptor_word_only_utf16& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_word_only_utf16& a) { return a(std::forward<R>(r)); }
 #endif // UNI_ALGO_TEST_RANGES_BREAK
 
 /* TO_UTF8 */
@@ -2538,7 +2538,7 @@ template<class Result>
 struct adaptor_closure_to_utf8
 {
     template<class R>
-    constexpr auto operator()(R&& r) const
+    uaiw_constexpr auto operator()(R&& r) const
     {
         using range_v = uni::detail::ranges::range_value_t<R>;
         using result_v = uni::detail::ranges::range_value_t<Result>;
@@ -2560,7 +2560,7 @@ struct adaptor_closure_to_utf8
     }
 };
 template<class R, class Result>
-constexpr auto operator|(R&& r, const adaptor_closure_to_utf8<Result>& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf8<Result>& a) { return a(std::forward<R>(r)); }
 
 /* TO_UTF16 */
 
@@ -2568,7 +2568,7 @@ template<class Result>
 struct adaptor_closure_to_utf16
 {
     template<class R>
-    constexpr auto operator()(R&& r) const
+    uaiw_constexpr auto operator()(R&& r) const
     {
         using range_v = uni::detail::ranges::range_value_t<R>;
         using result_v = uni::detail::ranges::range_value_t<Result>;
@@ -2588,7 +2588,7 @@ struct adaptor_closure_to_utf16
     }
 };
 template<class R, class Result>
-constexpr auto operator|(R&& r, const adaptor_closure_to_utf16<Result>& a) { return a(std::forward<R>(r)); }
+uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf16<Result>& a) { return a(std::forward<R>(r)); }
 
 } // namespace detail
 

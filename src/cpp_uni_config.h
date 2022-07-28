@@ -101,6 +101,9 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 #define UNI_ALGO_IMPL_NAMESPACE_BEGIN namespace uni::detail {
 #define UNI_ALGO_IMPL_NAMESPACE_END }
 
+// TODO: Disable constexpr for now it doesn't work properly in some cases
+#define uaiw_constexpr //constexpr
+
 //#define UNI_ALGO_EXPERIMENTAL // Enable experimental stuff for tests
 //#define UNI_ALGO_LOG_CPP_ITER // Enable logging for UTF-8/16 iterators
 
