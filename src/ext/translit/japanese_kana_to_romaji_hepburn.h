@@ -10,6 +10,7 @@
 #include <unordered_map>
 
 #include "../../cpp_uni_ranges.h"
+#include "../../internal/cpp_uni_ranges_translit.h"
 
 // If it fails a compiler messed up the UTF-8 encoding of this file.
 // If the compiler is MSVC then /utf-8 command line option must be used.

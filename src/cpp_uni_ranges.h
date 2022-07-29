@@ -9,9 +9,6 @@
 #include <iostream>
 #endif
 
-// TODO: Used only by translit view don't forget to remove
-#include <string>
-
 #include "cpp_uni_config.h"
 #include "cpp_uni_version.h"
 #include "internal/cpp_uni_ranges_core.h"
@@ -1965,120 +1962,6 @@ public:
 
 } // namespace ranges
 
-namespace detail::ranges {
-
-template<class Range, class Func>
-class translit_view : public detail::ranges::view_base
-{
-private:
-    template<class Iter, class Sent>
-    class translit
-    {
-        // Translit view is internal so skip static assert. For a reference it looks like this:
-        //static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-        //              sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char32_t),
-        //              "translit view requires char32_t range");
-
-    private:
-        translit_view* parent = nullptr;
-        Iter it_pos;
-
-        bool stream_end = false;
-
-        std::u32string data;
-        std::size_t skip = 1;
-
-        void func_translit_impl()
-        {
-            do
-            {
-                if (!data.empty() && skip)
-                    data.erase(0, 1);
-
-                for (; data.size() < parent->max_size && it_pos != std::end(parent->range); ++it_pos)
-                    data.push_back(*it_pos);
-
-                if (data.empty())
-                {
-                    stream_end = true;
-                    return;
-                }
-
-                if (skip > 1)
-                    --skip;
-                else
-                    skip = parent->func_translit(data);
-            }
-            while (skip == 0);
-        }
-
-    public:
-        using iterator_category = std::input_iterator_tag;
-        using value_type        = char32_t;
-        using pointer           = void;
-        using reference         = char32_t;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
-
-        uaiw_constexpr translit() = default;
-        uaiw_constexpr explicit translit(translit_view& p, Iter begin, Sent)
-            : parent{&p}, it_pos{begin}
-        {
-            func_translit_impl();
-        }
-        uaiw_constexpr reference operator*() const noexcept { return data[0]; }
-        uaiw_constexpr translit& operator++()
-        {
-            func_translit_impl();
-
-            return *this;
-        }
-        uaiw_constexpr translit operator++(int)
-        {
-            translit tmp = *this;
-            operator++();
-            return tmp;
-        }
-        friend uaiw_constexpr bool operator==(const translit& x, const translit& y) { return x.stream_end == y.stream_end; }
-        friend uaiw_constexpr bool operator!=(const translit& x, const translit& y) { return x.stream_end != y.stream_end; }
-        friend uaiw_constexpr bool operator==(const translit& x, uni::sentinel_t) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(const translit& x, uni::sentinel_t) { return !x.stream_end; }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const translit& x) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const translit& x) { return !x.stream_end; }
-    };
-
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
-
-    Range range = Range{};
-    Func func_translit;
-    std::size_t max_size = 1;
-    translit<iter_t, sent_t> cached_begin_value;
-    bool cached_begin = false;
-
-public:
-    uaiw_constexpr translit_view() = default;
-    uaiw_constexpr translit_view(Range r, Func fun, std::size_t size)
-        : range{std::move(r)}, func_translit{std::move(fun)}, max_size{size} {}
-    //uaiw_constexpr Range base() const& { return range; }
-    //uaiw_constexpr Range base() && { return std::move(range); }
-    uaiw_constexpr auto begin()
-    {
-        if (cached_begin)
-            return cached_begin_value;
-
-        cached_begin_value = translit<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
-        cached_begin = true;
-
-        return cached_begin_value;
-    }
-    uaiw_constexpr auto end()
-    {
-        return uni::sentinel;
-    }
-};
-
-} // namespace detail::ranges
-
 namespace detail {
 
 /* UTF8_VIEW */
@@ -2457,11 +2340,6 @@ utf16_view(Range&&) -> utf16_view<uni::views::all_t<Range>>;
 #endif // UNI_ALGO_TEST_RANGES_BREAK
 
 } // namespace ranges
-
-namespace detail::ranges {
-template<class Range, class Func>
-translit_view(Range&&, Func, std::size_t) -> translit_view<uni::views::all_t<Range>, Func>;
-} // namespace detail::ranges
 
 namespace ranges {
 

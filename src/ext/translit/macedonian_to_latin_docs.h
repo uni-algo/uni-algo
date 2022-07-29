@@ -11,6 +11,7 @@
 #include <unordered_set>
 
 #include "../../cpp_uni_ranges.h"
+#include "../../internal/cpp_uni_ranges_translit.h"
 //#include "../../cpp_uni_norm.h"
 
 // If it fails a compiler messed up the UTF-8 encoding of this file.
