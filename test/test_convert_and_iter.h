@@ -101,77 +101,59 @@ void test_convert_and_iter_convert()
 
 // Iterator module test
 
-// Implement all convert functions using iterators
+// Implement all convert functions using ranges
 
 template<typename UTF8, typename UTF16>
 std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    uni::iter::utf8 begin{source.cbegin(), source.cend()};
-    std::basic_string<UTF16> result;
-    uni::iter::output::utf16 out{std::back_inserter(result)};
-    for (auto it = begin; it != uni::sentinel; ++it)
-        out = *it;
-    return result;
+    return source | uni::views::utf8 | uni::ranges::to_utf16<std::basic_string<UTF16>>();
 }
 template<typename UTF16, typename UTF8>
 std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    uni::iter::utf16 begin{source.cbegin(), source.cend()};
-    std::basic_string<UTF8> result;
-    uni::iter::output::utf8 out{std::back_inserter(result)};
-    for (auto it = begin; it != uni::sentinel; ++it)
-        out = *it;
-    return result;
+    return source | uni::views::utf16 | uni::ranges::to_utf8<std::basic_string<UTF8>>();
 }
 template<typename UTF8, typename UTF32>
 std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source)
 {
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    uni::iter::utf8 begin{source.cbegin(), source.cend()};
-    std::basic_string<UTF32> result;
-    for (auto it = begin; it != uni::sentinel; ++it)
-        result.push_back(*it);
-    return result;
+    auto view = source | uni::views::utf8;
+
+    return std::basic_string<UTF32>{view.begin(), view.end()};
 }
 template<typename UTF32, typename UTF8>
 std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> source)
 {
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF8>);
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    std::basic_string<UTF8> result;
-    uni::iter::output::utf8 out{std::back_inserter(result)};
-    for (auto it = source.cbegin(); it != source.cend(); ++it)
-        out = static_cast<char32_t>(*it);
-    return result;
+    return source | uni::ranges::to_utf8<std::basic_string<UTF8>>();
 }
 template<typename UTF16, typename UTF32>
 std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    uni::iter::utf16 begin{source.cbegin(), source.cend()};
-    std::basic_string<UTF32> result;
-    for (auto it = begin; it != uni::sentinel; ++it)
-        result.push_back(*it);
-    return result;
+    auto view = source | uni::views::utf16;
+
+    return std::basic_string<UTF32>{view.begin(), view.end()};
 }
 template<typename UTF32, typename UTF16>
 std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
-    static_assert(sizeof(UTF32) >= sizeof(char32_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    std::basic_string<UTF16> result;
-    uni::iter::output::utf16 out{std::back_inserter(result)};
-    for (auto it = source.cbegin(); it != source.cend(); ++it)
-        out = static_cast<char32_t>(*it);
-    return result;
+    return source | uni::ranges::to_utf16<std::basic_string<UTF16>>();
 }
 
 // Redo the previous test using these convert functions

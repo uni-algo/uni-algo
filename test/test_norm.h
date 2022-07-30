@@ -7,8 +7,8 @@
 #include <iostream>
 #include <string_view>
 
-// Forward declaration for normalization functions that uses high-level iterators
-// We must test the iterators together with fast functions
+// Forward declaration for normalization functions that uses high-level ranges
+// We must test the ranges together with fast functions
 // See the end of the file for bodies
 std::string utf8_nfc(std::string_view str);
 std::string utf8_nfd(std::string_view str);
@@ -194,7 +194,7 @@ size_t test_norm_impl(bool with_part2 = true, size_t with_prefix = 0, size_t wit
         //TESTX(uni::norm::utf16_is_nfkc(c4_utf16) == true);
         TESTX(uni::norm::utf16_is_nfkd(c5_utf16) == true);
 
-        // Iterators
+        // Ranges
 
         // NFC
         TESTX(c2_utf16 == utf16_nfc(c1_utf16));
@@ -269,7 +269,7 @@ size_t test_norm_impl(bool with_part2 = true, size_t with_prefix = 0, size_t wit
         //TESTX(uni::norm::utf8_is_nfkc(c4_utf8) == true);
         TESTX(uni::norm::utf8_is_nfkd(c5_utf8) == true);
 
-        // Iterators
+        // Ranges
 
         // NFC
         TESTX(c2_utf8 == utf8_nfc(c1_utf8));
@@ -334,7 +334,7 @@ size_t test_norm_impl(bool with_part2 = true, size_t with_prefix = 0, size_t wit
             TESTX(uni::norm::utf8_is_nfkc(X_utf8) == true);
             TESTX(uni::norm::utf8_is_nfkd(X_utf8) == true);
 
-            // Iterators
+            // Ranges
             TESTX(X_utf8 == utf8_nfc(X_utf8));
             TESTX(X_utf8 == utf8_nfd(X_utf8));
             TESTX(X_utf8 == utf8_nfkc(X_utf8));
@@ -354,7 +354,7 @@ size_t test_norm_impl(bool with_part2 = true, size_t with_prefix = 0, size_t wit
             TESTX(uni::norm::utf16_is_nfkc(X_utf16) == true);
             TESTX(uni::norm::utf16_is_nfkd(X_utf16) == true);
 
-            // Iterators
+            // Ranges
             TESTX(X_utf16 == utf16_nfc(X_utf16));
             TESTX(X_utf16 == utf16_nfd(X_utf16));
             TESTX(X_utf16 == utf16_nfkc(X_utf16));
@@ -725,152 +725,40 @@ void test_norm_stream_safe()
 
 std::string utf8_nfc(std::string_view str)
 {
-    //return str | uni::views::utf8 | uni::views::norm::nfc | uni::ranges::to_utf8<std::string>();
-
-    uni::iter::utf8 it_begin{str.cbegin(), str.cend()};
-    uni::iter::utf8 it_end{str.cend(), str.cend()};
-
-    uni::iter::norm::nfc it_norm_begin{it_begin, it_end};
-    uni::iter::norm::nfc it_norm_end{it_end, it_end};
-
-    std::string result;
-    uni::iter::output::utf8 it_out{std::back_inserter(result)};
-
-    for (auto it = it_norm_begin; it != it_norm_end; ++it)
-        it_out = *it;
-
-    return result;
+    return str | uni::views::utf8 | uni::views::norm::nfc | uni::ranges::to_utf8<std::string>();
 }
 
 std::string utf8_nfd(std::string_view str)
 {
-    //return str | uni::views::utf8 | uni::views::norm::nfd | uni::ranges::to_utf8<std::string>();
-
-    uni::iter::utf8 it_begin{str.cbegin(), str.cend()};
-    uni::iter::utf8 it_end{str.cend(), str.cend()};
-
-    uni::iter::norm::nfd it_norm_begin{it_begin, it_end};
-    uni::iter::norm::nfd it_norm_end{it_end, it_end};
-
-    std::string result;
-    uni::iter::output::utf8 it_out{std::back_inserter(result)};
-
-    for (auto it = it_norm_begin; it != it_norm_end; ++it)
-        it_out = *it;
-
-    return result;
+    return str | uni::views::utf8 | uni::views::norm::nfd | uni::ranges::to_utf8<std::string>();
 }
 
 std::string utf8_nfkc(std::string_view str)
 {
-    //return str | uni::views::utf8 | uni::views::norm::nfkc | uni::ranges::to_utf8<std::string>();
-
-    uni::iter::utf8 it_begin{str.cbegin(), str.cend()};
-    uni::iter::utf8 it_end{str.cend(), str.cend()};
-
-    uni::iter::norm::nfkc it_norm_begin{it_begin, it_end};
-    uni::iter::norm::nfkc it_norm_end{it_end, it_end};
-
-    std::string result;
-    uni::iter::output::utf8 it_out{std::back_inserter(result)};
-
-    for (auto it = it_norm_begin; it != it_norm_end; ++it)
-        it_out = *it;
-
-    return result;
+    return str | uni::views::utf8 | uni::views::norm::nfkc | uni::ranges::to_utf8<std::string>();
 }
 
 std::string utf8_nfkd(std::string_view str)
 {
-    //return str | uni::views::utf8 | uni::views::norm::nfkd | uni::ranges::to_utf8<std::string>();
-
-    uni::iter::utf8 it_begin{str.cbegin(), str.cend()};
-    uni::iter::utf8 it_end{str.cend(), str.cend()};
-
-    uni::iter::norm::nfkd it_norm_begin{it_begin, it_end};
-    uni::iter::norm::nfkd it_norm_end{it_end, it_end};
-
-    std::string result;
-    uni::iter::output::utf8 it_out{std::back_inserter(result)};
-
-    for (auto it = it_norm_begin; it != it_norm_end; ++it)
-        it_out = *it;
-
-    return result;
+    return str | uni::views::utf8 | uni::views::norm::nfkd | uni::ranges::to_utf8<std::string>();
 }
 
 std::u16string utf16_nfc(std::u16string_view str)
 {
-    //return str | uni::views::utf16 | uni::views::norm::nfc | uni::ranges::to_utf16<std::u16string>();
-
-    uni::iter::utf16 it_begin{str.cbegin(), str.cend()};
-    uni::iter::utf16 it_end{str.cend(), str.cend()};
-
-    uni::iter::norm::nfc it_norm_begin{it_begin, it_end};
-    uni::iter::norm::nfc it_norm_end{it_end, it_end};
-
-    std::u16string result;
-    uni::iter::output::utf16 it_out{std::back_inserter(result)};
-
-    for (auto it = it_norm_begin; it != it_norm_end; ++it)
-        it_out = *it;
-
-    return result;
+    return str | uni::views::utf16 | uni::views::norm::nfc | uni::ranges::to_utf16<std::u16string>();
 }
 
 std::u16string utf16_nfd(std::u16string_view str)
 {
-    //return str | uni::views::utf16 | uni::views::norm::nfd | uni::ranges::to_utf16<std::u16string>();
-
-    uni::iter::utf16 it_begin{str.cbegin(), str.cend()};
-    uni::iter::utf16 it_end{str.cend(), str.cend()};
-
-    uni::iter::norm::nfd it_norm_begin{it_begin, it_end};
-    uni::iter::norm::nfd it_norm_end{it_end, it_end};
-
-    std::u16string result;
-    uni::iter::output::utf16 it_out{std::back_inserter(result)};
-
-    for (auto it = it_norm_begin; it != it_norm_end; ++it)
-        it_out = *it;
-
-    return result;
+    return str | uni::views::utf16 | uni::views::norm::nfd | uni::ranges::to_utf16<std::u16string>();
 }
 
 std::u16string utf16_nfkc(std::u16string_view str)
 {
-    //return str | uni::views::utf16 | uni::views::norm::nfkc | uni::ranges::to_utf16<std::u16string>();
-
-    uni::iter::utf16 it_begin{str.cbegin(), str.cend()};
-    uni::iter::utf16 it_end{str.cend(), str.cend()};
-
-    uni::iter::norm::nfkc it_norm_begin{it_begin, it_end};
-    uni::iter::norm::nfkc it_norm_end{it_end, it_end};
-
-    std::u16string result;
-    uni::iter::output::utf16 it_out{std::back_inserter(result)};
-
-    for (auto it = it_norm_begin; it != it_norm_end; ++it)
-        it_out = *it;
-
-    return result;
+    return str | uni::views::utf16 | uni::views::norm::nfkc | uni::ranges::to_utf16<std::u16string>();
 }
 
 std::u16string utf16_nfkd(std::u16string_view str)
 {
-    //return str | uni::views::utf16 | uni::views::norm::nfkd | uni::ranges::to_utf16<std::u16string>();
-
-    uni::iter::utf16 it_begin{str.cbegin(), str.cend()};
-    uni::iter::utf16 it_end{str.cend(), str.cend()};
-
-    uni::iter::norm::nfkd it_norm_begin{it_begin, it_end};
-    uni::iter::norm::nfkd it_norm_end{it_end, it_end};
-
-    std::u16string result;
-    uni::iter::output::utf16 it_out{std::back_inserter(result)};
-
-    for (auto it = it_norm_begin; it != it_norm_end; ++it)
-        it_out = *it;
-
-    return result;
+    return str | uni::views::utf16 | uni::views::norm::nfkd | uni::ranges::to_utf16<std::u16string>();
 }

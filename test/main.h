@@ -5,7 +5,6 @@
 #include "../src/cpp_uni_convert.h"
 #include "../src/cpp_uni_case.h"
 #include "../src/cpp_uni_norm.h"
-#include "../src/cpp_uni_iterator.h"
 #include "../src/cpp_uni_break_grapheme.h"
 #include "../src/cpp_uni_break_word.h"
 #include "../src/cpp_uni_ranges.h"

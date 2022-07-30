@@ -61,13 +61,12 @@ void test_break_grapheme()
         {
             std::string string_with_breaks_utf8 = uni::utf32to8(string_without_breaks);
 
-            uni::breaks::grapheme::utf8 it_begin{string_with_breaks_utf8.cbegin(), string_with_breaks_utf8.cend()};
-            uni::breaks::grapheme::utf8 it_end{string_with_breaks_utf8.cend(), string_with_breaks_utf8.cend()};
+            auto view = uni::ranges::grapheme::utf8_view{string_with_breaks_utf8};
 
             // Collect brakes
             std::vector<std::size_t> vec;
-            for (auto it = it_begin; it != it_end; ++it)
-                vec.push_back(static_cast<std::size_t>(it - it_begin));
+            for (auto it = view.begin(); it != view.end(); ++it)
+                vec.push_back(static_cast<std::size_t>(it.begin() - string_with_breaks_utf8.begin()));
 
             // Insert brakes
             std::size_t expand = 0;
@@ -86,13 +85,12 @@ void test_break_grapheme()
         {
             std::u16string string_with_breaks_utf16 = uni::utf32to16u(string_without_breaks);
 
-            uni::breaks::grapheme::utf16 it_begin{string_with_breaks_utf16.cbegin(), string_with_breaks_utf16.cend()};
-            uni::breaks::grapheme::utf16 it_end{string_with_breaks_utf16.cend(), string_with_breaks_utf16.cend()};
+            auto view = uni::ranges::grapheme::utf16_view{string_with_breaks_utf16};
 
             // Collect brakes
             std::vector<std::size_t> vec;
-            for (auto it = it_begin; it != it_end; ++it)
-                vec.push_back(static_cast<std::size_t>(it - it_begin));
+            for (auto it = view.begin(); it != view.end(); ++it)
+                vec.push_back(static_cast<std::size_t>(it.begin() - string_with_breaks_utf16.begin()));
 
             // Insert brakes
             std::size_t expand = 0;
@@ -164,13 +162,12 @@ void test_break_word()
         {
             std::string string_with_breaks_utf8 = uni::utf32to8(string_without_breaks);
 
-            uni::breaks::word::utf8 it_begin{string_with_breaks_utf8.cbegin(), string_with_breaks_utf8.cend()};
-            uni::breaks::word::utf8 it_end{string_with_breaks_utf8.cend(), string_with_breaks_utf8.cend()};
+            auto view = uni::ranges::word::utf8_view{string_with_breaks_utf8};
 
             // Collect brakes
             std::vector<std::size_t> vec;
-            for (auto it = it_begin; it != it_end; ++it)
-                vec.push_back(static_cast<std::size_t>(it - it_begin));
+            for (auto it = view.begin(); it != view.end(); ++it)
+                vec.push_back(static_cast<std::size_t>(it.begin() - string_with_breaks_utf8.begin()));
 
             // Insert brakes
             std::size_t expand = 0;
@@ -188,13 +185,12 @@ void test_break_word()
         {
             std::u16string string_with_breaks_utf16 = uni::utf32to16u(string_without_breaks);
 
-            uni::breaks::word::utf16 it_begin{string_with_breaks_utf16.cbegin(), string_with_breaks_utf16.cend()};
-            uni::breaks::word::utf16 it_end{string_with_breaks_utf16.cend(), string_with_breaks_utf16.cend()};
+            auto view = uni::ranges::word::utf16_view{string_with_breaks_utf16};
 
             // Collect brakes
             std::vector<std::size_t> vec;
-            for (auto it = it_begin; it != it_end; ++it)
-                vec.push_back(static_cast<std::size_t>(it - it_begin));
+            for (auto it = view.begin(); it != view.end(); ++it)
+                vec.push_back(static_cast<std::size_t>(it.begin() - string_with_breaks_utf16.begin()));
 
             // Insert brakes
             std::size_t expand = 0;
@@ -212,46 +208,30 @@ void test_break_word()
 
 std::size_t test_break_count_words(std::string_view str)
 {
-    uni::breaks::word::utf8 it_begin{str.cbegin(), str.cend()};
-    uni::breaks::word::utf8 it_end{str.cend(), str.cend()};
+    auto view = uni::ranges::word::utf8_view{str};
 
-    return static_cast<std::size_t>(std::distance(it_begin, it_end));
+    return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
 std::size_t test_break_count_only_words(std::string_view str)
 {
-    uni::breaks::word::utf8 it_begin{str.cbegin(), str.cend()};
-    uni::breaks::word::utf8 it_end{str.cend(), str.cend()};
+    auto view = uni::ranges::word_only::utf8_view{str};
 
-    std::size_t count = 0;
-    for (auto it = it_begin; it != it_end;)
-    {
-        ++it;
-        if (it.word_on_left()) ++count;
-    }
-    return count;
+    return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
 std::size_t test_break_count_words16(std::u16string_view str)
 {
-    uni::breaks::word::utf16 it_begin{str.cbegin(), str.cend()};
-    uni::breaks::word::utf16 it_end{str.cend(), str.cend()};
+    auto view = uni::ranges::word::utf16_view{str};
 
-    return static_cast<std::size_t>(std::distance(it_begin, it_end));
+    return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
 std::size_t test_break_count_only_words16(std::u16string_view str)
 {
-    uni::breaks::word::utf16 it_begin{str.cbegin(), str.cend()};
-    uni::breaks::word::utf16 it_end{str.cend(), str.cend()};
+    auto view = uni::ranges::word_only::utf16_view{str};
 
-    std::size_t count = 0;
-    for (auto it = it_begin; it != it_end;)
-    {
-        ++it;
-        if (it.word_on_left()) ++count;
-    }
-    return count;
+    return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
 void test_break_word_corner_cases()

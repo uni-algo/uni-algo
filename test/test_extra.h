@@ -21,12 +21,12 @@ void test_overflow()
     TESTX((uni::utf16to32<unsigned long long, char32_t>(str16)[0] == 0x5A));
     TESTX((uni::utf32to16<unsigned long long, char16_t>(str32)[0] == 0x5A));
 
-    // Iterators
+    // Ranges
 
     // Reminder: to make this test fail for example remove "& 0xFFFF" in utf16_iter in impl_iterator.h
 
-    TESTX((*uni::iter::utf8{str8.cbegin(), str8.cend()} == 0x5A));
-    TESTX((*uni::iter::utf16{str16.cbegin(), str16.cend()} == 0x5A));
+    TESTX(*uni::ranges::utf8_view{str8}.begin() == 0x5A);
+    TESTX(*uni::ranges::utf16_view{str16}.begin() == 0x5A);
 }
 
 void test_alter_value()
@@ -53,13 +53,11 @@ void test_alter_value()
     str8 = uni::utf32to8<char32_t, unsigned long long>(U"\xD800"); // ill-formed
     TESTX(str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
 
-    // Iterators
+    // Ranges
 
-    str8.resize(4); // Reuse str8, size 4 is enough for any code point
-
-    uni::iter::output::utf8{str8.begin()} = 0x0410;
+    str8 = std::u32string{0x0410} | uni::ranges::to_utf8<decltype(str8)>();
     TESTX(str8[0] == 0xD0 && str8[1] == 0x90);
 
-    uni::iter::output::utf8{str8.begin()} = 0xD800;
+    str8 = std::u32string{0xD800} | uni::ranges::to_utf8<decltype(str8)>();
     TESTX(str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
 }

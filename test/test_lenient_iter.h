@@ -4,30 +4,12 @@
 
 std::u16string test_iter_utf8to16(std::string_view str)
 {
-    uni::iter::utf8 it_begin{str.cbegin(), str.cend()};
-    uni::iter::utf8 it_end{str.cend(), str.cend()};
-
-    std::u16string result;
-    uni::iter::output::utf16 it_out{std::back_inserter(result)};
-
-    for (auto it = it_begin; it != it_end; ++it)
-        it_out = *it;
-
-    return result;
+    return str | uni::views::utf8 | uni::ranges::to_utf16<std::u16string>();
 }
 
 std::string test_iter_utf16to8(std::u16string_view str)
 {
-    uni::iter::utf16 it_begin{str.cbegin(), str.cend()};
-    uni::iter::utf16 it_end{str.cend(), str.cend()};
-
-    std::string result;
-    uni::iter::output::utf8 it_out{std::back_inserter(result)};
-
-    for (auto it = it_begin; it != it_end; ++it)
-        it_out = *it;
-
-    return result;
+    return str | uni::views::utf16 | uni::ranges::to_utf8<std::string>();
 }
 
 void test_lenient_iter_utf8to16()

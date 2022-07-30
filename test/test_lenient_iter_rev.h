@@ -6,46 +6,32 @@
 
 std::u16string test_iter_rev_utf8to16(std::string_view str)
 {
-    uni::iter::utf8 it_begin{str.cbegin(), str.cend(), str.end()};
-    uni::iter::utf8 it_end{str.cbegin(), str.cbegin()};
+    auto view = uni::ranges::utf8_view<std::string_view, uni::detail::impl_iter_error>{str};
 
     std::u32string codepoints;
-    for (auto it = it_begin; it != it_end;)
+    for (auto it = view.end(); it != view.begin();)
     {
         --it;
         codepoints.push_back(*it);
     }
     std::reverse(codepoints.begin(), codepoints.end());
 
-    std::u16string result;
-    uni::iter::output::utf16 it_out{std::back_inserter(result)};
-
-    for (auto c : codepoints)
-        it_out = c;
-
-    return result;
+    return codepoints | uni::ranges::to_utf16<std::u16string>();
 }
 
 std::string test_iter_rev_utf16to8(std::u16string_view str)
 {
-    uni::iter::utf16 it_begin{str.cbegin(), str.cend(), str.end()};
-    uni::iter::utf16 it_end{str.cbegin(), str.cbegin()};
+    auto view = uni::ranges::utf16_view<std::u16string_view, uni::detail::impl_iter_error>{str};
 
     std::u32string codepoints;
-    for (auto it = it_begin; it != it_end;)
+    for (auto it = view.end(); it != view.begin();)
     {
         --it;
         codepoints.push_back(*it);
     }
     std::reverse(codepoints.begin(), codepoints.end());
 
-    std::string result;
-    uni::iter::output::utf8 it_out{std::back_inserter(result)};
-
-    for (auto c : codepoints)
-        it_out = c;
-
-    return result;
+    return codepoints | uni::ranges::to_utf8<std::string>();
 }
 
 void test_lenient_iter_rev_utf8to16()

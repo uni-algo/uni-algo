@@ -4,58 +4,56 @@
 
 std::u16string iter_rev_utf8to16(std::string_view str, uni::error& error)
 {
-    uni::iter::utf8<decltype(str.cbegin()), decltype(str.end()), uni::iter::error> it_begin{str.cbegin(), str.cend(), str.end()};
-    uni::iter::utf8<decltype(str.cbegin()), decltype(str.end()), uni::iter::error> it_end{str.cbegin(), str.cbegin()};
+    auto view = uni::ranges::utf8_view<std::string_view, uni::detail::impl_iter_error>{str};
 
     error.reset();
 
     std::u32string codepoints;
-    for (auto it = it_begin; it != it_end;)
+    for (auto it = view.end(); it != view.begin();)
     {
         --it;
-        if (*it == uni::iter::error)
+        if (*it == uni::detail::impl_iter_error)
         {
-            error = uni::error(true, static_cast<std::size_t>(it - it_end));
-            return std::u16string();
+            error = uni::error(true, static_cast<std::size_t>(it.begin() - str.begin()));
+            return std::u16string{};
         }
         codepoints.push_back(*it);
     }
     std::reverse(codepoints.begin(), codepoints.end());
 
     std::u16string result;
-    uni::iter::output::utf16<decltype(std::back_inserter(result))> it_out{std::back_inserter(result)};
+    std::back_insert_iterator output{result};
 
     for (auto c : codepoints)
-        it_out = c;
+        uni::detail::impl_utf16_output(c, output);
 
     return result;
 }
 
 std::string iter_rev_utf16to8(std::u16string_view str, uni::error& error)
 {
-    uni::iter::utf16<decltype(str.cbegin()), decltype(str.end()), uni::iter::error> it_begin{str.cbegin(), str.cend(), str.end()};
-    uni::iter::utf16<decltype(str.cbegin()), decltype(str.end()), uni::iter::error> it_end{str.cbegin(), str.cbegin()};
+    auto view = uni::ranges::utf16_view<std::u16string_view, uni::detail::impl_iter_error>{str};
 
     error.reset();
 
     std::u32string codepoints;
-    for (auto it = it_begin; it != it_end;)
+    for (auto it = view.end(); it != view.begin();)
     {
         --it;
-        if (*it == uni::iter::error)
+        if (*it == uni::detail::impl_iter_error)
         {
-            error = uni::error(true, static_cast<std::size_t>(it - it_end));
-            return std::string();
+            error = uni::error(true, static_cast<std::size_t>(it.begin() - str.begin()));
+            return std::string{};
         }
         codepoints.push_back(*it);
     }
     std::reverse(codepoints.begin(), codepoints.end());
 
     std::string result;
-    uni::iter::output::utf8<decltype(std::back_inserter(result))> it_out{std::back_inserter(result)};
+    std::back_insert_iterator output{result};
 
     for (auto c : codepoints)
-        it_out = c;
+        uni::detail::impl_utf8_output(c, output);
 
     return result;
 }
