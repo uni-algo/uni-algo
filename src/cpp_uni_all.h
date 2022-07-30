@@ -8,7 +8,7 @@
 #define CPP_UNI_ALL_H_UAIX
 
 #include "cpp_uni_convert.h"
-#include "cpp_uni_iterator.h"
+#include "cpp_uni_ranges.h"
 
 #ifndef UNI_ALGO_IMPL_DISABLE_CASE
 #include "cpp_uni_case.h"
