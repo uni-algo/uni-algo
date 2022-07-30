@@ -13,6 +13,8 @@ namespace uni {
 
 namespace detail::ranges {
 
+// See ext/translit/macedonian_to_latin_docs.h for an example how to use it.
+
 template<class Range, class Func>
 class translit_view : public detail::ranges::view_base
 {
