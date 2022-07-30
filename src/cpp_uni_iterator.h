@@ -13,7 +13,8 @@
 
 #include "cpp_uni_config.h"
 #include "cpp_uni_version.h"
-#include "internal/cpp_uni_sentinel.h"
+// This is here only to include sentinel
+#include "internal/cpp_uni_ranges_core.h"
 
 #include "impl/impl_iterator.h"
 
