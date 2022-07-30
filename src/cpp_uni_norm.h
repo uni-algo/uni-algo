@@ -677,6 +677,8 @@ public:
     //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+
 template<class Range>
 class nfkc_view : public detail::ranges::view_base
 {
@@ -863,14 +865,18 @@ public:
     //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
 
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
 template<class Range>
 nfc_view(Range&&) -> nfc_view<uni::views::all_t<Range>>;
 template<class Range>
 nfd_view(Range&&) -> nfd_view<uni::views::all_t<Range>>;
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<class Range>
 nfkc_view(Range&&) -> nfkc_view<uni::views::all_t<Range>>;
 template<class Range>
 nfkd_view(Range&&) -> nfkd_view<uni::views::all_t<Range>>;
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 } // namespace ranges::norm
 
@@ -896,6 +902,8 @@ struct adaptor_nfd
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_nfd& a) { return a(std::forward<R>(r)); }
 
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+
 /* NFKC_VIEW */
 
 struct adaptor_nfkc
@@ -916,14 +924,18 @@ struct adaptor_nfkd
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forward<R>(r)); }
 
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
 } // namespace detail
 
 namespace ranges::views::norm {
 
 inline constexpr detail::adaptor_nfc nfc;
 inline constexpr detail::adaptor_nfd nfd;
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 inline constexpr detail::adaptor_nfkc nfkc;
 inline constexpr detail::adaptor_nfkd nfkd;
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 } // namespace ranges::views::norm
 
