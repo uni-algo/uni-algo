@@ -41,7 +41,7 @@ private:
                 if (!data.empty() && skip)
                     data.erase(0, 1);
 
-                for (; data.size() < parent->max_size && it_pos != std::end(parent->range); ++it_pos)
+                for (; data.size() < parent->buf_size && it_pos != std::end(parent->range); ++it_pos)
                     data.push_back(*it_pos);
 
                 if (data.empty())
@@ -97,14 +97,14 @@ private:
 
     Range range = Range{};
     Func func_translit;
-    std::size_t max_size = 1;
+    std::size_t buf_size = 1;
     translit<iter_t, sent_t> cached_begin_value;
     bool cached_begin = false;
 
 public:
     uaiw_constexpr translit_view() = default;
     uaiw_constexpr translit_view(Range r, Func fun, std::size_t size)
-        : range{std::move(r)}, func_translit{std::move(fun)}, max_size{size} {}
+        : range{std::move(r)}, func_translit{std::move(fun)}, buf_size{size} {}
     //uaiw_constexpr Range base() const& { return range; }
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
