@@ -8,12 +8,14 @@
 - [Design](#design)
 - [Usage](#usage)
 - [Examples](#examples)
-  - [Convert Module](#convert-module)
-  - [Case Module](#case-module)
-  - [Iterator Module](#iterator-module)
-  - [Break Module](#break-module)
-  - [Normalization Module](#normalization-module)
-  - [Iterator Chains](#iterator-chains)
+  - [Convert Functions](#convert-functions)
+  - [Case Functions](#case-functions)
+  - [Normalization Functions](#normalization-functions)
+  - [Basic Ranges](#basic-ranges)
+  - [UTF Ranges](#utf-ranges)
+  - [Grapheme/Word Ranges](#graphemeword-ranges)
+  - [Normalization Ranges](#normalization-ranges)
+- [Ranges vs Functions](#ranges-vs-functions)
 - [Unicode Algorithms](#unicode-algorithms)
 - [Performance](#performance)
 - [C Language](#c-language)
@@ -23,10 +25,10 @@
 ## Introduction
 
 There are plenty of Unicode libraries for C/C++ out there that implement random
-Unicode algorithms but many of them doesn't handle ill-formed UTF sequences at all.<br />
-In the best case scenario you'll get an exception/error in the worst undefined behavior.<br />
+Unicode algorithms but many of them doesn't handle ill-formed UTF sequences at all.<br>
+In the best case scenario you'll get an exception/error in the worst undefined behavior.
 The biggest problem that in 99% cases everything will be fine.
-This is inappropriate for security reasons.<br />
+This is inappropriate for security reasons.<br>
 This library handles such problems (there are not only ill-formed sequences actually)
 properly and always according to Unicode Standard.
 
@@ -35,14 +37,14 @@ well-formed like in some other programming languages this makes the problem even
 The library doesn't introduce such type either because the library doesn't work with
 types/strings/files/streams it works with the data inside them and makes it safe when it needed.
 
-Check this article if you want more information about ill-formed sequences: https://hsivonen.fi/broken-utf-8<br />
+Check this article if you want more information about ill-formed sequences: https://hsivonen.fi/broken-utf-8<br>
 It is a bit outdated because ICU (International Components for Unicode) now uses W3C conformant
-implementation too but the information in the article is very useful.<br />
+implementation too but the information in the article is very useful.<br>
 This library does use W3C conformant implementation too.
 
 ## Design
 
-The design of the library follows these principles:<br />
+The design of the library follows these principles:<br>
 Security. Performance. Usability. Portability.
 
 Security means:
@@ -65,7 +67,7 @@ Performance means:
 Usability means:
 - Most functions can be used in a single line. See examples below.
 - The library doesn't introduce new types for strings it uses std::string, std::u16string etc.
-- Iterators are compatible with C++ Standard Library algorithms.
+- Ranges and iterators are compatible with C++ Standard Library algorithms.
 - The library doesn't use exceptions because there are no exceptional situations in
 Unicode algorithms. Unicode Standard always describes what need to be done if an issue occurs.
 Of course C++ Standard Library still can throw if -fno-exceptions isn't used.
@@ -76,8 +78,7 @@ that can drastically reduce the size of Unicode data that must be compiled.
 
 Portability means:
 - The library works even if all available types are 64-bit with sizeof == 1
-and/or fixed width types are unavailable and/or CHAR_BIT is not 8.<br />
-Note that this is partially tested so if you find any issues please report them.
+and/or fixed width types are unavailable and/or CHAR_BIT is not 8.
 
 ## Usage
 
@@ -149,7 +150,7 @@ Include a header file you want to use from src directory and compile one file `s
 
 </p></details>
 
-<details><summary><b>Test</b></summary><p>
+<details><summary><b>Testing</b></summary><p>
 
 Note that test is a CMake project not a subproject so you need to do it like this:
 
@@ -175,7 +176,7 @@ ctest --verbose --build-config Release
 ## Examples
 
 For these examples to work you need to compile them in GCC/Clang with -std=c++17 (or higher)
-or in MSVC with /utf-8 /std:c++17 (or higher) and a terminal that actually supports UTF-8.<br />
+or in MSVC with /utf-8 /std:c++17 (or higher) and a terminal that actually supports UTF-8.<br>
 These are the lowest versions the library tested: GCC 7.3, Clang 8.0.1, MSVS 2017 15.9 (MSVC 19.16)
 
 Note that terms: code point, code unit, grapheme are used in the examples.
@@ -185,9 +186,9 @@ https://stackoverflow.com/questions/27331819/whats-the-difference-between-a-char
 Note that the files are called modules because the word is too good in this case.
 It has nothing to do with C++20 modules.
 
-## Convert module
+## Convert Functions
 ```cpp
-// The module doesn't require Unicode data so it can be used as header-only
+// This module doesn't require Unicode data so it can be used as header-only.
 #include "cpp_uni_convert.h"
 
 // Lenient conversion (cannot fail) "\xD800" is unpaired high surrogate in UTF-16
@@ -238,26 +239,26 @@ std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test");
 // Note that there are no short functions for std::u8string at the moment
 // but template functions will work perfectly fine with it.
 ```
-## Case module
+## Case Functions
 ```cpp
 #include "cpp_uni_case.h" // and compile "cpp_uni_data.cpp"
 
 std::cout << uni::cases::utf8_upper("Straße") << '\n';
 std::cout << uni::cases::utf8_lower("ДВА") << '\n';
 std::cout << uni::cases::utf8_fold("Ligature ﬃ") << '\n';
-std::cout << uni::cases::utf8_title("word WoRd wOrD") << '\n';
+std::cout << uni::cases::utf8_title("teMPuS eDAX reRuM") << '\n';
 
 // Output:
 // STRASSE
 // два
 // ligature ffi
-// Word Word Word
+// Tempus Edax Rerum
 
 // With Greek locale, removes diacritics etc.
 std::cout << uni::cases::utf8_upper("Ἀριστοτέλης", uni::locale("el")) << '\n';
 // With Turkish locale, maps i to İ etc.
 std::cout << uni::cases::utf8_upper("istanbul", uni::locale("tr")) << '\n';
-// With Dutch locale, maps ij to IJ at the start of a word
+// With Dutch locale, maps ij to IJ at the start of a word.
 std::cout << uni::cases::utf8_title("ijsland", uni::locale("nl")) << '\n';
 
 // Output:
@@ -270,9 +271,9 @@ assert(uni::caseless::utf8_compare("ﬃ", "FFI") == 0);
 uni::search found = uni::caseless::utf8_search("Ligature ﬁ test", "FI");
 assert(found && found.pos() == 9 && found.end_pos() == 12);
 
-// The module provides a very simple collation function too
+// The module provides a very simple collation function too.
 
-// Use the Makedonian alphabet for example
+// Use the Makedonian alphabet for example.
 std::u32string str32 = U"абвгдѓежзѕијклљмнњопрстќуфхцчџшАБВГДЃЕЖЗЅИЈКЛЉМНЊОПРСТЌУФХЦЧЏШ";
 
 std::vector<std::string> vec8;
@@ -280,11 +281,11 @@ for (char32_t c : str32) // Convert the code points to a vector of UTF-8 code un
     vec8.emplace_back(uni::utf32to8(std::u32string(1, c)));
 std::shuffle(vec8.begin(), vec8.end(), std::mt19937(42)); // Shuffle them just in case
 
-// For example sort them with the binary comparison first
+// For example sort them with the binary comparison first.
 std::sort(vec8.begin(), vec8.end());
 
 // Output: ЃЅЈЉЊЌЏАБВГДЕЖЗИКЛМНОПРСТУФХЦЧШабвгдежзиклмнопрстуфхцчшѓѕјљњќџ
-// Everything is out of place
+// Everything is out of place.
 
 // Sort them with uni::casesens::utf8_collate
 std::sort(vec8.begin(), vec8.end(), [](auto a, auto b) {
@@ -295,9 +296,9 @@ std::for_each(vec8.begin(), vec8.end(), [](auto s) { std::cout << s; });
 std::cout << '\n';
 
 // Output: аАбБвВгГдДѓЃеЕжЖзЗѕЅиИјЈкКлЛљЉмМнНњЊоОпПрРсСтТќЌуУфФхХцЦчЧџЏшШ
-// This is the correct order for the Makedonian alphabet
+// This is the correct order for the Makedonian alphabet.
 
-// Group them too
+// Group them too.
 auto it = std::unique(vec8.begin(), vec8.end(), [](auto a, auto b) {
     return uni::caseless::utf8_collate(a, b) == 0;
 });
@@ -305,130 +306,18 @@ vec8.erase(it, vec8.end());
 
 // Output: абвгдѓежзѕијклљмнњопрстќуфхцчџш
 ```
-## Iterator module
-```cpp
-// Be aware that this module will be redesigned in favour of std::ranges
-
-// The module doesn't require Unicode data so it can be used as header-only
-#include "cpp_uni_iterator.h"
-
-// 3 UTF-8 code points, these emojis use 1 code point
-std::string str8 = "😺😼🙀";
-
-// Make UTF-8 iterator adaptors from std::string iterators
-uni::iter::utf8 begin{str8.cbegin(), str8.cend()};
-uni::iter::utf8 end{str8.cend(), str8.cend()};
-
-// Count code points
-std::cout << "Number of code points: " << std::distance(begin, end) << '\n';
-
-// Print code points
-for (auto it = begin; it != end; ++it)
-    std::cout << "Code point: " << std::to_string(*it) << " at: " << it - begin << '\n';
-
-// Skip 2 code points
-if (auto it = std::next(begin, 2); it != end)
-    std::cout << "3rd code point at: " << it - begin << '\n';
-
-// Find code point 128572
-if (auto it = std::find(begin, end, 128572); it != end)
-    std::cout << "Code point 128572 at: " << it - begin << '\n';
-
-std::cout << "Reverse order:" << '\n';
-{
-    uni::iter::utf8 begin{str8.cbegin(), str8.cend(), str8.cend()};
-    uni::iter::utf8 end{str8.cbegin(), str8.cbegin()};
-
-    for (auto it = begin; it != end;)
-    {
-        --it;
-        std::cout << "Code point: " << std::to_string(*it) << " at: " << it - end << '\n';
-    }
-}
-
-// Output:
-// Number of code points: 3
-// Code point: 128570 at: 0
-// Code point: 128572 at: 4
-// Code point: 128576 at: 8
-// 3rd code point at: 8
-// Code point 128572 at: 4
-// Reverse order:
-// Code point: 128576 at: 8
-// Code point: 128572 at: 4
-// Code point: 128570 at: 0
-```
-## Break module
-```cpp
-// Be aware that this module will be redesigned in favour of std::ranges
-
-#include "cpp_uni_break.h" // and compile "cpp_uni_data.cpp"
-
-// Breaks are similar to iterators but they don't return anything
-// so operator* isn't defined and operator- must be used to determine a break point.
-// Breaks use default grapheme/word boundary rules as described in Unicode Standard UAX #29
-
-std::string str8 = "Алберт Ајнштајн";
-
-// Replace it with uni::breaks::grapheme::utf8 for grapheme breaks
-uni::breaks::word::utf8 begin{str8.cbegin(), str8.cend()};
-uni::breaks::word::utf8 end{str8.cend(), str8.cend()};
-
-// Count words/graphemes (note that a space/punctuation is a word too according to rules)
-std::cout << "Number of words: " << std::distance(begin, end) << '\n';
-
-// Print positions of the words/graphemes
-for (auto it = begin; it != end; ++it)
-    std::cout << "Word at: " << it - begin << '\n';
-
-// Word/grapheme tokenizer
-std::cout << "Words:" << '\n';
-for (auto it = begin, prev = it; it != end; prev = it)
-{
-    ++it;
-    // If you use word breaks you can use this helper function to determine that there is
-    // an actual word and not a space or something on the left side of the boundary.
-    if (it.word_on_left())
-        std::cout << str8.substr(prev - begin, it - prev) << '\n';
-}
-
-// Output:
-// Number of words: 3
-// Word at: 0
-// Word at: 14
-// Word at: 15
-// Words:
-// Алберт
-// Ајнштајн
-
-// For example you need to append or insert a code point or grapheme to a string.
-
-// For append a code point to an UTF-8 string all you need is Convert module.
-std::string str8 = "🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧🧙‍♀️"; // These emojis use multiple code points
-str8 += uni::utf32to8(std::u32string{U'😺'}); // This emoji use 1 code point
-
-// But if you need to insert a code point you need Break module too.
-uni::breaks::grapheme::utf8 it{str8.cbegin(), str8.cend()};
-// Insert a code point after 2nd grapheme. This emoji use 1 code point.
-str8.insert(std::next(it, 2) - it, uni::utf32to8(std::u32string{U'😼'}));
-
-// The same way a grapheme can be appended or inserted and of course you don't even need
-// Convert module if your grapheme or code point are already in UTF-8 encoding.
-
-// Output: 🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧😼🧙‍♀️😺
-```
-## Normalization module
+## Normalization Functions
 ```cpp
 #include "cpp_uni_norm.h" // and compile "cpp_uni_data.cpp"
 
-// "Z" with acute == "Ź"
-assert(uni::norm::utf8_nfc("\x5A\xCC\x81") == "\xC5\xB9");
+// "W" with circumflex == "Ŵ"
+assert(uni::norm::utf8_nfc("W\u0302") == "Ŵ");
 
-assert(uni::norm::utf8_is_nfc("\x5A\xCC\x81") == false);
-assert(uni::norm::utf8_is_nfc("\xC5\xB9") == true);
+assert(uni::norm::utf8_is_nfc("Ŵ") == true);
+assert(uni::norm::utf8_is_nfc("W\u0302") == false);
 
 // Note that the normalization algorithm in the library supports streams
-// so you can use the same function to normalize a file with 0 allocations
+// so you can use the same function to normalize a file with 0 allocations.
 
 std::ifstream input{"random_file.txt", std::ios::binary};
 std::ofstream output{"random_file_normalized.txt", std::ios::binary};
@@ -445,53 +334,162 @@ uni::norm::utf8_nfc(it, end, out);
 // some random UTF-8 code points with a bunch of U+FFFD (replacement characters).
 // It just means it is safe to use the function with everything.
 
-// Note that the same result can be achieved with iterator chains.
+// Note that the same result can be achieved with normalization ranges.
 ```
-## Iterator chains
+## Basic Ranges
 ```cpp
-// Be aware that this will be redesigned in favour of std::ranges
+// This module doesn't require Unicode data so it can be used as header-only.
+#include "cpp_uni_ranges.h"
 
+// Ranges in this library is compatible with C++20 ranges.
+// In C++17 the library implements some basic ranges that are similar to C++20 ranges:
+uni::views::reverse
+uni::views::transform
+uni::views::filter
+uni::views::drop
+uni::views::take
+
+// In C++20 you can just use std::ranges variants of these ranges
+// but always use uni::views::reverse from this library
+// because std::views::reverse is not good enought for Unicode.
+
+// You use these ranges the same way you use C++20 ranges.
+assert(std::string_view{"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ"}
+        | uni::views::utf8
+        | uni::views::reverse | uni::views::drop(3) | uni::views::take(5)
+        | uni::views::reverse | uni::ranges::to_utf8<std::string>()
+        == "ⅢⅣⅤⅥⅦ");
+
+// A simple convert function using ranges looks like this.
+std::u16string utf8to16(std::string_view view)
+{
+    return view | uni::views::utf8 | uni::ranges::to_utf16<std::u16string>();
+}
+```
+## UTF Ranges
+```cpp
+// This module doesn't require Unicode data so it can be used as header-only.
+#include "cpp_uni_ranges.h"
+
+// This example demonstrates how to work directly with a range view.
+
+// 3 UTF-8 code points. These emojis use 1 code point.
+std::string str8 = "😺😼🙀";
+
+// Make UTF-8 view from std::string
+auto view = uni::ranges::utf8_view{str8};
+
+// Count code points.
+std::cout << "Number of code points: " << std::distance(view.begin(), view.end()) << '\n';
+
+// Print code points.
+for (auto it = view.begin(); it != view.end(); ++it)
+{
+    std::cout << "Code point: " << std::to_string(*it)
+              << " at: " << it.begin() - str8.begin() << '\n';
+}
+
+// Skip 2 code points.
+if (auto it = std::next(view.begin(), 2); it != view.end())
+    std::cout << "3rd code point at: " << it.begin() - str8.begin() << '\n';
+
+// Find code point 128572.
+if (auto it = std::find(view.begin(), view.end(), 128572); it != view.end())
+    std::cout << "Code point 128572 at: " << it.begin() - str8.begin() << '\n';
+
+std::cout << "Reverse order:" << '\n';
+for (auto it = view.end(); it != view.begin();)
+{
+    --it;
+    std::cout << "Code point: " << std::to_string(*it)
+              << " at: " << it.begin() - str8.begin() << '\n';
+}
+
+// Output:
+// Number of code points: 3
+// Code point: 128570 at: 0
+// Code point: 128572 at: 4
+// Code point: 128576 at: 8
+// 3rd code point at: 8
+// Code point 128572 at: 4
+// Reverse order:
+// Code point: 128576 at: 8
+// Code point: 128572 at: 4
+// Code point: 128570 at: 0
+```
+## Grapheme/Word Ranges
+```cpp
+#include "cpp_uni_break_grapheme.h" // and compile "cpp_uni_data.cpp"
+#include "cpp_uni_break_word.h"
+
+// Grapheme/Word aka Break ranges are similar to UTF ranges
+// but they return sunbranges in the form of std::string_view.
+// Break ranges use default grapheme/word boundary rules from The Unicode Standard UAX #29.
+
+std::string str8 = "Άλμπερτ Αϊνστάιν";
+
+// Replace it with uni::views::grapheme::utf8 for grapheme breaks.
+auto view = uni::views::word::utf8(str8);
+
+// Count words/graphemes (note that a space/punctuation is a word too according to rules).
+std::cout << "Number of words: " << std::distance(view.begin(), view.end()) << '\n';
+
+// Print positions of the words/graphemes.
+for (auto it = view.begin(); it != view.end(); ++it)
+    std::cout << "Word at: " << it.begin() - str8.begin() << '\n';
+
+// Word/grapheme tokenizer.
+std::cout << "Words:" << '\n';
+// Note that we use word_only view here to skip all punctuation and spaces.
+for (std::string_view word : uni::views::word_only::utf8(str8))
+    std::cout << word << '\n';
+
+// Output:
+// Number of words: 3
+// Word at: 0
+// Word at: 14
+// Word at: 15
+// Words:
+// Άλμπερτ
+// Αϊνστάιν
+
+// For example you need to append or insert a code point or grapheme to a string.
+
+// For append a code point to an UTF-8 string all you need is Convert module.
+std::string str8 = "🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧🧙‍♀️"; // These emojis use multiple code points.
+str8 += uni::utf32to8(std::u32string{U'😺'}); // This emoji use 1 code point.
+
+// But if you need to insert a code point you need break ranges too.
+auto it = uni::views::grapheme::utf8(str8).begin();
+// Insert a code point after 2nd grapheme.
+auto pos = std::next(it, 2).begin() - str8.begin();
+str8.insert(pos, uni::utf32to8(std::u32string{U'😼'})); // This emoji use 1 code point.
+
+// The same way a grapheme can be appended or inserted and of course you don't even need
+// Convert module if your grapheme or a code point is already in UTF-8 encoding.
+
+// Output: 🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧😼🧙‍♀️😺
+```
+## Normalization Ranges
+```cpp
 // For example we need to remove accents that mark the stressed vowels in a text.
 // The algorithm is simple: NFD -> Remove grave and acute accents (U+0300 and U+0301) -> NFC
 // Note that the library has uni::norm::utf8_unaccent function but it won't produce
 // the same result because it removes all accents not specific ones,
-// but it is possible to implement this algorithm using multiple iterators in a chain like this.
+// but it is possible to implement this algorithm using ranges like this.
 
-#include "cpp_uni_iterator.h"
+#include "cpp_uni_ranges.h"
 #include "cpp_uni_norm.h"
 // Note that we include Normalization module because some modules
-// provide not only functions but iterators too
+// provide not only functions but ranges too.
 
-std::string remove_grave_and_acute_accents(std::string_view str)
+std::string remove_grave_and_acute_accents(std::string_view str_view)
 {
-    // Chain iterators: UTF-8 -> NFD -> Filter -> NFC -> UTF-8 Output
-    // Note that sentinels are used here instead of end iterators it makes the code cleaner
+    // Use ranges: UTF-8 -> NFD -> Filter -> NFC -> To UTF-8
 
-    uni::iter::utf8 begin{str.cbegin(), str.cend()};
+    // Note that in C++20 uni::views::filter can be replaced with std::views::filter
 
-    uni::iter::norm::nfd nfd_begin{begin, uni::sentinel};
-
-    struct func { bool operator()(char32_t c) { return c != 0x0300 && c != 0x0301; } };
-    uni::iter::func::filter func_begin{func{}, nfd_begin, uni::sentinel};
-
-    // Or you can just use a lambda function:
-    //auto func = [](char32_t c) { return c != 0x0300 && c != 0x0301; };
-    //uni::iter::func::filter func_begin{func, nfd_begin, uni::sentinel};
-
-    uni::iter::norm::nfc nfc_begin{func_begin, uni::sentinel};
-
-    std::string result;
-    uni::iter::output::utf8 out{std::back_inserter(result)};
-
-    for (auto it = nfc_begin; it != uni::sentinel; ++it)
-        out = *it;
-
-    return result;
-
-    // This syntax is planned in the future
-    // It will be compatible with C++20 std::ranges::views
-    // so uni::views::filter can be replaced with std::views::filter
-    std::string result = str
+    return str_view
          | uni::views::utf8
          | uni::views::norm::nfd
          | uni::views::filter([](char32_t c) { return c != 0x0300 && c != 0x0301; })
@@ -502,24 +500,26 @@ std::string remove_grave_and_acute_accents(std::string_view str)
 std::cout << remove_grave_and_acute_accents("bótte bòtte") << '\n';
 // Output: botte botte
 ```
-What is the difference between iterators and functions?
+## Ranges vs Functions
+
+What is the difference between ranges and functions?
 
 Functions are faster because they implemented directly on the low-level without using
-the iterators so they use many optimizations that can be implemented only on the low-level.
-Iterators on the other hand are much more flexibly than functions, a function can do one job
-in one pass but iterators can do many jobs in one pass.<br />
-This means that for a complex algorithm iterator chains can outperform function chains
+ranges so they use many optimizations that can be implemented only on the low-level.
+Ranges on the other hand are much more flexibly than functions, a function can do one job
+in one pass but ranges can do many jobs in one pass.<br>
+This means that for a complex algorithm ranges can outperform functions
 because everything will be done in one pass, for example to normalize an UTF-8 string and
 convert it to UTF-16 you need to use 2 functions it will be 2 passes,
-but using iterators it can be done in one pass.<br />
-Also this makes iterators are especially useful for streams where you have only one pass for everything.
+but using ranges it can be done in one pass.<br>
+Also this makes ranges are especially useful for streams where you have only one pass for everything.
 
 ## Unicode Algorithms
 
 **Unicode algorithms that the library does implement:**
 
 Unicode Standard 3.4: Table 3-1. Named Unicode Algorithms:
-- Default Case Conversion (locale-independent and locale-dependant)
+- Default Case Conversion (locale-independent and locale-dependent)
 - Default Case Folding
 - Default Caseless Matching
 - Character Segmentation (UAX #29)
@@ -533,7 +533,7 @@ And algorithms that are a part of normalization:
 - Hangul Syllable Decomposition
 
 *The library implements the normalization algorithm in stream-friendly way
-so it can be used with streams and without memory allocations in all cases.<br />
+so it can be used with streams and without memory allocations in all cases.<br>
 For more info see: https://www.unicode.org/reports/tr15/#Stream_Safe_Text_Format
 
 **Other algorithms:**
@@ -548,10 +548,10 @@ And a very simple search algorithm that is based on Default Caseless Matching.
 
 **Unicode algorithms that the library does not implement:**
 
-Unicode Collation Algorithm (UCA) (UTS #10)<br />
+Unicode Collation Algorithm (UCA) (UTS #10)<br>
 A very complex algorithm to sort strings in many different ways with many different rules.
 
-Bidirectional Algorithm (UBA) (UAX #9)<br />
+Bidirectional Algorithm (UBA) (UAX #9)<br>
 Specifications for the positioning of characters from right to left, such as Arabic or Hebrew.
 
 Line Breaking Algorithm (UAX #14)
@@ -562,7 +562,7 @@ ICU (International Components for Unicode) library.
 ## Performance
 
 ICU (International Components for Unicode) and some functions from WinAPI are used
-for the performance comparison because these implementations are highly optimized.<br />
+for the performance comparison because these implementations are highly optimized.<br>
 See perf/result folder.
 
 ## C Language
@@ -570,14 +570,14 @@ See perf/result folder.
 Low-level functions can be compiled in C mode.
 This means you can compile them using any C99 compiler even Tiny C Compiler will work.
 The library doesn't provide an "official" C wrapper because there are many ways to implement
-it in C depending on what allocator you are using, what strings etc.<br />
-Sample C wrapper that uses malloc and basic types can be found in examples folder.<br />
+it in C depending on what allocator you are using, what strings etc.<br>
+Sample C wrapper that uses malloc and basic types can be found in examples folder.<br>
 You are on your own if you want to use the low-level functions directly.
 
 ## SQLite Extension
 
-Undocumented for now.<br />
-SQLite extension implemented by using the low-level directly so it always uses SQLite allocator.<br />
+Undocumented for now.<br>
+SQLite extension implemented by using the low-level directly so it always uses SQLite allocator.<br>
 See sqlite folder.
 
 ## License
