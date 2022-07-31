@@ -2,12 +2,14 @@ name: Linux
 on: workflow_dispatch
 
 jobs:
-  Linux-GCC:
-    name: Linux GCC
-    runs-on: ubuntu-latest
+  Linux-GCC-Ubuntu-20:
+    name: Linux GCC Ubuntu 20
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
-        compiler: [g++-7,g++-10,g++-12]
+        cxx: [g++-9, g++-10]
+    env:
+        CXX: ${{matrix.cxx}}
 
     steps:
       - name: Checkout
@@ -21,12 +23,56 @@ jobs:
           cd build
           ctest --verbose
 
-  Linux-Clang:
-    name: Linux Clang
-    runs-on: ubuntu-latest
+  Linux-Clang-Ubuntu-20:
+    name: Linux Clang Ubuntu 20
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
-        compiler: [clang++-8,clang++-10,clang++-14]
+        cxx: [clang++-10, clang++-12]
+    env:
+        CXX: ${{matrix.cxx}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: CMake
+        run: cmake -S test -B build -DCMAKE_BUILD_TYPE="Release"
+      - name: Build
+        run: cmake --build build
+      - name: Run tests
+        run: |
+          cd build
+          ctest --verbose
+
+  Linux-GCC-Ubuntu-18:
+    name: Linux GCC Ubuntu 18
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        cxx: [g++-7]
+    env:
+        CXX: ${{matrix.cxx}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: CMake
+        run: cmake -S test -B build -DCMAKE_BUILD_TYPE="Release"
+      - name: Build
+        run: cmake --build build
+      - name: Run tests
+        run: |
+          cd build
+          ctest --verbose
+
+  Linux-Clang-Ubuntu-18:
+    name: Linux Clang Ubuntu 18
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        cxx: [clang++-9]
+    env:
+        CXX: ${{matrix.cxx}}
 
     steps:
       - name: Checkout

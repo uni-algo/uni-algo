@@ -4,7 +4,7 @@ on: workflow_dispatch
 jobs:
   Windows-VS2022-CPP20:
     name: Windows VS2022 C++20
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
       - name: Checkout
@@ -20,7 +20,7 @@ jobs:
 
   Windows-VS2022-CPP17:
     name: Windows VS2022 C++17
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
       - name: Checkout
