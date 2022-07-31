@@ -58,13 +58,13 @@
 int main7()
 {
 #ifdef TEST_MODE_GENERATE_VISUAL_FILES
-    std::cout << "Test mode: TEST_MODE_GENERATE_VISUAL_FILES" << '\n';
+    std::cout << "MODE: TEST_MODE_GENERATE_VISUAL_FILES" << '\n';
     test_visual(); // This generates files for the visual test
     return 0;
 #endif
 
 #ifdef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
-    std::cout << "Test mode: TEST_MODE_WITHOUT_UNICODE_TEST_FILES" << '\n';
+    std::cout << "MODE: TEST_MODE_WITHOUT_UNICODE_TEST_FILES" << '\n' << '\n';
 #endif
 
     std::cout << "Library version: " <<
@@ -115,7 +115,7 @@ int main7()
     test_overflow();
     test_alter_value();
 
-    std::cout << "DONE: Convert module" << '\n';
+    std::cout << "DONE: Convert Functions" << '\n';
 
     test_lenient_iter_utf8to16();
     test_lenient_iter_utf16to8();
@@ -126,7 +126,13 @@ int main7()
     test_strict_iter_rev_utf8to16();
     test_strict_iter_rev_utf16to8();
 
-    std::cout << "DONE: Iterator module" << '\n';
+    std::cout << "DONE: Convert Ranges" << '\n';
+
+    test_ranges();
+    test_ranges_ctad();
+    test_ranges_static_assert();
+
+    std::cout << "DONE: Ranges" << '\n';
 
     test_case_compare_collate();
     test_case_search();
@@ -143,46 +149,41 @@ int main7()
     test_case_title();
     test_case_title_locale();
 
-    std::cout << "DONE: Case module" << '\n';
-
-#ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
-    test_break_grapheme();
-    test_break_word();
-    test_break_word_corner_cases();
-
-    std::cout << "DONE: Break grapheme and word modules" << '\n';
-#else
-    std::cout << "SKIPPED: Break grapheme and word modules" << '\n';
-#endif
+    std::cout << "DONE: Case Functions" << '\n';
 
     test_translit_macedonian_to_latin_docs();
     test_translit_japanese_kana_to_romaji_hepburn();
 
     std::cout << "DONE: Transliterators" << '\n';
 
-    std::cout << "DOING: Convert and iterator module" << '\n';
+#ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
+    test_break_grapheme();
+    test_break_word();
+#else
+    std::cout << "SKIP: Break Grapheme and Word with test files" << '\n';
+#endif
+    test_break_word_corner_cases();
+
+    std::cout << "DONE: Break Grapheme and Word" << '\n';
+
+    std::cout << "WAIT: Convert and Ranges Extra" << '\n';
 
     test_convert_and_iter_convert();
     test_convert_and_iter_iter();
 
-    std::cout << "DONE: Convert and iterator module" << '\n';
+    std::cout << "DONE: Convert and Ranges Extra" << '\n';
 
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
-    std::cout << "DOING: Normalization module" << '\n';
-
+    std::cout << "WAIT: Normalization" << '\n';
     test_norm();
+#else
+    std::cout << "SKIP: Normalization with test files" << '\n';
+#endif
     test_norm_detect();
     test_norm_stream_safe();
     test_norm_unaccent();
 
-    std::cout << "DONE: Normalization module" << '\n';
-#else
-    std::cout << "SKIPPED: Normalization module" << '\n';
-#endif
-
-    test_ranges();
-    test_ranges_ctad();
-    test_ranges_static_assert();
+    std::cout << "DONE: Normalization" << '\n';
 
     std::cout << "ALL TESTS PASSED!" << '\n';
 

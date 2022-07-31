@@ -169,7 +169,7 @@ using ref_view = std::ranges::ref_view<R>;
 // C++ Commitee just thought it is a good idea to add std::ranges that is still WIP to C++20
 // for God sake just make them experimental or something in C++20 and add them to C++23.
 // Now I'm forced to deal with that crap. Thank you so much bros much appreciate it.
-#if !defined(__cpp_lib_ranges) || __cpp_lib_ranges > 202106L
+#if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES) || __cpp_lib_ranges > 202106L
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2415r2.html
 template<class Range>
