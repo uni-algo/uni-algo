@@ -28,6 +28,8 @@
 //#pragma GCC diagnostic ignored "-Wstack-usage="
 #endif
 
+#include "test_version.h"
+
 #include "test_lenient.h"
 #include "test_strict.h"
 #include "test_lenient2.h"
@@ -67,14 +69,14 @@ int main7()
     std::cout << "MODE: TEST_MODE_WITHOUT_UNICODE_TEST_FILES" << '\n' << '\n';
 #endif
 
-    std::cout << "Library version: " <<
+    std::cout << "Library  Version: " <<
         uni::version::library::major << '.' <<
         uni::version::library::minor << '.' <<
         uni::version::library::patch << '\n';
-    std::cout << "Unicode version: " <<
+    std::cout << "Unicode  Version: " <<
         uni::version::unicode::major << '.' <<
         uni::version::unicode::minor << '.' <<
-        uni::version::unicode::update << '\n' << '\n';
+        uni::version::unicode::update << '\n';
 
     static_assert(uni::version::library::major >= 0 && uni::version::library::major <= 255);
     static_assert(uni::version::library::minor >= 0 && uni::version::library::minor <= 255);
@@ -83,6 +85,12 @@ int main7()
     static_assert(uni::version::unicode::major >= 1 && uni::version::unicode::major <= 255);
     static_assert(uni::version::unicode::minor >= 0 && uni::version::unicode::minor <= 255);
     static_assert(uni::version::unicode::update >= 0 && uni::version::unicode::update <= 255);
+
+    std::cout << "C++      Version: " << test_version_cpp() << '\n';
+    std::cout << "Ranges   Version: " << test_version_ranges() << '\n';
+    std::cout << "Compiler Version: " << test_version_compiler() << '\n';
+
+    std::cout << '\n';
 
     test_lenient_utf8to16();
     test_lenient_utf8to32();
