@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(uni-algo-test)
+project(uni-algo-test CXX)
 
 # This file is used by GitHub Actions workflows edit with care.
 
