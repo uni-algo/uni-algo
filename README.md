@@ -55,7 +55,7 @@ this also means all Unicode algorithms are conformant with Unicode Standard.
 - Test files provided by Unicode are used with many other tests.
 - The library never uses dangerous things like pointer casts etc.
 - The library uses two levels: the low-level where very few things are allowed the level is pure algorithms
-and the wrapper-level where template into template into a very easy to use function or iterator.
+and the wrapper-level where template into template into a very easy to use function or a range.
 - GCC with -Wall and many extra warnings is used in the development and Clang-Tidy is used as a static analyzer.
 
 Performance means:
@@ -67,7 +67,7 @@ Performance means:
 Usability means:
 - Most functions can be used in a single line. See examples below.
 - The library doesn't introduce new types for strings it uses std::string, std::u16string etc.
-- Ranges and iterators are compatible with C++ Standard Library algorithms.
+- Ranges and views are compatible with C++ Standard Library.
 - The library doesn't use exceptions because there are no exceptional situations in
 Unicode algorithms. Unicode Standard always describes what need to be done if an issue occurs.
 Of course C++ Standard Library still can throw if -fno-exceptions isn't used.
