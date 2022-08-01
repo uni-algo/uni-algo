@@ -87,9 +87,22 @@ void test_ranges_ctad()
     TESTX(*(str | uni::views::filter([](char c) { return c != '1'; })).begin() == '2');
     TESTX(*(str | uni::views::transform([](char) { return '7'; })).begin() == '7');
 
-    // It works this way too (it just breaks compilation)
+    // It works this way too (it breaks compilation if CTAD is wrong)
     // so for views that won't work with std::string just the simple test
     TESTX(*(u"123" | uni::views::utf16).begin() == u'1');
+
+    TESTX(*(U"123" | uni::views::norm::nfc).begin() == U'1');
+    TESTX(*(U"123" | uni::views::norm::nfd).begin() == U'1');
+    TESTX(*(U"123" | uni::views::norm::nfkc).begin() == U'1');
+    TESTX(*(U"123" | uni::views::norm::nfkd).begin() == U'1');
+
+    TESTX(*("123" | uni::views::grapheme::utf8).begin() == "1");
+    TESTX(*("123 789" | uni::views::word::utf8).begin() == "123");
+    TESTX(*(" 123 789" | uni::views::word_only::utf8).begin() == "123");
+
+    TESTX(*(u"123" | uni::views::grapheme::utf8).begin() == u"1");
+    TESTX(*(u"123 789" | uni::views::word::utf8).begin() == u"123");
+    TESTX(*(u" 123 789" | uni::views::word_only::utf8).begin() == u"123");
 }
 
 void test_ranges_static_assert()
