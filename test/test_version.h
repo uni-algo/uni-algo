@@ -25,6 +25,37 @@ std::string test_version_ranges()
     return result;
 }
 
+std::string processor_architecture()
+{
+    std::string result;
+#if defined(__GNUC__) || defined(__clang__)
+#  if defined(__i386__)
+    result += " x86";
+#  elif defined(__amd64__)
+    result += " x64";
+#  elif defined(__ia64__)
+    result += " IA64";
+#  elif defined(__aarch64__)
+    result += " ARM64";
+#  elif defined(__arm__)
+    result += " ARM";
+#  endif
+#elif defined(_MSC_VER)
+#  if defined(_M_IX86)
+    result += " x86";
+#  elif defined(_M_AMD64)
+    result += " x64";
+#  elif defined(_M_IA64)
+    result += " IA64";
+#  elif defined(_M_ARM64)
+    result += " ARM64";
+#  elif defined(_M_ARM)
+    result += " ARM";
+#  endif
+#endif
+    return result;
+}
+
 std::string test_version_compiler()
 {
     std::string result;
@@ -32,7 +63,7 @@ std::string test_version_compiler()
     result += "Clang " +
             std::to_string(__clang_major__) + '.' +
             std::to_string(__clang_minor__) + '.' +
-            std::to_string(__clang_patchlevel__);
+            std::to_string(__clang_patchlevel__) + processor_architecture();
 #elif defined(__GNUC__)
 #if defined(__MINGW32__)
     result += "MinGW ";
@@ -40,11 +71,11 @@ std::string test_version_compiler()
     result += "GCC " +
             std::to_string(__GNUC__) + '.' +
             std::to_string(__GNUC_MINOR__) + '.' +
-            std::to_string(__GNUC_PATCHLEVEL__);
+            std::to_string(__GNUC_PATCHLEVEL__) + processor_architecture();
 #elif defined(_MSC_VER)
     result += "MSVC " +
             std::to_string(_MSC_VER / 100) + '.' +
-            std::to_string(_MSC_VER % 100);
+            std::to_string(_MSC_VER % 100) + processor_architecture();
 #else
     result += "UNKNOWN";
 #endif
