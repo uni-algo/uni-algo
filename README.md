@@ -460,9 +460,9 @@ std::string str8 = "🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧🧙‍♀️"
 str8 += uni::utf32to8(std::u32string{U'😺'}); // This emoji use 1 code point.
 
 // But if you need to insert a code point you need break ranges too.
-auto it = uni::views::grapheme::utf8(str8).begin();
+auto view = uni::views::grapheme::utf8(str8);
 // Insert a code point after 2nd grapheme.
-auto pos = std::next(it, 2).begin() - str8.begin();
+auto pos = std::next(view.begin(), 2).begin() - str8.begin();
 str8.insert(pos, uni::utf32to8(std::u32string{U'😼'})); // This emoji use 1 code point.
 
 // The same way a grapheme can be appended or inserted and of course you don't even need
