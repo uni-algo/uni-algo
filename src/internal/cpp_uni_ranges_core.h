@@ -186,8 +186,8 @@ public:
     //uaiw_constexpr const Range& base() const & noexcept { return range; }
     //uaiw_constexpr Range&& base() && noexcept { return std::move(range); }
     //uaiw_constexpr const Range&& base() const && noexcept { return std::move(range); }
-    uaiw_constexpr owning_view(owning_view&&) = default;
-    uaiw_constexpr owning_view& operator=(owning_view&&) = default;
+    uaiw_constexpr owning_view(owning_view&&) noexcept = default;
+    uaiw_constexpr owning_view& operator=(owning_view&&) noexcept = default;
     uaiw_constexpr auto begin() { return std::begin(range); }
     uaiw_constexpr auto end() { return std::end(range); }
     //uaiw_constexpr auto begin() const { return ranges::begin(range); }
