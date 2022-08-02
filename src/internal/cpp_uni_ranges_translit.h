@@ -9,7 +9,7 @@
 
 #include "cpp_uni_ranges_core.h"
 
-namespace uni {
+namespace uni { // NOLINT(modernize-concat-nested-namespaces)
 
 namespace detail::ranges {
 
