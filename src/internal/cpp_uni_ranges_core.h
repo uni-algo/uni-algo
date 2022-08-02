@@ -112,18 +112,18 @@ using sa_iter_contiguous = std::conditional_t<std::contiguous_iterator<Iter>, st
 
 // In C++17 std::string_view doesn't have iterators pair constructor
 // so we use this a bit ugly approach to make it work. It is only used in break ranges.
-#if (!defined(_MSVC_LANG) && __cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
-template<class StringViewResult, class Range, class Iter>
-StringViewResult to_string_view(const Range&, Iter it_begin, Iter it_pos)
-{
-    return StringViewResult{it_begin, it_pos};
-}
-#else
+#if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class StringViewResult, class Range, class Iter>
 StringViewResult to_string_view(const Range& range, Iter it_begin, Iter it_pos)
 {
     return StringViewResult{std::data(range) + (it_begin - std::begin(range)),
                             static_cast<std::size_t>(it_pos - it_begin)};
+}
+#else
+template<class StringViewResult, class Range, class Iter>
+StringViewResult to_string_view(const Range&, Iter it_begin, Iter it_pos)
+{
+    return StringViewResult{it_begin, it_pos};
 }
 #endif
 
