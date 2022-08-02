@@ -180,6 +180,7 @@ private:
     Range range = Range{};
 public:
     uaiw_constexpr owning_view() = default;
+    uaiw_constexpr ~owning_view() = default;
     // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
     uaiw_constexpr owning_view(Range&& r) : range{std::move(r)} {}
     //uaiw_constexpr Range& base() & noexcept { return range; }
@@ -188,6 +189,8 @@ public:
     //uaiw_constexpr const Range&& base() const && noexcept { return std::move(range); }
     uaiw_constexpr owning_view(owning_view&&) noexcept = default;
     uaiw_constexpr owning_view& operator=(owning_view&&) noexcept = default;
+    uaiw_constexpr owning_view(const owning_view&) = default;
+    uaiw_constexpr owning_view& operator=(const owning_view&) = default;
     uaiw_constexpr auto begin() { return std::begin(range); }
     uaiw_constexpr auto end() { return std::end(range); }
     //uaiw_constexpr auto begin() const { return ranges::begin(range); }
