@@ -60,6 +60,12 @@ std::string test_version_compiler()
 {
     std::string result;
 #if defined(__clang__)
+#if defined(__apple_build_version__)
+    result += "Apple";
+#endif
+#if defined(__ARMCOMPILER_VERSION)
+    result += "ARM";
+#endif
     result += "Clang " +
             std::to_string(__clang_major__) + '.' +
             std::to_string(__clang_minor__) + '.' +
