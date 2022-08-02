@@ -563,7 +563,7 @@ private:
 
 public:
     uaiw_constexpr nfc_view() = default;
-    uaiw_constexpr nfc_view(Range r) : range{std::move(r)} {}
+    uaiw_constexpr explicit nfc_view(Range r) : range{std::move(r)} {}
     //uaiw_constexpr Range base() const & { return range; }
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
@@ -656,7 +656,7 @@ private:
 
 public:
     uaiw_constexpr nfd_view() = default;
-    uaiw_constexpr nfd_view(Range r) : range{std::move(r)} {}
+    uaiw_constexpr explicit nfd_view(Range r) : range{std::move(r)} {}
     //uaiw_constexpr Range base() const & { return range; }
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
@@ -751,7 +751,7 @@ private:
 
 public:
     uaiw_constexpr nfkc_view() = default;
-    uaiw_constexpr nfkc_view(Range r) : range{std::move(r)} {}
+    uaiw_constexpr explicit nfkc_view(Range r) : range{std::move(r)} {}
     //uaiw_constexpr Range base() const & { return range; }
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
@@ -844,7 +844,7 @@ private:
 
 public:
     uaiw_constexpr nfkd_view() = default;
-    uaiw_constexpr nfkd_view(Range r) : range{std::move(r)} {}
+    uaiw_constexpr explicit nfkd_view(Range r) : range{std::move(r)} {}
     //uaiw_constexpr Range base() const & { return range; }
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()

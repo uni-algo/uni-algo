@@ -114,7 +114,7 @@ private:
 
 public:
     uaiw_constexpr utf8_view() = default;
-    uaiw_constexpr utf8_view(Range r) : range{std::move(r)} {}
+    uaiw_constexpr explicit utf8_view(Range r) : range{std::move(r)} {}
     //uaiw_constexpr Range base() const & { return range; }
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
@@ -228,7 +228,7 @@ private:
 
 public:
     uaiw_constexpr utf16_view() = default;
-    uaiw_constexpr utf16_view(Range r) : range{std::move(r)} {}
+    uaiw_constexpr explicit utf16_view(Range r) : range{std::move(r)} {}
     //uaiw_constexpr Range base() const & { return range; }
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
