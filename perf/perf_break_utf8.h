@@ -18,20 +18,13 @@
 #include "../src/cpp_uni_convert.h"
 #include "../src/cpp_uni_break_grapheme.h"
 #include "../src/cpp_uni_break_word.h"
-#include "../src/cpp_uni_ranges.h"
 
 int break_uni(std::string_view str)
 {
-    //uni::breaks::grapheme::utf8<decltype(str.cbegin())> it_begin(str.cbegin(), str.cend());
-    //uni::breaks::grapheme::utf8<decltype(str.cbegin())> it_end(str.cend());
-    //uni::breaks::word::utf8<decltype(str.cbegin())> it_begin(str.cbegin(), str.cend());
-    //uni::breaks::word::utf8<decltype(str.cbegin())> it_end(str.cend());
-
-    //int count = std::distance(it_begin, it_end);
-
     auto view = uni::ranges::grapheme::utf8_view(str);
     //auto view = uni::ranges::word::utf8_view(str);
     //auto view = uni::ranges::word_only::utf8_view(str);
+
     int count = std::distance(view.begin(), view.end());
 
     return count;

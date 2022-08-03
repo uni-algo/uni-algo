@@ -25,27 +25,17 @@
 #include <chrono>
 #include <vector>
 #include <stdexcept>
-#include "../src/cpp_uni_iterator.h"
+#include "../src/cpp_uni_ranges.h"
 #include "../src/cpp_uni_norm.h"
 
 std::u16string trans_uni(std::u16string_view str)
 {
-    uni::iter::utf16<decltype(str.cbegin())> it_begin{str.cbegin(), str.cend()};
-
-    uni::iter::norm::nfd<decltype(it_begin), uni::sentinel_t> it_nfd_begin{it_begin, uni::sentinel};
-
-    struct func { bool operator()(char32_t c) { return c != 0x0301 && c != 0x0300; } };
-    uni::iter::func::filter<func, decltype(it_nfd_begin), uni::sentinel_t> it_func_begin{func{}, it_nfd_begin, uni::sentinel};
-
-    uni::iter::norm::nfc<decltype(it_func_begin), uni::sentinel_t> it_nfc_begin{it_func_begin, uni::sentinel};
-
-    std::u16string result;
-    uni::iter::output::utf16<decltype(std::back_inserter(result))> it_out{std::back_inserter(result)};
-
-    for (auto it = it_nfc_begin; it != uni::sentinel; ++it)
-        it_out = *it;
-
-    return result;
+    return str
+         | uni::views::utf16
+         | uni::views::norm::nfd
+         | uni::views::filter([](char32_t c) { return c != 0x0300 && c != 0x0301; })
+         | uni::views::norm::nfc
+         | uni::ranges::to_utf16<std::u16string>();
 }
 
 #ifdef ENABLE_ICU_TEST
