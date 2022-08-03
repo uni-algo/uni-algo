@@ -235,9 +235,6 @@ std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test");
 // It's not like only wchar_t is broken char has the same problem you never know what it stores
 // so most of functions in the library start with utf8/utf16/utf32 it shows with what data
 // a function works with, types are irrelevant.
-
-// Note that there are no short functions for std::u8string at the moment
-// but template functions will work perfectly fine with it.
 ```
 ## Case Functions
 ```cpp
