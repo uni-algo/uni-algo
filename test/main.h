@@ -49,6 +49,8 @@
 #include "test_strict_iter.h"
 #include "test_strict_iter_rev.h"
 
+#include "test_short_func.h"
+
 #include "test_translit.h"
 
 #include "test_ranges.h"
@@ -163,6 +165,12 @@ int main7()
     test_translit_japanese_kana_to_romaji_hepburn();
 
     std::cout << "DONE: Transliterators" << '\n';
+
+    test_short_func_convert();
+    test_short_func_case();
+    test_short_func_norm();
+
+    std::cout << "DONE: Short Non-Template Functions" << '\n';
 
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
     test_break_grapheme();
