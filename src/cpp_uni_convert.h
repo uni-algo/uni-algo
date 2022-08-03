@@ -352,7 +352,8 @@ inline std::wstring utf16to32(std::u16string_view source, uni::error& error)
 
 } // namespace strict
 
-#if 0 // defined(__cpp_lib_char8_t) && __cpp_lib_char8_t >= 201907L // TODO: Test me
+#ifdef __cpp_lib_char8_t
+
 inline std::u8string utf16to8u(std::u16string_view source)
 {
     return utf16to8<char16_t, char8_t>(source);
@@ -430,6 +431,7 @@ inline std::wstring utf8to32(std::u8string_view source, uni::error& error)
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 
 } // namespace strict
+
 #endif // __cpp_lib_char8_t
 
 } // namespace uni

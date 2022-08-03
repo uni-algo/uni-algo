@@ -485,6 +485,54 @@ inline bool utf16_is_nfkd(std::wstring_view source)
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
+#ifdef __cpp_lib_char8_t
+
+inline std::u8string utf8_nfc(std::u8string_view source)
+{
+    return utf8_nfc<char8_t>(source);
+}
+inline std::u8string utf8_nfd(std::u8string_view source)
+{
+    return utf8_nfd<char8_t>(source);
+}
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+inline std::u8string utf8_nfkc(std::u8string_view source)
+{
+    return utf8_nfkc<char8_t>(source);
+}
+inline std::u8string utf8_nfkd(std::u8string_view source)
+{
+    return utf8_nfkd<char8_t>(source);
+}
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+#ifndef UNI_ALGO_DISABLE_UNACCENT
+inline std::u8string utf8_unaccent(std::u8string_view source)
+{
+    return utf8_unaccent<char8_t>(source);
+}
+#endif // UNI_ALGO_DISABLE_UNACCENT
+
+inline bool utf8_is_nfc(std::u8string_view source)
+{
+    return utf8_is_nfc<char8_t>(source);
+}
+inline bool utf8_is_nfd(std::u8string_view source)
+{
+    return utf8_is_nfd<char8_t>(source);
+}
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+inline bool utf8_is_nfkc(std::u8string_view source)
+{
+    return utf8_is_nfkc<char8_t>(source);
+}
+inline bool utf8_is_nfkd(std::u8string_view source)
+{
+    return utf8_is_nfkd<char8_t>(source);
+}
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
+#endif // __cpp_lib_char8_t
+
 } // namespace norm
 
 // RANGES

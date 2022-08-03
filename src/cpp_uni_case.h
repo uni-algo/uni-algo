@@ -787,6 +787,85 @@ inline bool utf8_like(std::string_view string1, std::string_view string2, char32
 
 } // namespace caseless
 
+#ifdef __cpp_lib_char8_t
+
+namespace cases {
+
+inline std::u8string utf8_lower(std::u8string_view source)
+{
+    return utf8_lower<char8_t>(source);
+}
+inline std::u8string utf8_upper(std::u8string_view source)
+{
+    return utf8_upper<char8_t>(source);
+}
+inline std::u8string utf8_fold(std::u8string_view source)
+{
+    return utf8_fold<char8_t>(source);
+}
+inline std::u8string utf8_lower(std::u8string_view source, const uni::locale& locale)
+{
+    return utf8_lower<char8_t>(source, locale);
+}
+inline std::u8string utf8_upper(std::u8string_view source, const uni::locale& locale)
+{
+    return utf8_upper<char8_t>(source, locale);
+}
+#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_FULL_CASE
+inline std::u8string utf8_title(std::u8string_view source)
+{
+    return utf8_title<char8_t>(source);
+}
+inline std::u8string utf8_title(std::u8string_view source, const uni::locale& locale)
+{
+    return utf8_title<char8_t>(source, locale);
+}
+#endif // UNI_ALGO_DISABLE_FULL_CASE
+#endif // UNI_ALGO_DISABLE_BREAK_WORD
+
+} // namespace cases
+
+namespace casesens {
+
+inline int utf8_compare(std::u8string_view string1, std::u8string_view string2)
+{
+    return utf8_compare<char8_t>(string1, string2);
+}
+#ifndef UNI_ALGO_DISABLE_COLLATE
+inline int utf8_collate(std::u8string_view string1, std::u8string_view string2)
+{
+    return utf8_collate<char8_t>(string1, string2);
+}
+#endif // UNI_ALGO_DISABLE_COLLATE
+inline uni::search utf8_search(std::u8string_view string1, std::u8string_view string2)
+{
+    return utf8_search<char8_t>(string1, string2);
+}
+
+} // namespace casesens
+
+namespace caseless {
+
+inline int utf8_compare(std::u8string_view string1, std::u8string_view string2)
+{
+    return utf8_compare<char8_t>(string1, string2);
+}
+#ifndef UNI_ALGO_DISABLE_COLLATE
+inline int utf8_collate(std::u8string_view string1, std::u8string_view string2)
+{
+    return utf8_collate<char8_t>(string1, string2);
+}
+#endif // UNI_ALGO_DISABLE_COLLATE
+inline uni::search utf8_search(std::u8string_view string1, std::u8string_view string2)
+{
+    return utf8_search<char8_t>(string1, string2);
+}
+
+} // namespace caseless
+
+#endif // __cpp_lib_char8_t
+
 } // namespace uni
 
 #endif // CPP_UNI_CASE_H_UAIX
