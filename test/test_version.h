@@ -59,7 +59,11 @@ std::string processor_architecture()
 std::string test_version_compiler()
 {
     std::string result;
-#if defined(__clang__)
+#if defined(__INTEL_LLVM_COMPILER)
+    result += "IntelLLVM " + std::to_string(__INTEL_LLVM_COMPILER) + processor_architecture();
+#elif defined(__INTEL_COMPILER)
+    result += "Intel " + std::to_string(__INTEL_COMPILER) + processor_architecture();
+#elif defined(__clang__)
 #if defined(__apple_build_version__)
     result += "Apple";
 #endif
