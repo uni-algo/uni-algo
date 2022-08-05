@@ -55,9 +55,9 @@ void test_alter_value()
 
     // Ranges
 
-    str8 = std::u32string{0x0410} | uni::ranges::to_utf8<decltype(str8)>();
+    str8 = uni::ranges::to_utf8<decltype(str8)>(std::u32string{0x0410});
     TESTX(str8[0] == 0xD0 && str8[1] == 0x90);
 
-    str8 = std::u32string{0xD800} | uni::ranges::to_utf8<decltype(str8)>();
+    str8 = uni::ranges::to_utf8<decltype(str8)>(std::u32string{0xD800});
     TESTX(str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
 }
