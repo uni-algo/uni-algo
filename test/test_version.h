@@ -59,9 +59,10 @@ std::string processor_architecture()
 std::string test_version_compiler()
 {
     std::string result;
-#if defined(__INTEL_LLVM_COMPILER)
+
+#if defined(__INTEL_LLVM_COMPILER) // icx
     result += "IntelLLVM " + std::to_string(__INTEL_LLVM_COMPILER) + processor_architecture();
-#elif defined(__INTEL_COMPILER)
+#elif defined(__INTEL_COMPILER) // icc
     result += "Intel " + std::to_string(__INTEL_COMPILER) + processor_architecture();
 #elif defined(__clang__)
 #if defined(__apple_build_version__)
@@ -89,5 +90,12 @@ std::string test_version_compiler()
 #else
     result += "UNKNOWN";
 #endif
+
+#ifdef NDEBUG
+    result += " Release";
+#else
+    result += " Debug";
+#endif
+
     return result;
 }
