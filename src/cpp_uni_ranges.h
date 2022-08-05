@@ -1074,10 +1074,15 @@ take_view(Range&&, std::size_t) -> take_view<uni::views::all_t<Range>>;
 
 namespace ranges {
 
+// NOTE:
+// If {} below is not used MSVC 19.16 and probably other versions produces this:
+// error C2737: 'uni::ranges::to_utf8': 'constexpr' object must be initialized
+// It should not interfere with anything.
+
 template<class Result>
-inline constexpr detail::adaptor_to_utf8<Result> to_utf8;
+inline constexpr detail::adaptor_to_utf8<Result> to_utf8{};
 template<class Result>
-inline constexpr detail::adaptor_to_utf16<Result> to_utf16;
+inline constexpr detail::adaptor_to_utf16<Result> to_utf16{};
 
 } // namespace ranges
 
