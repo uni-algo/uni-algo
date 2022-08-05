@@ -983,6 +983,14 @@ struct adaptor_closure_to_utf8
 template<class R, class Result>
 uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf8<Result>& a) { return a(std::forward<R>(r)); }
 
+template<class Result>
+struct adaptor_to_utf8
+{
+    uaiw_constexpr auto operator()() const { return adaptor_closure_to_utf8<Result>{}; }
+    template<class R>
+    uaiw_constexpr auto operator()(R&& r) const { return adaptor_closure_to_utf8<Result>{}(std::forward<R>(r)); }
+};
+
 /* TO_UTF16 */
 
 template<class Result>
@@ -1010,6 +1018,14 @@ struct adaptor_closure_to_utf16
 };
 template<class R, class Result>
 uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf16<Result>& a) { return a(std::forward<R>(r)); }
+
+template<class Result>
+struct adaptor_to_utf16
+{
+    uaiw_constexpr auto operator()() const { return adaptor_closure_to_utf16<Result>{}; }
+    template<class R>
+    uaiw_constexpr auto operator()(R&& r) const { return adaptor_closure_to_utf16<Result>{}(std::forward<R>(r)); }
+};
 
 } // namespace detail
 
@@ -1059,9 +1075,9 @@ take_view(Range&&, std::size_t) -> take_view<uni::views::all_t<Range>>;
 namespace ranges {
 
 template<class Result>
-using to_utf8 = detail::adaptor_closure_to_utf8<Result>;
+inline constexpr detail::adaptor_to_utf8<Result> to_utf8;
 template<class Result>
-using to_utf16 = detail::adaptor_closure_to_utf16<Result>;
+inline constexpr detail::adaptor_to_utf16<Result> to_utf16;
 
 } // namespace ranges
 
