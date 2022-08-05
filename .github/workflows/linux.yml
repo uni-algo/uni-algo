@@ -2,12 +2,12 @@ name: Linux
 on: workflow_dispatch
 
 jobs:
-  Linux-GCC-Ubuntu-20:
-    name: Linux GCC Ubuntu 20
+  Linux-Ubuntu-20:
+    name: Linux Ubuntu 20
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        cxx: [g++-9, g++-10]
+        cxx: [g++-10, g++-9, clang++-12, clang++-10]
     env:
         CXX: ${{matrix.cxx}}
 
@@ -23,33 +23,12 @@ jobs:
           cd build
           ctest --verbose
 
-  Linux-Clang-Ubuntu-20:
-    name: Linux Clang Ubuntu 20
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        cxx: [clang++-10, clang++-12]
-    env:
-        CXX: ${{matrix.cxx}}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: CMake
-        run: cmake -S test -B build -DCMAKE_BUILD_TYPE="Release"
-      - name: Build
-        run: cmake --build build
-      - name: Run tests
-        run: |
-          cd build
-          ctest --verbose
-
-  Linux-GCC-Ubuntu-18:
-    name: Linux GCC Ubuntu 18
+  Linux-Ubuntu-18:
+    name: Linux Ubuntu 18
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        cxx: [g++-7]
+        cxx: [g++-7, clang++-9]
     env:
         CXX: ${{matrix.cxx}}
 
@@ -65,23 +44,3 @@ jobs:
           cd build
           ctest --verbose
 
-  Linux-Clang-Ubuntu-18:
-    name: Linux Clang Ubuntu 18
-    runs-on: ubuntu-18.04
-    strategy:
-      matrix:
-        cxx: [clang++-9]
-    env:
-        CXX: ${{matrix.cxx}}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: CMake
-        run: cmake -S test -B build -DCMAKE_BUILD_TYPE="Release"
-      - name: Build
-        run: cmake --build build
-      - name: Run tests
-        run: |
-          cd build
-          ctest --verbose
