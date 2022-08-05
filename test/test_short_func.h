@@ -53,6 +53,47 @@ void test_short_func_convert()
     TESTX(uni::utf8to32(u8str) == wstr);
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 #endif // __cpp_lib_char8_t
+
+//---------------------------------------------
+// Repeat prev tests with uni::strict namespace
+//---------------------------------------------
+    uni::error error;
+
+    TESTX(uni::strict::utf16to32u(u16str, error) == u32str);
+    TESTX(uni::strict::utf32to16u(u32str, error) == u16str);
+
+    TESTX(uni::strict::utf8to16u(str, error) == u16str);
+    TESTX(uni::strict::utf8to32u(str, error) == u32str);
+    TESTX(uni::strict::utf16to8(u16str, error) == str);
+    TESTX(uni::strict::utf32to8(u32str, error) == str);
+
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+    TESTX(uni::strict::utf16to8(wstr, error) == str);
+    TESTX(uni::strict::utf8to16(str, error) == wstr);
+
+    TESTX(uni::strict::utf32to16(u32str, error) == wstr);
+    TESTX(uni::strict::utf16to32u(wstr, error) == u32str);
+#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
+    TESTX(uni::strict::utf32to8(wstr, error) == str);
+    TESTX(uni::strict::utf8to32(str, error) == wstr);
+
+    TESTX(uni::strict::utf32to16u(wstr, error) == u16str);
+    TESTX(uni::strict::utf16to32(u16str, error) == wstr);
+#endif // WCHAR_MAX >= 0x7FFFFFFF
+
+#ifdef __cpp_lib_char8_t
+    TESTX(uni::strict::utf8to16u(u8str, error) == u16str);
+    TESTX(uni::strict::utf8to32u(u8str, error) == u32str);
+    TESTX(uni::strict::utf16to8u(u16str, error) == u8str);
+    TESTX(uni::strict::utf32to8u(u32str, error) == u8str);
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+    TESTX(uni::strict::utf16to8u(wstr, error) == u8str);
+    TESTX(uni::strict::utf8to16(u8str, error) == wstr);
+#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
+    TESTX(uni::strict::utf32to8u(wstr, error) == u8str);
+    TESTX(uni::strict::utf8to32(u8str, error) == wstr);
+#endif // WCHAR_MAX >= 0x7FFFFFFF
+#endif // __cpp_lib_char8_t
 }
 
 void test_short_func_case()
