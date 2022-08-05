@@ -6,13 +6,14 @@
 // Note that this test doesn't test that the functions produce the correct result
 // because if template functions in other tests work then these functions work too.
 
-// TODO: Add functions that use wchar_t
-
 void test_short_func_convert()
 {
     std::string str = "123";
     std::u16string u16str = u"123";
     std::u32string u32str = U"123";
+#if WCHAR_MAX >= 0x7FFF // if not 8-bit wchar_t
+    std::wstring wstr = L"123";
+#endif // WCHAR_MAX >= 0x7FFF
 #ifdef __cpp_lib_char8_t
     std::u8string u8str = u8"123";
 #endif // __cpp_lib_char8_t
@@ -25,11 +26,32 @@ void test_short_func_convert()
     TESTX(uni::utf16to8(u16str) == str);
     TESTX(uni::utf32to8(u32str) == str);
 
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+    TESTX(uni::utf16to8(wstr) == str);
+    TESTX(uni::utf8to16(str) == wstr);
+
+    TESTX(uni::utf32to16(u32str) == wstr);
+    TESTX(uni::utf16to32u(wstr) == u32str);
+#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
+    TESTX(uni::utf32to8(wstr) == str);
+    TESTX(uni::utf8to32(str) == wstr);
+
+    TESTX(uni::utf32to16u(wstr) == u16str);
+    TESTX(uni::utf16to32(u16str) == wstr);
+#endif // WCHAR_MAX >= 0x7FFFFFFF
+
 #ifdef __cpp_lib_char8_t
     TESTX(uni::utf8to16u(u8str) == u16str);
     TESTX(uni::utf8to32u(u8str) == u32str);
     TESTX(uni::utf16to8u(u16str) == u8str);
     TESTX(uni::utf32to8u(u32str) == u8str);
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+    TESTX(uni::utf16to8u(wstr) == u8str);
+    TESTX(uni::utf8to16(u8str) == wstr);
+#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
+    TESTX(uni::utf32to8u(wstr) == u8str);
+    TESTX(uni::utf8to32(u8str) == wstr);
+#endif // WCHAR_MAX >= 0x7FFFFFFF
 #endif // __cpp_lib_char8_t
 }
 
@@ -37,6 +59,9 @@ void test_short_func_case()
 {
     std::string str = "123";
     std::u16string u16str = u"123";
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+    std::wstring wstr = L"123";
+#endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #ifdef __cpp_lib_char8_t
     std::u8string u8str = u8"123";
 #endif // __cpp_lib_char8_t
@@ -91,6 +116,34 @@ void test_short_func_case()
     TESTX(uni::casesens::utf16_search(u16str, u16str));
     TESTX(uni::caseless::utf16_search(u16str, u16str));
 
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+// ------------
+// std::wstring
+// ------------
+
+    TESTX(uni::cases::utf16_lower(wstr) == wstr);
+    TESTX(uni::cases::utf16_upper(wstr) == wstr);
+    TESTX(uni::cases::utf16_lower(wstr, uni::locale{}) == wstr);
+    TESTX(uni::cases::utf16_upper(wstr, uni::locale{}) == wstr);
+    TESTX(uni::cases::utf16_fold(wstr) == wstr);
+#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_FULL_CASE
+    TESTX(uni::cases::utf16_title(wstr) == wstr);
+    TESTX(uni::cases::utf16_title(wstr, uni::locale{}) == wstr);
+#endif // UNI_ALGO_DISABLE_FULL_CASE
+#endif // UNI_ALGO_DISABLE_BREAK_WORD
+
+    TESTX(uni::casesens::utf16_compare(wstr, wstr) == 0);
+    TESTX(uni::caseless::utf16_compare(wstr, wstr) == 0);
+#ifndef UNI_ALGO_DISABLE_COLLATE
+    TESTX(uni::casesens::utf16_collate(wstr, wstr) == 0);
+    TESTX(uni::caseless::utf16_collate(wstr, wstr) == 0);
+#endif // UNI_ALGO_DISABLE_COLLATE
+    TESTX(uni::casesens::utf16_search(wstr, wstr));
+    TESTX(uni::caseless::utf16_search(wstr, wstr));
+
+#endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
+
 #ifdef __cpp_lib_char8_t
 // -------------
 // std::u8string
@@ -124,6 +177,9 @@ void test_short_func_norm()
 {
     std::string str = "123";
     std::u16string u16str = u"123";
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+    std::wstring wstr = L"123";
+#endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #ifdef __cpp_lib_char8_t
     std::u8string u8str = u8"123";
 #endif // __cpp_lib_char8_t
@@ -169,6 +225,30 @@ void test_short_func_norm()
     TESTX(uni::norm::utf16_is_nfkc(u16str));
     TESTX(uni::norm::utf16_is_nfkd(u16str));
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+// ------------
+// std::wstring
+// ------------
+
+    TESTX(uni::norm::utf16_nfc(wstr) == wstr);
+    TESTX(uni::norm::utf16_nfd(wstr) == wstr);
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+    TESTX(uni::norm::utf16_nfkc(wstr) == wstr);
+    TESTX(uni::norm::utf16_nfkd(wstr) == wstr);
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+#ifndef UNI_ALGO_DISABLE_UNACCENT
+    TESTX(uni::norm::utf16_unaccent(wstr) == wstr);
+#endif // UNI_ALGO_DISABLE_UNACCENT
+
+    TESTX(uni::norm::utf16_is_nfc(wstr));
+    TESTX(uni::norm::utf16_is_nfd(wstr));
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+    TESTX(uni::norm::utf16_is_nfkc(wstr));
+    TESTX(uni::norm::utf16_is_nfkd(wstr));
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
+#endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
 #ifdef __cpp_lib_char8_t
 // -------------
