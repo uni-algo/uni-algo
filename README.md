@@ -1,3 +1,6 @@
+[![Version](https://img.shields.io/badge/Version-0.3.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.3.0)
+[![Unicode](https://img.shields.io/badge/Unicode-14.0.0-blue)](https://www.unicode.org/versions/Unicode14.0.0/)
+[![Language](https://img.shields.io/badge/C%2B%2B-17/20/23-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
 [![Linux](https://github.com/uni-algo/uni-algo/workflows/Linux/badge.svg)](https://github.com/uni-algo/uni-algo/actions?query=workflow%3ALinux)
 [![Windows](https://github.com/uni-algo/uni-algo/workflows/Windows/badge.svg)](https://github.com/uni-algo/uni-algo/actions?query=workflow%3AWindows)
 [![macOS](https://github.com/uni-algo/uni-algo/workflows/macOS/badge.svg)](https://github.com/uni-algo/uni-algo/actions?query=workflow%3AmacOS)
@@ -132,11 +135,11 @@ include(FetchContent)
 # Note that you need Git installed for this to work.
 FetchContent_Declare(uni-algo
   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
-  GIT_TAG v0.2.0) # the version you want to download
+  GIT_TAG v0.3.0) # the version you want to download
 
 # Or you can use it like this without Git.
 # FetchContent_Declare(uni-algo
-#   URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.2.0.zip)
+#   URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.3.0.zip)
 
 FetchContent_MakeAvailable(uni-algo)
 
@@ -370,8 +373,8 @@ std::u16string utf8to16(std::string_view view)
 
 // This example demonstrates how to work directly with a range view.
 
-// 3 UTF-8 code points. These emojis use 1 code point.
-std::string str8 = "😺😼🙀";
+// 3 UTF-8 code points.
+std::string str8 = "😺😼🙀"; // These emojis use 1 code point.
 
 // Make UTF-8 view from std::string
 auto view = uni::ranges::utf8_view{str8};
@@ -416,8 +419,9 @@ for (auto it = view.end(); it != view.begin();)
 ```
 ## Grapheme/Word Ranges
 ```cpp
-#include "cpp_uni_break_grapheme.h" // and compile "cpp_uni_data.cpp"
+#include "cpp_uni_break_grapheme.h"
 #include "cpp_uni_break_word.h"
+// and compile "cpp_uni_data.cpp"
 
 // Grapheme/Word aka Break ranges are similar to UTF ranges
 // but they return sunbranges in the form of std::string_view.
