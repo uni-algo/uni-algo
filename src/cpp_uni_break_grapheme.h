@@ -67,7 +67,7 @@ private:
 
         utf8() = default;
         explicit utf8(utf8_view& p, Iter begin, Sent end)
-            : parent{&p}, it_begin{begin}, it_pos{begin}, it_next{begin}
+            : parent{std::addressof(p)}, it_begin{begin}, it_pos{begin}, it_next{begin}
         {
             if (begin == end)
                 return;
@@ -181,7 +181,7 @@ private:
 
         utf16() = default;
         explicit utf16(utf16_view& p, Iter begin, Sent end)
-            : parent{&p}, it_begin{begin}, it_pos{begin}, it_next{begin}
+            : parent{std::addressof(p)}, it_begin{begin}, it_pos{begin}, it_next{begin}
         {
             if (begin == end)
                 return;

@@ -69,7 +69,7 @@ private:
 
         uaiw_constexpr translit() = default;
         uaiw_constexpr explicit translit(translit_view& p, Iter begin, Sent)
-            : parent{&p}, it_pos{begin}
+            : parent{std::addressof(p)}, it_pos{begin}
         {
             func_translit_impl();
         }

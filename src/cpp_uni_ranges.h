@@ -54,7 +54,7 @@ private:
 
         uaiw_constexpr utf8() = default;
         uaiw_constexpr explicit utf8(utf8_view& p, Iter begin, Sent end)
-            : parent{&p}, it_pos{begin}, it_next{begin}
+            : parent{std::addressof(p)}, it_pos{begin}, it_next{begin}
         {
             if (begin != end)
                 it_next = detail::impl_utf8_iter(it_next, end, &codepoint, Error);
@@ -180,7 +180,7 @@ private:
 
         uaiw_constexpr utf16() = default;
         uaiw_constexpr explicit utf16(utf16_view& p, Iter begin, Sent end)
-            : parent{&p}, it_pos{begin}, it_next{begin}
+            : parent{std::addressof(p)}, it_pos{begin}, it_next{begin}
         {
             if (begin != end)
                 it_next = detail::impl_utf16_iter(it_next, end, &codepoint, Error);
@@ -301,7 +301,7 @@ private:
 
         uaiw_constexpr reverse() = default;
         uaiw_constexpr explicit reverse(reverse_view& p, Iter begin, Sent end)
-            : parent{&p}, it_pos{end}
+            : parent{std::addressof(p)}, it_pos{end}
         {
             if (begin != end)
             {
@@ -433,7 +433,7 @@ private:
 
         uaiw_constexpr filter() = default;
         uaiw_constexpr explicit filter(filter_view& p, Iter begin, Sent end)
-            : parent{&p}, it_pos{begin}
+            : parent{std::addressof(p)}, it_pos{begin}
         {
             if (begin != end)
                 while(!parent->func_filter(*it_pos) && ++it_pos != end);
@@ -548,7 +548,8 @@ private:
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         uaiw_constexpr transform() = default;
-        uaiw_constexpr explicit transform(transform_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin} {}
+        uaiw_constexpr explicit transform(transform_view& p, Iter begin, Sent)
+            : parent{std::addressof(p)}, it_pos{begin} {}
         uaiw_constexpr reference operator*() const { return parent->func_transform(*it_pos); }
         uaiw_constexpr transform& operator++()
         {
@@ -648,7 +649,8 @@ private:
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
 
         uaiw_constexpr take() = default;
-        uaiw_constexpr explicit take(take_view& p, Iter begin, Sent, std::size_t n) : parent{&p}, it_pos{begin}, count{n} {}
+        uaiw_constexpr explicit take(take_view& p, Iter begin, Sent, std::size_t n)
+            : parent{std::addressof(p)}, it_pos{begin}, count{n} {}
         uaiw_constexpr reference operator*() const { return *it_pos; }
         uaiw_constexpr pointer operator->() const { return it_pos; }
         uaiw_constexpr take& operator++()
@@ -752,7 +754,7 @@ private:
 
         uaiw_constexpr drop() = default;
         uaiw_constexpr explicit drop(drop_view& p, Iter begin, Sent end, std::size_t cnt = 0)
-            : parent{&p}, it_pos{begin}
+            : parent{std::addressof(p)}, it_pos{begin}
         {
             if (begin != end && cnt > 0)
                 //while (cnt--) ++it_pos;

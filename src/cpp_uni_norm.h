@@ -575,7 +575,7 @@ private:
         using difference_type   = std::ptrdiff_t;
 
         nfc() = default;
-        explicit nfc(nfc_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin}
+        explicit nfc(nfc_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
         {
             detail::impl_norm_iter_state_reset(&state);
 
@@ -668,7 +668,7 @@ private:
         using difference_type   = std::ptrdiff_t;
 
         nfd() = default;
-        explicit nfd(nfd_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin}
+        explicit nfd(nfd_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
         {
             detail::impl_norm_iter_state_reset(&state);
 
@@ -763,7 +763,7 @@ private:
         using difference_type   = std::ptrdiff_t;
 
         nfkc() = default;
-        explicit nfkc(nfkc_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin}
+        explicit nfkc(nfkc_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
         {
             detail::impl_norm_iter_state_reset(&state);
 
@@ -856,7 +856,7 @@ private:
         using difference_type   = std::ptrdiff_t;
 
         nfkd() = default;
-        explicit nfkd(nfkd_view& p, Iter begin, Sent) : parent{&p}, it_pos{begin}
+        explicit nfkd(nfkd_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
         {
             detail::impl_norm_iter_state_reset(&state);
 
