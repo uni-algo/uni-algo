@@ -19,8 +19,8 @@ public:
     error(bool f, std::size_t p) noexcept : fail(f), position(p) {}
     explicit operator bool() const noexcept { return fail; }
     void reset() noexcept { fail = false; position = detail::impl_npos; }
-    bool is_pos() const noexcept { return position != detail::impl_npos; }
-    std::size_t pos() const noexcept { assert(fail); assert(is_pos()); return position; }
+    bool has_pos() const noexcept { return position != detail::impl_npos; }
+    std::size_t pos() const noexcept { assert(fail); assert(has_pos()); return position; }
 private:
     bool fail = false;
     std::size_t position = detail::impl_npos;
