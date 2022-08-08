@@ -42,22 +42,22 @@ void test_alter_value()
     std::basic_string<unsigned long long> str8;
 
     str8 = uni::utf16to8<char16_t, unsigned long long>(u"\x0410");
-    TESTX(str8[0] == 0xD0 && str8[1] == 0x90);
+    TESTX(str8.size() == 2 && str8[0] == 0xD0 && str8[1] == 0x90);
 
     str8 = uni::utf32to8<char32_t, unsigned long long>(U"\x0410");
-    TESTX(str8[0] == 0xD0 && str8[1] == 0x90);
+    TESTX(str8.size() == 2 && str8[0] == 0xD0 && str8[1] == 0x90);
 
     str8 = uni::utf16to8<char16_t, unsigned long long>(u"\xD800"); // ill-formed
-    TESTX(str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
+    TESTX(str8.size() == 3 && str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
 
     str8 = uni::utf32to8<char32_t, unsigned long long>(U"\xD800"); // ill-formed
-    TESTX(str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
+    TESTX(str8.size() == 3 && str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
 
     // Ranges
 
     str8 = uni::ranges::to_utf8<decltype(str8)>(std::u32string{0x0410});
-    TESTX(str8[0] == 0xD0 && str8[1] == 0x90);
+    TESTX(str8.size() == 2 && str8[0] == 0xD0 && str8[1] == 0x90);
 
-    str8 = uni::ranges::to_utf8<decltype(str8)>(std::u32string{0xD800});
-    TESTX(str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
+    str8 = uni::ranges::to_utf8<decltype(str8)>(std::u32string{0xD800}); // ill-formed
+    TESTX(str8.size() == 3 && str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
 }
