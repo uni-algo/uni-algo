@@ -18,7 +18,6 @@
 #include <iterator>
 #include <cassert>
 #include <memory>
-#include <functional>
 #if defined(__cpp_lib_ranges) && !defined(UNI_ALGO_FORCE_CPP17_RANGES)
 #include <ranges>
 #else

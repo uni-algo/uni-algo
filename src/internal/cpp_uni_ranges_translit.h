@@ -6,6 +6,7 @@
 #define CPP_UNI_RANGES_TRANSLIT_H_UAIX
 
 #include <string>
+#include <functional>
 
 #include "cpp_uni_ranges_core.h"
 
@@ -55,7 +56,7 @@ private:
                 if (skip > 1)
                     --skip;
                 else
-                    skip = parent->func_translit(data);
+                    skip = std::invoke(parent->func_translit, data);
             }
             while (skip == 0);
         }

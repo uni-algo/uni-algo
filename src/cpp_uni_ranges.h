@@ -5,6 +5,7 @@
 #ifndef CPP_UNI_RANGES_H_UAIX
 #define CPP_UNI_RANGES_H_UAIX
 
+#include <functional>
 #ifdef UNI_ALGO_LOG_CPP_ITER
 #include <iostream>
 #endif
@@ -436,14 +437,14 @@ private:
             : parent{std::addressof(p)}, it_pos{begin}
         {
             if (begin != end)
-                while(!parent->func_filter(*it_pos) && ++it_pos != end);
+                while(!std::invoke(parent->func_filter, *it_pos) && ++it_pos != end);
         }
         uaiw_constexpr reference operator*() const { return *it_pos; }
         uaiw_constexpr pointer operator->() const { return it_pos; }
         uaiw_constexpr filter& operator++()
         {
             if (it_pos != std::end(parent->range))
-                while(++it_pos != std::end(parent->range) && !parent->func_filter(*it_pos));
+                while(++it_pos != std::end(parent->range) && !std::invoke(parent->func_filter, *it_pos));
 
             return *this;
         }
@@ -459,10 +460,10 @@ private:
 #if 0
             assert(it_pos != std::begin(parent->range));
             if (it_pos != std::begin(parent->range))
-                while (--it_pos != std::begin(parent->range) && !parent->func_filter(*it_pos));
+                while (--it_pos != std::begin(parent->range) && !std::invoke(parent->func_filter, *it_pos));
 #else
             do --it_pos;
-            while (!parent->func_filter(*it_pos));
+            while (!std::invoke(parent->func_filter, *it_pos));
 #endif
             return *this;
         }
@@ -550,7 +551,7 @@ private:
         uaiw_constexpr transform() = default;
         uaiw_constexpr explicit transform(transform_view& p, Iter begin, Sent)
             : parent{std::addressof(p)}, it_pos{begin} {}
-        uaiw_constexpr reference operator*() const { return parent->func_transform(*it_pos); }
+        uaiw_constexpr reference operator*() const { return std::invoke(parent->func_transform, *it_pos); }
         uaiw_constexpr transform& operator++()
         {
             if (it_pos != std::end(parent->range))
