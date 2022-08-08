@@ -31,8 +31,6 @@
 #include "../cpp_uni_config.h"
 #include "../cpp_uni_version.h"
 
-#include "../impl/impl_iterator.h"
-
 namespace uni {
 
 struct sentinel_t {};

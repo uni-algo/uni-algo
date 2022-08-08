@@ -16,6 +16,7 @@
 #include "cpp_uni_version.h"
 #include "internal/cpp_uni_ranges_core.h"
 
+#include "impl/impl_iterator.h"
 #include "impl/impl_break_grapheme.h"
 
 namespace uni {
