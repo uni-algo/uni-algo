@@ -167,64 +167,64 @@ std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source)
 
 // Short non-template functions for std::string, std::wstring, std::u16string, std::u32string
 
-inline std::string utf16to8(std::u16string_view source)
-{
-    return utf16to8<char16_t, char>(source);
-}
 inline std::u16string utf8to16u(std::string_view source)
 {
     return utf8to16<char, char16_t>(source);
 }
-inline std::string utf32to8(std::u32string_view source)
+inline std::string utf16to8(std::u16string_view source)
 {
-    return utf32to8<char32_t, char>(source);
+    return utf16to8<char16_t, char>(source);
 }
 inline std::u32string utf8to32u(std::string_view source)
 {
     return utf8to32<char, char32_t>(source);
 }
-inline std::u16string utf32to16u(std::u32string_view source)
+inline std::string utf32to8(std::u32string_view source)
 {
-    return utf32to16<char32_t, char16_t>(source);
+    return utf32to8<char32_t, char>(source);
 }
 inline std::u32string utf16to32u(std::u16string_view source)
 {
     return utf16to32<char16_t, char32_t>(source);
 }
+inline std::u16string utf32to16u(std::u32string_view source)
+{
+    return utf32to16<char32_t, char16_t>(source);
+}
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::string utf16to8(std::wstring_view source)
-{
-    return utf16to8<wchar_t, char>(source);
-}
 inline std::wstring utf8to16(std::string_view source)
 {
     return utf8to16<char, wchar_t>(source);
 }
-inline std::wstring utf32to16(std::u32string_view source)
+inline std::string utf16to8(std::wstring_view source)
 {
-    return utf32to16<char32_t, wchar_t>(source);
+    return utf16to8<wchar_t, char>(source);
 }
 inline std::u32string utf16to32u(std::wstring_view source)
 {
     return utf16to32<wchar_t, char32_t>(source);
 }
-#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-inline std::string utf32to8(std::wstring_view source)
+inline std::wstring utf32to16(std::u32string_view source)
 {
-    return utf32to8<wchar_t, char>(source);
+    return utf32to16<char32_t, wchar_t>(source);
 }
+#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
 inline std::wstring utf8to32(std::string_view source)
 {
     return utf8to32<char, wchar_t>(source);
 }
-inline std::u16string utf32to16u(std::wstring_view source)
+inline std::string utf32to8(std::wstring_view source)
 {
-    return utf32to16<wchar_t, char16_t>(source);
+    return utf32to8<wchar_t, char>(source);
 }
 inline std::wstring utf16to32(std::u16string_view source)
 {
     return utf16to32<char16_t, wchar_t>(source);
+}
+inline std::u16string utf32to16u(std::wstring_view source)
+{
+    return utf32to16<wchar_t, char16_t>(source);
 }
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 
@@ -289,64 +289,64 @@ std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source, uni::er
 
 // Short non-template functions for std::string, std::wstring, std::u16string, std::u32string
 
-inline std::string utf16to8(std::u16string_view source, uni::error& error)
-{
-    return utf16to8<char16_t, char>(source, error);
-}
 inline std::u16string utf8to16u(std::string_view source, uni::error& error)
 {
     return utf8to16<char, char16_t>(source, error);
 }
-inline std::string utf32to8(std::u32string_view source, uni::error& error)
+inline std::string utf16to8(std::u16string_view source, uni::error& error)
 {
-    return utf32to8<char32_t, char>(source, error);
+    return utf16to8<char16_t, char>(source, error);
 }
 inline std::u32string utf8to32u(std::string_view source, uni::error& error)
 {
     return utf8to32<char, char32_t>(source, error);
 }
-inline std::u16string utf32to16u(std::u32string_view source, uni::error& error)
+inline std::string utf32to8(std::u32string_view source, uni::error& error)
 {
-    return utf32to16<char32_t, char16_t>(source, error);
+    return utf32to8<char32_t, char>(source, error);
 }
 inline std::u32string utf16to32u(std::u16string_view source, uni::error& error)
 {
     return utf16to32<char16_t, char32_t>(source, error);
 }
+inline std::u16string utf32to16u(std::u32string_view source, uni::error& error)
+{
+    return utf32to16<char32_t, char16_t>(source, error);
+}
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::string utf16to8(std::wstring_view source, uni::error& error)
-{
-    return utf16to8<wchar_t, char>(source, error);
-}
 inline std::wstring utf8to16(std::string_view source, uni::error& error)
 {
     return utf8to16<char, wchar_t>(source, error);
 }
-inline std::wstring utf32to16(std::u32string_view source, uni::error& error)
+inline std::string utf16to8(std::wstring_view source, uni::error& error)
 {
-    return utf32to16<char32_t, wchar_t>(source, error);
+    return utf16to8<wchar_t, char>(source, error);
 }
 inline std::u32string utf16to32u(std::wstring_view source, uni::error& error)
 {
     return utf16to32<wchar_t, char32_t>(source, error);
 }
-#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-inline std::string utf32to8(std::wstring_view source, uni::error& error)
+inline std::wstring utf32to16(std::u32string_view source, uni::error& error)
 {
-    return utf32to8<wchar_t, char>(source, error);
+    return utf32to16<char32_t, wchar_t>(source, error);
 }
+#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
 inline std::wstring utf8to32(std::string_view source, uni::error& error)
 {
     return utf8to32<char, wchar_t>(source, error);
 }
-inline std::u16string utf32to16u(std::wstring_view source, uni::error& error)
+inline std::string utf32to8(std::wstring_view source, uni::error& error)
 {
-    return utf32to16<wchar_t, char16_t>(source, error);
+    return utf32to8<wchar_t, char>(source, error);
 }
 inline std::wstring utf16to32(std::u16string_view source, uni::error& error)
 {
     return utf16to32<char16_t, wchar_t>(source, error);
+}
+inline std::u16string utf32to16u(std::wstring_view source, uni::error& error)
+{
+    return utf32to16<wchar_t, char16_t>(source, error);
 }
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 
@@ -354,79 +354,79 @@ inline std::wstring utf16to32(std::u16string_view source, uni::error& error)
 
 #ifdef __cpp_lib_char8_t
 
-inline std::u8string utf16to8u(std::u16string_view source)
-{
-    return utf16to8<char16_t, char8_t>(source);
-}
 inline std::u16string utf8to16u(std::u8string_view source)
 {
     return utf8to16<char8_t, char16_t>(source);
 }
-inline std::u8string utf32to8u(std::u32string_view source)
+inline std::u8string utf16to8u(std::u16string_view source)
 {
-    return utf32to8<char32_t, char8_t>(source);
+    return utf16to8<char16_t, char8_t>(source);
 }
 inline std::u32string utf8to32u(std::u8string_view source)
 {
     return utf8to32<char8_t, char32_t>(source);
 }
+inline std::u8string utf32to8u(std::u32string_view source)
+{
+    return utf32to8<char32_t, char8_t>(source);
+}
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::u8string utf16to8u(std::wstring_view source)
-{
-    return utf16to8<wchar_t, char8_t>(source);
-}
 inline std::wstring utf8to16(std::u8string_view source)
 {
     return utf8to16<char8_t, wchar_t>(source);
 }
-#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-inline std::u8string utf32to8u(std::wstring_view source)
+inline std::u8string utf16to8u(std::wstring_view source)
 {
-    return utf32to8<wchar_t, char8_t>(source);
+    return utf16to8<wchar_t, char8_t>(source);
 }
+#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
 inline std::wstring utf8to32(std::u8string_view source)
 {
     return utf8to32<char8_t, wchar_t>(source);
+}
+inline std::u8string utf32to8u(std::wstring_view source)
+{
+    return utf32to8<wchar_t, char8_t>(source);
 }
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 
 namespace strict {
 
-inline std::u8string utf16to8u(std::u16string_view source, uni::error& error)
-{
-    return utf16to8<char16_t, char8_t>(source, error);
-}
 inline std::u16string utf8to16u(std::u8string_view source, uni::error& error)
 {
     return utf8to16<char8_t, char16_t>(source, error);
 }
-inline std::u8string utf32to8u(std::u32string_view source, uni::error& error)
+inline std::u8string utf16to8u(std::u16string_view source, uni::error& error)
 {
-    return utf32to8<char32_t, char8_t>(source, error);
+    return utf16to8<char16_t, char8_t>(source, error);
 }
 inline std::u32string utf8to32u(std::u8string_view source, uni::error& error)
 {
     return utf8to32<char8_t, char32_t>(source, error);
 }
+inline std::u8string utf32to8u(std::u32string_view source, uni::error& error)
+{
+    return utf32to8<char32_t, char8_t>(source, error);
+}
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::u8string utf16to8u(std::wstring_view source, uni::error& error)
-{
-    return utf16to8<wchar_t, char8_t>(source, error);
-}
 inline std::wstring utf8to16(std::u8string_view source, uni::error& error)
 {
     return utf8to16<char8_t, wchar_t>(source, error);
 }
-#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-inline std::u8string utf32to8u(std::wstring_view source, uni::error& error)
+inline std::u8string utf16to8u(std::wstring_view source, uni::error& error)
 {
-    return utf32to8<wchar_t, char8_t>(source, error);
+    return utf16to8<wchar_t, char8_t>(source, error);
 }
+#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
 inline std::wstring utf8to32(std::u8string_view source, uni::error& error)
 {
     return utf8to32<char8_t, wchar_t>(source, error);
+}
+inline std::u8string utf32to8u(std::wstring_view source, uni::error& error)
+{
+    return utf32to8<wchar_t, char8_t>(source, error);
 }
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 
