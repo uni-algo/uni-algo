@@ -1,0 +1,15 @@
+// Unicode 14.0.0
+
+#include "internal_defines.h"
+
+UNI_ALGO_IMPL_NAMESPACE_BEGIN
+
+uaix_const_data unsigned char stage1_prop[] = {
+new_stage1_prop.txt};
+
+uaix_const_data unsigned char stage2_prop[] = {
+new_stage2_prop.txt};
+
+UNI_ALGO_IMPL_NAMESPACE_END
+
+#include "internal_undefs.h"

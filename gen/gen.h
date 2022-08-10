@@ -191,6 +191,7 @@ static void new_generator_unicodedata(const std::string& file1, const std::strin
     // we don't handle it here because it doesn't matter for this data
     // but if this algorithm will be used to get something else
     // for example General_Category then it must be handled.
+    // See new_generator_prop for an example how to handle it.
 
     // All Unicode data files must be opened in binary mode.
     // Opening them in text mode shouldn't break anything
@@ -1420,8 +1421,7 @@ static void new_generator_unicodedata_norm_mn(const std::string& file1, const st
     new_generator_output(file1, file2, 8, 8, true, map);
 }
 
-// TODO: for Unicode property module that is planned
-static void new_generator_meow(const std::string& file1, const std::string& file2)
+static void new_generator_prop(const std::string& file1, const std::string& file2)
 {
     // https://www.unicode.org/reports/tr44/#UnicodeData.txt
     std::ifstream input("UnicodeData.txt", std::ios::binary);
@@ -1780,7 +1780,7 @@ static void new_generator()
     new_generator_special_casing("new_stage1_special_title.txt", "new_stage2_special_title.txt", "new_stage3_special_title.txt", 2);
     //new_generator_case_properties("new_stage1_prop.txt", "new_stage2_prop.txt");
     new_generator_case_locale("new_stage1_case_prop.txt", "new_stage2_case_prop.txt");
-    new_generator_meow("new_stage1_prop.txt", "new_stage2_prop.txt");
+    new_generator_prop("new_stage1_prop.txt", "new_stage2_prop.txt");
 
     new_generator_unicodedata_compose("new_stage1_comp_cp1.txt", "new_stage2_comp_cp1.txt", "new_stage1_comp_cp2.txt", "new_stage2_comp_cp2.txt", "new_stage3_comp.txt");
     new_generator_unicodedata_decompose_ccc_qc("new_stage1_decomp_nfd.txt", "new_stage2_decomp_nfd.txt", "new_stage3_decomp_nfd.txt", false);
@@ -1904,6 +1904,22 @@ static void new_merger()
     new_merger_replace_string(data, "new_stage2_break_word.txt");
 
     output.open("impl_break_word_data.h");
+    ASSERTX(output.is_open());
+    output << data;
+
+    input.close();
+    output.close();
+
+    input.open("impl_prop_data.h_blank");
+    ASSERTX(input.is_open());
+
+    data.clear();
+    data.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
+
+    new_merger_replace_string(data, "new_stage1_prop.txt");
+    new_merger_replace_string(data, "new_stage2_prop.txt");
+
+    output.open("impl_prop_data.h");
     ASSERTX(output.is_open());
     output << data;
 
