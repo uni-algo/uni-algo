@@ -18,6 +18,10 @@
 #include "cpp_uni_norm.h"
 #endif
 
+#ifndef UNI_ALGO_IMPL_DISABLE_PROP
+#include "cpp_uni_prop.h"
+#endif
+
 #ifndef UNI_ALGO_IMPL_DISABLE_BREAK_GRAPHEME
 #include "cpp_uni_break_grapheme.h"
 #endif

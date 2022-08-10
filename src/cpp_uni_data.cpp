@@ -17,6 +17,11 @@
 #include "impl/impl_norm_data.h"
 #endif
 
+#ifndef UNI_ALGO_DISABLE_PROP
+#include "impl/impl_prop_data_extern.h"
+#include "impl/impl_prop_data.h"
+#endif
+
 #ifndef UNI_ALGO_DISABLE_BREAK_GRAPHEME
 #include "impl/impl_break_grapheme_data_extern.h"
 #include "impl/impl_break_grapheme_data.h"
