@@ -30,6 +30,12 @@
 // Reduces the size of the library by ~300 KB.
 //#define UNI_ALGO_DISABLE_NORM
 
+// Disable Code Point Properties module.
+// Reduces the size of the library by ~35 KB.
+// Note that if this module is disabled unaccent functions
+// in Normalization module will be disabled too.
+//#define UNI_ALGO_DISABLE_PROP
+
 // Disable Break Grapheme module.
 // Reduces the size of the library by ~25 KB.
 //#define UNI_ALGO_DISABLE_BREAK_GRAPHEME
