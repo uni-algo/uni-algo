@@ -1382,45 +1382,6 @@ static void new_generator_break_word(const std::string& file1, const std::string
     new_generator_output(file1, file2, 8, 8, true, map);
 }
 
-static void new_generator_unicodedata_norm_mn(const std::string& file1, const std::string& file2)
-{
-    // https://www.unicode.org/reports/tr44/#UnicodeData.txt
-    std::ifstream input("UnicodeData.txt", std::ios::binary);
-    ASSERTX(input.is_open());
-
-    const uint32_t maxmap = 0x10FFFF; // Do not change!
-
-    std::map<uint32_t, uint32_t> map;
-
-    for (uint32_t i = 0; i <= maxmap; ++i)
-        map[i] = 0;
-
-    std::string line;
-    while (std::getline(input, line))
-    {
-        uint32_t c = (uint32_t)strtoul(line.c_str(), 0, 16);
-
-        for (uint32_t i = 0, col = 0; i < line.size(); ++i)
-        {
-            if (line[i] == ';')
-            {
-                col++;
-                if (col == 2) // General Category
-                {
-                    // Mn (Nonspacing Mark)
-                    if (line.size() > i+2 && line[i+1] == 'M' && line[i+2] == 'n')
-                    {
-                        map.at(c) = 1;
-                    }
-                    break;
-                }
-            }
-        }
-    }
-
-    new_generator_output(file1, file2, 8, 8, true, map);
-}
-
 static void new_generator_prop(const std::string& file1, const std::string& file2)
 {
     // https://www.unicode.org/reports/tr44/#UnicodeData.txt
@@ -1785,7 +1746,6 @@ static void new_generator()
     new_generator_unicodedata_compose("new_stage1_comp_cp1.txt", "new_stage2_comp_cp1.txt", "new_stage1_comp_cp2.txt", "new_stage2_comp_cp2.txt", "new_stage3_comp.txt");
     new_generator_unicodedata_decompose_ccc_qc("new_stage1_decomp_nfd.txt", "new_stage2_decomp_nfd.txt", "new_stage3_decomp_nfd.txt", false);
     new_generator_unicodedata_decompose_ccc_qc("new_stage1_decomp_nfkd.txt", "new_stage2_decomp_nfkd.txt", "new_stage3_decomp_nfkd.txt", true, "new_stage1_ccc_qc.txt", "new_stage2_ccc_qc.txt");
-    new_generator_unicodedata_norm_mn("new_stage1_norm_mn.txt", "new_stage2_norm_mn.txt");
 
     new_generator_break_grapheme("new_stage1_break_grapheme.txt", "new_stage2_break_grapheme.txt");
     new_generator_break_word("new_stage1_break_word.txt", "new_stage2_break_word.txt");
@@ -1868,8 +1828,6 @@ static void new_merger()
     new_merger_replace_string(data, "new_stage1_comp_cp2.txt");
     new_merger_replace_string(data, "new_stage2_comp_cp2.txt");
     new_merger_replace_string(data, "new_stage3_comp.txt");
-    new_merger_replace_string(data, "new_stage1_norm_mn.txt");
-    new_merger_replace_string(data, "new_stage2_norm_mn.txt");
 
     output.open("impl_norm_data.h");
     ASSERTX(output.is_open());

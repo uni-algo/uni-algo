@@ -32,16 +32,6 @@ new_stage3_decomp_nfkd.txt};
 
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-#ifndef UNI_ALGO_DISABLE_UNACCENT
-
-uaix_const_data unsigned char stage1_norm_mn[] = {
-new_stage1_norm_mn.txt};
-
-uaix_const_data unsigned char stage2_norm_mn[] = {
-new_stage2_norm_mn.txt};
-
-#endif // UNI_ALGO_DISABLE_UNACCENT
-
 uaix_const_data unsigned char stage1_comp_cp1[] = {
 new_stage1_comp_cp1.txt};
 
