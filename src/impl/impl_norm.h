@@ -7,6 +7,10 @@
 
 #include "impl_iterator.h"
 
+#ifndef UNI_ALGO_DISABLE_PROP
+#include "impl_prop.h"
+#endif
+
 #include "internal_defines.h"
 #include "internal_stages.h"
 
@@ -51,7 +55,7 @@ uaix_const size_t impl_x_utf16_nfd = 4;
 uaix_const size_t impl_x_utf16_nfkc = 18;
 uaix_const size_t impl_x_utf16_nfkd = 18;
 #endif
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
 uaix_const size_t impl_x_utf8_unaccent = 3;
 uaix_const size_t impl_x_utf16_unaccent = 3;
 #endif
@@ -825,7 +829,7 @@ uaix_static bool norm_decomp_nfkd(type_codept c, type_codept buffer[], unsigned 
 
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
 
 uaix_always_inline
 uaix_static bool norm_decomp_unaccent(type_codept c, type_codept buffer[], unsigned char buffer_ccc[],
@@ -839,7 +843,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, type_codept buffer[], unsig
     size_t offset = stages_decomp_nfd(c);
     if (offset == 0)
     {
-        if (!stages(c, stage1_norm_mn, stage2_norm_mn))
+        if (impl_prop_get_prop_gen_cat(impl_prop_get_prop(c)) != impl_General_Category_Mn)
         {
             buffer[*size] = c;
             buffer_ccc[*size] = stages_ccc(c);
@@ -854,7 +858,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, type_codept buffer[], unsig
         for (size_t i = 0; i < number; ++i)
         {
             type_codept cp = stages_decomp_nfd_cp(offset, i);
-            if (!stages(cp, stage1_norm_mn, stage2_norm_mn))
+            if (impl_prop_get_prop_gen_cat(impl_prop_get_prop(cp)) != impl_General_Category_Mn)
             {
                 buffer[*size] = cp;
                 buffer_ccc[*size] = stages_ccc(cp);
@@ -868,7 +872,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, type_codept buffer[], unsig
     return norm_decomp_return(buffer_ccc, size, last_qc);
 }
 
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
 uaix_always_inline
 uaix_static void norm_buffer(type_codept buffer[], unsigned char buffer_ccc[], size_t* size, size_t* last_qc)
@@ -1126,7 +1130,7 @@ uaix_static size_t impl_utf8_nfkd(it_in_utf8 first, it_end_utf8 last, it_out_utf
 
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
 
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
@@ -1187,7 +1191,7 @@ uaix_static size_t impl_utf8_unaccent(it_in_utf8 first, it_end_utf8 last, it_out
     return (size_t)(dst - result);
 }
 
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
@@ -1504,7 +1508,7 @@ uaix_static size_t impl_utf16_nfkd(it_in_utf16 first, it_end_utf16 last, it_out_
 
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
 
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
@@ -1563,7 +1567,7 @@ uaix_static size_t impl_utf16_unaccent(it_in_utf16 first, it_end_utf16 last, it_
     return (size_t)(dst - result);
 }
 
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>

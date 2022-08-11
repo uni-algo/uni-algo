@@ -157,7 +157,7 @@ std::basic_string<UTF8> utf8_nfkd(std::basic_string_view<UTF8> source)
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
 template<typename UTF8>
 std::basic_string<UTF8> utf8_unaccent(std::basic_string_view<UTF8> source)
 {
@@ -166,7 +166,7 @@ std::basic_string<UTF8> utf8_unaccent(std::basic_string_view<UTF8> source)
     return detail::t_norm<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
             detail::impl_x_utf8_unaccent, detail::impl_utf8_unaccent>(source);
 }
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
 template<typename UTF16>
 std::basic_string<UTF16> utf16_nfc(std::basic_string_view<UTF16> source)
@@ -206,7 +206,7 @@ std::basic_string<UTF16> utf16_nfkd(std::basic_string_view<UTF16> source)
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
 template<typename UTF16>
 std::basic_string<UTF16> utf16_unaccent(std::basic_string_view<UTF16> source)
 {
@@ -215,7 +215,7 @@ std::basic_string<UTF16> utf16_unaccent(std::basic_string_view<UTF16> source)
     return detail::t_norm<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
             detail::impl_x_utf16_unaccent, detail::impl_utf16_unaccent>(source);
 }
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
 template<typename UTF8>
 bool utf8_is_nfc(std::basic_string_view<UTF8> source)
@@ -369,12 +369,12 @@ inline std::string utf8_nfkd(std::string_view source)
     return utf8_nfkd<char>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
 inline std::string utf8_unaccent(std::string_view source)
 {
     return utf8_unaccent<char>(source);
 }
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
 inline std::u16string utf16_nfc(std::u16string_view source)
 {
@@ -394,12 +394,12 @@ inline std::u16string utf16_nfkd(std::u16string_view source)
     return utf16_nfkd<char16_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
 inline std::u16string utf16_unaccent(std::u16string_view source)
 {
     return utf16_unaccent<char16_t>(source);
 }
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
 inline bool utf8_is_nfc(std::string_view source)
 {
@@ -458,12 +458,12 @@ inline std::wstring utf16_nfkd(std::wstring_view source)
     return utf16_nfkd<wchar_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
 inline std::wstring utf16_unaccent(std::wstring_view source)
 {
     return utf16_unaccent<wchar_t>(source);
 }
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
 inline bool utf16_is_nfc(std::wstring_view source)
 {
@@ -505,12 +505,12 @@ inline std::u8string utf8_nfkd(std::u8string_view source)
     return utf8_nfkd<char8_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
 inline std::u8string utf8_unaccent(std::u8string_view source)
 {
     return utf8_unaccent<char8_t>(source);
 }
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
 inline bool utf8_is_nfc(std::u8string_view source)
 {
