@@ -239,9 +239,9 @@ void test_short_func_norm()
     TESTX(uni::norm::utf8_nfkc(str) == str);
     TESTX(uni::norm::utf8_nfkd(str) == str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
     TESTX(uni::norm::utf8_unaccent(str) == str);
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
     TESTX(uni::norm::utf8_is_nfc(str));
     TESTX(uni::norm::utf8_is_nfd(str));
@@ -260,9 +260,9 @@ void test_short_func_norm()
     TESTX(uni::norm::utf16_nfkc(u16str) == u16str);
     TESTX(uni::norm::utf16_nfkd(u16str) == u16str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
     TESTX(uni::norm::utf16_unaccent(u16str) == u16str);
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
     TESTX(uni::norm::utf16_is_nfc(u16str));
     TESTX(uni::norm::utf16_is_nfd(u16str));
@@ -282,9 +282,9 @@ void test_short_func_norm()
     TESTX(uni::norm::utf16_nfkc(wstr) == wstr);
     TESTX(uni::norm::utf16_nfkd(wstr) == wstr);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
     TESTX(uni::norm::utf16_unaccent(wstr) == wstr);
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
     TESTX(uni::norm::utf16_is_nfc(wstr));
     TESTX(uni::norm::utf16_is_nfd(wstr));
@@ -306,9 +306,9 @@ void test_short_func_norm()
     TESTX(uni::norm::utf8_nfkc(u8str) == u8str);
     TESTX(uni::norm::utf8_nfkd(u8str) == u8str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
-#ifndef UNI_ALGO_DISABLE_UNACCENT
+#ifndef UNI_ALGO_DISABLE_PROP
     TESTX(uni::norm::utf8_unaccent(u8str) == u8str);
-#endif // UNI_ALGO_DISABLE_UNACCENT
+#endif // UNI_ALGO_DISABLE_PROP
 
     TESTX(uni::norm::utf8_is_nfc(u8str));
     TESTX(uni::norm::utf8_is_nfd(u8str));
