@@ -12,10 +12,6 @@ extern const unsigned char  stage1_decomp_nfkd[];
 extern const unsigned short stage2_decomp_nfkd[];
 extern const type_codept    stage3_decomp_nfkd[];
 #endif
-#ifndef UNI_ALGO_DISABLE_UNACCENT
-extern const unsigned char stage1_norm_mn[];
-extern const unsigned char stage2_norm_mn[];
-#endif
 extern const unsigned char  stage1_comp_cp1[];
 extern const unsigned short stage2_comp_cp1[];
 extern const unsigned char  stage1_comp_cp2[];
