@@ -128,3 +128,32 @@ class uni::error    - used by validation functions
 class uni::locale   - used by case module
 class uni::sentinel - used by ranges
 ```
+
+---
+
+**`cpp_uni_prop.h`** - code point properties (requeries cpp_uni_data.cpp)
+
+The documentation contains links to:<br>
+Unicode character database: https://www.unicode.org/reports/tr44 <br>
+and Unicode glossary: https://www.unicode.org/glossary <br>
+for better understanding what these functions do.
+
+<pre><code>uni::codepoint::max_value       - last possible code point U+10FFFF
+
+uni::codepoint::is_valid        - check if valid code point <a href="https://www.unicode.org/glossary/#code_point">link</a>
+uni::codepoint::is_valid_scalar - check if valid scalar value <a href="https://www.unicode.org/glossary/#unicode_scalar_value">link</a>
+
+uni::codepoint::is_alphabetic   - Alphabetic <a href="https://www.unicode.org/reports/tr44/#Alphabetic">link</a>
+uni::codepoint::is_numeric      - General_Category=Number <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">link</a>
+uni::codepoint::is_alphanumeric - Alphabetic or General_Category=Number
+uni::codepoint::is_whitespace   - White_Space <a href="https://www.unicode.org/reports/tr44/#White_Space">link</a>
+
+uni::codepoint::is_reserved      - <a href="https://www.unicode.org/glossary/#reserved_code_point">link</a>
+uni::codepoint::is_noncharacter  - <a href="https://www.unicode.org/glossary/#noncharacter">link</a>
+uni::codepoint::is_control       - <a href="https://www.unicode.org/glossary/#control_codes">link</a>
+uni::codepoint::is_surrogate     - <a href="https://www.unicode.org/glossary/#surrogate_code_point">link</a>
+uni::codepoint::is_supplementary - <a href="https://www.unicode.org/glossary/#supplementary_code_point">link</a>
+uni::codepoint::is_private_use   - <a href="https://www.unicode.org/glossary/#private_use_code_point">link</a>
+
+class uni::codepoint::prop - provides General_Category and code point type functions <a href="https://www.unicode.org/glossary/#code_point_type">link</a>
+</code></pre>
