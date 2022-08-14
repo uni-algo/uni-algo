@@ -40,8 +40,8 @@ uaix_const int impl_casemap_mode_title  = 4;
 
 uaix_const type_codept prop_Cased            = 1 << 0;
 uaix_const type_codept prop_Cased_Ignorable  = 1 << 1;
-uaix_const type_codept prop_Lowercase        = 1 << 2; // not used
-uaix_const type_codept prop_Uppercase        = 1 << 3; // not used
+uaix_const type_codept prop_Lowercase        = 1 << 2;
+uaix_const type_codept prop_Uppercase        = 1 << 3;
 uaix_const type_codept prop_Soft_Dotted      = 1 << 4; // impl_case_locale.h
 uaix_const type_codept prop_CCC_NOT_0        = 1 << 5; // impl_case_locale.h
 uaix_const type_codept prop_CCC_230          = 1 << 6; // impl_case_locale.h
@@ -1531,6 +1531,73 @@ uaix_static size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_o
 #endif // UNI_ALGO_DISABLE_COLLATE
 
 #endif // UNI_ALGO_EXPERIMENTAL
+
+// Expose properties for a wrapper
+// Must always be at the end of the file
+
+uaix_always_inline
+uaix_static type_codept impl_case_get_prop(type_codept c)
+{
+    // Treat all invalid as replacement character (U+FFFD)
+    if (c > 0x10FFFF)
+        c = 0xFFFD;
+
+    return stages(c, stage1_case_prop, stage2_case_prop);
+}
+
+uaix_always_inline
+uaix_static bool impl_case_is_prop_lowercase(type_codept prop)
+{
+    // The Unicode Standard: DerivedCoreProperties.txt -> Lowercase
+    return (prop & prop_Lowercase) ? true : false;
+}
+
+uaix_always_inline
+uaix_static bool impl_case_is_prop_uppercase(type_codept prop)
+{
+    // The Unicode Standard: DerivedCoreProperties.txt -> Uppercase
+    return (prop & prop_Uppercase) ? true : false;
+}
+
+uaix_always_inline
+uaix_static bool impl_case_is_prop_cased(type_codept prop)
+{
+    // The Unicode Standard: DerivedCoreProperties.txt -> Cased
+    return (prop & prop_Cased) ? true : false;
+}
+
+uaix_always_inline
+uaix_static bool impl_case_is_prop_case_ignorable(type_codept prop)
+{
+    // The Unicode Standard: DerivedCoreProperties.txt -> Case_Ignorable
+    return (prop & prop_Cased_Ignorable) ? true : false;
+}
+
+uaix_always_inline
+uaix_static type_codept impl_case_to_simple_lowercase(type_codept c)
+{
+    return (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? stages_lower(c) : 0xFFFD;
+}
+
+uaix_always_inline
+uaix_static type_codept impl_case_to_simple_uppercase(type_codept c)
+{
+    return (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? stages_upper(c) : 0xFFFD;
+}
+
+uaix_always_inline
+uaix_static type_codept impl_case_to_simple_casefold(type_codept c)
+{
+    return (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? stages_fold(c) : 0xFFFD;
+}
+
+#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+uaix_always_inline
+uaix_static type_codept impl_case_to_simple_titlecase(type_codept c)
+{
+    return (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? stages_title(c) : 0xFFFD;
+}
+#endif // UNI_ALGO_DISABLE_BREAK_WORD
 
 UNI_ALGO_IMPL_NAMESPACE_END
 

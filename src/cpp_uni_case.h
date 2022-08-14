@@ -866,6 +866,77 @@ inline uni::search utf8_search(std::u8string_view string1, std::u8string_view st
 
 #endif // __cpp_lib_char8_t
 
+// ----------
+// PROPERTIES
+// ----------
+
+namespace codepoint {
+
+class prop_case
+{
+private:
+    detail::type_codept data = 0;
+
+public:
+    prop_case() = delete;
+    explicit prop_case(char32_t c) noexcept : data{detail::impl_case_get_prop(c)} {}
+
+    bool Lowercase() const noexcept
+    {
+        // The Unicode Standard: DerivedCoreProperties.txt -> Lowercase
+        return detail::impl_case_is_prop_lowercase(data);
+    }
+    bool Uppercase() const noexcept
+    {
+        // The Unicode Standard: DerivedCoreProperties.txt -> Uppercase
+        return detail::impl_case_is_prop_uppercase(data);
+    }
+    bool Cased() const noexcept
+    {
+        // The Unicode Standard: DerivedCoreProperties.txt -> Cased
+        return detail::impl_case_is_prop_cased(data);
+    }
+    bool Case_Ignorable() const noexcept
+    {
+        // The Unicode Standard: DerivedCoreProperties.txt -> Case_Ignorable
+        return detail::impl_case_is_prop_case_ignorable(data);
+    }
+};
+
+inline bool is_lowercase(char32_t c) noexcept
+{
+    return prop_case(c).Lowercase();
+}
+
+inline bool is_uppercase(char32_t c) noexcept
+{
+    return prop_case(c).Uppercase();
+}
+
+inline char32_t to_simple_lowercase(char32_t c) noexcept
+{
+    return detail::impl_case_to_simple_lowercase(c);
+}
+
+inline char32_t to_simple_uppercase(char32_t c) noexcept
+{
+    return detail::impl_case_to_simple_uppercase(c);
+}
+
+inline char32_t to_simple_casefold(char32_t c) noexcept
+{
+    return detail::impl_case_to_simple_casefold(c);
+}
+
+#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+inline char32_t to_simple_titlecase(char32_t c) noexcept
+{
+    return detail::impl_case_to_simple_titlecase(c);
+}
+#endif // UNI_ALGO_DISABLE_BREAK_WORD
+
+} // namespace codepoint
+
 } // namespace uni
 
 #endif // CPP_UNI_CASE_H_UAIX
