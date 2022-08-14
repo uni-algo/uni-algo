@@ -169,8 +169,9 @@ int main7()
     std::cout << "DONE: Transliterators" << '\n';
 
     test_prop();
+    test_prop_case();
 
-    std::cout << "DONE: Property Functions" << '\n';
+    std::cout << "DONE: Code Point Properties" << '\n';
 
     test_short_func_convert();
     test_short_func_case();

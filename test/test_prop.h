@@ -265,3 +265,100 @@ void test_prop()
     static_assert(uni::detail::impl_General_Category_Co == 29);
     static_assert(uni::detail::impl_General_Category_Cn == 0);
 }
+
+void test_prop_case()
+{
+    TESTX(uni::codepoint::is_lowercase(U'w'));
+    TESTX(!uni::codepoint::is_lowercase(U'W'));
+    TESTX(uni::codepoint::is_uppercase(U'W'));
+    TESTX(!uni::codepoint::is_uppercase(U'w'));
+
+    TESTX(uni::codepoint::prop_case(U'w').Lowercase());
+    TESTX(!uni::codepoint::prop_case(U'W').Lowercase());
+    TESTX(uni::codepoint::prop_case(U'W').Uppercase());
+    TESTX(!uni::codepoint::prop_case(U'w').Uppercase());
+
+    TESTX(uni::codepoint::prop_case(U'w').Cased());
+    TESTX(uni::codepoint::prop_case(U'W').Cased());
+    TESTX(!uni::codepoint::prop_case(U':').Cased());
+    TESTX(uni::codepoint::prop_case(U':').Case_Ignorable());
+    TESTX(!uni::codepoint::prop_case(U';').Case_Ignorable());
+
+    TESTX(!uni::codepoint::is_lowercase(0));
+    TESTX(!uni::codepoint::is_uppercase(0));
+    TESTX(!uni::codepoint::is_lowercase(0xFFFD));
+    TESTX(!uni::codepoint::is_uppercase(0xFFFD));
+    TESTX(!uni::codepoint::is_lowercase(0x10FFFF));
+    TESTX(!uni::codepoint::is_uppercase(0x10FFFF));
+    TESTX(!uni::codepoint::is_lowercase(0x110000));
+    TESTX(!uni::codepoint::is_uppercase(0x110000));
+    TESTX(!uni::codepoint::is_lowercase(0xFFFFFFFF));
+    TESTX(!uni::codepoint::is_uppercase(0xFFFFFFFF));
+
+    TESTX(uni::codepoint::to_simple_lowercase(U'W') == U'w');
+    TESTX(uni::codepoint::to_simple_uppercase(U'w') == U'W');
+    TESTX(uni::codepoint::to_simple_titlecase(U'w') == U'W');
+    TESTX(uni::codepoint::to_simple_casefold(U'W') == U'w');
+
+    TESTX(uni::codepoint::to_simple_lowercase(U':') == U':');
+    TESTX(uni::codepoint::to_simple_uppercase(U':') == U':');
+    TESTX(uni::codepoint::to_simple_titlecase(U':') == U':');
+    TESTX(uni::codepoint::to_simple_casefold(U':') == U':');
+
+    TESTX(uni::codepoint::to_simple_lowercase(0) == 0);
+    TESTX(uni::codepoint::to_simple_uppercase(0) == 0);
+    TESTX(uni::codepoint::to_simple_titlecase(0) == 0);
+    TESTX(uni::codepoint::to_simple_casefold(0) == 0);
+
+    TESTX(uni::codepoint::to_simple_lowercase(0x10FFFF) == 0x10FFFF);
+    TESTX(uni::codepoint::to_simple_uppercase(0x10FFFF) == 0x10FFFF);
+    TESTX(uni::codepoint::to_simple_titlecase(0x10FFFF) == 0x10FFFF);
+    TESTX(uni::codepoint::to_simple_casefold(0x10FFFF) == 0x10FFFF);
+
+    TESTX(uni::codepoint::to_simple_lowercase(0x110000) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_uppercase(0x110000) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_titlecase(0x110000) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_casefold(0x110000) == 0xFFFD);
+
+    TESTX(uni::codepoint::to_simple_lowercase(0xFFFFFFFF) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_uppercase(0xFFFFFFFF) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_titlecase(0xFFFFFFFF) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_casefold(0xFFFFFFFF) == 0xFFFD);
+
+    // Surrogates
+    TESTX(uni::codepoint::to_simple_lowercase(0xD800) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_lowercase(0xDBFF) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_lowercase(0xDC00) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_lowercase(0xDFFF) == 0xFFFD);
+
+    TESTX(uni::codepoint::to_simple_uppercase(0xD800) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_uppercase(0xDBFF) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_uppercase(0xDC00) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_uppercase(0xDFFF) == 0xFFFD);
+
+    TESTX(uni::codepoint::to_simple_titlecase(0xD800) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_titlecase(0xDBFF) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_titlecase(0xDC00) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_titlecase(0xDFFF) == 0xFFFD);
+
+    TESTX(uni::codepoint::to_simple_casefold(0xD800) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_casefold(0xDBFF) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_casefold(0xDC00) == 0xFFFD);
+    TESTX(uni::codepoint::to_simple_casefold(0xDFFF) == 0xFFFD);
+
+    // Eszett
+    TESTX(uni::codepoint::is_lowercase(0x00DF));
+    TESTX(uni::codepoint::is_uppercase(0x1E9E));
+    TESTX(uni::codepoint::prop_case(0x00DF).Lowercase());
+    TESTX(uni::codepoint::prop_case(0x1E9E).Uppercase());
+
+    TESTX(uni::codepoint::to_simple_lowercase(0x00DF) == 0x00DF);
+    TESTX(uni::codepoint::to_simple_uppercase(0x00DF) == 0x00DF);
+    TESTX(uni::codepoint::to_simple_titlecase(0x00DF) == 0x00DF);
+    TESTX(uni::codepoint::to_simple_casefold(0x00DF) == 0x00DF);
+
+    TESTX(uni::codepoint::to_simple_lowercase(0x1E9E) == 0x00DF);
+    TESTX(uni::codepoint::to_simple_uppercase(0x1E9E) == 0x1E9E);
+    TESTX(uni::codepoint::to_simple_titlecase(0x1E9E) == 0x1E9E);
+    TESTX(uni::codepoint::to_simple_casefold(0x1E9E) == 0x00DF);
+}
