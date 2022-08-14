@@ -426,7 +426,7 @@ uaix_static size_t impl_utf32to8(it_in_utf32 first, it_end_utf32 last, it_out_ut
         }
         else if (c <= 0xFFFF)
         {
-            if (c < 0xD800 || c > 0xDFFF) // If not in surrogate pairs range
+            if (!(c >= 0xD800 && c <= 0xDFFF)) // If not in surrogate pairs range
             {
                 *dst++ = (type_char8)(0xE0 |  (c >> 12));
                 *dst++ = (type_char8)(0x80 | ((c >> 6) & 0x3F));
@@ -531,7 +531,7 @@ uaix_static size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_u
 
         if (c <= 0xFFFF)
         {
-            if (c < 0xD800 || c > 0xDFFF) // If not in surrogate pairs range
+            if (!(c >= 0xD800 && c <= 0xDFFF)) // If not in surrogate pairs range
             {
                 *dst++ = (type_char16)c;
 
