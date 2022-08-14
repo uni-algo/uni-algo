@@ -14,7 +14,7 @@ void test_convert_and_iter_convert()
         std::string str8 = uni::utf32to8<char32_t, char>(str32);
         std::u16string str16 = uni::utf32to16<char32_t, char16_t>(str32);
 
-        if ((c < 0xD800 || c > 0xDFFF) && c <= 0x10FFFF)
+        if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
         {
             TESTX((str8 == uni::utf16to8<char16_t, char>(str16)));
             TESTX((str16 == uni::utf8to16<char, char16_t>(str8)));
@@ -36,7 +36,7 @@ void test_convert_and_iter_convert()
         std::string str8 = uni::utf16to8<char16_t, char>(str16);
         std::u32string str32 = uni::utf16to32<char16_t, char32_t>(str16);
 
-        if (c < 0xD800 || c > 0xDFFF)
+        if (!(c >= 0xD800 && c <= 0xDFFF))
         {
             TESTX((str8 == uni::utf32to8<char32_t, char>(str32)));
             TESTX((str32 == uni::utf8to32<char, char32_t>(str8)));
@@ -62,7 +62,7 @@ void test_convert_and_iter_convert()
         std::basic_string<type> str8 = uni::utf32to8<type, type>(str32);
         std::basic_string<type> str16 = uni::utf32to16<type, type>(str32);
 
-        if ((c < 0xD800 || c > 0xDFFF) && c <= 0x10FFFF)
+        if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
         {
             TESTX((str8 == uni::utf16to8<type, type>(str16)));
             TESTX((str16 == uni::utf8to16<type, type>(str8)));
@@ -84,7 +84,7 @@ void test_convert_and_iter_convert()
         std::basic_string<type> str8 = uni::utf16to8<type, type>(str16);
         std::basic_string<type> str32 = uni::utf16to32<type, type>(str16);
 
-        if (c < 0xD800 || c > 0xDFFF)
+        if (!(c >= 0xD800 && c <= 0xDFFF))
         {
             TESTX((str8 == uni::utf32to8<type, type>(str32)));
             TESTX((str32 == uni::utf8to32<type, type>(str8)));
@@ -168,7 +168,7 @@ void test_convert_and_iter_iter()
         std::string str8 = utf32to8<char32_t, char>(str32);
         std::u16string str16 = utf32to16<char32_t, char16_t>(str32);
 
-        if ((c < 0xD800 || c > 0xDFFF) && c <= 0x10FFFF)
+        if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
         {
             TESTX((str8 == utf16to8<char16_t, char>(str16)));
             TESTX((str16 == utf8to16<char, char16_t>(str8)));
@@ -190,7 +190,7 @@ void test_convert_and_iter_iter()
         std::string str8 = utf16to8<char16_t, char>(str16);
         std::u32string str32 = utf16to32<char16_t, char32_t>(str16);
 
-        if (c < 0xD800 || c > 0xDFFF)
+        if (!(c >= 0xD800 && c <= 0xDFFF))
         {
             TESTX((str8 == utf32to8<char32_t, char>(str32)));
             TESTX((str32 == utf8to32<char, char32_t>(str8)));
@@ -216,7 +216,7 @@ void test_convert_and_iter_iter()
         std::basic_string<type> str8 = utf32to8<type, type>(str32);
         std::basic_string<type> str16 = utf32to16<type, type>(str32);
 
-        if ((c < 0xD800 || c > 0xDFFF) && c <= 0x10FFFF)
+        if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
         {
             TESTX((str8 == utf16to8<type, type>(str16)));
             TESTX((str16 == utf8to16<type, type>(str8)));
@@ -238,7 +238,7 @@ void test_convert_and_iter_iter()
         std::basic_string<type> str8 = utf16to8<type, type>(str16);
         std::basic_string<type> str32 = utf16to32<type, type>(str16);
 
-        if (c < 0xD800 || c > 0xDFFF)
+        if (!(c >= 0xD800 && c <= 0xDFFF))
         {
             TESTX((str8 == utf32to8<type, type>(str32)));
             TESTX((str32 == utf8to32<type, type>(str8)));
