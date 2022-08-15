@@ -46,7 +46,7 @@ then output `std::u8string` / `std::u16string` / `std::u32string`<br>
 instead of `std::string` / `std::wstring`
 
 The same functions but from `uni::strict` namespace<br>
-then strict conversion instead of lenient
+then strict conversion instead of lenient.
 
 ---
 
@@ -136,24 +136,43 @@ class uni::sentinel - used by ranges
 The documentation contains links to:<br>
 Unicode character database: https://www.unicode.org/reports/tr44 <br>
 and Unicode glossary: https://www.unicode.org/glossary <br>
-for better understanding what these functions do.
+for better understanding what these functions do.<br>
+All these functions work with code point `char32_t`
 
 <pre><code>uni::codepoint::max_value       - last possible code point U+10FFFF
 
-uni::codepoint::is_valid        - check if valid code point <a href="https://www.unicode.org/glossary/#code_point">link</a>
-uni::codepoint::is_valid_scalar - check if valid scalar value <a href="https://www.unicode.org/glossary/#unicode_scalar_value">link</a>
+uni::codepoint::is_valid        - check if valid <a href="https://www.unicode.org/glossary/#code_point">code point</a>
+uni::codepoint::is_valid_scalar - check if valid <a href="https://www.unicode.org/glossary/#unicode_scalar_value">scalar value</a>
 
-uni::codepoint::is_alphabetic   - Alphabetic <a href="https://www.unicode.org/reports/tr44/#Alphabetic">link</a>
-uni::codepoint::is_numeric      - General_Category=Number <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">link</a>
-uni::codepoint::is_alphanumeric - Alphabetic or General_Category=Number
-uni::codepoint::is_whitespace   - White_Space <a href="https://www.unicode.org/reports/tr44/#White_Space">link</a>
+uni::codepoint::is_alphabetic   - <a href="https://www.unicode.org/reports/tr44/#Alphabetic">Alphabetic</a>
+uni::codepoint::is_numeric      - <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a>=Number
+uni::codepoint::is_alphanumeric - <a href="https://www.unicode.org/reports/tr44/#Alphabetic">Alphabetic</a> or <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a>=Number
+uni::codepoint::is_whitespace   - <a href="https://www.unicode.org/reports/tr44/#White_Space">White_Space</a>
 
-uni::codepoint::is_reserved      - <a href="https://www.unicode.org/glossary/#reserved_code_point">link</a>
-uni::codepoint::is_noncharacter  - <a href="https://www.unicode.org/glossary/#noncharacter">link</a>
-uni::codepoint::is_control       - <a href="https://www.unicode.org/glossary/#control_codes">link</a>
-uni::codepoint::is_surrogate     - <a href="https://www.unicode.org/glossary/#surrogate_code_point">link</a>
-uni::codepoint::is_supplementary - <a href="https://www.unicode.org/glossary/#supplementary_code_point">link</a>
-uni::codepoint::is_private_use   - <a href="https://www.unicode.org/glossary/#private_use_code_point">link</a>
+uni::codepoint::is_reserved      - <a href="https://www.unicode.org/glossary/#reserved_code_point">reserved code point</a>
+uni::codepoint::is_noncharacter  - <a href="https://www.unicode.org/glossary/#noncharacter">noncharacter</a>
+uni::codepoint::is_control       - <a href="https://www.unicode.org/glossary/#control_codes">control codes</a>
+uni::codepoint::is_surrogate     - <a href="https://www.unicode.org/glossary/#surrogate_code_point">surrogate code point</a>
+uni::codepoint::is_supplementary - <a href="https://www.unicode.org/glossary/#supplementary_code_point">supplementary code point</a>
+uni::codepoint::is_private_use   - <a href="https://www.unicode.org/glossary/#private_use_code_point">private use code point</a>
 
-class uni::codepoint::prop - provides General_Category and code point type functions <a href="https://www.unicode.org/glossary/#code_point_type">link</a>
+class uni::codepoint::prop       - provides <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a> and <a href="https://www.unicode.org/glossary/#code_point_type">code point type</a>
+
+<i>other modules can provide more properties they are listed below</i>
+
+<b>cpp_uni_case.h</b>
+
+uni::codepoint::is_lowercase        - <a href="https://www.unicode.org/reports/tr44/#Lowercase">Lowercase</a>
+uni::codepoint::is_uppercase        - <a href="https://www.unicode.org/reports/tr44/#Uppercase">Uppercase</a>
+
+uni::codepoint::to_simple_lowercase - performs <a href="https://unicode.org/reports/tr44/#Simple_Lowercase_Mapping">Simple_Lowercase_Mapping</a> on a code point
+uni::codepoint::to_simple_uppercase - <a href="https://www.unicode.org/reports/tr44/#Simple_Uppercase_Mapping">Simple_Uppercase_Mapping</a>
+uni::codepoint::to_simple_titlecase - <a href="https://www.unicode.org/reports/tr44/#Simple_Titlecase_Mapping">Simple_Titlecase_Mapping</a>
+uni::codepoint::to_simple_casefold  - <a href="https://www.unicode.org/reports/tr44/#Simple_Case_Folding">Simple_Case_Folding</a>
+
+class uni::codepoint::prop_case     - provides <a href="https://www.unicode.org/reports/tr44/#Cased">Cased</a> and <a href="https://www.unicode.org/reports/tr44/#Case_Ignorable">Case_Ignorable</a>
+
+<b>cpp_uni_norm.h</b>
+
+class uni::codepoint::prop_norm     - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Compining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a>
 </code></pre>
