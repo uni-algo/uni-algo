@@ -170,6 +170,7 @@ int main7()
 
     test_prop();
     test_prop_case();
+    test_prop_norm();
 
     std::cout << "DONE: Code Point Properties" << '\n';
 

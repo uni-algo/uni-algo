@@ -362,3 +362,42 @@ void test_prop_case()
     TESTX(uni::codepoint::to_simple_titlecase(0x1E9E) == 0x1E9E);
     TESTX(uni::codepoint::to_simple_casefold(0x1E9E) == 0x00DF);
 }
+
+void test_prop_norm()
+{
+    TESTX(uni::codepoint::prop_norm(0).Canonical_Combining_Class() == 0);
+    TESTX(uni::codepoint::prop_norm(0x0300).Canonical_Combining_Class() == 230);
+    TESTX(uni::codepoint::prop_norm(0x0315).Canonical_Combining_Class() == 232);
+
+    TESTX(uni::codepoint::prop_norm(0xFFFD).Canonical_Combining_Class() == 0);
+    TESTX(uni::codepoint::prop_norm(0x110000).Canonical_Combining_Class() == 0);
+    TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).Canonical_Combining_Class() == 0);
+
+    TESTX(uni::codepoint::prop_norm(0).NFC_Quick_Check_Yes());
+    TESTX(!uni::codepoint::prop_norm(0x0340).NFC_Quick_Check_Yes()); // NFC_QC=No
+    TESTX(!uni::codepoint::prop_norm(0x0300).NFC_Quick_Check_Yes()); // NFC_QC=Maybe
+    TESTX(uni::codepoint::prop_norm(0xFFFD).NFC_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm(0x110000).NFC_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).NFC_Quick_Check_Yes());
+
+    TESTX(uni::codepoint::prop_norm(0).NFD_Quick_Check_Yes());
+    TESTX(!uni::codepoint::prop_norm(0x00C0).NFD_Quick_Check_Yes()); // NFD_QC=No
+    TESTX(uni::codepoint::prop_norm(0x0300).NFD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm(0xFFFD).NFD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm(0x110000).NFD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).NFD_Quick_Check_Yes());
+
+    TESTX(uni::codepoint::prop_norm(0).NFKC_Quick_Check_Yes());
+    TESTX(!uni::codepoint::prop_norm(0x00A0).NFKC_Quick_Check_Yes()); // NFKC_QC=No
+    TESTX(!uni::codepoint::prop_norm(0x0300).NFKC_Quick_Check_Yes()); // NFKC_QC=Maybe
+    TESTX(uni::codepoint::prop_norm(0xFFFD).NFKC_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm(0x110000).NFKC_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).NFKC_Quick_Check_Yes());
+
+    TESTX(uni::codepoint::prop_norm(0).NFKD_Quick_Check_Yes());
+    TESTX(!uni::codepoint::prop_norm(0x00A0).NFKD_Quick_Check_Yes()); // NFKD_QC=No
+    TESTX(uni::codepoint::prop_norm(0x0300).NFKD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm(0xFFFD).NFKD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm(0x110000).NFKD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).NFKD_Quick_Check_Yes());
+}
