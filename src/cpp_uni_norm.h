@@ -535,7 +535,9 @@ inline bool utf8_is_nfkd(std::u8string_view source)
 
 } // namespace norm
 
+// ------
 // RANGES
+// ------
 
 namespace ranges::norm {
 
@@ -988,6 +990,52 @@ inline constexpr detail::adaptor_nfkd nfkd;
 } // namespace ranges::views::norm
 
 namespace views = ranges::views;
+
+// ----------
+// PROPERTIES
+// ----------
+
+namespace codepoint {
+
+class prop_norm
+{
+private:
+    detail::type_codept data = 0;
+
+public:
+    prop_norm() = delete;
+    explicit prop_norm(char32_t c) noexcept : data{detail::impl_norm_get_prop(c)} {}
+
+    unsigned char Canonical_Combining_Class() const noexcept
+    {
+        // The Unicode Standard: UnicodeData.txt -> Canonical_Combining_Class
+        return detail::impl_norm_get_prop_ccc(data);
+    }
+    bool NFC_Quick_Check_Yes() const noexcept
+    {
+        // The Unicode Standard: DerivedNormalizationProps.txt -> NFC_Quick_Check=Yes
+        return detail::impl_norm_is_prop_nfc_qc_yes(data);
+    }
+    bool NFD_Quick_Check_Yes() const noexcept
+    {
+        // The Unicode Standard: DerivedNormalizationProps.txt -> NFD_Quick_Check=Yes
+        return detail::impl_norm_is_prop_nfd_qc_yes(data);
+    }
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+    bool NFKC_Quick_Check_Yes() const noexcept
+    {
+        // The Unicode Standard: DerivedNormalizationProps.txt -> NFKC_Quick_Check=Yes
+        return detail::impl_norm_is_prop_nfkc_qc_yes(data);
+    }
+    bool NFKD_Quick_Check_Yes() const noexcept
+    {
+        // The Unicode Standard: DerivedNormalizationProps.txt -> NFKD_Quick_Check=Yes
+        return detail::impl_norm_is_prop_nfkd_qc_yes(data);
+    }
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+};
+
+} // namespace codepoint
 
 } // namespace uni
 

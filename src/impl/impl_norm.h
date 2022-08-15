@@ -1875,6 +1875,54 @@ uaix_static bool unstable_norm_iter_next_decomp(struct impl_norm_iter_state* s, 
     return true;
 }
 
+// Expose properties for a wrapper
+// Must always be at the end of the file
+
+uaix_always_inline
+uaix_static type_codept impl_norm_get_prop(type_codept c)
+{
+    // Treat all invalid as replacement character (U+FFFD)
+    if (c > 0x10FFFF)
+        c = 0xFFFD;
+
+    return stages(c, stage1_ccc_qc, stage2_ccc_qc);
+}
+
+uaix_always_inline
+uaix_static unsigned char impl_norm_get_prop_ccc(type_codept prop)
+{
+    // The Unicode Standard: UnicodeData.txt -> Canonical_Combining_Class
+    return (unsigned char)(prop & 0xFF);
+}
+
+uaix_always_inline
+uaix_static bool impl_norm_is_prop_nfc_qc_yes(type_codept prop)
+{
+    // The Unicode Standard: DerivedNormalizationProps.txt -> NFC_Quick_Check=Yes
+    return (prop & (type_codept)1 << norm_bit_nfc) ? false : true;
+}
+
+uaix_always_inline
+uaix_static bool impl_norm_is_prop_nfd_qc_yes(type_codept prop)
+{
+    // The Unicode Standard: DerivedNormalizationProps.txt -> NFD_Quick_Check=Yes
+    return (prop & (type_codept)1 << norm_bit_nfd) ? false : true;
+}
+
+uaix_always_inline
+uaix_static bool impl_norm_is_prop_nfkc_qc_yes(type_codept prop)
+{
+    // The Unicode Standard: DerivedNormalizationProps.txt -> NFKC_Quick_Check=Yes
+    return (prop & (type_codept)1 << norm_bit_nfkc) ? false : true;
+}
+
+uaix_always_inline
+uaix_static bool impl_norm_is_prop_nfkd_qc_yes(type_codept prop)
+{
+    // The Unicode Standard: DerivedNormalizationProps.txt -> NFKD_Quick_Check=Yes
+    return (prop & (type_codept)1 << norm_bit_nfkd) ? false : true;
+}
+
 UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"
