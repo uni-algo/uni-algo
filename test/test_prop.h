@@ -361,6 +361,69 @@ void test_prop_case()
     TESTX(uni::codepoint::to_simple_uppercase(0x1E9E) == 0x1E9E);
     TESTX(uni::codepoint::to_simple_titlecase(0x1E9E) == 0x1E9E);
     TESTX(uni::codepoint::to_simple_casefold(0x1E9E) == 0x00DF);
+
+#ifndef UNI_ALGO_DISABLE_FULL_CASE
+    TESTX(uni::codepoint::to_lowercase_u32(0x0130) == U"\x0069\x0307");
+    TESTX(uni::codepoint::to_uppercase_u32(0x00DF) == U"\x0053\x0053");
+    TESTX(uni::codepoint::to_titlecase_u32(0x00DF) == U"\x0053\x0073");
+    TESTX(uni::codepoint::to_casefold_u32(0x00DF) == U"\x0073\x0073");
+
+    TESTX(uni::codepoint::to_lowercase_u32(0xFB03) == U"\xFB03");
+    TESTX(uni::codepoint::to_uppercase_u32(0xFB03) == U"\x0046\x0046\x0049");
+    TESTX(uni::codepoint::to_titlecase_u32(0xFB03) == U"\x0046\x0066\x0069");
+    TESTX(uni::codepoint::to_casefold_u32(0xFB03) == U"\x0066\x0066\x0069");
+
+    TESTX(uni::codepoint::to_lowercase_u32(U'W') == U"w");
+    TESTX(uni::codepoint::to_uppercase_u32(U'w') == U"W");
+    TESTX(uni::codepoint::to_titlecase_u32(U'w') == U"W");
+    TESTX(uni::codepoint::to_casefold_u32(U'W') == U"w");
+
+    TESTX(uni::codepoint::to_lowercase_u32(U':') == U":");
+    TESTX(uni::codepoint::to_uppercase_u32(U':') == U":");
+    TESTX(uni::codepoint::to_titlecase_u32(U':') == U":");
+    TESTX(uni::codepoint::to_casefold_u32(U':') == U":");
+
+    TESTX(uni::codepoint::to_lowercase_u32(0) == std::u32string{0});
+    TESTX(uni::codepoint::to_uppercase_u32(0) == std::u32string{0});
+    TESTX(uni::codepoint::to_titlecase_u32(0) == std::u32string{0});
+    TESTX(uni::codepoint::to_casefold_u32(0) == std::u32string{0});
+
+    TESTX(uni::codepoint::to_lowercase_u32(0x10FFFF) == U"\x10FFFF");
+    TESTX(uni::codepoint::to_uppercase_u32(0x10FFFF) == U"\x10FFFF");
+    TESTX(uni::codepoint::to_titlecase_u32(0x10FFFF) == U"\x10FFFF");
+    TESTX(uni::codepoint::to_casefold_u32(0x10FFFF) == U"\x10FFFF");
+
+    TESTX(uni::codepoint::to_lowercase_u32(0x110000) == U"\xFFFD");
+    TESTX(uni::codepoint::to_uppercase_u32(0x110000) == U"\xFFFD");
+    TESTX(uni::codepoint::to_titlecase_u32(0x110000) == U"\xFFFD");
+    TESTX(uni::codepoint::to_casefold_u32(0x110000) == U"\xFFFD");
+
+    TESTX(uni::codepoint::to_lowercase_u32(0xFFFFFFFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_uppercase_u32(0xFFFFFFFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_titlecase_u32(0xFFFFFFFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_casefold_u32(0xFFFFFFFF) == U"\xFFFD");
+
+    // Surrogates
+    TESTX(uni::codepoint::to_lowercase_u32(0xD800) == U"\xFFFD");
+    TESTX(uni::codepoint::to_lowercase_u32(0xDBFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_lowercase_u32(0xDC00) == U"\xFFFD");
+    TESTX(uni::codepoint::to_lowercase_u32(0xDFFF) == U"\xFFFD");
+
+    TESTX(uni::codepoint::to_uppercase_u32(0xD800) == U"\xFFFD");
+    TESTX(uni::codepoint::to_uppercase_u32(0xDBFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_uppercase_u32(0xDC00) == U"\xFFFD");
+    TESTX(uni::codepoint::to_uppercase_u32(0xDFFF) == U"\xFFFD");
+
+    TESTX(uni::codepoint::to_titlecase_u32(0xD800) == U"\xFFFD");
+    TESTX(uni::codepoint::to_titlecase_u32(0xDBFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_titlecase_u32(0xDC00) == U"\xFFFD");
+    TESTX(uni::codepoint::to_titlecase_u32(0xDFFF) == U"\xFFFD");
+
+    TESTX(uni::codepoint::to_casefold_u32(0xD800) == U"\xFFFD");
+    TESTX(uni::codepoint::to_casefold_u32(0xDBFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_casefold_u32(0xDC00) == U"\xFFFD");
+    TESTX(uni::codepoint::to_casefold_u32(0xDFFF) == U"\xFFFD");
+#endif // UNI_ALGO_DISABLE_FULL_CASE
 }
 
 void test_prop_norm()
