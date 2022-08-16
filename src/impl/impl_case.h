@@ -1599,6 +1599,83 @@ uaix_static type_codept impl_case_to_simple_titlecase(type_codept c)
 }
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
+#ifndef UNI_ALGO_DISABLE_FULL_CASE
+
+#ifdef __cplusplus
+template<typename it_out_utf32>
+#endif
+uaix_always_inline_tmpl
+size_t impl_case_to_lowercase(type_codept c, it_out_utf32 dst)
+{
+    if (c == 0x0130) // Handled in place (checked in generator)
+    {
+        *dst++ = 0x0069;
+        *dst++ = 0x0307;
+        return 2;
+    }
+    *dst = impl_case_to_simple_lowercase(c);
+    return 1;
+
+}
+
+#ifdef __cplusplus
+template<typename it_out_utf32>
+#endif
+uaix_always_inline_tmpl
+size_t impl_case_to_uppercase(type_codept c, it_out_utf32 dst)
+{
+    size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_upper, stage2_special_upper) : 0;
+    if (n)
+    {
+        *dst++ = stage3_special_upper[n][1];
+        *dst++ = stage3_special_upper[n][2];
+        *dst++ = stage3_special_upper[n][3];
+        return stage3_special_upper[n][0];
+    }
+    *dst = impl_case_to_simple_uppercase(c);
+    return 1;
+}
+
+#ifdef __cplusplus
+template<typename it_out_utf32>
+#endif
+uaix_always_inline_tmpl
+size_t impl_case_to_casefold(type_codept c, it_out_utf32 dst)
+{
+    size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_fold, stage2_special_fold) : 0;
+    if (n)
+    {
+        *dst++ = stage3_special_fold[n][1];
+        *dst++ = stage3_special_fold[n][2];
+        *dst++ = stage3_special_fold[n][3];
+        return stage3_special_fold[n][0];
+    }
+    *dst = impl_case_to_simple_casefold(c);
+    return 1;
+}
+
+#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifdef __cplusplus
+template<typename it_out_utf32>
+#endif
+uaix_always_inline_tmpl
+size_t impl_case_to_titlecase(type_codept c, it_out_utf32 dst)
+{
+    size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_title, stage2_special_title) : 0;
+    if (n)
+    {
+        *dst++ = stage3_special_title[n][1];
+        *dst++ = stage3_special_title[n][2];
+        *dst++ = stage3_special_title[n][3];
+        return stage3_special_title[n][0];
+    }
+    *dst = impl_case_to_simple_titlecase(c);
+    return 1;
+}
+#endif // UNI_ALGO_DISABLE_BREAK_WORD
+
+#endif // UNI_ALGO_DISABLE_FULL_CASE
+
 UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"

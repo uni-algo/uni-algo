@@ -935,6 +935,60 @@ inline char32_t to_simple_titlecase(char32_t c) noexcept
 }
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
+#ifndef UNI_ALGO_DISABLE_FULL_CASE
+
+inline std::u32string to_lowercase_u32(char32_t c)
+{
+    std::u32string destination;
+    destination.resize(3); // TODO: Magic number
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    destination.resize(detail::impl_case_to_lowercase(c, destination.data()));
+#else
+    destination.resize(detail::impl_case_to_lowercase(c, destination.begin()));
+#endif
+    return destination;
+}
+
+inline std::u32string to_uppercase_u32(char32_t c)
+{
+    std::u32string destination;
+    destination.resize(3); // TODO: Magic number
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    destination.resize(detail::impl_case_to_uppercase(c, destination.data()));
+#else
+    destination.resize(detail::impl_case_to_uppercase(c, destination.begin()));
+#endif
+    return destination;
+}
+
+inline std::u32string to_casefold_u32(char32_t c)
+{
+    std::u32string destination;
+    destination.resize(3); // TODO: Magic number
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    destination.resize(detail::impl_case_to_casefold(c, destination.data()));
+#else
+    destination.resize(detail::impl_case_to_casefold(c, destination.begin()));
+#endif
+    return destination;
+}
+
+#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+inline std::u32string to_titlecase_u32(char32_t c)
+{
+    std::u32string destination;
+    destination.resize(3); // TODO: Magic number
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    destination.resize(detail::impl_case_to_titlecase(c, destination.data()));
+#else
+    destination.resize(detail::impl_case_to_titlecase(c, destination.begin()));
+#endif
+    return destination;
+}
+#endif // UNI_ALGO_DISABLE_BREAK_WORD
+
+#endif // UNI_ALGO_DISABLE_FULL_CASE
+
 } // namespace codepoint
 
 } // namespace uni
