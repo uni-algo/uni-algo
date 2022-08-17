@@ -137,7 +137,8 @@ The documentation contains links to:<br>
 Unicode character database: https://www.unicode.org/reports/tr44 <br>
 and Unicode glossary: https://www.unicode.org/glossary <br>
 for better understanding what these functions do.<br>
-All these functions work with code point `char32_t`
+All these functions work with code point `char32_t` <br>
+functions that end with `u32` return result in `std::u32string`
 
 <pre><code>uni::codepoint::max_value       - last possible code point U+10FFFF
 
@@ -170,9 +171,20 @@ uni::codepoint::to_simple_uppercase - <a href="https://www.unicode.org/reports/t
 uni::codepoint::to_simple_titlecase - <a href="https://www.unicode.org/reports/tr44/#Simple_Titlecase_Mapping">Simple_Titlecase_Mapping</a>
 uni::codepoint::to_simple_casefold  - <a href="https://www.unicode.org/reports/tr44/#Simple_Case_Folding">Simple_Case_Folding</a>
 
+uni::codepoint::to_lowercase_u32    - performs full <a href="https://unicode.org/reports/tr44/#Lowercase_Mapping">Lowercase_Mapping</a> on a code point
+uni::codepoint::to_uppercase_u32    - <a href="https://www.unicode.org/reports/tr44/#Uppercase_Mapping">Uppercase_Mapping</a>
+uni::codepoint::to_titlecase_u32    - <a href="https://www.unicode.org/reports/tr44/#Titlecase_Mapping">Titlecase_Mapping</a>
+uni::codepoint::to_casefold_u32     - <a href="https://www.unicode.org/reports/tr44/#Case_Folding">Case_Folding</a>
+
 class uni::codepoint::prop_case     - provides <a href="https://www.unicode.org/reports/tr44/#Cased">Cased</a> and <a href="https://www.unicode.org/reports/tr44/#Case_Ignorable">Case_Ignorable</a>
 
 <b>cpp_uni_norm.h</b>
 
-class uni::codepoint::prop_norm     - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Compining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a>
+uni::codepoint::to_decompose_u32        - full canonical decomposition (includes hangul decomposition)
+uni::codepoint::to_decompose_compat_u32 - full compatibility decomposition (includes hangul decomposition)
+uni::codepoint::to_decompose_hangul_u32 - hangul decomposition
+
+uni::codepoint::to_compose              - composes two code points (includes hangul composition)
+
+class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Compining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a>
 </code></pre>
