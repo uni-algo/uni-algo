@@ -463,4 +463,80 @@ void test_prop_norm()
     TESTX(uni::codepoint::prop_norm(0xFFFD).NFKD_Quick_Check_Yes());
     TESTX(uni::codepoint::prop_norm(0x110000).NFKD_Quick_Check_Yes());
     TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).NFKD_Quick_Check_Yes());
+
+    // Decompose
+    TESTX(uni::codepoint::to_decompose_u32(0x1F82) == U"\x03B1\x0313\x0300\x0345");
+    TESTX(uni::codepoint::to_decompose_compat_u32(0x1F82) == U"\x03B1\x0313\x0300\x0345");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0x1F82) == U"\x1F82");
+
+    TESTX(uni::codepoint::to_decompose_u32(0xFDFA) == U"\xFDFA");
+    TESTX(uni::codepoint::to_decompose_compat_u32(0xFDFA)
+          == U"\x0635\x0644\x0649\x0020\x0627\x0644\x0644\x0647\x0020\x0639\x0644\x064A\x0647\x0020\x0648\x0633\x0644\x0645");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0xFDFA) == U"\xFDFA");
+
+    TESTX(uni::codepoint::to_decompose_u32(0xAC00) == U"\x1100\x1161"); // Hangul L+V
+    TESTX(uni::codepoint::to_decompose_compat_u32(0xAC00) == U"\x1100\x1161");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0xAC00) == U"\x1100\x1161");
+
+    TESTX(uni::codepoint::to_decompose_u32(0xAC01) == U"\x1100\x1161\x11A8"); // Hangul L+V+T
+    TESTX(uni::codepoint::to_decompose_compat_u32(0xAC01) == U"\x1100\x1161\x11A8");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0xAC01) == U"\x1100\x1161\x11A8");
+
+    TESTX(uni::codepoint::to_decompose_u32(0x1100) == U"\x1100");
+    TESTX(uni::codepoint::to_decompose_compat_u32(0x1100) == U"\x1100");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0x1100) == U"\x1100");
+
+    TESTX(uni::codepoint::to_decompose_u32(U'W') == U"W");
+    TESTX(uni::codepoint::to_decompose_compat_u32(U'W') == U"W");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(U'W') == U"W");
+
+    TESTX(uni::codepoint::to_decompose_u32(0) == std::u32string{0});
+    TESTX(uni::codepoint::to_decompose_compat_u32(0) == std::u32string{0});
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0) == std::u32string{0});
+
+    TESTX(uni::codepoint::to_decompose_u32(0x10FFFF) == U"\x10FFFF");
+    TESTX(uni::codepoint::to_decompose_compat_u32(0x10FFFF) == U"\x10FFFF");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0x10FFFF) == U"\x10FFFF");
+
+    TESTX(uni::codepoint::to_decompose_u32(0x110000) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_compat_u32(0x110000) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0x110000) == U"\xFFFD");
+
+    TESTX(uni::codepoint::to_decompose_u32(0xFFFFFFFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_compat_u32(0xFFFFFFFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0xFFFFFFFF) == U"\xFFFD");
+
+    // Surrogates
+    TESTX(uni::codepoint::to_decompose_u32(0xD800) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_u32(0xDBFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_u32(0xDC00) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_u32(0xDFFF) == U"\xFFFD");
+
+    TESTX(uni::codepoint::to_decompose_compat_u32(0xD800) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_compat_u32(0xDBFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_compat_u32(0xDC00) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_compat_u32(0xDFFF) == U"\xFFFD");
+
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0xD800) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0xDBFF) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0xDC00) == U"\xFFFD");
+    TESTX(uni::codepoint::to_decompose_hangul_u32(0xDFFF) == U"\xFFFD");
+
+    // Compose
+    TESTX(uni::codepoint::to_compose(0x0041, 0x0300) == 0x00C0);
+    TESTX(uni::codepoint::to_compose(0x1100, 0x1161) == 0xAC00); // Hangul L+V
+    TESTX(uni::codepoint::to_compose(0xAC00, 0x11A8) == 0xAC01); // Hangul LV+T
+
+    TESTX(uni::codepoint::to_compose(0x0000, 0x0000) == 0xFFFD);
+    TESTX(uni::codepoint::to_compose(0x10FFFF, 0x10FFFF) == 0xFFFD);
+    TESTX(uni::codepoint::to_compose(0x110000, 0x110000) == 0xFFFD);
+    TESTX(uni::codepoint::to_compose(0xFFFFFFFF, 0xFFFFFFFF) == 0xFFFD);
+
+    // Surrogates
+    TESTX(uni::codepoint::to_compose(0xD800, 0xD800) == 0xFFFD);
+    TESTX(uni::codepoint::to_compose(0xDBFF, 0xDBFF) == 0xFFFD);
+    TESTX(uni::codepoint::to_compose(0xDC00, 0xDC00) == 0xFFFD);
+    TESTX(uni::codepoint::to_compose(0xDFFF, 0xDFFF) == 0xFFFD);
+    TESTX(uni::codepoint::to_compose(0xD800, 0xDC00) == 0xFFFD);
+    TESTX(uni::codepoint::to_compose(0xDBFF, 0xDFFF) == 0xFFFD);
 }
