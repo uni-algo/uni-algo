@@ -1923,6 +1923,182 @@ uaix_static bool impl_norm_is_prop_nfkd_qc_yes(type_codept prop)
     return (prop & (type_codept)1 << norm_bit_nfkd) ? false : true;
 }
 
+uaix_always_inline
+uaix_static type_codept norm_to_comp_hangul(type_codept c1, type_codept c2)
+{
+    // Simplified version of norm_comp_hangul
+
+    const type_codept SBase = 0xAC00;
+    const type_codept LBase = 0x1100;
+    const type_codept VBase = 0x1161;
+    const type_codept TBase = 0x11A7;
+    const type_codept LCount = 19;
+    const type_codept VCount = 21;
+    const type_codept TCount = 28;
+    const type_codept SCount = 11172;
+
+    if (c1 >= LBase && c1 < LBase + LCount) // L+V
+    {
+        if (c2 >= VBase && c2 < VBase + VCount)
+        {
+            type_codept LIndex = c1 - LBase;
+            type_codept VIndex = c2 - VBase;
+
+            return (SBase + (LIndex * VCount + VIndex) * TCount);
+        }
+    }
+    else if (c1 >= SBase && c1 < SBase + SCount && ((c1 - SBase) % TCount) == 0) // LV+T
+    {
+        if (c2 > TBase && c2 < TBase + TCount)
+            return (c1 + (c2 - TBase));
+    }
+    return 0;
+}
+
+#if 0
+uaix_always_inline
+uaix_static type_codept impl_norm_to_compose_hangul(type_codept c1, type_codept c2)
+{
+    if (c1 <= 0x10FFFF && c2 <= 0x10FFFF)
+    {
+        type_codept c = norm_to_comp_hangul(c1, c2);
+        return (c != 0) ? c : 0xFFFD;
+    }
+    return 0xFFFD;
+}
+#endif
+
+uaix_always_inline
+uaix_static type_codept impl_norm_to_compose(type_codept c1, type_codept c2)
+{
+    if (c1 <= 0x10FFFF && c2 <= 0x10FFFF)
+    {
+        type_codept c = norm_to_comp_hangul(c1, c2);
+        if (c != 0)
+            return c;
+
+        c = stages_comp(c1, c2);
+        return (c != 0) ? c : 0xFFFD;
+    }
+    return 0xFFFD;
+}
+
+#ifdef __cplusplus
+template<typename it_out_utf32>
+#endif
+uaix_always_inline_tmpl
+uaix_static size_t norm_to_decomp_hangul(type_codept c, it_out_utf32 dst)
+{
+    // Simplified version of norm_decomp_hangul
+
+    const type_codept SBase = 0xAC00;
+    const type_codept LBase = 0x1100;
+    const type_codept VBase = 0x1161;
+    const type_codept TBase = 0x11A7;
+    const type_codept TCount = 28;
+    const type_codept NCount = 588;
+    const type_codept SCount = 11172;
+
+    if (c >= SBase && c < SBase + SCount)
+    {
+        type_codept SIndex = c - SBase;
+        type_codept LPart = LBase + SIndex / NCount;
+        type_codept VPart = VBase + (SIndex % NCount) / TCount;
+        type_codept TPart = TBase + SIndex % TCount;
+
+        *dst++ = LPart;
+        *dst++ = VPart;
+
+        if (TPart != TBase)
+        {
+            *dst++ = TPart;
+            return 3;
+        }
+        return 2;
+    }
+    return 0;
+}
+
+#ifdef __cplusplus
+template<typename it_out_utf32>
+#endif
+uaix_always_inline_tmpl
+uaix_static size_t impl_norm_to_decompose_hangul(type_codept c, it_out_utf32 dst)
+{
+    if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
+    {
+        size_t hangul = norm_to_decomp_hangul(c, dst);
+        if (hangul)
+            return hangul;
+
+        *dst = c;
+    }
+    else
+        *dst = 0xFFFD;
+
+    return 1;
+}
+
+#ifdef __cplusplus
+template<typename it_out_utf32>
+#endif
+uaix_always_inline_tmpl
+uaix_static size_t impl_norm_to_decompose(type_codept c, it_out_utf32 dst)
+{
+    if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
+    {
+        size_t hangul = norm_to_decomp_hangul(c, dst);
+        if (hangul)
+            return hangul;
+
+        size_t offset = stages_decomp_nfd(c);
+        if (offset)
+        {
+            size_t number = stages_decomp_nfd_number(offset);
+            for (size_t i = 0; i < number; ++i)
+                *dst++ = stages_decomp_nfd_cp(offset, i);
+
+            return number;
+        }
+
+        *dst = c;
+    }
+    else
+        *dst = 0xFFFD;
+
+    return 1;
+}
+
+#ifdef __cplusplus
+template<typename it_out_utf32>
+#endif
+uaix_always_inline_tmpl
+uaix_static size_t impl_norm_to_decompose_compat(type_codept c, it_out_utf32 dst)
+{
+    if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
+    {
+        size_t hangul = norm_to_decomp_hangul(c, dst);
+        if (hangul)
+            return hangul;
+
+        size_t offset = stages_decomp_nfkd(c);
+        if (offset)
+        {
+            size_t number = stages_decomp_nfkd_number(offset);
+            for (size_t i = 0; i < number; ++i)
+                *dst++ = stages_decomp_nfkd_cp(offset, i);
+
+            return number;
+        }
+
+        *dst = c;
+    }
+    else
+        *dst = 0xFFFD;
+
+    return 1;
+}
+
 UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"

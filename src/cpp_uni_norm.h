@@ -1035,6 +1035,47 @@ public:
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 };
 
+inline char32_t to_compose(char32_t c1, char32_t c2) noexcept
+{
+    return uni::detail::impl_norm_to_compose(c1, c2);
+}
+
+inline std::u32string to_decompose_u32(char32_t c)
+{
+    std::u32string destination;
+    destination.resize(uni::detail::impl_x_utf16_nfd); // TODO: Better value
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    destination.resize(detail::impl_norm_to_decompose(c, destination.data()));
+#else
+    destination.resize(detail::impl_norm_to_decompose(c, destination.begin()));
+#endif
+    return destination;
+}
+
+inline std::u32string to_decompose_compat_u32(char32_t c)
+{
+    std::u32string destination;
+    destination.resize(uni::detail::impl_x_utf16_nfkd); // TODO: Better value
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    destination.resize(detail::impl_norm_to_decompose_compat(c, destination.data()));
+#else
+    destination.resize(detail::impl_norm_to_decompose_compat(c, destination.begin()));
+#endif
+    return destination;
+}
+
+inline std::u32string to_decompose_hangul_u32(char32_t c)
+{
+    std::u32string destination;
+    destination.resize(uni::detail::impl_x_utf16_nfd); // TODO: Better value
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    destination.resize(detail::impl_norm_to_decompose_hangul(c, destination.data()));
+#else
+    destination.resize(detail::impl_norm_to_decompose_hangul(c, destination.begin()));
+#endif
+    return destination;
+}
+
 } // namespace codepoint
 
 } // namespace uni
