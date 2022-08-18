@@ -78,30 +78,37 @@ public:
 
     bool Noncharacter_Code_Point() const noexcept
     {
+        // https://www.unicode.org/glossary/#noncharacter
         return detail::impl_prop_is_prop_noncharacter(data);
     }
     bool Surrogate() const noexcept
     {
+        // https://www.unicode.org/glossary/#surrogate_code_point
         return General_Category_Cs();
     }
     bool Private_Use() const noexcept
     {
+        // https://www.unicode.org/glossary/#private_use_code_point
         return General_Category_Co();
     }
     bool Control() const noexcept
     {
+        // https://www.unicode.org/glossary/#control_codes
         return General_Category_Cc();
     }
     bool Graphic() const noexcept
     {
+        // https://www.unicode.org/glossary/#graphic_character
         return detail::impl_prop_is_prop_graphic(data);
     }
     bool Format() const noexcept
     {
+        // https://www.unicode.org/glossary/#format_character
         return detail::impl_prop_is_prop_format(data);
     }
     bool Reserved() const noexcept
     {
+        // https://www.unicode.org/glossary/#reserved_code_point
         return detail::impl_prop_is_prop_reserved(data);
     }
 
@@ -129,11 +136,6 @@ public:
     }
 };
 
-inline bool is_reserved(char32_t c) noexcept
-{
-    return prop(c).Reserved();
-}
-
 inline bool is_alphabetic(char32_t c) noexcept
 {
     return prop(c).Alphabetic();
@@ -154,6 +156,12 @@ inline bool is_alphanumeric(char32_t c) noexcept
 inline bool is_whitespace(char32_t c) noexcept
 {
     return prop(c).White_Space();
+}
+
+inline bool is_reserved(char32_t c) noexcept
+{
+    // https://www.unicode.org/glossary/#reserved_code_point
+    return prop(c).Reserved();
 }
 
 inline bool is_noncharacter(char32_t c) noexcept
