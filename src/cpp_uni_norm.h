@@ -1052,6 +1052,7 @@ inline std::u32string to_decompose_u32(char32_t c)
     return destination;
 }
 
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 inline std::u32string to_decompose_compat_u32(char32_t c)
 {
     std::u32string destination;
@@ -1063,6 +1064,7 @@ inline std::u32string to_decompose_compat_u32(char32_t c)
 #endif
     return destination;
 }
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 inline std::u32string to_decompose_hangul_u32(char32_t c)
 {

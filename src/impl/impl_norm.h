@@ -1909,6 +1909,8 @@ uaix_static bool impl_norm_is_prop_nfd_qc_yes(type_codept prop)
     return (prop & (type_codept)1 << norm_bit_nfd) ? false : true;
 }
 
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+
 uaix_always_inline
 uaix_static bool impl_norm_is_prop_nfkc_qc_yes(type_codept prop)
 {
@@ -1922,6 +1924,8 @@ uaix_static bool impl_norm_is_prop_nfkd_qc_yes(type_codept prop)
     // The Unicode Standard: DerivedNormalizationProps.txt -> NFKD_Quick_Check=Yes
     return (prop & (type_codept)1 << norm_bit_nfkd) ? false : true;
 }
+
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
 uaix_static type_codept norm_to_comp_hangul(type_codept c1, type_codept c2)
@@ -2069,6 +2073,8 @@ uaix_static size_t impl_norm_to_decompose(type_codept c, it_out_utf32 dst)
     return 1;
 }
 
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+
 #ifdef __cplusplus
 template<typename it_out_utf32>
 #endif
@@ -2098,6 +2104,8 @@ uaix_static size_t impl_norm_to_decompose_compat(type_codept c, it_out_utf32 dst
 
     return 1;
 }
+
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
