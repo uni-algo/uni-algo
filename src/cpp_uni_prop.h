@@ -211,6 +211,16 @@ inline char32_t max_value() noexcept
     return detail::impl_prop_max_value();
 }
 
+inline std::size_t total_number() noexcept
+{
+    return detail::impl_prop_total_number();
+}
+
+inline char32_t replacement_char() noexcept
+{
+    return detail::impl_prop_replacement_char();
+}
+
 } // namespace uni::codepoint
 
 #endif // CPP_UNI_PROP_H_UAIX

@@ -306,6 +306,18 @@ uaix_static type_codept impl_prop_max_value()
     return 0x10FFFF;
 }
 
+uaix_always_inline
+uaix_static size_t impl_prop_total_number()
+{
+    return 0x110000;
+}
+
+uaix_always_inline
+uaix_static type_codept impl_prop_replacement_char()
+{
+    return 0xFFFD;
+}
+
 UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"
