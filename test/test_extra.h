@@ -6,7 +6,7 @@ void test_overflow()
 {
     // Even though this usage is incorrect all overflows must be consistent
 
-    // Reminder: to make this test fail make all low-level types = unsigned long long
+    // REMINDER: to make this test fail make all low-level types = unsigned long long
     // and for example remove "& 0xFFFFFFFF" in impl_utf32to8 or impl_utf32to16 in impl_convert.h
     // or "& 0xFFFF" in impl_utf16to8 or impl_utf16to32 (will fail even without making all unsigned long long)
 
@@ -23,7 +23,7 @@ void test_overflow()
 
     // Ranges
 
-    // Reminder: to make this test fail for example remove "& 0xFFFF" in utf16_iter in impl_iterator.h
+    // REMINDER: to make this test fail for example remove "& 0xFFFF" in utf16_iter in impl_iterator.h
 
     TESTX(*uni::ranges::utf8_view{str8}.begin() == 0x5A);
     TESTX(*uni::ranges::utf16_view{str16}.begin() == 0x5A);
@@ -35,9 +35,8 @@ void test_alter_value()
     // This test just explains why all low-level types must be unsigned in C++
     // See: impl_types.h (at the end of the file)
 
-    // Reminder: to make this test fail make impl_char8 = char instead of unsigned char
-
-    // TODO: add tests for impl_char16 and impl_char32 here too for consistency
+    // REMINDER: to make this test fail make type_char8 = char instead of unsigned char
+    // or type_char16 = short instead of char16_t UTF-32 test is here only for consistency
 
     std::basic_string<unsigned long long> str8;
 
@@ -53,6 +52,34 @@ void test_alter_value()
     str8 = uni::utf32to8<char32_t, unsigned long long>(U"\xD800"); // ill-formed
     TESTX(str8.size() == 3 && str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
 
+    std::basic_string<unsigned long long> str16;
+
+    str16 = uni::utf8to16<char, unsigned long long>("\xD0\x90");
+    TESTX(str16.size() == 1 && str16[0] == 0x0410);
+
+    str16 = uni::utf32to16<char32_t, unsigned long long>(U"\x0410");
+    TESTX(str16.size() == 1 && str16[0] == 0x0410);
+
+    str16 = uni::utf8to16<char, unsigned long long>("\x80"); // ill-formed
+    TESTX(str16.size() == 1 && str16[0] == 0xFFFD);
+
+    str16 = uni::utf32to16<char32_t, unsigned long long>(U"\xD800"); // ill-formed
+    TESTX(str16.size() == 1 && str16[0] == 0xFFFD);
+
+    std::basic_string<unsigned long long> str32;
+
+    str32 = uni::utf8to32<char, unsigned long long>("\xD0\x90");
+    TESTX(str32.size() == 1 && str32[0] == 0x0410);
+
+    str32 = uni::utf16to32<char16_t, unsigned long long>(u"\x0410");
+    TESTX(str32.size() == 1 && str32[0] == 0x0410);
+
+    str32 = uni::utf8to32<char, unsigned long long>("\x80"); // ill-formed
+    TESTX(str32.size() == 1 && str32[0] == 0xFFFD);
+
+    str32 = uni::utf16to32<char16_t, unsigned long long>(u"\xD800"); // ill-formed
+    TESTX(str32.size() == 1 && str32[0] == 0xFFFD);
+
     // Ranges
 
     str8 = uni::ranges::to_utf8<decltype(str8)>(std::u32string{0x0410});
@@ -60,4 +87,10 @@ void test_alter_value()
 
     str8 = uni::ranges::to_utf8<decltype(str8)>(std::u32string{0xD800}); // ill-formed
     TESTX(str8.size() == 3 && str8[0] == 0xEF && str8[1] == 0xBF && str8[2] == 0xBD);
+
+    str16 = uni::ranges::to_utf16<decltype(str16)>(std::u32string{0x0410});
+    TESTX(str16.size() == 1 && str16[0] == 0x0410);
+
+    str16 = uni::ranges::to_utf16<decltype(str16)>(std::u32string{0xD800}); // ill-formed
+    TESTX(str16.size() == 1 && str16[0] == 0xFFFD);
 }
