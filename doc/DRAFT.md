@@ -122,15 +122,6 @@ Uses UAX #29: Unicode Text Segmentation -> Word Boundary Rules<br>
 
 ---
 
-**`classes`**
-```
-class uni::error    - used by validation functions
-class uni::locale   - used by case module
-class uni::sentinel - used by ranges
-```
-
----
-
 **`cpp_uni_prop.h`** - code point properties (requeries cpp_uni_data.cpp)
 
 The documentation contains links to:<br>
@@ -140,15 +131,18 @@ for better understanding what these functions do.<br>
 All these functions work with code point `char32_t` <br>
 functions that end with `u32` return result in `std::u32string`
 
-<pre><code>uni::codepoint::max_value       - last possible code point U+10FFFF
+<pre><code>uni::codepoint::max_value        - the last possible code point U+10FFFF
+uni::codepoint::total_number     - total number of code points 0x110000
+uni::codepoint::replacement_char - REPLACEMENT CHARACTER U+FFFD
 
-uni::codepoint::is_valid        - check if valid <a href="https://www.unicode.org/glossary/#code_point">code point</a>
-uni::codepoint::is_valid_scalar - check if valid <a href="https://www.unicode.org/glossary/#unicode_scalar_value">scalar value</a>
+uni::codepoint::is_valid         - check if valid <a href="https://www.unicode.org/glossary/#code_point">code point</a>
+uni::codepoint::is_valid_scalar  - check if valid <a href="https://www.unicode.org/glossary/#unicode_scalar_value">scalar value</a>
+uni::codepoint::is_same_category - check if two code points have the same <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a>
 
-uni::codepoint::is_alphabetic   - <a href="https://www.unicode.org/reports/tr44/#Alphabetic">Alphabetic</a>
-uni::codepoint::is_numeric      - <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a>=Number
-uni::codepoint::is_alphanumeric - <a href="https://www.unicode.org/reports/tr44/#Alphabetic">Alphabetic</a> or <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a>=Number
-uni::codepoint::is_whitespace   - <a href="https://www.unicode.org/reports/tr44/#White_Space">White_Space</a>
+uni::codepoint::is_alphabetic    - <a href="https://www.unicode.org/reports/tr44/#Alphabetic">Alphabetic</a>
+uni::codepoint::is_numeric       - <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a>=Number
+uni::codepoint::is_alphanumeric  - <a href="https://www.unicode.org/reports/tr44/#Alphabetic">Alphabetic</a> or <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a>=Number
+uni::codepoint::is_whitespace    - <a href="https://www.unicode.org/reports/tr44/#White_Space">White_Space</a>
 
 uni::codepoint::is_reserved      - <a href="https://www.unicode.org/glossary/#reserved_code_point">reserved code point</a>
 uni::codepoint::is_noncharacter  - <a href="https://www.unicode.org/glossary/#noncharacter">noncharacter</a>
@@ -188,3 +182,12 @@ uni::codepoint::to_compose              - composes two code points (includes han
 
 class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Compining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a>
 </code></pre>
+
+---
+
+**`classes`**
+```
+class uni::error    - used by validation functions
+class uni::locale   - used by case module
+class uni::sentinel - used by ranges
+```
