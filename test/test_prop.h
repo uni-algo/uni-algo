@@ -203,6 +203,13 @@ void test_prop()
     TESTX(!uni::codepoint::is_supplementary(0x110000));
     TESTX(!uni::codepoint::is_supplementary(0xFFFFFFFF));
 
+    TESTX(uni::codepoint::is_same_category(U'1', U'2'));
+    TESTX(uni::codepoint::is_same_category(U'Q', U'R'));
+    TESTX(!uni::codepoint::is_same_category(U'1', U'R'));
+    TESTX(uni::codepoint::is_same_category(uni::codepoint::prop(U'1'), uni::codepoint::prop(U'2')));
+    TESTX(uni::codepoint::is_same_category(uni::codepoint::prop(U'Q'), uni::codepoint::prop(U'R')));
+    TESTX(!uni::codepoint::is_same_category(uni::codepoint::prop(U'1'), uni::codepoint::prop(U'R')));
+
     // First code point from UnicodeData.txt with such General_Category
 
     TESTX(uni::codepoint::prop(0x0041).General_Category_Lu());
@@ -268,6 +275,41 @@ void test_prop()
     static_assert(uni::detail::impl_General_Category_Cs == 28);
     static_assert(uni::detail::impl_General_Category_Co == 29);
     static_assert(uni::detail::impl_General_Category_Cn == 0);
+
+#ifdef UNI_ALGO_EXPERIMENTAL
+    using gc = uni::codepoint::prop::general_category;
+
+    static_assert(uni::detail::impl_General_Category_Lu == static_cast<unsigned char>(gc::lu));
+    static_assert(uni::detail::impl_General_Category_Ll == static_cast<unsigned char>(gc::ll));
+    static_assert(uni::detail::impl_General_Category_Lt == static_cast<unsigned char>(gc::lt));
+    static_assert(uni::detail::impl_General_Category_Lm == static_cast<unsigned char>(gc::lm));
+    static_assert(uni::detail::impl_General_Category_Lo == static_cast<unsigned char>(gc::lo));
+    static_assert(uni::detail::impl_General_Category_Mn == static_cast<unsigned char>(gc::mn));
+    static_assert(uni::detail::impl_General_Category_Mc == static_cast<unsigned char>(gc::mc));
+    static_assert(uni::detail::impl_General_Category_Me == static_cast<unsigned char>(gc::me));
+    static_assert(uni::detail::impl_General_Category_Nd == static_cast<unsigned char>(gc::nd));
+    static_assert(uni::detail::impl_General_Category_Nl == static_cast<unsigned char>(gc::nl));
+    static_assert(uni::detail::impl_General_Category_No == static_cast<unsigned char>(gc::no));
+    static_assert(uni::detail::impl_General_Category_Pc == static_cast<unsigned char>(gc::pc));
+    static_assert(uni::detail::impl_General_Category_Pd == static_cast<unsigned char>(gc::pd));
+    static_assert(uni::detail::impl_General_Category_Ps == static_cast<unsigned char>(gc::ps));
+    static_assert(uni::detail::impl_General_Category_Pe == static_cast<unsigned char>(gc::pe));
+    static_assert(uni::detail::impl_General_Category_Pi == static_cast<unsigned char>(gc::pi));
+    static_assert(uni::detail::impl_General_Category_Pf == static_cast<unsigned char>(gc::pf));
+    static_assert(uni::detail::impl_General_Category_Po == static_cast<unsigned char>(gc::po));
+    static_assert(uni::detail::impl_General_Category_Sm == static_cast<unsigned char>(gc::sm));
+    static_assert(uni::detail::impl_General_Category_Sc == static_cast<unsigned char>(gc::sc));
+    static_assert(uni::detail::impl_General_Category_Sk == static_cast<unsigned char>(gc::sk));
+    static_assert(uni::detail::impl_General_Category_So == static_cast<unsigned char>(gc::so));
+    static_assert(uni::detail::impl_General_Category_Zs == static_cast<unsigned char>(gc::zs));
+    static_assert(uni::detail::impl_General_Category_Zl == static_cast<unsigned char>(gc::zl));
+    static_assert(uni::detail::impl_General_Category_Zp == static_cast<unsigned char>(gc::zp));
+    static_assert(uni::detail::impl_General_Category_Cc == static_cast<unsigned char>(gc::cc));
+    static_assert(uni::detail::impl_General_Category_Cf == static_cast<unsigned char>(gc::cf));
+    static_assert(uni::detail::impl_General_Category_Cs == static_cast<unsigned char>(gc::cs));
+    static_assert(uni::detail::impl_General_Category_Co == static_cast<unsigned char>(gc::co));
+    static_assert(uni::detail::impl_General_Category_Cn == static_cast<unsigned char>(gc::cn));
+#endif // UNI_ALGO_EXPERIMENTAL
 }
 
 void test_prop_case()
