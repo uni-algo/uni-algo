@@ -103,9 +103,9 @@ void test_prop()
     TESTX(count_invalid        == 3);
     TESTX(count_invalid_scalar == count_surrogate + count_invalid);
 
-    TESTX(uni::codepoint::max_value() == 0x10FFFF);
-    TESTX(uni::codepoint::total_number() == 0x110000);
-    TESTX(uni::codepoint::replacement_char() == 0xFFFD);
+    TESTX(uni::codepoint::max_value == 0x10FFFF);
+    TESTX(uni::codepoint::total_number == 0x110000);
+    TESTX(uni::codepoint::replacement_char == 0xFFFD);
 
     TESTX(uni::codepoint::is_valid(0));
     TESTX(uni::codepoint::is_valid(0xD800));

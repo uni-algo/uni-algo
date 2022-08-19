@@ -70,6 +70,10 @@ uaix_const type_codept prop_Noncharacter_Code_Point = 1 << 7;
 //    return stages(c, stage1_prop, stage2_prop);
 //}
 
+uaix_const type_codept impl_prop_replacement_char = 0xFFFD;   // REPLACEMENT CHARACTER
+uaix_const type_codept impl_prop_max_value        = 0x10FFFF; // The last possible code point
+uaix_const size_t      impl_prop_total_number     = 0x110000; // Total number of code points
+
 uaix_always_inline
 uaix_static type_codept impl_prop_get_prop(type_codept c)
 {
@@ -298,24 +302,6 @@ uaix_static bool impl_prop_is_control(type_codept c)
         return true;
 
     return false;
-}
-
-uaix_always_inline
-uaix_static type_codept impl_prop_max_value()
-{
-    return 0x10FFFF;
-}
-
-uaix_always_inline
-uaix_static size_t impl_prop_total_number()
-{
-    return 0x110000;
-}
-
-uaix_always_inline
-uaix_static type_codept impl_prop_replacement_char()
-{
-    return 0xFFFD;
 }
 
 UNI_ALGO_IMPL_NAMESPACE_END

@@ -18,6 +18,13 @@
 
 namespace uni::codepoint {
 
+// REPLACEMENT CHARACTER U+FFFD
+inline constexpr char32_t replacement_char = detail::impl_prop_replacement_char;
+// The last possible code point U+10FFFF
+inline constexpr char32_t max_value = detail::impl_prop_max_value;
+// Total number of code points 0x110000
+inline constexpr std::size_t total_number = detail::impl_prop_total_number;
+
 class prop
 {
 private:
@@ -204,21 +211,6 @@ inline bool is_control(char32_t c) noexcept
 {
     // https://www.unicode.org/glossary/#control_codes
     return detail::impl_prop_is_control(c);
-}
-
-inline char32_t max_value() noexcept
-{
-    return detail::impl_prop_max_value();
-}
-
-inline std::size_t total_number() noexcept
-{
-    return detail::impl_prop_total_number();
-}
-
-inline char32_t replacement_char() noexcept
-{
-    return detail::impl_prop_replacement_char();
 }
 
 } // namespace uni::codepoint
