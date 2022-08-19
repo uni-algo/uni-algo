@@ -27,6 +27,8 @@ inline constexpr std::size_t total_number = detail::impl_prop_total_number;
 
 class prop
 {
+    friend bool is_same_category(const prop& prop1, const prop& prop2) noexcept;
+
 private:
     detail::type_codept data = 0;
 
@@ -211,6 +213,18 @@ inline bool is_control(char32_t c) noexcept
 {
     // https://www.unicode.org/glossary/#control_codes
     return detail::impl_prop_is_control(c);
+}
+
+inline bool is_same_category(char32_t c1, char32_t c2) noexcept
+{
+    return detail::impl_prop_get_prop_gen_cat(detail::impl_prop_get_prop(c1)) ==
+           detail::impl_prop_get_prop_gen_cat(detail::impl_prop_get_prop(c2));
+}
+
+inline bool is_same_category(const prop& p1, const prop& p2) noexcept
+{
+    return detail::impl_prop_get_prop_gen_cat(p1.data) ==
+           detail::impl_prop_get_prop_gen_cat(p2.data);
 }
 
 } // namespace uni::codepoint
