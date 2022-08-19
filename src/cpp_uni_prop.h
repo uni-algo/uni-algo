@@ -143,6 +143,23 @@ public:
                gen_cat == detail::impl_General_Category_Nl ||
                gen_cat == detail::impl_General_Category_No;
     }
+
+#ifdef UNI_ALGO_EXPERIMENTAL
+    // This is how alternative syntax for General_Category might look like
+    // NOTE: if it will be used then maybe remove is_same_category function
+    enum class general_category : unsigned char {cn = 0,
+                                                 lu,ll,lt,lm,lo,
+                                                 mn,mc,me,
+                                                 nd,nl,no,
+                                                 pc,pd,ps,pe,pi,pf,po,
+                                                 sm,sc,sk,so,
+                                                 zs,zl,zp,
+                                                 cc,cf,cs,co};
+
+    general_category get_general_category() const noexcept { return static_cast<general_category>(detail::impl_prop_get_prop_gen_cat(data)); }
+    // This might be usefull for tests
+    //unsigned char General_Category() const noexcept { return static_cast<unsigned char>(detail::impl_prop_get_prop_gen_cat(data)); }
+#endif
 };
 
 inline bool is_alphabetic(char32_t c) noexcept
