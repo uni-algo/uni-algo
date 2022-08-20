@@ -212,6 +212,8 @@ void test_prop()
 
     // First code point from UnicodeData.txt with such General_Category
 
+    char32_t unassigned = 0x0A7777; // Random unassigned code point (change to something else if it will be assigned)
+
     TESTX(uni::codepoint::prop(0x0041).General_Category_Lu());
     TESTX(uni::codepoint::prop(0x0061).General_Category_Ll());
     TESTX(uni::codepoint::prop(0x01C5).General_Category_Lt());
@@ -241,8 +243,41 @@ void test_prop()
     TESTX(uni::codepoint::prop(0x00AD).General_Category_Cf());
     TESTX(uni::codepoint::prop(0xD800).General_Category_Cs());
     TESTX(uni::codepoint::prop(0xE000).General_Category_Co());
-    // Random unassigned code point (change to something else if it will be assigned)
-    TESTX(uni::codepoint::prop(0x0A7777).General_Category_Cn());
+    TESTX(uni::codepoint::prop(unassigned).General_Category_Cn());
+
+    TESTX(uni::codepoint::prop(0x0041).General_Category_LC());
+    TESTX(uni::codepoint::prop(0x0061).General_Category_LC());
+    TESTX(uni::codepoint::prop(0x01C5).General_Category_LC());
+    TESTX(uni::codepoint::prop(0x0041).General_Category_L());
+    TESTX(uni::codepoint::prop(0x0061).General_Category_L());
+    TESTX(uni::codepoint::prop(0x01C5).General_Category_L());
+    TESTX(uni::codepoint::prop(0x02B0).General_Category_L());
+    TESTX(uni::codepoint::prop(0x00AA).General_Category_L());
+    TESTX(uni::codepoint::prop(0x0300).General_Category_M());
+    TESTX(uni::codepoint::prop(0x0903).General_Category_M());
+    TESTX(uni::codepoint::prop(0x0488).General_Category_M());
+    TESTX(uni::codepoint::prop(0x0030).General_Category_N());
+    TESTX(uni::codepoint::prop(0x16EE).General_Category_N());
+    TESTX(uni::codepoint::prop(0x00B2).General_Category_N());
+    TESTX(uni::codepoint::prop(0x005F).General_Category_P());
+    TESTX(uni::codepoint::prop(0x002D).General_Category_P());
+    TESTX(uni::codepoint::prop(0x0028).General_Category_P());
+    TESTX(uni::codepoint::prop(0x0029).General_Category_P());
+    TESTX(uni::codepoint::prop(0x00AB).General_Category_P());
+    TESTX(uni::codepoint::prop(0x00BB).General_Category_P());
+    TESTX(uni::codepoint::prop(0x0021).General_Category_P());
+    TESTX(uni::codepoint::prop(0x002B).General_Category_S());
+    TESTX(uni::codepoint::prop(0x0024).General_Category_S());
+    TESTX(uni::codepoint::prop(0x005E).General_Category_S());
+    TESTX(uni::codepoint::prop(0x00A6).General_Category_S());
+    TESTX(uni::codepoint::prop(0x0020).General_Category_Z());
+    TESTX(uni::codepoint::prop(0x2028).General_Category_Z());
+    TESTX(uni::codepoint::prop(0x2029).General_Category_Z());
+    TESTX(uni::codepoint::prop(0x0000).General_Category_C());
+    TESTX(uni::codepoint::prop(0x00AD).General_Category_C());
+    TESTX(uni::codepoint::prop(0xD800).General_Category_C());
+    TESTX(uni::codepoint::prop(0xE000).General_Category_C());
+    TESTX(uni::codepoint::prop(unassigned).General_Category_C());
 
     // Why did you do that? Change them back. They must be stable.
     static_assert(uni::detail::impl_General_Category_Lu == 1);
