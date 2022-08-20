@@ -85,7 +85,7 @@ uaix_static type_codept impl_prop_get_prop(type_codept c)
 }
 
 uaix_always_inline
-uaix_static type_codept impl_prop_get_prop_gen_cat(type_codept prop)
+uaix_static type_codept impl_prop_get_prop_gc(type_codept prop)
 {
     return (prop & 0x1F); // First 5 bits
 }
@@ -118,7 +118,7 @@ uaix_static bool impl_prop_is_prop_reserved(type_codept prop)
     // General_Category_Cn (General_Category_Unassigned) includes noncharacters
     // so we need to exclude them to get reserved (unassigned) code points
 
-    if (impl_prop_get_prop_gen_cat(prop) == impl_General_Category_Cn &&
+    if (impl_prop_get_prop_gc(prop) == impl_General_Category_Cn &&
         !(prop & prop_Noncharacter_Code_Point))
         return true;
 
@@ -130,10 +130,10 @@ uaix_static bool impl_prop_is_prop_graphic(type_codept prop)
 {
     // https://www.unicode.org/glossary/#graphic_character
 
-    type_codept gen_cat = impl_prop_get_prop_gen_cat(prop);
+    type_codept gc = impl_prop_get_prop_gc(prop);
 
-    if (gen_cat >= impl_General_Category_Lu &&
-        gen_cat <= impl_General_Category_Zs)
+    if (gc >= impl_General_Category_Lu &&
+        gc <= impl_General_Category_Zs)
         return true;
 
     return false;
@@ -145,11 +145,11 @@ uaix_static bool impl_prop_is_prop_format(type_codept prop)
     // https://www.unicode.org/glossary/#format_character
     // https://www.unicode.org/versions/Unicode14.0.0/ch02.pdf#M9.61673.TableTitle.Table.22.Types.of.Code.Points
 
-    type_codept gen_cat = impl_prop_get_prop_gen_cat(prop);
+    type_codept gc = impl_prop_get_prop_gc(prop);
 
-    if (gen_cat == impl_General_Category_Zl ||
-        gen_cat == impl_General_Category_Zp ||
-        gen_cat == impl_General_Category_Cf)
+    if (gc == impl_General_Category_Zl ||
+        gc == impl_General_Category_Zp ||
+        gc == impl_General_Category_Cf)
         return true;
 
     return false;

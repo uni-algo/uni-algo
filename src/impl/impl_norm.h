@@ -843,7 +843,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, type_codept buffer[], unsig
     size_t offset = stages_decomp_nfd(c);
     if (offset == 0)
     {
-        if (impl_prop_get_prop_gen_cat(impl_prop_get_prop(c)) != impl_General_Category_Mn)
+        if (impl_prop_get_prop_gc(impl_prop_get_prop(c)) != impl_General_Category_Mn)
         {
             buffer[*size] = c;
             buffer_ccc[*size] = stages_ccc(c);
@@ -858,7 +858,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, type_codept buffer[], unsig
         for (size_t i = 0; i < number; ++i)
         {
             type_codept cp = stages_decomp_nfd_cp(offset, i);
-            if (impl_prop_get_prop_gen_cat(impl_prop_get_prop(cp)) != impl_General_Category_Mn)
+            if (impl_prop_get_prop_gc(impl_prop_get_prop(cp)) != impl_General_Category_Mn)
             {
                 buffer[*size] = cp;
                 buffer_ccc[*size] = stages_ccc(cp);
