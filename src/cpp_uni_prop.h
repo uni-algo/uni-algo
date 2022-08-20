@@ -81,6 +81,48 @@ public:
     bool General_Category_Co() const noexcept { return detail::impl_prop_get_prop_gen_cat(data) == detail::impl_General_Category_Co; }
     bool General_Category_Cn() const noexcept { return detail::impl_prop_get_prop_gen_cat(data) == detail::impl_General_Category_Cn; }
 
+    bool General_Category_LC() const noexcept
+    {
+        detail::type_codept gen_cat = detail::impl_prop_get_prop_gen_cat(data);
+        return gen_cat >= detail::impl_General_Category_Lu && gen_cat <= detail::impl_General_Category_Lt;
+    }
+    bool General_Category_L() const noexcept
+    {
+        detail::type_codept gen_cat = detail::impl_prop_get_prop_gen_cat(data);
+        return gen_cat >= detail::impl_General_Category_Lu && gen_cat <= detail::impl_General_Category_Lo;
+    }
+    bool General_Category_M() const noexcept
+    {
+        detail::type_codept gen_cat = detail::impl_prop_get_prop_gen_cat(data);
+        return gen_cat >= detail::impl_General_Category_Mn && gen_cat <= detail::impl_General_Category_Me;
+    }
+    bool General_Category_N() const noexcept
+    {
+        detail::type_codept gen_cat = detail::impl_prop_get_prop_gen_cat(data);
+        return gen_cat >= detail::impl_General_Category_Nd && gen_cat <= detail::impl_General_Category_No;
+    }
+    bool General_Category_P() const noexcept
+    {
+        detail::type_codept gen_cat = detail::impl_prop_get_prop_gen_cat(data);
+        return gen_cat >= detail::impl_General_Category_Pc && gen_cat <= detail::impl_General_Category_Po;
+    }
+    bool General_Category_S() const noexcept
+    {
+        detail::type_codept gen_cat = detail::impl_prop_get_prop_gen_cat(data);
+        return gen_cat >= detail::impl_General_Category_Sm && gen_cat <= detail::impl_General_Category_So;
+    }
+    bool General_Category_Z() const noexcept
+    {
+        detail::type_codept gen_cat = detail::impl_prop_get_prop_gen_cat(data);
+        return gen_cat >= detail::impl_General_Category_Zs && gen_cat <= detail::impl_General_Category_Zp;
+    }
+    bool General_Category_C() const noexcept
+    {
+        detail::type_codept gen_cat = detail::impl_prop_get_prop_gen_cat(data);
+        return (gen_cat >= detail::impl_General_Category_Cc && gen_cat <= detail::impl_General_Category_Co) ||
+                gen_cat == detail::impl_General_Category_Cn;
+    }
+
     // https://www.unicode.org/glossary/#code_point_type
     // Seven fundamental classes of code points in The Unicode Standard:
     // Graphic, Format, Control, Private-Use, Surrogate, Noncharacter, Reserved.
@@ -136,12 +178,7 @@ public:
     bool Numeric() const noexcept
     {
         // Code points with General_Category=Number (Nd | Nl | No)
-
-        detail::type_codept gen_cat = detail::impl_prop_get_prop_gen_cat(data);
-
-        return gen_cat == detail::impl_General_Category_Nd ||
-               gen_cat == detail::impl_General_Category_Nl ||
-               gen_cat == detail::impl_General_Category_No;
+        return General_Category_N();
     }
 
 #ifdef UNI_ALGO_EXPERIMENTAL
