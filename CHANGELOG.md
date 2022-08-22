@@ -2,6 +2,13 @@
 Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
+## [v0.4.0] (TBD)
+- Added code point basic properties
+- Added code point case properties
+- Added code point case tranformations
+- Added code point normalization properties
+- Added code point normalization tranformations
+
 ## [v0.3.0](https://github.com/uni-algo/uni-algo/tree/v0.3.0) (07.08.2022)
 - Added support for char8_t strings
 - Switched from iterators to ranges
