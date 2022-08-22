@@ -15,6 +15,7 @@
   - [Convert Functions](#convert-functions)
   - [Case Functions](#case-functions)
   - [Normalization Functions](#normalization-functions)
+  - [Code Point Properties](#code-point-properties)
   - [Basic Ranges](#basic-ranges)
   - [UTF Ranges](#utf-ranges)
   - [Grapheme/Word Ranges](#graphemeword-ranges)
@@ -150,7 +151,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 
 <details><summary><b>Manual usage</b></summary><p>
 
-Include a header file you want to use from src directory and compile one file `src/cpp_uni_data.cpp`
+Include a header file you want to use from `src` directory and compile one file `src/cpp_uni_data.cpp`
 
 </p></details>
 
@@ -192,11 +193,11 @@ It has nothing to do with C++20 modules.
 
 ## Convert Functions
 ```cpp
-// This module doesn't require Unicode data so it can be used as header-only.
+// This module doesn't require Unicode data so it can be used as header-only
 #include "cpp_uni_convert.h"
 
 // Lenient conversion (cannot fail) "\xD800" is unpaired high surrogate in UTF-16
-std::string str8 = uni::utf16to8(u"Te\xD800st");
+std::string str8 = uni::utf16to8(u"Te\xD800st"); // std::u8string is supported too
 assert(str8 == "Te\xEF\xBF\xBDst"); // "\xEF\xBF\xBD" is replacement character U+FFFD in UTF-8
 
 // Strict conversion
@@ -242,7 +243,7 @@ std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test");
 ```
 ## Case Functions
 ```cpp
-#include "cpp_uni_case.h" // and compile "cpp_uni_data.cpp"
+#include "cpp_uni_case.h" // And compile "cpp_uni_data.cpp"
 
 std::cout << uni::cases::utf8_upper("Straße") << '\n';
 std::cout << uni::cases::utf8_lower("ДВА") << '\n';
@@ -274,7 +275,7 @@ assert(found && found.pos() == 9 && found.end_pos() == 12);
 
 // The module provides a very simple collation function too.
 
-// Use the Makedonian alphabet for example.
+// Use the Makedonian alphabet for example
 std::u32string str32 = U"абвгдѓежзѕијклљмнњопрстќуфхцчџшАБВГДЃЕЖЗЅИЈКЛЉМНЊОПРСТЌУФХЦЧЏШ";
 
 std::vector<std::string> vec8;
@@ -282,11 +283,11 @@ for (char32_t c : str32) // Convert the code points to a vector of UTF-8 code un
     vec8.emplace_back(uni::utf32to8(std::u32string(1, c)));
 std::shuffle(vec8.begin(), vec8.end(), std::mt19937(42)); // Shuffle them just in case
 
-// For example sort them with the binary comparison first.
+// For example sort them with the binary comparison first
 std::sort(vec8.begin(), vec8.end());
 
 // Output: ЃЅЈЉЊЌЏАБВГДЕЖЗИКЛМНОПРСТУФХЦЧШабвгдежзиклмнопрстуфхцчшѓѕјљњќџ
-// Everything is out of place.
+// Everything is out of place
 
 // Sort them with uni::casesens::utf8_collate
 std::sort(vec8.begin(), vec8.end(), [](auto a, auto b) {
@@ -297,9 +298,9 @@ std::for_each(vec8.begin(), vec8.end(), [](auto s) { std::cout << s; });
 std::cout << '\n';
 
 // Output: аАбБвВгГдДѓЃеЕжЖзЗѕЅиИјЈкКлЛљЉмМнНњЊоОпПрРсСтТќЌуУфФхХцЦчЧџЏшШ
-// This is the correct order for the Makedonian alphabet.
+// This is the correct order for the Makedonian alphabet
 
-// Group them too.
+// Group them too
 auto it = std::unique(vec8.begin(), vec8.end(), [](auto a, auto b) {
     return uni::caseless::utf8_collate(a, b) == 0;
 });
@@ -309,7 +310,7 @@ vec8.erase(it, vec8.end());
 ```
 ## Normalization Functions
 ```cpp
-#include "cpp_uni_norm.h" // and compile "cpp_uni_data.cpp"
+#include "cpp_uni_norm.h" // And compile "cpp_uni_data.cpp"
 
 // "W" with circumflex == "Ŵ"
 assert(uni::norm::utf8_nfc("W\u0302") == "Ŵ");
@@ -337,12 +338,50 @@ uni::norm::utf8_nfc(it, end, out);
 
 // Note that the same result can be achieved with normalization ranges.
 ```
+## Code Point Properties
+```cpp
+#include "cpp_uni_prop.h" // And compile "cpp_uni_data.cpp"
+
+assert(uni::codepoint::is_numeric(U'7'));
+assert(uni::codepoint::is_alphabetic(U'W'));
+assert(uni::codepoint::prop{U'W'}.Alphabetic()); // Equivalent to the previous one
+
+// Other modules can provide more properties
+#include "cpp_uni_case.h" // And compile "cpp_uni_data.cpp"
+
+assert(uni::codepoint::is_lowercase(U'w'));
+assert(uni::codepoint::prop_case{U'w'}.Lowercase()); // Equivalent to the previous one
+
+// Code point properties are usefull when you want to implement your own Unicode algorithm.
+// For example a functions that checks that an UTF-8 string contains only alphabetic characters
+// and works properly for all scripts and all Unicode normalization forms looks something like this:
+bool is_alphabetic_string(std::string_view view)
+{
+    // Note that this algorithm uses UTF-8 range view read below about this
+    for (char32_t c : view | uni::views::utf8)
+    {
+        if (c == 0x200D || c == 0x200C) // Ignore ZERO WIDTH JOINER/NON-JOINER
+            continue;
+
+        auto prop = uni::codepoint::prop{c};
+
+        if (prop.General_Category_M()) // Ignore combining marks
+            continue;
+
+        if (!prop.Alphabetic())
+            return false;
+    }
+    return true;
+}
+// Note that degenerate cases when a string starts with combining marks or contains
+// only combining marks are not handled so a real function will be a bit more complex.
+```
 ## Basic Ranges
 ```cpp
-// This module doesn't require Unicode data so it can be used as header-only.
+// This module doesn't require Unicode data so it can be used as header-only
 #include "cpp_uni_ranges.h"
 
-// Ranges in this library is compatible with C++20 ranges.
+// Ranges in this library are compatible with C++20 ranges.
 // In C++17 the library implements some basic ranges that are similar to C++20 ranges:
 uni::views::reverse
 uni::views::transform
@@ -354,14 +393,14 @@ uni::views::take
 // but always use uni::views::reverse from this library
 // because std::views::reverse is not good enought for Unicode.
 
-// You use these ranges the same way you use C++20 ranges.
+// You use these ranges the same way you use C++20 ranges
 assert(std::string_view{"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ"}
         | uni::views::utf8
         | uni::views::reverse | uni::views::drop(3) | uni::views::take(5)
         | uni::views::reverse | uni::ranges::to_utf8<std::string>()
         == "ⅢⅣⅤⅥⅦ");
 
-// A simple convert function using ranges looks like this.
+// A simple convert function using ranges looks like this:
 std::u16string utf8to16(std::string_view view)
 {
     return view | uni::views::utf8 | uni::ranges::to_utf16<std::u16string>();
@@ -369,32 +408,32 @@ std::u16string utf8to16(std::string_view view)
 ```
 ## UTF Ranges
 ```cpp
-// This module doesn't require Unicode data so it can be used as header-only.
+// This module doesn't require Unicode data so it can be used as header-only
 #include "cpp_uni_ranges.h"
 
-// This example demonstrates how to work directly with a range view.
+// This example demonstrates how to work directly with a range view
 
-// 3 UTF-8 code points.
-std::string str8 = "😺😼🙀"; // These emojis use 1 code point.
+// 3 UTF-8 code points
+std::string str8 = "😺😼🙀"; // These emojis use 1 code point
 
 // Make UTF-8 view from std::string
 auto view = uni::ranges::utf8_view{str8};
 
-// Count code points.
+// Count code points
 std::cout << "Number of code points: " << std::distance(view.begin(), view.end()) << '\n';
 
-// Print code points.
+// Print code points
 for (auto it = view.begin(); it != view.end(); ++it)
 {
     std::cout << "Code point: " << std::to_string(*it)
               << " at: " << it.begin() - str8.begin() << '\n';
 }
 
-// Skip 2 code points.
+// Skip 2 code points
 if (auto it = std::next(view.begin(), 2); it != view.end())
     std::cout << "3rd code point at: " << it.begin() - str8.begin() << '\n';
 
-// Find code point 128572.
+// Find code point 128572
 if (auto it = std::find(view.begin(), view.end(), 128572); it != view.end())
     std::cout << "Code point 128572 at: " << it.begin() - str8.begin() << '\n';
 
@@ -422,7 +461,7 @@ for (auto it = view.end(); it != view.begin();)
 ```cpp
 #include "cpp_uni_break_grapheme.h"
 #include "cpp_uni_break_word.h"
-// and compile "cpp_uni_data.cpp"
+// And compile "cpp_uni_data.cpp"
 
 // Grapheme/Word aka Break ranges are similar to UTF ranges
 // but they return sunbranges in the form of std::string_view.
@@ -430,19 +469,19 @@ for (auto it = view.end(); it != view.begin();)
 
 std::string str8 = "Άλμπερτ Αϊνστάιν";
 
-// Replace it with uni::views::grapheme::utf8 for grapheme breaks.
+// Replace it with uni::views::grapheme::utf8 for grapheme breaks
 auto view = uni::views::word::utf8(str8);
 
-// Count words/graphemes (note that a space/punctuation is a word too according to rules).
+// Count words/graphemes (note that a space/punctuation is a word too according to rules)
 std::cout << "Number of words: " << std::distance(view.begin(), view.end()) << '\n';
 
-// Print positions of the words/graphemes.
+// Print positions of the words/graphemes
 for (auto it = view.begin(); it != view.end(); ++it)
     std::cout << "Word at: " << it.begin() - str8.begin() << '\n';
 
-// Word/grapheme tokenizer.
+// Word/grapheme tokenizer
 std::cout << "Words:" << '\n';
-// Note that we use word_only view here to skip all punctuation and spaces.
+// Note that we use word_only view here to skip all punctuation and spaces
 for (std::string_view word : uni::views::word_only::utf8(str8))
     std::cout << word << '\n';
 
@@ -455,17 +494,17 @@ for (std::string_view word : uni::views::word_only::utf8(str8))
 // Άλμπερτ
 // Αϊνστάιν
 
-// For example you need to append or insert a code point or grapheme to a string.
+// For example you need to append or insert a code point or grapheme to a string
 
-// For append a code point to an UTF-8 string all you need is Convert module.
-std::string str8 = "🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧🧙‍♀️"; // These emojis use multiple code points.
-str8 += uni::utf32to8(std::u32string{U'😺'}); // This emoji use 1 code point.
+// For append a code point to an UTF-8 string all you need is Convert module
+std::string str8 = "🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧🧙‍♀️"; // These emojis use multiple code points
+str8 += uni::utf32to8(std::u32string{U'😺'}); // This emoji use 1 code point
 
-// But if you need to insert a code point you need break ranges too.
+// But if you need to insert a code point you need break ranges too
 auto view = uni::views::grapheme::utf8(str8);
-// Insert a code point after 2nd grapheme.
+// Insert a code point after 2nd grapheme
 auto pos = std::next(view.begin(), 2).begin() - str8.begin();
-str8.insert(pos, uni::utf32to8(std::u32string{U'😼'})); // This emoji use 1 code point.
+str8.insert(pos, uni::utf32to8(std::u32string{U'😼'})); // This emoji use 1 code point
 
 // The same way a grapheme can be appended or inserted and of course you don't even need
 // Convert module if your grapheme or a code point is already in UTF-8 encoding.
