@@ -201,30 +201,30 @@ public:
 
 inline bool is_alphabetic(char32_t c) noexcept
 {
-    return prop(c).Alphabetic();
+    return prop{c}.Alphabetic();
 }
 
 inline bool is_numeric(char32_t c) noexcept
 {
-    return prop(c).Numeric();
+    return prop{c}.Numeric();
 }
 
 inline bool is_alphanumeric(char32_t c) noexcept
 {
-    prop p(c);
+    prop p{c};
 
     return p.Alphabetic() || p.Numeric();
 }
 
 inline bool is_whitespace(char32_t c) noexcept
 {
-    return prop(c).White_Space();
+    return prop{c}.White_Space();
 }
 
 inline bool is_reserved(char32_t c) noexcept
 {
     // https://www.unicode.org/glossary/#reserved_code_point
-    return prop(c).Reserved();
+    return prop{c}.Reserved();
 }
 
 inline bool is_noncharacter(char32_t c) noexcept

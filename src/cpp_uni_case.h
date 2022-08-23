@@ -910,12 +910,12 @@ public:
 
 inline bool is_lowercase(char32_t c) noexcept
 {
-    return prop_case(c).Lowercase();
+    return prop_case{c}.Lowercase();
 }
 
 inline bool is_uppercase(char32_t c) noexcept
 {
-    return prop_case(c).Uppercase();
+    return prop_case{c}.Uppercase();
 }
 
 inline char32_t to_simple_lowercase(char32_t c) noexcept
