@@ -901,6 +901,11 @@ public:
         // The Unicode Standard: DerivedCoreProperties.txt -> Case_Ignorable
         return detail::impl_case_is_prop_case_ignorable(data);
     }
+    bool Soft_Dotted() const noexcept
+    {
+        // The Unicode Standard: PropList.txt -> Soft_Dotted
+        return detail::impl_case_is_prop_soft_dotted(data);
+    }
 };
 
 inline bool is_lowercase(char32_t c) noexcept

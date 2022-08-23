@@ -365,6 +365,9 @@ void test_prop_case()
     TESTX(uni::codepoint::prop_case(U':').Case_Ignorable());
     TESTX(!uni::codepoint::prop_case(U';').Case_Ignorable());
 
+    TESTX(uni::codepoint::prop_case(U'j').Soft_Dotted());
+    TESTX(!uni::codepoint::prop_case(U'J').Soft_Dotted());
+
     TESTX(!uni::codepoint::is_lowercase(0));
     TESTX(!uni::codepoint::is_uppercase(0));
     TESTX(!uni::codepoint::is_lowercase(0xFFFD));

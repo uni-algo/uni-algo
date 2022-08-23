@@ -1574,6 +1574,13 @@ uaix_static bool impl_case_is_prop_case_ignorable(type_codept prop)
 }
 
 uaix_always_inline
+uaix_static bool impl_case_is_prop_soft_dotted(type_codept prop)
+{
+    // The Unicode Standard: PropList.txt -> Soft_Dotted
+    return (prop & prop_Soft_Dotted) ? true : false;
+}
+
+uaix_always_inline
 uaix_static type_codept impl_case_to_simple_lowercase(type_codept c)
 {
     return (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? stages_lower(c) : 0xFFFD;
