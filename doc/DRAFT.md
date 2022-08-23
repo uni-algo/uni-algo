@@ -170,7 +170,7 @@ uni::codepoint::to_uppercase_u32    - <a href="https://www.unicode.org/reports/t
 uni::codepoint::to_titlecase_u32    - <a href="https://www.unicode.org/reports/tr44/#Titlecase_Mapping">Titlecase_Mapping</a>
 uni::codepoint::to_casefold_u32     - <a href="https://www.unicode.org/reports/tr44/#Case_Folding">Case_Folding</a>
 
-class uni::codepoint::prop_case     - provides <a href="https://www.unicode.org/reports/tr44/#Cased">Cased</a> and <a href="https://www.unicode.org/reports/tr44/#Case_Ignorable">Case_Ignorable</a>
+class uni::codepoint::prop_case     - provides <a href="https://www.unicode.org/reports/tr44/#Cased">Cased</a>, <a href="https://www.unicode.org/reports/tr44/#Case_Ignorable">Case_Ignorable</a> and <a href="https://www.unicode.org/reports/tr44/#Soft_Dotted">Soft_Dotted</a>
 
 <b>cpp_uni_norm.h</b>
 
