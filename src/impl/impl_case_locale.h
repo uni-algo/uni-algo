@@ -8,7 +8,7 @@
 // The file is an extension for Case module and must be included after impl_case.h
 // The file provides only 2 functions: impl_utf8_casemap_locale and impl_utf16_casemap_locale
 // Many things in the file are generated so edit it with care
-// See SpecialCasing.txt for data and Unicode Standard 3.13 for rules
+// See SpecialCasing.txt for data and The Unicode Standard 3.13 for rules
 
 #include "internal_defines.h"
 
@@ -33,7 +33,7 @@ template<typename it_in_utf8>
 #endif
 uaix_static bool utf8_after_soft_dotted(it_in_utf8 first, it_in_utf8 src)
 {
-    /* After_Soft_Dotted special case from Unicode Standard:
+    /* After_Soft_Dotted special case from The Unicode Standard:
      * There is a Soft_Dotted character before C,
      * with no intervening character of combining class 0 or 230 (Above).
      * [\p{Soft_Dotted}] ([^\p{ccc=230} \p{ccc=0}])*
@@ -62,7 +62,7 @@ template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_static bool utf8_more_above(it_in_utf8 src, it_end_utf8 last)
 {
-    /* More_Above special case from Unicode Standard:
+    /* More_Above special case from The Unicode Standard:
      * C is followed by a character of combining class 230 (Above)
      * with no intervening character of combining class 0 or 230 (Above).
      * [^\p{ccc=230}\p{ccc=0}]* [\p{ccc=230}]
@@ -93,7 +93,7 @@ template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_static bool utf8_before_dot(it_in_utf8 src, it_end_utf8 last)
 {
-    /* Before_Dot special case from Unicode Standard:
+    /* Before_Dot special case from The Unicode Standard:
      * C is followed by combining dot above (U+0307).
      * Any sequence of characters with a combining class that is neither 0 nor 230
      * may intervene between the current character and the combining dot above.
@@ -124,7 +124,7 @@ template<typename it_in_utf8>
 #endif
 uaix_static bool utf8_after_i(it_in_utf8 first, it_in_utf8 src)
 {
-    /* After_I special case from Unicode Standard:
+    /* After_I special case from The Unicode Standard:
      * There is an uppercase I before C,
      * and there is no intervening combining character class 230 (Above) or 0.
      * [I] ([^\p{ccc=230} \p{ccc=0}])*

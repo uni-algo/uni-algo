@@ -565,7 +565,7 @@ void test_case_title_locale()
 
     // Strange corner case
     // # Lithuanian # Remove DOT ABOVE after "i" with upper or titlecase
-    // rule from SpecialCasing.txt interfere with toTitlecase(X) rules from Unicode Standard
+    // rule from SpecialCasing.txt interfere with toTitlecase(X) rules from The Unicode Standard
     // so it is not handled. The behaviour is the same as in ICU.
 
     TESTX(uni::cases::utf8_title("i\xCC\x87tEsT", uni::locale("lt")) == "I\xCC\x87test");
