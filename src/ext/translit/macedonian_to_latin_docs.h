@@ -75,8 +75,8 @@ public:
     template<typename UTF8>
     std::basic_string<UTF8> utf8(std::basic_string_view<UTF8> source)
     {
-        // TODO: Find a way to result.reserve(source.size())
-        auto result = translit(uni::ranges::utf8_view{source}) | uni::ranges::to_utf8<std::basic_string<UTF8>>();
+        auto result = translit(uni::ranges::utf8_view{source})
+                | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
 
         result.shrink_to_fit();
         return result;
@@ -84,8 +84,8 @@ public:
     template<typename UTF16>
     std::basic_string<UTF16> utf16(std::basic_string_view<UTF16> source)
     {
-        // TODO: Find a way to result.reserve(source.size())
-        auto result = translit(uni::ranges::utf16_view{source}) | uni::ranges::to_utf16<std::basic_string<UTF16>>();
+        auto result = translit(uni::ranges::utf16_view{source})
+                | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());
 
         result.shrink_to_fit();
         return result;
