@@ -1030,6 +1030,82 @@ struct adaptor_to_utf16
     uaiw_constexpr auto operator()(R&& r) const { return adaptor_closure_to_utf16<Result>{}(std::forward<R>(r)); }
 };
 
+/* TO_UTF8_RESERVE */
+
+template<class Result>
+struct adaptor_closure_to_utf8_reserve
+{
+    std::size_t size = 0;
+    uaiw_constexpr explicit adaptor_closure_to_utf8_reserve(std::size_t n): size(n) {}
+
+    template<class R>
+    uaiw_constexpr auto operator()(R&& r) const
+    {
+        using range_v = uni::detail::ranges::range_value_t<R>;
+        using result_v = uni::detail::ranges::range_value_t<Result>;
+
+        static_assert(std::is_integral_v<range_v> && sizeof(range_v) >= sizeof(char32_t),
+                      "to_utf8_reserve range requires char32_t range");
+        static_assert(std::is_integral_v<result_v>,
+                      "to_utf8_reserve result type cannot store UTF-8");
+
+        Result result;
+        result.reserve(size);
+        std::back_insert_iterator output{result};
+        for (auto c : r)
+            detail::impl_utf8_output(static_cast<char32_t>(c), output);
+        return result;
+    }
+};
+template<class R, class Result>
+uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf8_reserve<Result>& a) { return a(std::forward<R>(r)); }
+
+template<class Result>
+struct adaptor_to_utf8_reserve
+{
+    uaiw_constexpr auto operator()(std::size_t size) const { return adaptor_closure_to_utf8_reserve<Result>{size}; }
+    template<class R>
+    uaiw_constexpr auto operator()(R&& r, std::size_t size) const { return adaptor_closure_to_utf8_reserve<Result>{size}(std::forward<R>(r)); }
+};
+
+/* TO_UTF16_RESERVE */
+
+template<class Result>
+struct adaptor_closure_to_utf16_reserve
+{
+    std::size_t size = 0;
+    uaiw_constexpr explicit adaptor_closure_to_utf16_reserve(std::size_t n): size(n) {}
+
+    template<class R>
+    uaiw_constexpr auto operator()(R&& r) const
+    {
+        using range_v = uni::detail::ranges::range_value_t<R>;
+        using result_v = uni::detail::ranges::range_value_t<Result>;
+
+        static_assert(std::is_integral_v<range_v> && sizeof(range_v) >= sizeof(char32_t),
+                      "to_utf16_reserve range requires char32_t range");
+        static_assert(std::is_integral_v<result_v> && sizeof(result_v) >= sizeof(char16_t),
+                      "to_utf16_reserve result type cannot store UTF-16");
+
+        Result result;
+        result.reserve(size);
+        std::back_insert_iterator output{result};
+        for (auto c : r)
+            detail::impl_utf16_output(static_cast<char32_t>(c), output);
+        return result;
+    }
+};
+template<class R, class Result>
+uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf16_reserve<Result>& a) { return a(std::forward<R>(r)); }
+
+template<class Result>
+struct adaptor_to_utf16_reserve
+{
+    uaiw_constexpr auto operator()(std::size_t size) const { return adaptor_closure_to_utf16_reserve<Result>{size}; }
+    template<class R>
+    uaiw_constexpr auto operator()(R&& r, std::size_t size) const { return adaptor_closure_to_utf16_reserve<Result>{size}(std::forward<R>(r)); }
+};
+
 } // namespace detail
 
 namespace ranges::views {
@@ -1086,6 +1162,10 @@ template<class Result>
 inline constexpr detail::adaptor_to_utf8<Result> to_utf8{};
 template<class Result>
 inline constexpr detail::adaptor_to_utf16<Result> to_utf16{};
+template<class Result>
+inline constexpr detail::adaptor_to_utf8_reserve<Result> to_utf8_reserve{};
+template<class Result>
+inline constexpr detail::adaptor_to_utf16_reserve<Result> to_utf16_reserve{};
 
 } // namespace ranges
 
