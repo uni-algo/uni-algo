@@ -60,6 +60,19 @@ void test_ranges()
     TESTX(result3 == U"ココケクキ");
 }
 
+void test_ranges_to()
+{
+    TESTX("123" == (std::u32string_view{U"123"} | uni::ranges::to_utf8<std::string>()));
+    TESTX("123" == uni::ranges::to_utf8<std::string>(std::u32string_view{U"123"}));
+    TESTX(u"123" == (std::u32string_view{U"123"} | uni::ranges::to_utf16<std::u16string>()));
+    TESTX(u"123" == uni::ranges::to_utf16<std::u16string>(std::u32string_view{U"123"}));
+
+    TESTX("123" == (std::u32string_view{U"123"} | uni::ranges::to_utf8_reserve<std::string>(3)));
+    TESTX("123" == uni::ranges::to_utf8_reserve<std::string>(std::u32string_view{U"123"}, 3));
+    TESTX(u"123" == (std::u32string_view{U"123"} | uni::ranges::to_utf16_reserve<std::u16string>(3)));
+    TESTX(u"123" == uni::ranges::to_utf16_reserve<std::u16string>(std::u32string_view{U"123"}, 3));
+}
+
 void test_ranges_ctad()
 {
     // If everything works properly none of these constructors and operators must be called
