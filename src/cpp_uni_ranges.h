@@ -898,7 +898,7 @@ uaiw_constexpr auto operator|(R&& r, const adaptor_reverse& a) { return a(std::f
 struct adaptor_closure_drop
 {
     std::size_t count = 0;
-    uaiw_constexpr explicit adaptor_closure_drop(std::size_t n): count(n) {}
+    uaiw_constexpr explicit adaptor_closure_drop(std::size_t n): count{n} {}
 
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::drop_view{std::forward<R>(r), count}; }
@@ -918,7 +918,7 @@ struct adaptor_drop
 struct adaptor_closure_take
 {
     std::size_t count = 0;
-    uaiw_constexpr explicit adaptor_closure_take(std::size_t n): count(n) {}
+    uaiw_constexpr explicit adaptor_closure_take(std::size_t n): count{n} {}
 
     template <class R>
     uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::take_view{std::forward<R>(r), count}; }
@@ -1036,7 +1036,7 @@ template<class Result>
 struct adaptor_closure_to_utf8_reserve
 {
     std::size_t size = 0;
-    uaiw_constexpr explicit adaptor_closure_to_utf8_reserve(std::size_t n): size(n) {}
+    uaiw_constexpr explicit adaptor_closure_to_utf8_reserve(std::size_t n): size{n} {}
 
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
@@ -1074,7 +1074,7 @@ template<class Result>
 struct adaptor_closure_to_utf16_reserve
 {
     std::size_t size = 0;
-    uaiw_constexpr explicit adaptor_closure_to_utf16_reserve(std::size_t n): size(n) {}
+    uaiw_constexpr explicit adaptor_closure_to_utf16_reserve(std::size_t n): size{n} {}
 
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
