@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Version-0.3.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.3.0)
+[![Version](https://img.shields.io/badge/Version-0.4.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.4.0)
 [![Unicode](https://img.shields.io/badge/Unicode-14.0.0-blue)](https://www.unicode.org/versions/Unicode14.0.0/)
 [![Language](https://img.shields.io/badge/C%2B%2B-17/20/23-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
 [![License](https://img.shields.io/badge/License-Unlicense/MIT-darkorchid.svg)](https://opensource.org/licenses/MIT)
@@ -137,11 +137,11 @@ include(FetchContent)
 # Note that you need Git installed for this to work.
 FetchContent_Declare(uni-algo
   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
-  GIT_TAG v0.3.0) # the version you want to download
+  GIT_TAG v0.4.0) # the version you want to download
 
 # Or you can use it like this without Git.
 # FetchContent_Declare(uni-algo
-#   URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.3.0.zip)
+#   URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.4.0.zip)
 
 FetchContent_MakeAvailable(uni-algo)
 
