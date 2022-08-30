@@ -2,11 +2,6 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#include <fstream>
-#include <set>
-#include <iostream>
-#include <string_view>
-
 // Forward declaration for normalization functions that uses high-level ranges
 // We must test the ranges together with fast functions
 // See the end of the file for bodies

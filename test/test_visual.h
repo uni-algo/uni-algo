@@ -2,8 +2,6 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#include <fstream>
-
 #include "test_visual_data.h"
 
 template<typename T, const T* DATA[], std::size_t DATA_SIZE>

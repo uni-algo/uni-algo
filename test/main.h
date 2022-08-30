@@ -9,9 +9,17 @@
 #include "../src/cpp_uni_break_grapheme.h"
 #include "../src/cpp_uni_break_word.h"
 #include "../src/cpp_uni_ranges.h"
+// Transliterators
+#include "../src/ext/translit/macedonian_to_latin_docs.h"
+#include "../src/ext/translit/japanese_kana_to_romaji_hepburn.h"
 
+// Additional C++ Standard Library includes that are needed for tests
 #include <stdexcept>
+#include <algorithm>
+#include <vector>
+#include <set>
 #include <iostream>
+#include <fstream>
 
 //#define TEST_MODE_GENERATE_VISUAL_FILES
 //#define TEST_MODE_WITHOUT_UNICODE_TEST_FILES
@@ -28,6 +36,11 @@
 #pragma GCC diagnostic push
 //#pragma GCC diagnostic ignored "-Wstack-usage="
 #endif
+
+// All the following includes should not include other files.
+// The tests are designed to include all tests into this one .h file: test/main.h
+// and then include it into one .cpp file: test/main.cpp
+// to make the compilation of the tests as fast as possible.
 
 #include "test_version.h"
 

@@ -2,8 +2,6 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#include <algorithm>
-
 std::u16string test_iter_rev_utf8to16(std::string_view str)
 {
     auto view = uni::ranges::utf8_view<std::string_view, uni::detail::impl_iter_error>{str};

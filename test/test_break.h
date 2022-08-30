@@ -2,9 +2,6 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#include <fstream>
-#include <vector>
-
 void test_break_grapheme()
 {
     std::ifstream input("GraphemeBreakTest.txt", std::ios::binary);
