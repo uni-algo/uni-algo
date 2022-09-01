@@ -5,6 +5,7 @@
 #ifndef MACEDONIAN_TO_LATIN_DOCS_H_UAIX
 #define MACEDONIAN_TO_LATIN_DOCS_H_UAIX
 
+#include <array>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -14,98 +15,71 @@
 #include "../../internal/cpp_uni_ranges_translit.h"
 //#include "../../cpp_uni_norm.h"
 
-// If it fails a compiler messed up the UTF-8 encoding of this file.
-// If the compiler is MSVC then /utf-8 command line option must be used.
-static_assert(U'㋡' == 0x32E1);
-
 namespace uni::translit {
 
-// Data and all C++ stuff inside the class, the actual translit function at the end of the file.
-// Use the same design for all transliterators.
 class macedonian_to_latin_docs
-{
-private:
-    // https://en.wikipedia.org/wiki/Romanization_of_Macedonian
-    const std::unordered_map<char32_t, char32_t> simple_map {
-    {U'а',U'a'},{U'А',U'A'},
-    {U'б',U'b'},{U'Б',U'B'},
-    {U'в',U'v'},{U'В',U'V'},
-    {U'г',U'g'},{U'Г',U'G'},
-    {U'д',U'd'},{U'Д',U'D'},
-    {U'е',U'e'},{U'Е',U'E'},
-    {U'з',U'z'},{U'З',U'Z'},
-    {U'и',U'i'},{U'И',U'I'},
-    {U'ј',U'j'},{U'Ј',U'J'},
-    {U'к',U'k'},{U'К',U'K'},
-    {U'л',U'l'},{U'Л',U'L'},
-    {U'м',U'm'},{U'М',U'M'},
-    {U'н',U'n'},{U'Н',U'N'},
-    {U'о',U'o'},{U'О',U'O'},
-    {U'п',U'p'},{U'П',U'P'},
-    {U'р',U'r'},{U'Р',U'R'},
-    {U'с',U's'},{U'С',U'S'},
-    {U'т',U't'},{U'Т',U'T'},
-    {U'у',U'u'},{U'У',U'U'},
-    {U'ф',U'f'},{U'Ф',U'F'},
-    {U'х',U'h'},{U'Х',U'H'},
-    {U'ц',U'c'},{U'Ц',U'C'}};
-
-    const std::unordered_map<char32_t, std::pair<std::u32string_view, std::u32string_view>> complex_map {
-    {U'ѓ',{U"gj",U"gj"}},{U'Ѓ',{U"GJ",U"Gj"}},
-    {U'ж',{U"zh",U"zh"}},{U'Ж',{U"ZH",U"Zh"}},
-    {U'ѕ',{U"dz",U"dz"}},{U'Ѕ',{U"DZ",U"Dz"}},
-    {U'љ',{U"lj",U"lj"}},{U'Љ',{U"LJ",U"Lj"}},
-    {U'њ',{U"nj",U"nj"}},{U'Њ',{U"NJ",U"Nj"}},
-    {U'ќ',{U"kj",U"kj"}},{U'Ќ',{U"KJ",U"Kj"}},
-    {U'ч',{U"ch",U"ch"}},{U'Ч',{U"CH",U"Ch"}},
-    {U'џ',{U"dj",U"dj"}},{U'Џ',{U"DJ",U"Dj"}},
-    {U'ш',{U"sh",U"sh"}},{U'Ш',{U"SH",U"Sh"}}};
-
-    const std::unordered_set<char32_t> lowercase_set {
-    U'а',U'б',U'в',U'г',U'д',U'ѓ',U'е',U'ж',U'з',U'ѕ',U'и',
-    U'ј',U'к',U'л',U'љ',U'м',U'н',U'њ',U'о',U'п',U'р',U'с',
-    U'т',U'ќ',U'у',U'ф',U'х',U'ц',U'ч',U'џ',U'ш'};
-
-    template<class Range>
-    auto translit(Range&& range);
-
-public:
-    macedonian_to_latin_docs() = default;
-
-    template<typename UTF8>
-    std::basic_string<UTF8> utf8(std::basic_string_view<UTF8> source)
-    {
-        auto result = translit(uni::ranges::utf8_view{source})
-                | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
-
-        result.shrink_to_fit();
-        return result;
-    }
-    template<typename UTF16>
-    std::basic_string<UTF16> utf16(std::basic_string_view<UTF16> source)
-    {
-        auto result = translit(uni::ranges::utf16_view{source})
-                | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());
-
-        result.shrink_to_fit();
-        return result;
-    }
-    std::string utf8(std::string_view source) { return utf8<char>(source); }
-    std::u16string utf16(std::u16string_view source) { return utf16<char16_t>(source); }
-#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-    std::wstring utf16(std::wstring_view source) { return utf16<wchar_t>(source); }
-#endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
-#ifdef __cpp_lib_char8_t
-    std::u8string utf8(std::u8string_view source) { return utf8<char8_t>(source); }
-#endif // __cpp_lib_char8_t
-};
-
-template<class Range>
-auto macedonian_to_latin_docs::translit(Range&& range)
 {
     // https://en.wikipedia.org/wiki/Romanization_of_Macedonian
     // Official Documents/Cadastre rules.
 
+private:
+    static constexpr std::array<unsigned char, 96> simple_map = {{
+//   0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+    { },{ },{ },{ },{ },{ },{ },{ },'J',{ },{ },{ },{ },{ },{ },{ },   // 040x
+    'A','B','V','G','D','E',{ },'Z','I',{ },'K','L','M','N','O','P',   // 041x
+    'R','S','T','U','F','H','C',{ },{ },{ },{ },{ },{ },{ },{ },{ },   // 042x
+    'a','b','v','g','d','e',{ },'z','i',{ },'k','l','m','n','o','p',   // 043x
+    'r','s','t','u','f','h','c',{ },{ },{ },{ },{ },{ },{ },{ },{ },   // 044x
+    { },{ },{ },{ },{ },{ },{ },{ },'j',{ },{ },{ },{ },{ },{ },{ }}}; // 045x
+
+    // NOLINTBEGIN(modernize-use-bool-literals)
+    static constexpr std::array<bool, 96> lowercase_map = {{
+//  0 1 2 3 4 5 6 7 8 9 A B C D E F
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   // 040x
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   // 041x
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   // 042x
+    1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,   // 043x
+    1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,   // 044x
+    0,0,0,1,0,1,0,0,1,1,1,0,1,0,0,1}}; // 045x
+    // NOLINTEND(modernize-use-bool-literals)
+
+    static constexpr std::array<std::array<std::array<unsigned char, 2>, 2>, 96> complex_map = {{
+//            0/4/8/C                     1/5/9/D                     2/6/A/E                     3/7/B/F
+                { },                        { },                        { },            {{{{'G','J'}},{{'G','j'}}}}, // 040x
+                { },            {{{{'D','Z'}},{{'D','z'}}}},            { },                        { },
+                { },            {{{{'L','J'}},{{'L','j'}}}},{{{{'N','J'}},{{'N','j'}}}},            { },
+    {{{{'K','J'}},{{'K','j'}}}},            { },                        { },            {{{{'D','J'}},{{'D','j'}}}},
+                { },                        { },                        { },                        { },             // 041x
+                { },                        { },            {{{{'Z','H'}},{{'Z','h'}}}},            { },
+                { },                        { },                        { },                        { },
+                { },                        { },                        { },                        { },
+                { },                        { },                        { },                        { },             // 042x
+                { },                        { },                        { },            {{{{'C','H'}},{{'C','h'}}}},
+    {{{{'S','H'}},{{'S','h'}}}},            { },                        { },                        { },
+                { },                        { },                        { },                        { },
+                { },                        { },                        { },                        { },             // 043x
+                { },                        { },            {{{{'z','h'}},{{'z','h'}}}},            { },
+                { },                        { },                        { },                        { },
+                { },                        { },                        { },                        { },
+                { },                        { },                        { },                        { },             // 044x
+                { },                        { },                        { },            {{{{'c','h'}},{{'c','h'}}}},
+    {{{{'s','h'}},{{'s','h'}}}},            { },                        { },                        { },
+                { },                        { },                        { },                        { },
+                { },                        { },                        { },            {{{{'g','j'}},{{'g','j'}}}}, // 045x
+                { },            {{{{'d','z'}},{{'d','z'}}}},            { },                        { },
+                { },            {{{{'l','j'}},{{'l','j'}}}},{{{{'n','j'}},{{'n','j'}}}},            { },
+    {{{{'k','j'}},{{'k','j'}}}},            { },                        { },            {{{{'d','j'}},{{'d','j'}}}}}};
+
+    // Cyrilic Unicode Block
+    static bool is_block(char32_t c) { return (c >= 0x0400 && c <= 0x045F); }
+    static std::size_t to_block(char32_t c) { return (c - 0x0400); }
+
+public:
+    // Buffer size 2 is enought to translit Macedonian to Latin
+    // the smaller the buffer the faster the translit view works.
+    static const std::size_t buf_size = 2;
+
+    // The function below is used by the translit view.
     // Translit view is very powerfull it can do everything that
     // uni::ranges::filter_view and uni::ranges::transform_view can do
     // and much more but it can be dangerous for example it's possible
@@ -114,42 +88,42 @@ auto macedonian_to_latin_docs::translit(Range&& range)
     // This is the reason why the view is not available for a user.
     // Note the function have only one parameter - buffer, you can do whatever
     // you want with the buffer just make sure you return the proper value.
-
-    auto func = [this](std::u32string& buffer) -> std::size_t
+    static std::size_t buf_func(std::u32string& buf)
     {
-        // Compose ѓ/Ѓ and ќ/Ќ first.
+        // Compose small/capital letters GJE/KJE first.
         // In Macedonian there are only 4 cases when letters can be decomposed
         // we can handle it like this so we don't need to use NFC view
         // it will be faster, even though it won't work in some corner cases
         // but it doesn't matter much for the transliteration.
-        if (buffer.size() > 1)
+        if (buf.size() > 1)
         {
-            if (buffer[0] == U'г' && buffer[1] == 0x301)
+            if (buf[0] == 0x0433 && buf[1] == 0x301) // CYRILLIC SMALL LETTER GHE
             {
-                buffer.replace(0, 2, 1, U'ѓ');
+                buf.replace(0, 2, 1, 0x0453);        // CYRILLIC SMALL LETTER GJE
                 return 0;
                 // Read example below why we return 0 here
             }
-            if (buffer[0] == U'Г' && buffer[1] == 0x301)
+            if (buf[0] == 0x0413 && buf[1] == 0x301) // CYRILLIC CAPITAL LETTER GHE
             {
-                buffer.replace(0, 2, 1, U'Ѓ');
+                buf.replace(0, 2, 1, 0x0403);        // CYRILLIC CAPITAL LETTER GJE
                 return 0;
             }
-            if (buffer[0] == U'к' && buffer[1] == 0x301)
+            if (buf[0] == 0x043A && buf[1] == 0x301) // CYRILLIC SMALL LETTER KA
             {
-                buffer.replace(0, 2, 1, U'ќ');
+                buf.replace(0, 2, 1, 0x045C);        // CYRILLIC SMALL LETTER KJE
                 return 0;
             }
-            if (buffer[0] == U'К' && buffer[1] == 0x301)
+            if (buf[0] == 0x041A && buf[1] == 0x301) // CYRILLIC CAPITAL LETTER KA
             {
-                buffer.replace(0, 2, 1, U'Ќ');
+                buf.replace(0, 2, 1, 0x040C);        // CYRILLIC CAPITAL LETTER KJE
                 return 0;
             }
         }
+
         // This is an example if we need to remove a code point
-        // Note that we don't need buffer.size() check here
+        // Note that we don't need buf.size() check here
         // It is guaranteed that the size of the buffer is at least 1
-        //if (lowercase_set.count(buffer[0])) // Remove all lowercase letters for example
+        //if (buf[0] == U' ') // Remove all spaces for example
         //{
         //	buffer.erase(0, 1);
         //	return 0;
@@ -158,32 +132,37 @@ auto macedonian_to_latin_docs::translit(Range&& range)
         //	// Never return 0 if you don't remove or change a code point(s)
         //	// because returning 0 also means to stay at the same position.
         //}
-        auto simple = simple_map.find(buffer[0]);
-        if (simple != simple_map.cend())
+
+        // The code below works with Cyrilic Unicode block
+        // if it's not then proceed by one code point
+        std::size_t m = 0;
+        if (is_block(buf[0]))
+            m = to_block(buf[0]);
+        else
+            return 1;
+
+        if (simple_map[m])
         {
-            buffer[0] = simple->second;
+            buf[0] = simple_map[m];
             return 1;
             // We changed only 1 code point
             // so just proceed by one code point.
         }
-        auto complex = complex_map.find(buffer[0]);
-        if (complex != complex_map.cend())
+
+        if (complex_map[m][0][0])
         {
-            if (buffer.size() > 1 && lowercase_set.count(buffer[1]))
-            {
-                buffer.replace(0, 1, complex->second.second);
-                return complex->second.second.size();
-                // We changed multiple code points
-                // so we need to skip them to get the next code point.
-                // It is fine to skip less code points than you changed
-                // if you need it for some complicated rules but be aware
-                // if the rules interfere with each other it can cause an endless loop.
-            }
+            // If the next code point is lowercase Macedonian letter
+            if (buf.size() > 1 && is_block(buf[1]) && lowercase_map[to_block(buf[1])])
+                buf.replace(buf.begin(), buf.begin() + 1, complex_map[m][1].begin(), complex_map[m][1].begin() + 2);
             else
-            {
-                buffer.replace(0, 1, complex->second.first);
-                return complex->second.first.size();
-            }
+                buf.replace(buf.begin(), buf.begin() + 1, complex_map[m][0].begin(), complex_map[m][0].begin() + 2);
+
+            return 2;
+            // We changed multiple code points
+            // so we need to skip them to get the next code point.
+            // It is fine to skip less code points than you changed
+            // if you need it for some complicated rules but be aware
+            // if the rules interfere with each other it can cause an endless loop.
         }
 
         // Otherwise proceed by one code point
@@ -191,35 +170,64 @@ auto macedonian_to_latin_docs::translit(Range&& range)
 
         // This is a simple example how rules can interfere with each other
         // that leads to an endless loop.
-        // For example you need to replace all "a" to "aa" if you do it like this:
-        //if (buffer[0] == U'a')
+        // For example you need to replace all "x" to "xx" if you do it like this:
+        //if (buf[0] == U'x')
         //{
-        //	buffer.replace(0, 1, U"aa");
+        //	buf.replace(0, 1, U"xx");
         //	return 1;
         //}
-        // It will lead to an endless loop because you skip only 1 "a"
-        // and then get the second "a" replace it again and again
-        // so you must return 2 here to skip both "a".
-    };
+        // It will lead to an endless loop because you skip only 1 "x"
+        // and then get the second "x" replace it again and again
+        // so you must return 2 here to skip both "x".
+    }
+};
 
-    // Note that we initialize the view with buffer size 2
-    // because it is enought to translit Macedonian to Latin
-    // the smaller the buffer the faster it works.
-    return uni::detail::ranges::translit_view{range, func, 2};
-
-    // It is possible to use NFC view instead of our compose code above.
-    // it will make it slower but it can handle properly some very rare corner cases.
-    // return uni::detail::ranges::translit_view{uni::ranges::norm::nfc_view{range}, func, 2};
-
-    // It is also possible to output NFC normalized data if needed. In this case we need NFC view after our func.
-    // We can use 2 NFC views to get rid of our compose code and output in NFC.
-    // Such approach will provide the best possible result.
-    // return uni::ranges::norm::nfc_view{uni::detail::ranges::translit_view{uni::ranges::norm::nfc_view{range}, func, 2}};
-
+template<typename UTF8>
+std::basic_string<UTF8> utf8_macedonian_to_latin_docs(std::basic_string_view<UTF8> source)
+{
     // Note that we use views from uni::ranges instead of adaptors from uni::views
     // because translit view is internal and doesn't have view adaptor
     // and we want to maximize the compilation speed.
+
+    using tr = macedonian_to_latin_docs;
+
+    auto result = uni::detail::ranges::translit_view{uni::ranges::utf8_view{source}, tr::buf_func, tr::buf_size}
+            | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
+
+    result.shrink_to_fit();
+    return result;
 }
+template<typename UTF16>
+std::basic_string<UTF16> utf16_macedonian_to_latin_docs(std::basic_string_view<UTF16> source)
+{
+    using tr = macedonian_to_latin_docs;
+
+    auto result = uni::detail::ranges::translit_view{uni::ranges::utf16_view{source}, tr::buf_func, tr::buf_size}
+            | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());
+
+    result.shrink_to_fit();
+    return result;
+}
+inline std::string utf8_macedonian_to_latin_docs(std::string_view source)
+{
+    return utf8_macedonian_to_latin_docs<char>(source);
+}
+inline std::u16string utf16_macedonian_to_latin_docs(std::u16string_view source)
+{
+    return utf16_macedonian_to_latin_docs<char16_t>(source);
+}
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+inline std::wstring utf16_macedonian_to_latin_docs(std::wstring_view source)
+{
+    return utf16_macedonian_to_latin_docs<wchar_t>(source);
+}
+#endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
+#ifdef __cpp_lib_char8_t
+inline std::u8string utf8_macedonian_to_latin_docs(std::u8string_view source)
+{
+    return utf8_macedonian_to_latin_docs<char8_t>(source);
+}
+#endif // __cpp_lib_char8_t
 
 } // namespace uni::translit
 
