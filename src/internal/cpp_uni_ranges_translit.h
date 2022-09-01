@@ -10,7 +10,214 @@
 
 #include "cpp_uni_ranges_core.h"
 
-namespace uni { // NOLINT(modernize-concat-nested-namespaces)
+namespace uni {
+
+namespace detail::translit {
+
+// This class behaves the same as std::u32string
+// but it never allocates so the size is static.
+struct buffer
+{
+private:
+    std::array<char32_t, 16> internal_array{};
+    std::size_t internal_size = 0;
+
+public:
+    using value_type      = char32_t;
+    using size_type       = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    using reference       = value_type&;
+    using const_reference = const value_type&;
+    using pointer         = value_type*;
+    using const_pointer   = const value_type*;
+    using iterator        = decltype(internal_array)::iterator; // value_type*;
+    using const_iterator  = decltype(internal_array)::const_iterator; // const value_type*;
+
+    static const size_type npos = static_cast<size_type>(-1);
+
+    buffer() = default;
+    constexpr explicit buffer(std::u32string_view view) // Use only for testing
+    {
+        if (view.size() <= internal_array.max_size())
+        {
+            for (std::size_t i = 0; i < view.size(); ++i)
+                internal_array[i] = view[i];
+            internal_size = view.size();
+        }
+    }
+    constexpr reference operator[](size_type pos) noexcept
+    { return internal_array[pos]; }
+    constexpr const_reference operator[](size_type pos) const noexcept
+    { return internal_array[pos]; }
+    constexpr size_type size() const noexcept
+    { return internal_size; }
+    constexpr size_type max_size() const noexcept
+    { return internal_array.max_size(); }
+    constexpr bool empty() const noexcept
+    { return internal_size == 0; }
+    constexpr pointer data() noexcept
+    { return internal_array.data(); }
+    constexpr const_pointer data() const noexcept
+    { return internal_array.data(); }
+    constexpr iterator begin() noexcept
+    { return internal_array.begin(); }
+    constexpr const_iterator begin() const noexcept
+    { return internal_array.begin(); }
+    constexpr iterator end() noexcept
+    { return internal_array.begin() + static_cast<std::ptrdiff_t>(internal_size); }
+    constexpr const_iterator end() const noexcept
+    { return internal_array.begin() + static_cast<std::ptrdiff_t>(internal_size); }
+    constexpr reference front() noexcept
+    { return internal_array[0]; }
+    constexpr const_reference front() const noexcept
+    { return internal_array[0]; }
+    constexpr reference back() noexcept
+    { return internal_array[internal_size - 1]; }
+    constexpr const_reference back() const noexcept
+    { return internal_array[internal_size - 1]; }
+    // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
+    constexpr operator std::u32string_view() const noexcept
+    { return std::u32string_view{data(), size()}; }
+    constexpr void clear() noexcept
+    { internal_size = 0; }
+    constexpr void pop_back() noexcept
+    { internal_size--; }
+    constexpr void push_back(value_type c) noexcept
+    {
+        if (size() < max_size())
+            internal_array[internal_size++] = c;
+        // else std::u32string throws
+    }
+    constexpr void resize(size_type count, value_type c) noexcept
+    {
+        if (count > max_size())
+            return; // std::u32string throws
+
+        for (size_type i = size(); i < count; ++i)
+            internal_array[i] = c;
+
+        internal_size = count;
+    }
+    constexpr void resize(size_type count) noexcept { resize(count, 0); }
+    constexpr buffer& erase(size_type pos = 0, size_type count = npos) noexcept
+    {
+        if (count == 0)
+            return *this;
+        if (pos > size())
+            return *this; // std::u32string throws
+        if (count > size() - pos)
+            count = size() - pos;
+
+        for (size_type i = pos; i < size(); ++i)
+            internal_array[i] = internal_array[i + count];
+
+        internal_size -= count;
+        return *this;
+    }
+    constexpr buffer& insert(size_type pos, size_type count, value_type c) noexcept
+    {
+        if (count == 0)
+            return *this;
+        if (pos > size())
+            return *this; // std::u32string throws
+        if (count + size() > max_size())
+            return *this; // std::u32string throws
+
+        for (size_type i = size() + count - 1; i >= pos + count; --i)
+            internal_array[i] = internal_array[i - count];
+
+        for (size_type i = pos; i < pos + count; ++i)
+            internal_array[i] = c;
+
+        internal_size += count;
+        return *this;
+    }
+    constexpr buffer& replace(size_type pos, size_type count1, size_type count2, value_type c) noexcept
+    {
+        if (count1 == 0 && count2 == 0)
+            return *this;
+        if (pos > size())
+            return *this; // std::u32string throws
+        if (count1 > size() - pos)
+            count1 = size() - pos;
+        if (count1 < count2 && (count2 - count1) + size() > max_size())
+            return *this; // std::u32string throws
+
+        if (count1 > count2)
+        {
+            size_type count = count1 - count2;
+            for (size_type i = pos; i < size(); ++i)
+                internal_array[i] = internal_array[i + count];
+            internal_size -= count;
+        }
+        else if (count1 < count2)
+        {
+            size_type count = count2 - count1;
+            for (size_type i = size() + count - 1; i >= pos + count; --i)
+                internal_array[i] = internal_array[i - count];
+            internal_size += count;
+        }
+        for (size_type i = pos; i < pos + count2; ++i)
+            internal_array[i] = c;
+
+        return *this;
+    }
+    // Use std::enable_if_t to fix the ambiguous overload with the previous replace function
+    template <class ArrayLike>
+    typename std::enable_if_t<!std::is_integral_v<ArrayLike>, buffer&>
+    constexpr replace(size_type pos1, size_type count1, const ArrayLike& array,
+                      size_type pos2, size_type count2 = npos) noexcept
+    {
+        if (count1 == 0 && count2 == 0)
+            return *this;
+        if (pos1 > size() || pos2 > array.size())
+            return *this; // std::u32string throws
+        if (count1 > size() - pos1)
+            count1 = size() - pos1;
+        if (count2 > array.size() - pos2)
+            count2 = array.size() - pos2;
+        if (count1 < count2 && (count2 - count1) + size() > max_size())
+            return *this; // std::u32string throws
+
+        if (count1 > count2)
+        {
+            size_type count = count1 - count2;
+            for (size_type i = pos1; i < size(); ++i)
+                internal_array[i] = internal_array[i + count];
+            internal_size -= count;
+        }
+        else if (count1 < count2)
+        {
+            size_type count = count2 - count1;
+            for (size_type i = size() + count - 1; i >= pos1 + count; --i)
+                internal_array[i] = internal_array[i - count];
+            internal_size += count;
+        }
+        for (size_type i = pos1, j = pos2; i < pos1 + count2; ++i, ++j)
+            internal_array[i] = array[j];
+
+        return *this;
+    }
+    template <class ArrayLike>
+    typename std::enable_if_t<!std::is_integral_v<ArrayLike>, buffer&>
+    constexpr replace(size_type pos, size_type count, const ArrayLike& array) noexcept
+    {
+        return replace(pos, count, array, 0, array.size());
+    }
+    friend constexpr bool operator==(const buffer& x, const buffer& y) noexcept
+    {
+        if (x.size() == y.size())
+        {
+            for (size_type i = 0; i < x.size(); ++i)
+                if (x[i] != y[i]) return false;
+            return true;
+        }
+        return false;
+    }
+    friend constexpr bool operator!=(const buffer& x, const buffer& y) noexcept { return !(x == y); }
+};
+
+} // namespace detail::translit
 
 namespace detail::ranges {
 
