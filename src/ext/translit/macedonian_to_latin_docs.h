@@ -94,7 +94,10 @@ public:
     std::u16string utf16(std::u16string_view source) { return utf16<char16_t>(source); }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
     std::wstring utf16(std::wstring_view source) { return utf16<wchar_t>(source); }
-#endif
+#endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
+#ifdef __cpp_lib_char8_t
+    std::u8string utf8(std::u8string_view source) { return utf8<char8_t>(source); }
+#endif // __cpp_lib_char8_t
 };
 
 template<class Range>
