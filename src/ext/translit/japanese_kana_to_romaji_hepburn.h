@@ -145,9 +145,9 @@ private:
     {U"ぢゅ",U"ju"},{U"ヂュ",U"ju"},
     {U"ぢょ",U"jo"},{U"ヂョ",U"jo"},
     {U"びゃ",U"bya"},{U"ビャ",U"bya"},
-    {U"びゅ",U"byu"},{U"ビュ",U"bya"},
-    {U"びょ",U"byo"},{U"ビョ",U"byu"},
-    {U"ぴゃ",U"pya"},{U"ピャ",U"pyo"},
+    {U"びゅ",U"byu"},{U"ビュ",U"byu"},
+    {U"びょ",U"byo"},{U"ビョ",U"byo"},
+    {U"ぴゃ",U"pya"},{U"ピャ",U"pya"},
     {U"ぴゅ",U"pyu"},{U"ピュ",U"pyu"},
     {U"ぴょ",U"pyo"},{U"ピョ",U"pyo"}};
 

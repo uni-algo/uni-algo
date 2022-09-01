@@ -62,7 +62,7 @@ private:
     {U'ш',{U"sh",U"sh"}},{U'Ш',{U"SH",U"Sh"}}};
 
     const std::unordered_set<char32_t> lowercase_set {
-    U'а',U'б',U'в',U'г',U'д',U'ѓ',U'е',U'ж',U'з',U'ѕ',U'й',
+    U'а',U'б',U'в',U'г',U'д',U'ѓ',U'е',U'ж',U'з',U'ѕ',U'и',
     U'ј',U'к',U'л',U'љ',U'м',U'н',U'њ',U'о',U'п',U'р',U'с',
     U'т',U'ќ',U'у',U'ф',U'х',U'ц',U'ч',U'џ',U'ш'};
 
