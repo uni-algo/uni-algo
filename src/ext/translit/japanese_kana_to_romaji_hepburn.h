@@ -51,10 +51,8 @@ private:
         return c == U'a' || c == U'i' || c == U'u' || c == U'e' || c == U'o' || c == U'y';
     }
 
-    static std::size_t simple_fn(std::u32string& buf, char32_t c, std::size_t j)
+    static std::size_t simple_fn(detail::translit::buffer& buf, char32_t c, std::size_t i)
     {
-        std::ptrdiff_t i = static_cast<std::ptrdiff_t>(j); // Fix for -Wsign-conversion warning
-
         std::size_t m = 0;
         if (c >= 0x3040 && c <= 0x309F) // Hiragana
         {
@@ -70,7 +68,7 @@ private:
 
         if (simple_map[m][2])
         {
-            buf.replace(buf.begin() + i, buf.begin() + i + 1, simple_map[m].begin(), simple_map[m].begin() + 3);
+            buf.replace(i, 1, simple_map[m], 0, 3);
             //buf.insert(i, 2, 0);
             //buf[i + 0] = simple_map[m][0];
             //buf[i + 1] = simple_map[m][1];
@@ -79,19 +77,18 @@ private:
         }
         else if (simple_map[m][1])
         {
-            buf.replace(buf.begin() + i, buf.begin() + i + 1, simple_map[m].begin(), simple_map[m].begin() + 2);
+            buf.replace(i, 1, simple_map[m], 0, 2);
             //buf.insert(i, 1, 0);
             //buf[i + 0] = simple_map[m][0];
             //buf[i + 1] = simple_map[m][1];
             return 2;
         }
 
-        buf.replace(buf.begin() + i, buf.begin() + i + 1, simple_map[m].begin(), simple_map[m].begin() + 1);
-        //buf[i + 0] = simple_map[m][0];
+        buf[i] = simple_map[m][0];
         return 1;
     }
 
-    static std::size_t complex_fn(std::u32string& buf, std::u32string_view view, std::size_t i)
+    static std::size_t complex_fn(detail::translit::buffer& buf, std::u32string_view view, std::size_t i)
     {
         if (view.size() != 2)
             return 0;
@@ -155,7 +152,7 @@ public:
 
     // Note that this function has additional data parameter prev
     // so a proxy function is required to use it with translit view
-    static std::size_t buf_func(std::u32string& buf, bool& prev)
+    static std::size_t buf_func(detail::translit::buffer& buf, bool& prev)
     {
         std::u32string_view view = buf;
 
@@ -277,7 +274,7 @@ std::basic_string<UTF8> utf8_japanese_kana_to_romaji_hepburn(std::basic_string_v
     using tr = japanese_kana_to_romaji_hepburn;
 
     bool prev = false;
-    auto func = [&prev](std::u32string& buf) { return tr::buf_func(buf, prev); };
+    auto func = [&prev](detail::translit::buffer& buf) { return tr::buf_func(buf, prev); };
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf8_view{source}, func, tr::buf_size}
             | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
@@ -291,7 +288,7 @@ std::basic_string<UTF16> utf16_japanese_kana_to_romaji_hepburn(std::basic_string
     using tr = japanese_kana_to_romaji_hepburn;
 
     bool prev = false;
-    auto func = [&prev](std::u32string& buf) { return tr::buf_func(buf, prev); };
+    auto func = [&prev](detail::translit::buffer& buf) { return tr::buf_func(buf, prev); };
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf16_view{source}, func, tr::buf_size}
             | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());

@@ -88,7 +88,7 @@ public:
     // This is the reason why the view is not available for a user.
     // Note the function have only one parameter - buffer, you can do whatever
     // you want with the buffer just make sure you return the proper value.
-    static std::size_t buf_func(std::u32string& buf)
+    static std::size_t buf_func(detail::translit::buffer& buf)
     {
         // Compose small/capital letters GJE/KJE first.
         // In Macedonian there are only 4 cases when letters can be decomposed
@@ -153,9 +153,9 @@ public:
         {
             // If the next code point is lowercase Macedonian letter
             if (buf.size() > 1 && is_block(buf[1]) && lowercase_map[to_block(buf[1])])
-                buf.replace(buf.begin(), buf.begin() + 1, complex_map[m][1].begin(), complex_map[m][1].begin() + 2);
+                buf.replace(0, 1, complex_map[m][1], 0, 2);
             else
-                buf.replace(buf.begin(), buf.begin() + 1, complex_map[m][0].begin(), complex_map[m][0].begin() + 2);
+                buf.replace(0, 1, complex_map[m][0], 0, 2);
 
             return 2;
             // We changed multiple code points

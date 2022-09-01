@@ -241,7 +241,7 @@ private:
 
         bool stream_end = false;
 
-        std::u32string data;
+        detail::translit::buffer data;
         std::size_t skip = 1;
 
         void func_translit_impl()
