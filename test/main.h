@@ -67,6 +67,7 @@
 #include "test_short_func.h"
 
 #include "test_translit.h"
+#include "test_translit_buffer.h"
 
 #include "test_ranges.h"
 
@@ -177,6 +178,7 @@ int main7()
 
     std::cout << "DONE: Case Functions" << '\n';
 
+    test_translit_buffer();
     test_translit_macedonian_to_latin_docs();
     test_translit_japanese_kana_to_romaji_hepburn();
 
