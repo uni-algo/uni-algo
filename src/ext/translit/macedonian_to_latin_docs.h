@@ -172,8 +172,8 @@ public:
         // For example you need to replace all "x" to "xx" if you do it like this:
         //if (buf[0] == U'x')
         //{
-        //	buf.replace(0, 1, U"xx");
-        //	return 1;
+        //    buf.replace(0, 1, U"xx");
+        //    return 1;
         //}
         // It will lead to an endless loop because you skip only 1 "x"
         // and then get the second "x" replace it again and again
@@ -197,7 +197,7 @@ std::basic_string<UTF8> utf8_macedonian_to_latin_docs(std::basic_string_view<UTF
     using tr = detail::translit::macedonian_to_latin_docs;
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf8_view{source}, tr::buf_func, tr::buf_size}
-            | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
+                | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
 
     result.shrink_to_fit();
     return result;
@@ -208,7 +208,7 @@ std::basic_string<UTF16> utf16_macedonian_to_latin_docs(std::basic_string_view<U
     using tr = detail::translit::macedonian_to_latin_docs;
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf16_view{source}, tr::buf_func, tr::buf_size}
-            | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());
+                | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());
 
     result.shrink_to_fit();
     return result;

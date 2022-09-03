@@ -16,7 +16,7 @@ namespace uni::detail::translit {
 
 class japanese_kana_to_romaji_hepburn
 {
-    // See macedonian_to_latin_docs.h for details about translit iterator
+    // See macedonian_to_latin_docs.h for details about translit view
 
     // https://en.wikipedia.org/wiki/Hepburn_romanization#Features
     // https://en.wikipedia.org/wiki/Hepburn_romanization#Romanization_charts
@@ -69,18 +69,11 @@ private:
         if (simple_map[m][2])
         {
             buf.replace(i, 1, simple_map[m], 0, 3);
-            //buf.insert(i, 2, 0);
-            //buf[i + 0] = simple_map[m][0];
-            //buf[i + 1] = simple_map[m][1];
-            //buf[i + 2] = simple_map[m][2];
             return 3;
         }
         else if (simple_map[m][1])
         {
             buf.replace(i, 1, simple_map[m], 0, 2);
-            //buf.insert(i, 1, 0);
-            //buf[i + 0] = simple_map[m][0];
-            //buf[i + 1] = simple_map[m][1];
             return 2;
         }
 
@@ -104,7 +97,6 @@ private:
                 {
                     if (complex_map[m][1])
                     {
-                        //buf.replace(i, 2, 3, 0);
                         buf.insert(i, 1, 0);
                         buf[i + 0] = complex_map[m][0];
                         buf[i + 1] = complex_map[m][1];
@@ -112,7 +104,6 @@ private:
                         return 3;
                     }
 
-                    //buf.replace(i, 2, 2, 0);
                     buf[i + 0] = complex_map[m][0];
                     buf[i + 1] = v;
                     return 2;
@@ -130,7 +121,6 @@ private:
                 {
                     if (complex_map[m][1])
                     {
-                        //buf.replace(i, 2, 3, 0);
                         buf.insert(i, 1, 0);
                         buf[i + 0] = complex_map[m][0];
                         buf[i + 1] = complex_map[m][1];
@@ -138,7 +128,6 @@ private:
                         return 3;
                     }
 
-                    //buf.replace(i, 2, 2, 0);
                     buf[i + 0] = complex_map[m][0];
                     buf[i + 1] = v;
                     return 2;
@@ -285,7 +274,7 @@ std::basic_string<UTF8> utf8_japanese_kana_to_romaji_hepburn(std::basic_string_v
     auto func = [&prev](detail::translit::buffer& buf) { return tr::buf_func(buf, prev); };
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf8_view{source}, func, tr::buf_size}
-            | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
+                | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
 
     result.shrink_to_fit();
     return result;
@@ -299,7 +288,7 @@ std::basic_string<UTF16> utf16_japanese_kana_to_romaji_hepburn(std::basic_string
     auto func = [&prev](detail::translit::buffer& buf) { return tr::buf_func(buf, prev); };
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf16_view{source}, func, tr::buf_size}
-            | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());
+                | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());
 
     result.shrink_to_fit();
     return result;
