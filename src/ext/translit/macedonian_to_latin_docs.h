@@ -14,11 +14,11 @@
 
 namespace uni::detail::translit {
 
+// This translit class must be static and internal, use the same desigh for all transliterators.
 class macedonian_to_latin_docs
 {
     // https://en.wikipedia.org/wiki/Romanization_of_Macedonian
     // Official Documents/Cadastre rules.
-
 private:
     static constexpr std::array<unsigned char, 96> simple_map = {{
 //   0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
@@ -182,6 +182,8 @@ public:
 };
 
 } // namespace uni::detail::translit
+
+// Expose translit functions that use the translit view with the translit class above.
 
 namespace uni::translit {
 

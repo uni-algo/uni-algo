@@ -16,11 +16,11 @@ namespace uni::detail::translit {
 
 class japanese_kana_to_romaji_hepburn
 {
+    // See macedonian_to_latin_docs.h for details about translit iterator
+
     // https://en.wikipedia.org/wiki/Hepburn_romanization#Features
     // https://en.wikipedia.org/wiki/Hepburn_romanization#Romanization_charts
     // https://en.wikipedia.org/wiki/Romanization_of_Japanese#Differences_among_romanizations
-
-    // See macedonian_to_latin_docs.h for details about translit iterator
 private:
     static constexpr std::array<std::array<unsigned char, 3>, 96> simple_map = {{
 //      0/8             1/9             2/A             3/B             4/C             5/D             6/E             7/F
@@ -98,6 +98,7 @@ private:
             std::size_t m = view[0] - 0x3040;
             if (complex_map[m][0])
             {
+                // HIRAGANA LETTER SMALL YA/YU/YO
                 char32_t v = (view[1] == 0x3083) ? U'a' : (view[1] == 0x3085) ? U'u' : (view[1] == 0x3087) ? U'o' : 0;
                 if (v)
                 {
@@ -123,6 +124,7 @@ private:
             std::size_t m = view[0] - 0x30A0;
             if (complex_map[m][0])
             {
+                // KATAKANA LETTER SMALL YA/YU/YO
                 char32_t v = (view[1] == 0x30E3) ? U'a' : (view[1] == 0x30E5) ? U'u' : (view[1] == 0x30E7) ? U'o' : 0;
                 if (v)
                 {
