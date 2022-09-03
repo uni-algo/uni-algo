@@ -83,71 +83,75 @@ void test_translit_buffer()
 
     buf.clear();
     b32.clear();
-    buf.insert(0, 3, '!');
-    b32.insert(0, 3, '!');
+    buf.insert(0, 3, U'!');
+    b32.insert(0, 3, U'!');
     TESTX(buf == std::u32string_view{U"!!!"});
     TESTX(b32 == std::u32string_view{U"!!!"});
     buf = buffer;
     b32 = buff32;
-    buf.insert(10, 1, '!');
-    b32.insert(10, 1, '!');
+    buf.insert(10, 1, U'!');
+    b32.insert(10, 1, U'!');
     TESTX(buf == std::u32string_view{U"1234567890!"});
     TESTX(b32 == std::u32string_view{U"1234567890!"});
-    buf.insert(10, 2, '!');
-    b32.insert(10, 2, '!');
+    buf.insert(10, 2, U'!');
+    b32.insert(10, 2, U'!');
     TESTX(buf == std::u32string_view{U"1234567890!!!"});
     TESTX(b32 == std::u32string_view{U"1234567890!!!"});
     buf = buffer;
     b32 = buff32;
-    buf.insert(5, 3, '!');
-    b32.insert(5, 3, '!');
+    buf.insert(5, 3, U'!');
+    b32.insert(5, 3, U'!');
     TESTX(buf == std::u32string_view{U"12345!!!67890"});
     TESTX(b32 == std::u32string_view{U"12345!!!67890"});
-    buf.insert(0, 2, '!');
-    b32.insert(0, 2, '!');
+    buf.insert(0, 2, U'!');
+    b32.insert(0, 2, U'!');
     TESTX(buf == std::u32string_view{U"!!12345!!!67890"});
     TESTX(b32 == std::u32string_view{U"!!12345!!!67890"});
     // BAD VALUES
-    buf.insert(0, 0, '!');
-    //b32.insert(0, 0, '!'); // This triggers ambiguous overload in GCC 12.1.0
+    buf.insert(0, 0, U'!');
+    b32.insert(0, 0, U'!');
     TESTX(buf == std::u32string_view{U"!!12345!!!67890"});
     TESTX(b32 == std::u32string_view{U"!!12345!!!67890"});
-    buf.insert(100, 1, '!');
+    buf.insert(100, 1, U'!');
     TESTX(buf == std::u32string_view{U"!!12345!!!67890"});
 
     buf.clear();
     b32.clear();
-    buf.replace(0, 0, 3, '!');
-    b32.replace(0, 0, 3, '!');
+    buf.replace(0, 0, 3, U'!');
+    b32.replace(0, 0, 3, U'!');
     TESTX(buf == std::u32string_view{U"!!!"});
     TESTX(b32 == std::u32string_view{U"!!!"});
     buf = buffer;
     b32 = buff32;
-    buf.replace(0, 5, 1, '!');
-    b32.replace(0, 5, 1, '!');
+    buf.replace(0, 5, 1, U'!');
+    b32.replace(0, 5, 1, U'!');
     TESTX(buf == std::u32string_view{U"!67890"});
     TESTX(b32 == std::u32string_view{U"!67890"});
-    buf.replace(0, 1, 5, '1');
-    b32.replace(0, 1, 5, '1');
+    buf.replace(0, 1, 5, U'1');
+    b32.replace(0, 1, 5, U'1');
     TESTX(buf == std::u32string_view{U"1111167890"});
     TESTX(b32 == std::u32string_view{U"1111167890"});
+    buf.replace(0, 100, 0, U'0');
+    b32.replace(0, 100, 0, U'0');
+    TESTX(buf == std::u32string_view{U""});
+    TESTX(b32 == std::u32string_view{U""});
     buf = buffer;
     b32 = buff32;
-    buf.replace(5, 100, 1, '!');
-    b32.replace(5, 100, 1, '!');
+    buf.replace(5, 100, 1, U'!');
+    b32.replace(5, 100, 1, U'!');
     TESTX(buf == std::u32string_view{U"12345!"});
     TESTX(b32 == std::u32string_view{U"12345!"});
-    buf.replace(0, 0, 1, '!');
-    b32.replace(0, 0, 1, '!');
+    buf.replace(0, 0, 1, U'!');
+    b32.replace(0, 0, 1, U'!');
     TESTX(buf == std::u32string_view{U"!12345!"});
     TESTX(b32 == std::u32string_view{U"!12345!"});
     // BAD VALUES
-    buf.replace(0, 0, 0, '!');
-    //b32.replace(0, 0, 0, '!'); // This triggers ambiguous overload in GCC 12.1.0
+    buf.replace(0, 0, 0, U'!');
+    b32.replace(0, 0, 0, U'!');
     TESTX(buf == std::u32string_view{U"!12345!"});
     TESTX(b32 == std::u32string_view{U"!12345!"});
-    buf.replace(1, 0, 0, '!');
-    //b32.replace(1, 0, 0, '!'); // This triggers ambiguous overload in GCC 12.1.0
+    buf.replace(1, 0, 0, U'!');
+    b32.replace(1, 0, 0, U'!');
     TESTX(buf == std::u32string_view{U"!12345!"});
     TESTX(b32 == std::u32string_view{U"!12345!"});
 
@@ -160,4 +164,15 @@ void test_translit_buffer()
     TESTX(buf == std::u32string_view{U"BC567890"});
     buf.replace(2, 3, arr, 2);
     TESTX(buf == std::u32string_view{U"BCC890"});
+    buf.replace(3, 100, arr);
+    TESTX(buf == std::u32string_view{U"BCCABC"});
+    buf.replace(5, 100, arr, 0, 2);
+    TESTX(buf == std::u32string_view{U"BCCABAB"});
+    buf.replace(0, 2, arr, 0, 0);
+    TESTX(buf == std::u32string_view{U"CABAB"});
+    // BAD VALUES
+    buf.replace(0, 0, arr, 0, 0);
+    TESTX(buf == std::u32string_view{U"CABAB"});
+    buf.replace(1, 0, arr, 0, 0);
+    TESTX(buf == std::u32string_view{U"CABAB"});
 }
