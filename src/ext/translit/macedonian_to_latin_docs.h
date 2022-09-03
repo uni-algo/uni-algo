@@ -8,12 +8,9 @@
 #include <array>
 #include <string>
 #include <string_view>
-#include <unordered_map>
-#include <unordered_set>
 
 #include "../../cpp_uni_ranges.h"
 #include "../../internal/cpp_uni_ranges_translit.h"
-//#include "../../cpp_uni_norm.h"
 
 namespace uni::translit {
 

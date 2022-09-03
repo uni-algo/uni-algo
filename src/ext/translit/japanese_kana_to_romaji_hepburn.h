@@ -5,9 +5,9 @@
 #ifndef JAPANESE_KANA_TO_ROMAJI_HEPBURN_H_UAIX
 #define JAPANESE_KANA_TO_ROMAJI_HEPBURN_H_UAIX
 
+#include <array>
 #include <string>
 #include <string_view>
-#include <unordered_map>
 
 #include "../../cpp_uni_ranges.h"
 #include "../../internal/cpp_uni_ranges_translit.h"
