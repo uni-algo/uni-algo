@@ -108,7 +108,7 @@ public:
         if (count > size() - pos)
             count = size() - pos;
 
-        for (size_type i = pos; i < size(); ++i)
+        for (size_type i = pos; i < size() - count; ++i)
             internal_array[i] = internal_array[i + count];
 
         internal_size -= count;
@@ -146,7 +146,7 @@ public:
         if (count1 > count2)
         {
             size_type count = count1 - count2;
-            for (size_type i = pos; i < size(); ++i)
+            for (size_type i = pos; i < size() - count; ++i)
                 internal_array[i] = internal_array[i + count];
             internal_size -= count;
         }
@@ -182,7 +182,7 @@ public:
         if (count1 > count2)
         {
             size_type count = count1 - count2;
-            for (size_type i = pos1; i < size(); ++i)
+            for (size_type i = pos1; i < size() - count; ++i)
                 internal_array[i] = internal_array[i + count];
             internal_size -= count;
         }
