@@ -72,6 +72,8 @@ private:
     static std::size_t to_block(char32_t c) { return (c - 0x0400); }
 
 public:
+    macedonian_to_latin_docs() = delete;
+
     // Buffer size 2 is enought to translit Macedonian to Latin
     // the smaller the buffer the faster the translit view works.
     static const std::size_t buf_size = 2;

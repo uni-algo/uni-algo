@@ -147,6 +147,8 @@ private:
     }
 
 public:
+    japanese_kana_to_romaji_hepburn() = delete;
+
     // The buffer size 3 is enough for the algorithm
     static const std::size_t buf_size = 3;
 
