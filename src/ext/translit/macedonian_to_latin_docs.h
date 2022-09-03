@@ -12,7 +12,7 @@
 #include "../../cpp_uni_ranges.h"
 #include "../../internal/cpp_uni_ranges_translit.h"
 
-namespace uni::translit {
+namespace uni::detail::translit {
 
 class macedonian_to_latin_docs
 {
@@ -181,6 +181,10 @@ public:
     }
 };
 
+} // namespace uni::detail::translit
+
+namespace uni::translit {
+
 template<typename UTF8>
 std::basic_string<UTF8> utf8_macedonian_to_latin_docs(std::basic_string_view<UTF8> source)
 {
@@ -188,7 +192,7 @@ std::basic_string<UTF8> utf8_macedonian_to_latin_docs(std::basic_string_view<UTF
     // because translit view is internal and doesn't have view adaptor
     // and we want to maximize the compilation speed.
 
-    using tr = macedonian_to_latin_docs;
+    using tr = detail::translit::macedonian_to_latin_docs;
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf8_view{source}, tr::buf_func, tr::buf_size}
             | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
@@ -199,7 +203,7 @@ std::basic_string<UTF8> utf8_macedonian_to_latin_docs(std::basic_string_view<UTF
 template<typename UTF16>
 std::basic_string<UTF16> utf16_macedonian_to_latin_docs(std::basic_string_view<UTF16> source)
 {
-    using tr = macedonian_to_latin_docs;
+    using tr = detail::translit::macedonian_to_latin_docs;
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf16_view{source}, tr::buf_func, tr::buf_size}
             | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());

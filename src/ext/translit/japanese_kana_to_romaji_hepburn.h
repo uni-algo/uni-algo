@@ -12,7 +12,7 @@
 #include "../../cpp_uni_ranges.h"
 #include "../../internal/cpp_uni_ranges_translit.h"
 
-namespace uni::translit {
+namespace uni::detail::translit {
 
 class japanese_kana_to_romaji_hepburn
 {
@@ -270,10 +270,14 @@ public:
     }
 };
 
+} // namespace uni::detail::translit
+
+namespace uni::translit {
+
 template<typename UTF8>
 std::basic_string<UTF8> utf8_japanese_kana_to_romaji_hepburn(std::basic_string_view<UTF8> source)
 {
-    using tr = japanese_kana_to_romaji_hepburn;
+    using tr = detail::translit::japanese_kana_to_romaji_hepburn;
 
     bool prev = false;
     auto func = [&prev](detail::translit::buffer& buf) { return tr::buf_func(buf, prev); };
@@ -287,7 +291,7 @@ std::basic_string<UTF8> utf8_japanese_kana_to_romaji_hepburn(std::basic_string_v
 template<typename UTF16>
 std::basic_string<UTF16> utf16_japanese_kana_to_romaji_hepburn(std::basic_string_view<UTF16> source)
 {
-    using tr = japanese_kana_to_romaji_hepburn;
+    using tr = detail::translit::japanese_kana_to_romaji_hepburn;
 
     bool prev = false;
     auto func = [&prev](detail::translit::buffer& buf) { return tr::buf_func(buf, prev); };
