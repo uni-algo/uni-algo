@@ -5,7 +5,8 @@
 #ifndef CPP_UNI_RANGES_TRANSLIT_H_UAIX
 #define CPP_UNI_RANGES_TRANSLIT_H_UAIX
 
-#include <string>
+#include <array>
+#include <string_view>
 #include <functional>
 
 #include "cpp_uni_ranges_core.h"
