@@ -108,10 +108,11 @@ public:
         if (count > size() - pos)
             count = size() - pos;
 
-        for (size_type i = pos; i < size() - count; ++i)
+        internal_size -= count;
+
+        for (size_type i = pos; i < size(); ++i)
             internal_array[i] = internal_array[i + count];
 
-        internal_size -= count;
         return *this;
     }
     constexpr buffer& insert(size_type pos, size_type count, value_type c) noexcept
@@ -123,13 +124,14 @@ public:
         if (count + size() > max_size())
             return *this; // std::u32string throws
 
-        for (size_type i = size() + count - 1; i >= pos + count; --i)
+        internal_size += count;
+
+        for (size_type i = size() - 1; i >= pos + count; --i)
             internal_array[i] = internal_array[i - count];
 
         for (size_type i = pos; i < pos + count; ++i)
             internal_array[i] = c;
 
-        internal_size += count;
         return *this;
     }
     constexpr buffer& replace(size_type pos, size_type count1, size_type count2, value_type c) noexcept
@@ -146,16 +148,16 @@ public:
         if (count1 > count2)
         {
             size_type count = count1 - count2;
-            for (size_type i = pos; i < size() - count; ++i)
-                internal_array[i] = internal_array[i + count];
             internal_size -= count;
+            for (size_type i = pos; i < size(); ++i)
+                internal_array[i] = internal_array[i + count];
         }
         else if (count1 < count2)
         {
             size_type count = count2 - count1;
-            for (size_type i = size() + count - 1; i >= pos + count; --i)
-                internal_array[i] = internal_array[i - count];
             internal_size += count;
+            for (size_type i = size() - 1; i >= pos + count; --i)
+                internal_array[i] = internal_array[i - count];
         }
         for (size_type i = pos; i < pos + count2; ++i)
             internal_array[i] = c;
@@ -182,16 +184,16 @@ public:
         if (count1 > count2)
         {
             size_type count = count1 - count2;
-            for (size_type i = pos1; i < size() - count; ++i)
-                internal_array[i] = internal_array[i + count];
             internal_size -= count;
+            for (size_type i = pos1; i < size(); ++i)
+                internal_array[i] = internal_array[i + count];
         }
         else if (count1 < count2)
         {
             size_type count = count2 - count1;
-            for (size_type i = size() + count - 1; i >= pos1 + count; --i)
-                internal_array[i] = internal_array[i - count];
             internal_size += count;
+            for (size_type i = size() - 1; i >= pos1 + count; --i)
+                internal_array[i] = internal_array[i - count];
         }
         for (size_type i = pos1, j = pos2; i < pos1 + count2; ++i, ++j)
             internal_array[i] = array[j];
