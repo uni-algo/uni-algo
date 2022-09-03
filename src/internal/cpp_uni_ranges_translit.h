@@ -75,7 +75,7 @@ public:
     { return internal_array[internal_size - 1]; }
     constexpr const_reference back() const noexcept
     { return internal_array[internal_size - 1]; }
-    // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
+    // NOLINTNEXTLINE(google-explicit-constructor)
     constexpr operator std::u32string_view() const noexcept
     { return std::u32string_view{data(), size()}; }
     constexpr void clear() noexcept
