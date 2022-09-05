@@ -36,7 +36,6 @@ uaix_const type_codept prop_WB_Numeric               = 15;
 uaix_const type_codept prop_WB_ExtendNumLet          = 16;
 uaix_const type_codept prop_WB_ZWJ                   = 17;
 uaix_const type_codept prop_WB_WSegSpace             = 18;
-uaix_const type_codept prop_WB_Extended_Pictographic = 19;
 uaix_const type_codept prop_WU_Remaining_Alphabetic  = 20;
 
 uaix_const int state_break_word_begin    = 0;
@@ -49,7 +48,21 @@ uaix_const int state_break_word_RI_RI    = 5;
 uaix_always_inline
 uaix_static type_codept stages_break_word_prop(type_codept c)
 {
+    // This function returns raw property that contains property with Extended_Pictographic
+    // Two functions below must be used to get the real property and Extended_Pictographic
     return stages(c, stage1_break_word, stage2_break_word);
+}
+
+uaix_always_inline
+uaix_static type_codept break_word_prop(type_codept prop)
+{
+    return (prop & 0x7F); // 7 right bits are used for properties
+}
+
+uaix_always_inline
+uaix_static bool break_word_prop_ext_pic(type_codept prop)
+{
+    return (prop & 0x80) ? true : false; // First (left) bit is used for Extended_Pictographic
 }
 
 struct impl_break_word_state
@@ -116,7 +129,7 @@ uaix_static type_codept utf8_break_word_skip(it_in_utf8 first, it_end_utf8 last)
     {
         src = utf8_iter(src, last, &c, iter_replacement);
 
-        type_codept prop = stages_break_word_prop(c);
+        type_codept prop = break_word_prop(stages_break_word_prop(c));
 
         if (break_word_skip(prop))
             continue;
@@ -141,12 +154,14 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
     // with the state table so it's not even worth it probably.
     // Compared the performance with ICU it's already much faster so it can wait.
 
-    type_codept c_prop = stages_break_word_prop(c);
-    type_codept p_prop = state->prev_cp_prop;
+    type_codept raw_prop = stages_break_word_prop(c);
+
+    type_codept c_prop = break_word_prop(raw_prop);
+    type_codept p_prop = break_word_prop(state->prev_cp_prop);
 
     // Previous values of code points with WB4 rules
-    type_codept p1_prop = state->prev_cp1_prop;
-    type_codept p2_prop = state->prev_cp2_prop;
+    type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
+    type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
     type_codept t_prop = 0;
 
@@ -168,7 +183,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
         result = true; // NOLINT
     else if (c_prop == prop_WB_Newline || c_prop == prop_WB_CR || c_prop == prop_WB_LF) // WB3b
         result = true; // NOLINT
-    else if (p_prop == prop_WB_ZWJ && c_prop == prop_WB_Extended_Pictographic) // WB3c
+    else if (p_prop == prop_WB_ZWJ && break_word_prop_ext_pic(raw_prop)) // WB3c
         result = false; // NOLINT
     else if (p_prop == prop_WB_WSegSpace && c_prop == prop_WB_WSegSpace) // WB3d
         result = false; // NOLINT
@@ -250,9 +265,9 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
     state->prev_cp2 = state->prev_cp1;
     state->prev_cp2_prop = state->prev_cp1_prop;
     state->prev_cp1 = c;
-    state->prev_cp1_prop = c_prop;
+    state->prev_cp1_prop = raw_prop;
     state->prev_cp = c;
-    state->prev_cp_prop = c_prop;
+    state->prev_cp_prop = raw_prop;
 
     // TODO: The logic of word_prop is incorrect right now, to make it work properly rearrage all word properties to:
     // all punctuations > prop_WB_Numeric > prop_WB_Hebrew_Letter > prop_WB_ALetter > prop_WB_Katakana > prop_WU_Remaining_Alphabetic
@@ -298,7 +313,7 @@ uaix_static type_codept utf16_break_word_skip(it_in_utf16 first, it_end_utf16 la
     {
         src = utf16_iter(src, last, &c, iter_replacement);
 
-        type_codept prop = stages_break_word_prop(c);
+        type_codept prop = break_word_prop(stages_break_word_prop(c));
 
         if (break_word_skip(prop))
             continue;
@@ -321,12 +336,14 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
     // ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.html
     // I compared the performance with ICU it's already much faster so it can wait.
 
-    type_codept c_prop = stages_break_word_prop(c);
-    type_codept p_prop = state->prev_cp_prop;
+    type_codept raw_prop = stages_break_word_prop(c);
+
+    type_codept c_prop = break_word_prop(raw_prop);
+    type_codept p_prop = break_word_prop(state->prev_cp_prop);
 
     // Previous values of code points with WB4 rules
-    type_codept p1_prop = state->prev_cp1_prop;
-    type_codept p2_prop = state->prev_cp2_prop;
+    type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
+    type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
     type_codept t_prop = 0;
 
@@ -348,7 +365,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
         result = true; // NOLINT
     else if (c_prop == prop_WB_Newline || c_prop == prop_WB_CR || c_prop == prop_WB_LF) // WB3b
         result = true; // NOLINT
-    else if (p_prop == prop_WB_ZWJ && c_prop == prop_WB_Extended_Pictographic) // WB3c
+    else if (p_prop == prop_WB_ZWJ && break_word_prop_ext_pic(raw_prop)) // WB3c
         result = false; // NOLINT
     else if (p_prop == prop_WB_WSegSpace && c_prop == prop_WB_WSegSpace) // WB3d
         result = false; // NOLINT
@@ -430,9 +447,9 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
     state->prev_cp2 = state->prev_cp1;
     state->prev_cp2_prop = state->prev_cp1_prop;
     state->prev_cp1 = c;
-    state->prev_cp1_prop = c_prop;
+    state->prev_cp1_prop = raw_prop;
     state->prev_cp = c;
-    state->prev_cp_prop = c_prop;
+    state->prev_cp_prop = raw_prop;
 
     // TODO: fix word_prop
     //if (c_proc > *word_prop)
