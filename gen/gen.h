@@ -1290,7 +1290,6 @@ static void new_generator_break_word(const std::string& file1, const std::string
                     if (ExtendNumLet)       map.at(i) = 16;
                     if (ZWJ)                map.at(i) = 17;
                     if (WSegSpace)          map.at(i) = 18;
-                    // if (Extended_Pictographic) map.at(i) = 19; // See below
                     // if (Alphabetic)            map.at(i) = 20; // See below
                 }
             }
@@ -1324,20 +1323,13 @@ static void new_generator_break_word(const std::string& file1, const std::string
 
                 for (uint32_t i = c1; i <= c2; ++i)
                 {
-                    //ASSERTX(map.at(i) == 0);
                     //if (map.at(i) != 0) { std::cout << std::hex << i << std::dec << ':' << map.at(i) << '\n'; }
-                    // There are 5 code points that have ALetter property and Extended_Pictographic:
-                    // U+2139, U+24C2, U+1F170, U+1F171, U+1F17E, U+1F17F,
-                    // these "emoji" never used together with ZWJ see: emoji-zwj-sequences.txt
-                    // so it won't be a problem for now (Unicode 13.0).
-                    // TODO: this can be fixed if we store Extended_Pictographic in the first bit but this is pure bullsh...
-                    // Actually it must be fixed anyway, it won't complicate the code in impl_break_word.h too much.
-                    // I tested in ICU and it handles these cases, another reason to fix this.
+                    // There are some code points that have ALetter property and Extended_Pictographic:
+                    // Unicode 14.0.0: U+2139, U+24C2, U+1F170, U+1F171, U+1F17E, U+1F17F
+                    // So we use first (left) bit to store Extended_Pictographic
                     // See test_break_word_corner_cases in test/test_break.h
-                    if (map.at(i) != 0) // Do not override ALetter with Extended_Pictographic for these code points
-                        continue;
 
-                    if (Extended_Pictographic) map.at(i) = 19;
+                    if (Extended_Pictographic) map.at(i) = 0x80 | map.at(i);
                 }
             }
         }
