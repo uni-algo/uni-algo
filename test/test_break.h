@@ -257,18 +257,17 @@ void test_break_word_corner_cases()
     TESTX(test_break_count_words16(u"\x005F\x0077") == 1);
     //TESTX(test_break_count_only_words16(u"\x005F\x0077") == 1);
 
-    // Uncomment all of them when TODO: in generator_break_word will be fixed.
     // Properly handle corner cases with Extended_Pictographic in word properties.
-    // Extended_Pictographic intersects with ALetter in some code points in word properties.
+    // Extended_Pictographic intersects with ALetter with some code points in word properties.
     // Note that Extended_Pictographic never intersects with something in grapheme properties.
     // The behavior is the same as in ICU.
-    //TESTX(test_break_count_words("\xE2\x80\x8D\xE2\x84\xB9\x77") == 1);
+    TESTX(test_break_count_words("\xE2\x80\x8D\xE2\x84\xB9\x77") == 1);
     TESTX(test_break_count_words("\xE2\x84\xB9\xE2\x80\x8D\x77") == 1);
-    //TESTX(test_break_count_words16(u"\x200D\x2139\x0077") == 1);
+    TESTX(test_break_count_words16(u"\x200D\x2139\x0077") == 1);
     TESTX(test_break_count_words16(u"\x2139\x200D\x0077") == 1);
-    //TESTX(test_break_count_words("\xE2\x80\x8D\xE2\x84\xB9") == 1);
+    TESTX(test_break_count_words("\xE2\x80\x8D\xE2\x84\xB9") == 1);
     TESTX(test_break_count_words("\xE2\x84\xB9\xE2\x80\x8D") == 1);
-    //TESTX(test_break_count_words16(u"\x200D\x2139") == 1);
+    TESTX(test_break_count_words16(u"\x200D\x2139") == 1);
     TESTX(test_break_count_words16(u"\x2139\x200D") == 1);
 
     // Repeat previous tests with count_only_words just in case.
