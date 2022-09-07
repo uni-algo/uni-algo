@@ -91,6 +91,14 @@ private:
         }
         uaiw_constexpr Iter begin() const noexcept { return it_begin; }
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
+        uaiw_constexpr bool is_word()             const noexcept { return detail::impl_break_is_word(word_prop); }
+        uaiw_constexpr bool is_word_number()      const noexcept { return detail::impl_break_is_word_number(word_prop); }
+        uaiw_constexpr bool is_word_letter()      const noexcept { return detail::impl_break_is_word_letter(word_prop); }
+        uaiw_constexpr bool is_word_kana()        const noexcept { return detail::impl_break_is_word_kana(word_prop); }
+        uaiw_constexpr bool is_word_ideographic() const noexcept { return detail::impl_break_is_word_ideo(word_prop); }
+        uaiw_constexpr bool is_emoji()            const noexcept { return detail::impl_break_is_word_emoji(word_prop); }
+        //uaiw_constexpr bool is_punctuation()      const noexcept { return detail::impl_break_is_word_punct(word_prop); }
+        //uaiw_constexpr bool is_segspace()         const noexcept { return detail::impl_break_is_word_space(word_prop); }
         utf8& operator++()
         {
             iter_func_word_utf8();
@@ -211,6 +219,14 @@ private:
         }
         uaiw_constexpr Iter begin() const noexcept { return it_begin; }
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
+        uaiw_constexpr bool is_word()             const noexcept { return detail::impl_break_is_word(word_prop); }
+        uaiw_constexpr bool is_word_number()      const noexcept { return detail::impl_break_is_word_number(word_prop); }
+        uaiw_constexpr bool is_word_letter()      const noexcept { return detail::impl_break_is_word_letter(word_prop); }
+        uaiw_constexpr bool is_word_kana()        const noexcept { return detail::impl_break_is_word_kana(word_prop); }
+        uaiw_constexpr bool is_word_ideographic() const noexcept { return detail::impl_break_is_word_ideo(word_prop); }
+        uaiw_constexpr bool is_emoji()            const noexcept { return detail::impl_break_is_word_emoji(word_prop); }
+        //uaiw_constexpr bool is_punctuation()      const noexcept { return detail::impl_break_is_word_punct(word_prop); }
+        //uaiw_constexpr bool is_segspace()         const noexcept { return detail::impl_break_is_word_space(word_prop); }
         utf16& operator++()
         {
             iter_func_word_utf16();

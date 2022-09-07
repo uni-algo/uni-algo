@@ -18,25 +18,29 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
 // See generator_break_word in gen/gen.h
 
-uaix_const type_codept prop_WB_Double_Quote          = 1;
-uaix_const type_codept prop_WB_Single_Quote          = 2;
-uaix_const type_codept prop_WB_Hebrew_Letter         = 3;
-uaix_const type_codept prop_WB_CR                    = 4;
-uaix_const type_codept prop_WB_LF                    = 5;
-uaix_const type_codept prop_WB_Newline               = 6;
-uaix_const type_codept prop_WB_Extend                = 7;
-uaix_const type_codept prop_WB_Regional_Indicator    = 8;
-uaix_const type_codept prop_WB_Format                = 9;
-uaix_const type_codept prop_WB_Katakana              = 10;
-uaix_const type_codept prop_WB_ALetter               = 11;
-uaix_const type_codept prop_WB_MidLetter             = 12;
-uaix_const type_codept prop_WB_MidNum                = 13;
-uaix_const type_codept prop_WB_MidNumLet             = 14;
-uaix_const type_codept prop_WB_Numeric               = 15;
-uaix_const type_codept prop_WB_ExtendNumLet          = 16;
-uaix_const type_codept prop_WB_ZWJ                   = 17;
-uaix_const type_codept prop_WB_WSegSpace             = 18;
-uaix_const type_codept prop_WU_Remaining_Alphabetic  = 20;
+uaix_const type_codept prop_WB_CR                    = 1;
+uaix_const type_codept prop_WB_LF                    = 2;
+uaix_const type_codept prop_WB_Newline               = 3;
+uaix_const type_codept prop_WB_Extend                = 4;
+uaix_const type_codept prop_WB_ZWJ                   = 5;
+uaix_const type_codept prop_WB_Format                = 6;
+uaix_const type_codept prop_WB_Single_Quote          = 7;
+uaix_const type_codept prop_WB_Double_Quote          = 8;
+uaix_const type_codept prop_WB_MidNumLet             = 9;
+uaix_const type_codept prop_WB_MidLetter             = 10;
+uaix_const type_codept prop_WB_MidNum                = 11;
+uaix_const type_codept prop_WB_ExtendNumLet          = 12;
+uaix_const type_codept prop_WB_WSegSpace             = 13;
+// For word properties everything else that can be considered a word
+// must be in this order: Numeric -> Alphabetic -> Kana -> Ideographic -> Emoji
+uaix_const type_codept prop_WB_Numeric               = 14;
+uaix_const type_codept prop_WB_ALetter               = 15;
+uaix_const type_codept prop_WB_Hebrew_Letter         = 16;
+uaix_const type_codept prop_WX_Remaining_Alphabetic  = 17;
+uaix_const type_codept prop_WB_Katakana              = 18;
+uaix_const type_codept prop_WX_Remaining_Hiragana    = 19;
+uaix_const type_codept prop_WX_Remaining_Ideographic = 20;
+uaix_const type_codept prop_WB_Regional_Indicator    = 21; // Must be the last
 
 uaix_const int state_break_word_begin    = 0;
 uaix_const int state_break_word_process  = 1;
@@ -95,16 +99,70 @@ uaix_static void impl_break_word_state_reset(struct impl_break_word_state* state
 uaix_always_inline
 uaix_static bool impl_break_is_word(type_codept word_prop)
 {
-    if (word_prop == prop_WB_ALetter ||
-        word_prop == prop_WB_Hebrew_Letter ||
-        word_prop == prop_WB_Numeric ||
-        word_prop == prop_WB_Katakana ||
-        word_prop == prop_WU_Remaining_Alphabetic)
-        return true;
-
-    return false;
+    // ICU analog: !UBRK_WORD_NONE
+    // Excludes spaces and most punctuation and emojis
+    return (word_prop >= prop_WB_Numeric && word_prop <= prop_WX_Remaining_Ideographic);
+    // REMINDER: Treat all emojis as words too
+    //return (word_prop >= prop_WB_Numeric);
+    // REMINDER: Treat "letter emojis" (ALetter | Extended_Pictographic) as words too
+    //return (word_prop >= prop_WB_Numeric && word_prop <= prop_WX_Remaining_Ideographic) || word_prop == (prop_WB_ALetter | 0x80);
 }
 
+uaix_always_inline
+uaix_static bool impl_break_is_word_number(type_codept word_prop)
+{
+    // ICU analog: UBRK_WORD_NUMBER
+    // Includes only numbers
+    return (word_prop == prop_WB_Numeric);
+}
+
+uaix_always_inline
+uaix_static bool impl_break_is_word_letter(type_codept word_prop)
+{
+    // ICU analog: UBRK_WORD_LETTER
+    // Includes words that contain letters
+    // Excludes numbers and kana and ideographic
+    return (word_prop >= prop_WB_ALetter && word_prop <= prop_WX_Remaining_Alphabetic);
+}
+
+uaix_always_inline
+uaix_static bool impl_break_is_word_kana(type_codept word_prop)
+{
+    // ICU analog: UBRK_WORD_KANA
+    // Includes only kana
+    return (word_prop == prop_WB_Katakana || word_prop == prop_WX_Remaining_Hiragana);
+}
+
+uaix_always_inline
+uaix_static bool impl_break_is_word_ideo(type_codept word_prop)
+{
+    // ICU analog: UBRK_WORD_IDEO
+    // Includes only ideographic
+    return (word_prop == prop_WX_Remaining_Ideographic);
+}
+
+uaix_always_inline
+uaix_static bool impl_break_is_word_emoji(type_codept word_prop)
+{
+    // Includes only emojis
+    return (word_prop >= prop_WB_Regional_Indicator); // Includes Extended_Pictographic
+}
+/*
+uaix_always_inline
+uaix_static bool impl_break_is_word_punct(type_codept word_prop)
+{
+    // Includes only punctuation
+    return (word_prop > prop_WB_Format && word_prop < prop_WB_WSegSpace);
+    //return (word_prop < prop_WB_Numeric);
+}
+
+uaix_always_inline
+uaix_static bool impl_break_is_word_space(type_codept word_prop)
+{
+    // Includes only spaces
+    return (word_prop == prop_WB_WSegSpace);
+}
+*/
 uaix_always_inline
 uaix_static bool break_word_skip(type_codept prop)
 {
@@ -146,7 +204,7 @@ uaix_always_inline_tmpl
 uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                  it_in_utf8 first, it_end_utf8 last)
 {
-    // word_prop property must be used only with impl_break_is_word
+    // word_prop property must be used only with impl_break_is_word* functions
 
     // TODO: https://unicode.org/reports/tr29/#State_Machines
     // ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.html
@@ -173,9 +231,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
     if (state->state == state_break_word_begin)
     {
         state->state = state_break_word_process;
-        *word_prop = c_prop;
-        // TODO: fix word_prop
-        //*word_prop = 0;
+        *word_prop = 0;
     }
     else if (p_prop == prop_WB_CR && c_prop == prop_WB_LF) // WB3
         result = false; // NOLINT
@@ -245,9 +301,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
     else // WB999
     {
         result = true;
-        *word_prop = c_prop;
-        // TODO: fix word_prop
-        //*word_prop = 0;
+        *word_prop = 0;
     }
 
     // WB15/WB16
@@ -269,12 +323,8 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
     state->prev_cp = c;
     state->prev_cp_prop = raw_prop;
 
-    // TODO: The logic of word_prop is incorrect right now, to make it work properly rearrage all word properties to:
-    // all punctuations > prop_WB_Numeric > prop_WB_Hebrew_Letter > prop_WB_ALetter > prop_WB_Katakana > prop_WU_Remaining_Alphabetic
-    // then document why such arrangement is required and and uncomment all todos: fix word_prop
-    // TODO: fix word_prop
-    //if (c_proc > *word_prop)
-    //	*word_prop = c_prop;
+    if (raw_prop > *word_prop)
+        *word_prop = raw_prop;
 
     return result;
 }
@@ -306,7 +356,7 @@ template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_static type_codept utf16_break_word_skip(it_in_utf16 first, it_end_utf16 last)
 {
-    it_in_utf16 src = first;
+    it_in_utf16 src = first + 0; // Make it compile only for contiguous or random access iterator for now
     type_codept c = 0;
 
     while (src != last)
@@ -330,11 +380,7 @@ uaix_always_inline_tmpl
 uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                   it_in_utf16 first, it_end_utf16 last)
 {
-    // word_prop property must be used only with impl_break_is_word
-
-    // TODO: https://unicode.org/reports/tr29/#State_Machines
-    // ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.html
-    // I compared the performance with ICU it's already much faster so it can wait.
+    // word_prop property must be used only with impl_break_is_word* functions
 
     type_codept raw_prop = stages_break_word_prop(c);
 
@@ -355,9 +401,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
     if (state->state == state_break_word_begin)
     {
         state->state = state_break_word_process;
-        *word_prop = c_prop;
-        // TODO: fix word_prop
-        //*word_prop = 0;
+        *word_prop = 0;
     }
     else if (p_prop == prop_WB_CR && c_prop == prop_WB_LF) // WB3
         result = false; // NOLINT
@@ -427,9 +471,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
     else // WB999
     {
         result = true;
-        *word_prop = c_prop;
-        // TODO: fix word_prop
-        //*word_prop = 0;
+        *word_prop = 0;
     }
 
     // WB15/WB16
@@ -451,9 +493,8 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
     state->prev_cp = c;
     state->prev_cp_prop = raw_prop;
 
-    // TODO: fix word_prop
-    //if (c_proc > *word_prop)
-    //	*word_prop = c_prop;
+    if (raw_prop > *word_prop)
+        *word_prop = raw_prop;
 
     return result;
 }
