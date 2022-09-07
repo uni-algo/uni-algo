@@ -203,6 +203,7 @@ int main7()
     std::cout << "SKIP: Break Grapheme and Word with test files" << '\n';
 #endif
     test_break_word_corner_cases();
+    test_break_word_prop();
 
     std::cout << "DONE: Break Grapheme and Word" << '\n';
 
