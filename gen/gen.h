@@ -1272,25 +1272,27 @@ static void new_generator_break_word(const std::string& file1, const std::string
                     // These values do not intersect with each other
                     ASSERTX(map.at(i) == 0);
 
-                    if (Double_Quote)       map.at(i) = 1;
-                    if (Single_Quote)       map.at(i) = 2;
-                    if (Hebrew_Letter)      map.at(i) = 3;
-                    if (CR)                 map.at(i) = 4;
-                    if (LF)                 map.at(i) = 5;
-                    if (Newline)            map.at(i) = 6;
-                    if (Extend)             map.at(i) = 7;
-                    if (Regional_Indicator) map.at(i) = 8;
-                    if (Format)             map.at(i) = 9;
-                    if (Katakana)           map.at(i) = 10;
-                    if (ALetter)            map.at(i) = 11;
-                    if (MidLetter)          map.at(i) = 12;
-                    if (MidNum)             map.at(i) = 13;
-                    if (MidNumLet)          map.at(i) = 14;
-                    if (Numeric)            map.at(i) = 15;
-                    if (ExtendNumLet)       map.at(i) = 16;
-                    if (ZWJ)                map.at(i) = 17;
-                    if (WSegSpace)          map.at(i) = 18;
-                    // if (Alphabetic)            map.at(i) = 20; // See below
+                    if (CR)                 map.at(i) = 1;
+                    if (LF)                 map.at(i) = 2;
+                    if (Newline)            map.at(i) = 3;
+                    if (Extend)             map.at(i) = 4;
+                    if (ZWJ)                map.at(i) = 5;
+                    if (Format)             map.at(i) = 6;
+                    if (Single_Quote)       map.at(i) = 7;
+                    if (Double_Quote)       map.at(i) = 8;
+                    if (MidNumLet)          map.at(i) = 9;
+                    if (MidLetter)          map.at(i) = 10;
+                    if (MidNum)             map.at(i) = 11;
+                    if (ExtendNumLet)       map.at(i) = 12;
+                    if (WSegSpace)          map.at(i) = 13;
+                    if (Numeric)            map.at(i) = 14;
+                    if (ALetter)            map.at(i) = 15;
+                    if (Hebrew_Letter)      map.at(i) = 16;
+                    // if (Alphabetic)      map.at(i) = 17; // See below
+                    if (Katakana)           map.at(i) = 18;
+                    // if (Hiragana) map.at(i)        = 19; // See below
+                    // if (Ideographic) map.at(i)     = 20; // See below
+                    if (Regional_Indicator) map.at(i) = 21;
                 }
             }
         }
@@ -1338,7 +1340,79 @@ static void new_generator_break_word(const std::string& file1, const std::string
     input.close();
     line.clear();
 
-    // Get remaining alphabetic code points from DerivedCoreProperties.txt too for word indicator
+    // Get remaining Ideographic code points from PropList.txt for word indicator
+
+    input.open("PropList.txt", std::ios::binary);
+    ASSERTX(input.is_open());
+
+    while (std::getline(input, line))
+    {
+        std::size_t semicolon = line.find(';');
+
+        if (line.size() > 15 && semicolon != std::string::npos)
+        {
+            bool Ideographic = false;
+
+            if (line.find("; Ideographic #", semicolon) == semicolon)
+                Ideographic = true;
+
+            if (Ideographic)
+            {
+                uint32_t c1 = (uint32_t)strtoul(line.c_str(), 0, 16);
+                uint32_t c2 = c1;
+                std::size_t dots = line.find("..");
+                if (dots != std::string::npos)
+                    c2 = (uint32_t)strtoul(line.c_str()+dots+2, 0, 16);
+
+                for (uint32_t i = c1; i <= c2; ++i)
+                {
+                    if (map.at(i) == 0) // Do not override existing word break properties
+                        map.at(i) = 20;
+                }
+            }
+        }
+    }
+
+    input.close();
+    line.clear();
+
+    // Get remaining Hiragana code points from Scripts.txt for word indicator
+
+    input.open("Scripts.txt", std::ios::binary);
+    ASSERTX(input.is_open());
+
+    while (std::getline(input, line))
+    {
+        std::size_t semicolon = line.find(';');
+
+        if (line.size() > 15 && semicolon != std::string::npos)
+        {
+            bool Hiragana = false;
+
+            if (line.find("; Hiragana #", semicolon) == semicolon)
+                Hiragana = true;
+
+            if (Hiragana)
+            {
+                uint32_t c1 = (uint32_t)strtoul(line.c_str(), 0, 16);
+                uint32_t c2 = c1;
+                std::size_t dots = line.find("..");
+                if (dots != std::string::npos)
+                    c2 = (uint32_t)strtoul(line.c_str()+dots+2, 0, 16);
+
+                for (uint32_t i = c1; i <= c2; ++i)
+                {
+                    if (map.at(i) == 0) // Do not override existing word break properties
+                        map.at(i) = 19;
+                }
+            }
+        }
+    }
+
+    input.close();
+    line.clear();
+
+    // Get remaining Alphabetic code points from DerivedCoreProperties.txt for word indicator
 
     input.open("DerivedCoreProperties.txt", std::ios::binary);
     ASSERTX(input.is_open());
@@ -1365,7 +1439,7 @@ static void new_generator_break_word(const std::string& file1, const std::string
                 for (uint32_t i = c1; i <= c2; ++i)
                 {
                     if (map.at(i) == 0) // Do not override existing word break properties
-                        map.at(i) = 20;
+                        map.at(i) = 17;
                 }
             }
         }
