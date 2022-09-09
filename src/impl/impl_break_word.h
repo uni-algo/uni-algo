@@ -44,10 +44,8 @@ uaix_const type_codept prop_WB_Regional_Indicator    = 21; // Must be the last
 
 uaix_const int state_break_word_begin    = 0;
 uaix_const int state_break_word_continue = 1;
-uaix_const int state_break_word_EP       = 2;
-uaix_const int state_break_word_EP_ZWJ   = 3;
-uaix_const int state_break_word_RI       = 4;
-uaix_const int state_break_word_RI_RI    = 5;
+uaix_const int state_break_word_RI       = 2;
+uaix_const int state_break_word_RI_RI    = 3;
 
 uaix_always_inline
 uaix_static type_codept stages_break_word_prop(type_codept c)
@@ -73,13 +71,14 @@ struct impl_break_word_state
 {
     type_codept prev_cp;
     type_codept prev_cp_prop;
-    int state;
 
     type_codept prev_cp1;
     type_codept prev_cp1_prop;
 
     type_codept prev_cp2;
     type_codept prev_cp2_prop;
+
+    int state;
 };
 
 uaix_always_inline
@@ -87,13 +86,14 @@ uaix_static void impl_break_word_state_reset(struct impl_break_word_state* state
 {
     state->prev_cp = 0;
     state->prev_cp_prop = 0;
-    state->state = state_break_word_begin;
 
     state->prev_cp1 = 0;
     state->prev_cp1_prop = 0;
 
     state->prev_cp2 = 0;
     state->prev_cp2_prop = 0;
+
+    state->state = state_break_word_begin;
 }
 
 uaix_always_inline

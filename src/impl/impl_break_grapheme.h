@@ -35,10 +35,10 @@ uaix_const type_codept prop_GB_Extended_Pictographic = 14;
 
 uaix_const int state_break_grapheme_begin    = 0;
 uaix_const int state_break_grapheme_continue = 1;
-uaix_const int state_break_grapheme_EP       = 2;
-uaix_const int state_break_grapheme_EP_ZWJ   = 3;
-uaix_const int state_break_grapheme_RI       = 4;
-uaix_const int state_break_grapheme_RI_RI    = 5;
+uaix_const int state_break_grapheme_RI       = 2;
+uaix_const int state_break_grapheme_RI_RI    = 3;
+uaix_const int state_break_grapheme_EP       = 4;
+uaix_const int state_break_grapheme_EP_ZWJ   = 5;
 
 uaix_always_inline
 uaix_static type_codept stages_break_grapheme_prop(type_codept c)
@@ -50,6 +50,7 @@ struct impl_break_grapheme_state
 {
     type_codept prev_cp;
     type_codept prev_cp_prop;
+
     int state;
 };
 
@@ -58,6 +59,7 @@ uaix_static void impl_break_grapheme_state_reset(struct impl_break_grapheme_stat
 {
     state->prev_cp = 0;
     state->prev_cp_prop = 0;
+
     state->state = state_break_grapheme_begin;
 }
 /*
