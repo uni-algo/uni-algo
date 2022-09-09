@@ -43,7 +43,7 @@ uaix_const type_codept prop_WX_Remaining_Ideographic = 20;
 uaix_const type_codept prop_WB_Regional_Indicator    = 21; // Must be the last
 
 uaix_const int state_break_word_begin    = 0;
-uaix_const int state_break_word_process  = 1;
+uaix_const int state_break_word_continue = 1;
 uaix_const int state_break_word_EP       = 2;
 uaix_const int state_break_word_EP_ZWJ   = 3;
 uaix_const int state_break_word_RI       = 4;
@@ -221,7 +221,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
     type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
     type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
-    type_codept t_prop = 0;
+    type_codept s_prop = 0;
 
     bool result = false;
 
@@ -230,7 +230,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
 
     if (state->state == state_break_word_begin)
     {
-        state->state = state_break_word_process;
+        state->state = state_break_word_continue;
         *word_prop = 0;
     }
     else if (p_prop == prop_WB_CR && c_prop == prop_WB_LF) // WB3
@@ -258,8 +258,8 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (c_prop == prop_WB_MidLetter || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             ((t_prop = utf8_break_word_skip(first, last)) != 0 &&
-              (t_prop == prop_WB_ALetter || t_prop == prop_WB_Hebrew_Letter))) // WB6
+             ((s_prop = utf8_break_word_skip(first, last)) != 0 &&
+              (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB6
         result = false; // NOLINT
     else if ((p2_prop == prop_WB_ALetter || p2_prop == prop_WB_Hebrew_Letter) &&
              (p1_prop == prop_WB_MidLetter || p1_prop == prop_WB_MidNumLet || p1_prop == prop_WB_Single_Quote) &&
@@ -313,7 +313,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
             state->state = state_break_word_RI;
     }
     else
-        state->state = state_break_word_process;
+        state->state = state_break_word_continue;
 
     // Set previous values of codepoints with WB4 rules
     state->prev_cp2 = state->prev_cp1;
@@ -391,7 +391,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
     type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
     type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
-    type_codept t_prop = 0;
+    type_codept s_prop = 0;
 
     bool result = false;
 
@@ -400,7 +400,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
 
     if (state->state == state_break_word_begin)
     {
-        state->state = state_break_word_process;
+        state->state = state_break_word_continue;
         *word_prop = 0;
     }
     else if (p_prop == prop_WB_CR && c_prop == prop_WB_LF) // WB3
@@ -428,8 +428,8 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (c_prop == prop_WB_MidLetter || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             ((t_prop = utf16_break_word_skip(first, last)) != 0 &&
-              (t_prop == prop_WB_ALetter || t_prop == prop_WB_Hebrew_Letter))) // WB6
+             ((s_prop = utf16_break_word_skip(first, last)) != 0 &&
+              (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB6
         result = false; // NOLINT
     else if ((p2_prop == prop_WB_ALetter || p2_prop == prop_WB_Hebrew_Letter) &&
              (p1_prop == prop_WB_MidLetter || p1_prop == prop_WB_MidNumLet || p1_prop == prop_WB_Single_Quote) &&
@@ -483,7 +483,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
             state->state = state_break_word_RI;
     }
     else
-        state->state = state_break_word_process;
+        state->state = state_break_word_continue;
 
     // Set previous values of codepoints with WB4 rules
     state->prev_cp2 = state->prev_cp1;

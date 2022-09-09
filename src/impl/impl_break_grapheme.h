@@ -34,7 +34,7 @@ uaix_const type_codept prop_GB_ZWJ                   = 13;
 uaix_const type_codept prop_GB_Extended_Pictographic = 14;
 
 uaix_const int state_break_grapheme_begin    = 0;
-uaix_const int state_break_grapheme_process  = 1;
+uaix_const int state_break_grapheme_continue = 1;
 uaix_const int state_break_grapheme_EP       = 2;
 uaix_const int state_break_grapheme_EP_ZWJ   = 3;
 uaix_const int state_break_grapheme_RI       = 4;
@@ -101,7 +101,7 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* state, type_co
     // Unicode 11.0 - 14.0 rules
 
     if (state->state == state_break_grapheme_begin)
-        state->state = state_break_grapheme_process;
+        state->state = state_break_grapheme_continue;
     else if (p_prop == prop_GB_CR && c_prop == prop_GB_LF) // GB3
         result = false; // NOLINT
     else if (p_prop == prop_GB_Control || p_prop == prop_GB_CR || p_prop == prop_GB_LF) // GB4
@@ -143,7 +143,7 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* state, type_co
     else if (state->state == state_break_grapheme_EP && c_prop == prop_GB_ZWJ)
         state->state = state_break_grapheme_EP_ZWJ;
     else
-        state->state = state_break_grapheme_process;
+        state->state = state_break_grapheme_continue;
 
     state->prev_cp = c;
     state->prev_cp_prop = c_prop;
