@@ -244,12 +244,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
     else if (p_prop == prop_WB_WSegSpace && c_prop == prop_WB_WSegSpace) // WB3d
         result = false; // NOLINT
     else if (break_word_skip(c_prop)) // WB4
-    {
-        // Just skip forward without touching previous values of code points with WB4 rules
-        state->prev_cp = c;
-        state->prev_cp_prop = c_prop;
-        return false;
-    }
+        result = false; // NOLINT
 
     // p and p_prop must not be used anymore because WB4 takes effect below this line
 
@@ -304,6 +299,12 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
         *word_prop = 0;
     }
 
+    state->prev_cp = c;
+    state->prev_cp_prop = c_prop;
+
+    if (break_word_skip(c_prop))
+        return result;
+
     // WB15/WB16
     if (c_prop == prop_WB_Regional_Indicator)
     {
@@ -320,8 +321,6 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
     state->prev_cp2_prop = state->prev_cp1_prop;
     state->prev_cp1 = c;
     state->prev_cp1_prop = raw_prop;
-    state->prev_cp = c;
-    state->prev_cp_prop = raw_prop;
 
     if (raw_prop > *word_prop)
         *word_prop = raw_prop;
@@ -414,12 +413,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
     else if (p_prop == prop_WB_WSegSpace && c_prop == prop_WB_WSegSpace) // WB3d
         result = false; // NOLINT
     else if (break_word_skip(c_prop)) // WB4
-    {
-        // Just skip forward without touching previous values of code points with WB4 rules
-        state->prev_cp = c;
-        state->prev_cp_prop = c_prop;
-        return false;
-    }
+        result = false; // NOLINT
 
     // p and p_prop must not be used anymore because WB4 takes effect below this line
 
@@ -474,6 +468,12 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
         *word_prop = 0;
     }
 
+    state->prev_cp = c;
+    state->prev_cp_prop = c_prop;
+
+    if (break_word_skip(c_prop))
+        return result;
+
     // WB15/WB16
     if (c_prop == prop_WB_Regional_Indicator)
     {
@@ -490,8 +490,6 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
     state->prev_cp2_prop = state->prev_cp1_prop;
     state->prev_cp1 = c;
     state->prev_cp1_prop = raw_prop;
-    state->prev_cp = c;
-    state->prev_cp_prop = raw_prop;
 
     if (raw_prop > *word_prop)
         *word_prop = raw_prop;
