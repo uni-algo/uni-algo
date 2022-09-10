@@ -42,7 +42,7 @@ private:
 
         detail::impl_break_grapheme_state state{};
 
-        void iter_func_grapheme_utf8()
+        uaiw_constexpr void iter_func_utf8_break_grapheme()
         {
             it_begin = it_pos;
 
@@ -58,9 +58,29 @@ private:
             if (it_next == std::end(parent->range))
                 it_pos = it_next;
         }
+        uaiw_constexpr void iter_func_utf8_break_grapheme_rev()
+        {
+            detail::impl_break_grapheme_state_reset(&state);
+            it_pos = it_begin;
+
+            while (it_begin != std::begin(parent->range))
+            {
+                it_next = it_begin;
+                uni::detail::type_codept codepoint = 0;
+                it_begin = detail::inline_utf8_iter_rev(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_utf8_break_grapheme_rev(&state, codepoint, std::begin(parent->range), it_begin))
+                {
+                    it_begin = it_next;
+                    break;
+                }
+            }
+
+            it_next = it_pos;
+            detail::impl_break_grapheme_state_reset(&state);
+        }
 
     public:
-        using iterator_category = std::forward_iterator_tag;
+        using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = void;
         using reference         = value_type;
@@ -75,7 +95,7 @@ private:
 
             detail::impl_break_grapheme_state_reset(&state);
 
-            iter_func_grapheme_utf8();
+            iter_func_utf8_break_grapheme();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -83,16 +103,28 @@ private:
         }
         uaiw_constexpr Iter begin() const noexcept { return it_begin; }
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
-        utf8& operator++()
+        uaiw_constexpr utf8& operator++()
         {
-            iter_func_grapheme_utf8();
+            iter_func_utf8_break_grapheme();
 
             return *this;
         }
-        utf8 operator++(int)
+        uaiw_constexpr utf8 operator++(int)
         {
             utf8 tmp = *this;
             operator++();
+            return tmp;
+        }
+        uaiw_constexpr utf8& operator--()
+        {
+            iter_func_utf8_break_grapheme_rev();
+
+            return *this;
+        }
+        uaiw_constexpr utf8 operator--(int)
+        {
+            utf8 tmp = *this;
+            operator--();
             return tmp;
         }
         friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
@@ -156,7 +188,7 @@ private:
 
         detail::impl_break_grapheme_state state{};
 
-        void iter_func_grapheme_utf16()
+        uaiw_constexpr void iter_func_utf16_break_grapheme()
         {
             it_begin = it_pos;
 
@@ -172,9 +204,29 @@ private:
             if (it_next == std::end(parent->range))
                 it_pos = it_next;
         }
+        uaiw_constexpr void iter_func_utf16_break_grapheme_rev()
+        {
+            detail::impl_break_grapheme_state_reset(&state);
+            it_pos = it_begin;
+
+            while (it_begin != std::begin(parent->range))
+            {
+                it_next = it_begin;
+                uni::detail::type_codept codepoint = 0;
+                it_begin = detail::inline_utf16_iter_rev(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_utf16_break_grapheme_rev(&state, codepoint, std::begin(parent->range), it_begin))
+                {
+                    it_begin = it_next;
+                    break;
+                }
+            }
+
+            it_next = it_pos;
+            detail::impl_break_grapheme_state_reset(&state);
+        }
 
     public:
-        using iterator_category = std::forward_iterator_tag;
+        using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = void;
         using reference         = value_type;
@@ -189,7 +241,7 @@ private:
 
             detail::impl_break_grapheme_state_reset(&state);
 
-            iter_func_grapheme_utf16();
+            iter_func_utf16_break_grapheme();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -197,16 +249,28 @@ private:
         }
         uaiw_constexpr Iter begin() const noexcept { return it_begin; }
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
-        utf16& operator++()
+        uaiw_constexpr utf16& operator++()
         {
-            iter_func_grapheme_utf16();
+            iter_func_utf16_break_grapheme();
 
             return *this;
         }
-        utf16 operator++(int)
+        uaiw_constexpr utf16 operator++(int)
         {
             utf16 tmp = *this;
             operator++();
+            return tmp;
+        }
+        uaiw_constexpr utf16& operator--()
+        {
+            iter_func_utf16_break_grapheme_rev();
+
+            return *this;
+        }
+        uaiw_constexpr utf16 operator--(int)
+        {
+            utf16 tmp = *this;
+            operator--();
             return tmp;
         }
         friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }

@@ -100,7 +100,7 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* state, type_co
     bool result = false;
 
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
-    // Unicode 11.0 - 14.0 rules
+    // Unicode 11.0 - 15.0 rules
 
     if (state->state == state_break_grapheme_begin)
         state->state = state_break_grapheme_continue;
@@ -166,6 +166,245 @@ uaix_static bool inline_break_grapheme(struct impl_break_grapheme_state* state, 
 {
     return break_grapheme(state, c);
 }
+
+// -------------
+// REVERSE RULES
+// -------------
+
+#ifdef __cplusplus
+template<typename it_in_utf8>
+#endif
+uaix_static bool utf8_break_grapheme_rev_EP(it_in_utf8 first, it_in_utf8 last)
+{
+    it_in_utf8 src = last;
+    type_codept c = 0;
+
+    while (src != first)
+    {
+        src = utf8_iter_rev(first, src, &c, iter_replacement);
+
+        type_codept prop = stages_break_grapheme_prop(c);
+
+        if (prop == prop_GB_Extend)
+            continue;
+        if (prop == prop_GB_Extended_Pictographic)
+            return false;
+
+        break;
+    }
+    return true;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf8>
+#endif
+uaix_static bool utf8_break_grapheme_rev_RI(it_in_utf8 first, it_in_utf8 last)
+{
+    it_in_utf8 src = last;
+    type_codept c = 0;
+    size_t count_RI = 0;
+
+    while (src != first)
+    {
+        src = utf8_iter_rev(first, src, &c, iter_replacement);
+
+        type_codept prop = stages_break_grapheme_prop(c);
+
+        if (prop == prop_GB_Regional_Indicator)
+            ++count_RI;
+        else
+            break;
+    }
+    return (count_RI % 2) != 0;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf8>
+#endif
+uaix_always_inline_tmpl
+uaix_static bool utf8_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+                                         it_in_utf8 first, it_in_utf8 last)
+{
+    type_codept c_prop = stages_break_grapheme_prop(c);
+    type_codept p_prop = state->prev_cp_prop;
+
+    bool result = false;
+
+    // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
+    // Unicode 11.0 - 15.0 rules
+
+    if (state->state == state_break_grapheme_begin)
+        state->state = state_break_grapheme_continue;
+    else if (c_prop == prop_GB_CR && p_prop == prop_GB_LF) // GB3
+        result = false; // NOLINT
+    else if (c_prop == prop_GB_Control || c_prop == prop_GB_CR || c_prop == prop_GB_LF) // GB4
+        result = true; // NOLINT
+    else if (p_prop == prop_GB_Control || p_prop == prop_GB_CR || p_prop == prop_GB_LF) // GB5
+        result = true; // NOLINT
+    else if (c_prop == prop_GB_L && (p_prop == prop_GB_L || p_prop == prop_GB_V || p_prop == prop_GB_LV || p_prop == prop_GB_LVT)) // GB6
+        result = false; // NOLINT
+    else if ((c_prop == prop_GB_LV || c_prop == prop_GB_V) && (p_prop == prop_GB_V || p_prop == prop_GB_T)) // GB7
+        result = false; // NOLINT
+    else if ((c_prop == prop_GB_LVT || c_prop == prop_GB_T) && p_prop == prop_GB_T) // GB8
+        result = false; // NOLINT
+    else if (p_prop == prop_GB_Extend || p_prop == prop_GB_ZWJ) // GB9
+        result = false; // NOLINT
+    else if (p_prop == prop_GB_SpacingMark) // GB9a
+        result = false; // NOLINT
+    else if (c_prop == prop_GB_Prepend) // GB9b
+        result = false; // NOLINT
+    else if (c_prop == prop_GB_ZWJ && p_prop == prop_GB_Extended_Pictographic) // GB11
+        result = utf8_break_grapheme_rev_EP(first, last);
+    else if (c_prop == prop_GB_Regional_Indicator && p_prop == prop_GB_Regional_Indicator) // GB12/GB13
+        result = utf8_break_grapheme_rev_RI(first, last);
+    else // GB999
+        result = true; // NOLINT
+
+    state->prev_cp = c;
+    state->prev_cp_prop = c_prop;
+
+    return result;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf8>
+#endif
+uaix_static bool impl_utf8_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+                                              it_in_utf8 first, it_in_utf8 last)
+{
+    return utf8_break_grapheme_rev(state, c, first, last);
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf8>
+#endif
+uaix_always_inline_tmpl
+uaix_static bool inline_utf8_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+                                                it_in_utf8 first, it_in_utf8 last)
+{
+    return utf8_break_grapheme_rev(state, c, first, last);
+}
+
+// BEGIN: GENERATED UTF-16 FUNCTIONS
+#ifndef UNI_ALGO_DOC_GENERATED_UTF16
+
+#ifdef __cplusplus
+template<typename it_in_utf16>
+#endif
+uaix_static bool utf16_break_grapheme_rev_EP(it_in_utf16 first, it_in_utf16 last)
+{
+    it_in_utf16 src = last;
+    type_codept c = 0;
+
+    while (src != first)
+    {
+        src = utf16_iter_rev(first, src, &c, iter_replacement);
+
+        type_codept prop = stages_break_grapheme_prop(c);
+
+        if (prop == prop_GB_Extend)
+            continue;
+        if (prop == prop_GB_Extended_Pictographic)
+            return false;
+
+        break;
+    }
+    return true;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf16>
+#endif
+uaix_static bool utf16_break_grapheme_rev_RI(it_in_utf16 first, it_in_utf16 last)
+{
+    it_in_utf16 src = last;
+    type_codept c = 0;
+    size_t count_RI = 0;
+
+    while (src != first)
+    {
+        src = utf16_iter_rev(first, src, &c, iter_replacement);
+
+        type_codept prop = stages_break_grapheme_prop(c);
+
+        if (prop == prop_GB_Regional_Indicator)
+            ++count_RI;
+        else
+            break;
+    }
+    return (count_RI % 2) != 0;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf16>
+#endif
+uaix_always_inline_tmpl
+uaix_static bool utf16_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+                                          it_in_utf16 first, it_in_utf16 last)
+{
+    type_codept c_prop = stages_break_grapheme_prop(c);
+    type_codept p_prop = state->prev_cp_prop;
+
+    bool result = false;
+
+    // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
+    // Unicode 11.0 - 15.0 rules
+
+    if (state->state == state_break_grapheme_begin)
+        state->state = state_break_grapheme_continue;
+    else if (c_prop == prop_GB_CR && p_prop == prop_GB_LF) // GB3
+        result = false; // NOLINT
+    else if (c_prop == prop_GB_Control || c_prop == prop_GB_CR || c_prop == prop_GB_LF) // GB4
+        result = true; // NOLINT
+    else if (p_prop == prop_GB_Control || p_prop == prop_GB_CR || p_prop == prop_GB_LF) // GB5
+        result = true; // NOLINT
+    else if (c_prop == prop_GB_L && (p_prop == prop_GB_L || p_prop == prop_GB_V || p_prop == prop_GB_LV || p_prop == prop_GB_LVT)) // GB6
+        result = false; // NOLINT
+    else if ((c_prop == prop_GB_LV || c_prop == prop_GB_V) && (p_prop == prop_GB_V || p_prop == prop_GB_T)) // GB7
+        result = false; // NOLINT
+    else if ((c_prop == prop_GB_LVT || c_prop == prop_GB_T) && p_prop == prop_GB_T) // GB8
+        result = false; // NOLINT
+    else if (p_prop == prop_GB_Extend || p_prop == prop_GB_ZWJ) // GB9
+        result = false; // NOLINT
+    else if (p_prop == prop_GB_SpacingMark) // GB9a
+        result = false; // NOLINT
+    else if (c_prop == prop_GB_Prepend) // GB9b
+        result = false; // NOLINT
+    else if (c_prop == prop_GB_ZWJ && p_prop == prop_GB_Extended_Pictographic) // GB11
+        result = utf16_break_grapheme_rev_EP(first, last);
+    else if (c_prop == prop_GB_Regional_Indicator && p_prop == prop_GB_Regional_Indicator) // GB12/GB13
+        result = utf16_break_grapheme_rev_RI(first, last);
+    else // GB999
+        result = true; // NOLINT
+
+    state->prev_cp = c;
+    state->prev_cp_prop = c_prop;
+
+    return result;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf16>
+#endif
+uaix_static bool impl_utf16_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+                                               it_in_utf16 first, it_in_utf16 last)
+{
+    return utf16_break_grapheme_rev(state, c, first, last);
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf16>
+#endif
+uaix_always_inline_tmpl
+uaix_static bool inline_utf16_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+                                                 it_in_utf16 first, it_in_utf16 last)
+{
+    return utf16_break_grapheme_rev(state, c, first, last);
+}
+
+#endif // UNI_ALGO_DOC_GENERATED_UTF16
+// END: GENERATED UTF-16 FUNCTIONS
+
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
