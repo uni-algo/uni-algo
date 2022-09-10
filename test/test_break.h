@@ -56,6 +56,8 @@ void test_break_grapheme()
 
         // UTF-8
         {
+            // FORWARD
+            {
             std::string string_with_breaks_utf8 = uni::utf32to8(string_without_breaks);
 
             auto view = uni::ranges::grapheme::utf8_view{string_with_breaks_utf8};
@@ -72,14 +74,43 @@ void test_break_grapheme()
                 string_with_breaks_utf8.insert(vec[i] + expand, "\xC3\xB7");
                 expand += 2;
             }
-            string_with_breaks_utf8 += "\xc3\xb7";
+            string_with_breaks_utf8 += "\xC3\xB7";
 
             //std::u32string string_with_breaks_utf32 = uni::utf8to32u(string_with_breaks_utf8);
 
             TESTX(string_with_breaks_utf8 == uni::utf32to8(string_with_breaks));
+            }
+            // REVERSE
+            {
+            std::string string_with_breaks_utf8 = uni::utf32to8(string_without_breaks);
+
+            auto view = uni::ranges::grapheme::utf8_view{string_with_breaks_utf8};
+
+            // Collect reverse brakes
+            std::vector<std::size_t> vec;
+            for (auto it = view.end(); it != view.begin();)
+            {
+                --it;
+                vec.push_back(static_cast<std::size_t>(it.begin() - string_with_breaks_utf8.begin()));
+            }
+            std::reverse(vec.begin(), vec.end());
+
+            // Insert brakes
+            std::size_t expand = 0;
+            for (std::size_t i = 0; i < vec.size(); ++i)
+            {
+                string_with_breaks_utf8.insert(vec[i] + expand, "\xC3\xB7");
+                expand += 2;
+            }
+            string_with_breaks_utf8 += "\xC3\xB7";
+
+            TESTX(string_with_breaks_utf8 == uni::utf32to8(string_with_breaks));
+            }
         }
         // UTF-16
         {
+            // FORWARD
+            {
             std::u16string string_with_breaks_utf16 = uni::utf32to16u(string_without_breaks);
 
             auto view = uni::ranges::grapheme::utf16_view{string_with_breaks_utf16};
@@ -99,6 +130,33 @@ void test_break_grapheme()
             string_with_breaks_utf16 += u"\x00F7";
 
             TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
+            }
+            // REVERSE
+            {
+            std::u16string string_with_breaks_utf16 = uni::utf32to16u(string_without_breaks);
+
+            auto view = uni::ranges::grapheme::utf16_view{string_with_breaks_utf16};
+
+            // Collect reverse brakes
+            std::vector<std::size_t> vec;
+            for (auto it = view.end(); it != view.begin();)
+            {
+                --it;
+                vec.push_back(static_cast<std::size_t>(it.begin() - string_with_breaks_utf16.begin()));
+            }
+            std::reverse(vec.begin(), vec.end());
+
+            // Insert brakes
+            std::size_t expand = 0;
+            for (std::size_t i = 0; i < vec.size(); ++i)
+            {
+                string_with_breaks_utf16.insert(vec[i] + expand, u"\x00F7");
+                expand += 1;
+            }
+            string_with_breaks_utf16 += u"\x00F7";
+
+            TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
+            }
         }
     }
 }
