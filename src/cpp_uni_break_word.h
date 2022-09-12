@@ -46,7 +46,7 @@ private:
 
         detail::impl_break_word_state state{};
 
-        void iter_func_word_utf8()
+        uaiw_constexpr void iter_func_utf8_break_word()
         {
             it_begin = it_pos;
 
@@ -66,9 +66,30 @@ private:
                 word_prop = next_word_prop;
             }
         }
+        uaiw_constexpr void iter_func_utf8_break_word_rev()
+        {
+            detail::impl_break_word_state_reset(&state);
+            it_pos = it_begin;
+
+            while (it_begin != std::begin(parent->range))
+            {
+                it_next = it_begin;
+                word_prop = next_word_prop;
+                uni::detail::type_codept codepoint = 0;
+                it_begin = detail::inline_utf8_iter_rev(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_utf8_break_word_rev(&state, codepoint, &next_word_prop, std::begin(parent->range), it_begin))
+                {
+                    it_begin = it_next;
+                    break;
+                }
+            }
+
+            it_next = it_pos;
+            detail::impl_break_word_state_reset(&state);
+        }
 
     public:
-        using iterator_category = std::forward_iterator_tag;
+        using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = void;
         using reference         = value_type;
@@ -83,7 +104,7 @@ private:
 
             detail::impl_break_word_state_reset(&state);
 
-            iter_func_word_utf8();
+            iter_func_utf8_break_word();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -99,16 +120,28 @@ private:
         uaiw_constexpr bool is_emoji()            const noexcept { return detail::impl_break_is_word_emoji(word_prop); }
         //uaiw_constexpr bool is_punctuation()      const noexcept { return detail::impl_break_is_word_punct(word_prop); }
         //uaiw_constexpr bool is_segspace()         const noexcept { return detail::impl_break_is_word_space(word_prop); }
-        utf8& operator++()
+        uaiw_constexpr utf8& operator++()
         {
-            iter_func_word_utf8();
+            iter_func_utf8_break_word();
 
             return *this;
         }
-        utf8 operator++(int)
+        uaiw_constexpr utf8 operator++(int)
         {
             utf8 tmp = *this;
             operator++();
+            return tmp;
+        }
+        uaiw_constexpr utf8& operator--()
+        {
+            iter_func_utf8_break_word_rev();
+
+            return *this;
+        }
+        uaiw_constexpr utf8 operator--(int)
+        {
+            utf8 tmp = *this;
+            operator--();
             return tmp;
         }
         friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
@@ -174,7 +207,7 @@ private:
 
         detail::impl_break_word_state state{};
 
-        void iter_func_word_utf16()
+        uaiw_constexpr void iter_func_utf16_break_word()
         {
             it_begin = it_pos;
 
@@ -194,9 +227,30 @@ private:
                 word_prop = next_word_prop;
             }
         }
+        uaiw_constexpr void iter_func_utf16_break_word_rev()
+        {
+            detail::impl_break_word_state_reset(&state);
+            it_pos = it_begin;
+
+            while (it_begin != std::begin(parent->range))
+            {
+                it_next = it_begin;
+                word_prop = next_word_prop;
+                uni::detail::type_codept codepoint = 0;
+                it_begin = detail::inline_utf16_iter_rev(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_utf16_break_word_rev(&state, codepoint, &next_word_prop, std::begin(parent->range), it_begin))
+                {
+                    it_begin = it_next;
+                    break;
+                }
+            }
+
+            it_next = it_pos;
+            detail::impl_break_word_state_reset(&state);
+        }
 
     public:
-        using iterator_category = std::forward_iterator_tag;
+        using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = void;
         using reference         = value_type;
@@ -211,7 +265,7 @@ private:
 
             detail::impl_break_word_state_reset(&state);
 
-            iter_func_word_utf16();
+            iter_func_utf16_break_word();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -227,16 +281,28 @@ private:
         uaiw_constexpr bool is_emoji()            const noexcept { return detail::impl_break_is_word_emoji(word_prop); }
         //uaiw_constexpr bool is_punctuation()      const noexcept { return detail::impl_break_is_word_punct(word_prop); }
         //uaiw_constexpr bool is_segspace()         const noexcept { return detail::impl_break_is_word_space(word_prop); }
-        utf16& operator++()
+        uaiw_constexpr utf16& operator++()
         {
-            iter_func_word_utf16();
+            iter_func_utf16_break_word();
 
             return *this;
         }
-        utf16 operator++(int)
+        uaiw_constexpr utf16 operator++(int)
         {
             utf16 tmp = *this;
             operator++();
+            return tmp;
+        }
+        uaiw_constexpr utf16& operator--()
+        {
+            iter_func_utf16_break_word_rev();
+
+            return *this;
+        }
+        uaiw_constexpr utf16 operator--(int)
+        {
+            utf16 tmp = *this;
+            operator--();
             return tmp;
         }
         friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
@@ -305,7 +371,7 @@ private:
 
         detail::impl_break_word_state state{};
 
-        void iter_func_word_only_utf8()
+        uaiw_constexpr void iter_func_utf8_break_word_only()
         {
             it_begin = it_pos;
 
@@ -334,8 +400,34 @@ private:
             }
         }
 
+        uaiw_constexpr void iter_func_utf8_break_word_only_rev()
+        {
+            detail::impl_break_word_state_reset(&state);
+            it_pos = it_begin;
+
+            while (it_begin != std::begin(parent->range))
+            {
+                it_next = it_begin;
+                word_prop = next_word_prop;
+                uni::detail::type_codept codepoint = 0;
+                it_begin = detail::inline_utf8_iter_rev(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_utf8_break_word_rev(&state, codepoint, &next_word_prop, std::begin(parent->range), it_begin))
+                {
+                    if (detail::impl_break_is_word(word_prop))
+                    {
+                        it_begin = it_next;
+                        break;
+                    }
+                    it_pos = it_next;
+                }
+            }
+
+            it_next = it_pos;
+            detail::impl_break_word_state_reset(&state);
+        }
+
     public:
-        using iterator_category = std::forward_iterator_tag;
+        using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = void;
         using reference         = value_type;
@@ -350,7 +442,7 @@ private:
 
             detail::impl_break_word_state_reset(&state);
 
-            iter_func_word_only_utf8();
+            iter_func_utf8_break_word_only();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -358,16 +450,28 @@ private:
         }
         uaiw_constexpr Iter begin() const noexcept { return it_begin; }
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
-        utf8& operator++()
+        uaiw_constexpr utf8& operator++()
         {
-            iter_func_word_only_utf8();
+            iter_func_utf8_break_word_only();
 
             return *this;
         }
-        utf8 operator++(int)
+        uaiw_constexpr utf8 operator++(int)
         {
             utf8 tmp = *this;
             operator++();
+            return tmp;
+        }
+        uaiw_constexpr utf8& operator--()
+        {
+            iter_func_utf8_break_word_only_rev();
+
+            return *this;
+        }
+        uaiw_constexpr utf8 operator--(int)
+        {
+            utf8 tmp = *this;
+            operator--();
             return tmp;
         }
         friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
@@ -433,7 +537,7 @@ private:
 
         detail::impl_break_word_state state{};
 
-        void iter_func_word_only_utf16()
+        uaiw_constexpr void iter_func_utf16_break_word_only()
         {
             it_begin = it_pos;
 
@@ -462,8 +566,34 @@ private:
             }
         }
 
+        uaiw_constexpr void iter_func_utf16_break_word_only_rev()
+        {
+            detail::impl_break_word_state_reset(&state);
+            it_pos = it_begin;
+
+            while (it_begin != std::begin(parent->range))
+            {
+                it_next = it_begin;
+                word_prop = next_word_prop;
+                uni::detail::type_codept codepoint = 0;
+                it_begin = detail::inline_utf16_iter_rev(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
+                if (detail::inline_utf16_break_word_rev(&state, codepoint, &next_word_prop, std::begin(parent->range), it_begin))
+                {
+                    if (detail::impl_break_is_word(word_prop))
+                    {
+                        it_begin = it_next;
+                        break;
+                    }
+                    it_pos = it_next;
+                }
+            }
+
+            it_next = it_pos;
+            detail::impl_break_word_state_reset(&state);
+        }
+
     public:
-        using iterator_category = std::forward_iterator_tag;
+        using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
         using pointer           = void;
         using reference         = value_type;
@@ -478,7 +608,7 @@ private:
 
             detail::impl_break_word_state_reset(&state);
 
-            iter_func_word_only_utf16();
+            iter_func_utf16_break_word_only();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -486,16 +616,28 @@ private:
         }
         uaiw_constexpr Iter begin() const noexcept { return it_begin; }
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
-        utf16& operator++()
+        uaiw_constexpr utf16& operator++()
         {
-            iter_func_word_only_utf16();
+            iter_func_utf16_break_word_only();
 
             return *this;
         }
-        utf16 operator++(int)
+        uaiw_constexpr utf16 operator++(int)
         {
             utf16 tmp = *this;
             operator++();
+            return tmp;
+        }
+        uaiw_constexpr utf16& operator--()
+        {
+            iter_func_utf16_break_word_only_rev();
+
+            return *this;
+        }
+        uaiw_constexpr utf16 operator--(int)
+        {
+            utf16 tmp = *this;
+            operator--();
             return tmp;
         }
         friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
