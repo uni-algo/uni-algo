@@ -464,4 +464,73 @@ void test_break_word_prop()
                       u"Emoji : \xD83C\xDFF4\xDB40\xDC67\xDB40\xDC62\xDB40\xDC77\xDB40\xDC6C\xDB40\xDC73\xDB40\xDC7F\n"); // Flag: Wales
     TESTX(count_words16 == 6);
     //TESTX(count_punct16 == 7);
+
+    // REVERSE
+
+    result.clear();
+    count_words = 0;
+    //count_punct = 0;
+    for (auto it = view.end(); it != view.begin();)
+    {
+        --it;
+
+        if (it.is_emoji())
+            result += "Emoji : " + std::string{*it} + '\n';
+        if (it.is_word_letter())
+            result += "Letter: " + std::string{*it} + '\n';
+        if (it.is_word_number())
+            result += "Number: " + std::string{*it} + '\n';
+        if (it.is_word_kana())
+            result += "Kana  : " + std::string{*it} + '\n';
+        if (it.is_word_ideographic())
+            result += "Ideo  : " + std::string{*it} + '\n';
+        //if (it.is_punctuation())
+        //    result += "Punct: " + std::string{*it} + '\n';
+        if (it.is_word())        ++count_words;
+        //if (it.is_punctuation()) ++count_punct;
+    }
+    TESTX(result == "Emoji : \xF0\x9F\x8F\xB4\xF3\xA0\x81\xA7\xF3\xA0\x81\xA2\xF3\xA0\x81\xB7\xF3\xA0\x81\xAC\xF3\xA0\x81\xB3\xF3\xA0\x81\xBF\n" // Flag: Wales
+                    "Emoji : \xF0\x9F\x98\xBA\n" // Smiling Cat Face with Open Mouth Emoji
+                    "Ideo  : \xE6\xA8\xB1\n" // Sakura Kanji
+                    "Kana  : \xE3\x83\x90\xE3\x82\xAB\n" // Baka Katakana
+                    "Letter: test7\n"
+                    "Letter: 7test\n"
+                    "Number: 123,5\n"
+                    "Letter: Tes't\n");
+    TESTX(count_words == 6);
+    //TESTX(count_punct == 7);
+    //std::cout << result << '\n';
+
+    result16.clear();
+    count_words16 = 0;
+    //count_punct16 = 0;
+    for (auto it = view16.end(); it != view16.begin();)
+    {
+        --it;
+
+        if (it.is_emoji())
+            result16 += u"Emoji : " + std::u16string{*it} + u'\n';
+        if (it.is_word_letter())
+            result16 += u"Letter: " + std::u16string{*it} + u'\n';
+        if (it.is_word_number())
+            result16 += u"Number: " + std::u16string{*it} + u'\n';
+        if (it.is_word_kana())
+            result16 += u"Kana  : " + std::u16string{*it} + u'\n';
+        if (it.is_word_ideographic())
+            result16 += u"Ideo  : " + std::u16string{*it} + u'\n';
+        //if (it.is_punctuation())
+        //    result16 += u"Punct: " + std::u16string{*it} + u'\n';
+        if (it.is_word())        ++count_words16;
+        //if (it.is_punctuation()) ++count_punct16;
+    }
+    TESTX(result16 == u"Emoji : \xD83C\xDFF4\xDB40\xDC67\xDB40\xDC62\xDB40\xDC77\xDB40\xDC6C\xDB40\xDC73\xDB40\xDC7F\n" // Flag: Wales
+                      u"Emoji : \xD83D\xDE3A\n" // Smiling Cat Face with Open Mouth Emoji
+                      u"Ideo  : \x6A31\n" // Sakura Kanji
+                      u"Kana  : \x30D0\x30AB\n" // Baka Katakana
+                      u"Letter: test7\n"
+                      u"Letter: 7test\n"
+                      u"Number: 123,5\n"
+                      u"Letter: Tes't\n");
+    TESTX(count_words16 == 6);
+    //TESTX(count_punct16 == 7);
 }
