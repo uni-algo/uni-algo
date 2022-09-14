@@ -116,6 +116,15 @@ Uses UAX #29: Unicode Text Segmentation -> Grapheme Cluster Boundary Rules
 ```
 uni::views::word::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges
 uni::views::word_only::utf8
+
+word properties (iterator of word view provides these functions):
+
+is_word             - excludes punctuation, spaces and emojis (word_only view uses this property)
+is_word_letter      - includes only words that contain letters (excludes kana, ideographic and numbers)
+is_word_number      - includes only numbers
+is_word_kana        - includes only kana (hiragana and katakana)
+is_word_ideographic - includes only ideographic (hanzi, kanji, hanja etc.)
+is_emoji            - includes only emojis
 ```
 Uses UAX #29: Unicode Text Segmentation -> Word Boundary Rules<br>
 `word_only` is a special case of UAX #29 that takes only words and skips all punctuation.
