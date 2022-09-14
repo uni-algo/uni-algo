@@ -300,7 +300,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
     }
 
     state->prev_cp = c;
-    state->prev_cp_prop = c_prop;
+    state->prev_cp_prop = raw_prop;
 
     if (break_word_skip(c_prop))
         return result;
@@ -687,7 +687,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
     }
 
     state->prev_cp = c;
-    state->prev_cp_prop = c_prop;
+    state->prev_cp_prop = raw_prop;
 
     if (break_word_skip(c_prop))
         return result;
