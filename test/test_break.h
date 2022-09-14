@@ -509,4 +509,26 @@ void test_break_word_prop()
                       u"Letter: Tes't\n");
     TESTX(count_words16 == 6);
     //TESTX(count_punct16 == 7);
+
+    // TEST word_only view here too
+
+    // FORWARD
+
+    result.clear();
+    for (std::string_view s : sv | uni::views::word_only::utf8) { result += s; result += '|'; }
+    TESTX(result == "Tes't|123,5|7test|test7|\xE3\x83\x90\xE3\x82\xAB|\xE6\xA8\xB1|");
+
+    result16.clear();
+    for (std::u16string_view s : sv16 | uni::views::word_only::utf16) { result16 += s; result16 += u'|'; }
+    TESTX(result16 == u"Tes't|123,5|7test|test7|\x30D0\x30AB|\x6A31|");
+
+    // REVERSE
+
+    result.clear();
+    for (std::string_view s : sv | uni::views::word_only::utf8 | uni::views::reverse) { result += s; result += '|'; }
+    TESTX(result == "\xE6\xA8\xB1|\xE3\x83\x90\xE3\x82\xAB|test7|7test|123,5|Tes't|");
+
+    result16.clear();
+    for (std::u16string_view s : sv16 | uni::views::word_only::utf16 | uni::views::reverse) { result16 += s; result16 += u'|'; }
+    TESTX(result16 == u"\x6A31|\x30D0\x30AB|test7|7test|123,5|Tes't|");
 }
