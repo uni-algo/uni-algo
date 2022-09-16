@@ -72,7 +72,7 @@
 // In other words the define must be avoided at all cost.
 // The define affects only Case module.
 // The define is used for some internal tests.
-//#define UNI_ALGO_IMPL_DISABLE_FULL_CASE
+//#define UNI_ALGO_DISABLE_FULL_CASE
 
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
 
@@ -122,10 +122,10 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 #endif
 
 // Other test defines
-//#define UNI_ALGO_IMPL_TEST_DISABLE_ALWAYS_INLINE_GLOBAL
-//#define UNI_ALGO_IMPL_TEST_DISABLE_ALWAYS_INLINE_GLOBAL_EX
+//#define UNI_ALGO_TEST_DISABLE_ALWAYS_INLINE_GLOBAL
+//#define UNI_ALGO_TEST_DISABLE_ALWAYS_INLINE_GLOBAL_EX
 //#include <stdexcept>
-//#define UNI_ALGO_IMPL_TEST_CPP_THROW_ON_ILL_FORMED
-//#define UNI_ALGO_IMPL_TEST_CPP_THROW_ASSERT
+//#define UNI_ALGO_TEST_CPP_THROW_ON_ILL_FORMED
+//#define UNI_ALGO_TEST_CPP_THROW_ASSERT
 
 #endif // CPP_UNI_CONFIG_H_UAIX

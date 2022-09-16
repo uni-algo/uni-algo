@@ -17,8 +17,8 @@
 //#define UNI_SQLITE_DYNAMIC_EXTENSION
 
 // Normalization can be disabled to drastically reduce the size of Unicode data
-//#define UNI_ALGO_IMPL_DISABLE_NORM
-//#define UNI_ALGO_IMPL_DISABLE_NFKC_NFKD
+//#define UNI_ALGO_DISABLE_NORM
+//#define UNI_ALGO_DISABLE_NFKC_NFKD
 
 #include "../src/impl/impl_unicode_version.h"
 
@@ -96,10 +96,10 @@ typedef type_codept    type_char32; // Can be 32-bit or more signed/unsigned
 #include "../src/impl/impl_types.h"
 #include "../src/impl/impl_case_data.h"
 #include "../src/impl/impl_case.h"
-#ifndef UNI_ALGO_IMPL_DISABLE_NORM
+#ifndef UNI_ALGO_DISABLE_NORM
 #include "../src/impl/impl_norm_data.h"
 #include "../src/impl/impl_norm.h"
-#endif // UNI_ALGO_IMPL_DISABLE_NORM
+#endif // UNI_ALGO_DISABLE_NORM
 
 static void sqlite3_utf8_like(sqlite3_context* context, int argc, sqlite3_value** argv)
 {
@@ -149,7 +149,7 @@ static const char* internal_utf8_casemap(const char* str, size_t len, int mode, 
     return NULL;
 }
 
-#ifndef UNI_ALGO_IMPL_DISABLE_NORM
+#ifndef UNI_ALGO_DISABLE_NORM
 
 static const char* internal_utf8_nfc(const char* str, size_t len, size_t* end)
 {
@@ -175,7 +175,7 @@ static const char* internal_utf8_nfd(const char* str, size_t len, size_t* end)
     return NULL;
 }
 
-#ifndef UNI_ALGO_IMPL_DISABLE_NFKC_NFKD
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 static const char* internal_utf8_nfkc(const char* str, size_t len, size_t* end)
 {
@@ -201,7 +201,7 @@ static const char* internal_utf8_nfkd(const char* str, size_t len, size_t* end)
     return NULL;
 }
 
-#endif // UNI_ALGO_IMPL_DISABLE_NFKC_NFKD
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 static const char* internal_utf8_unaccent(const char* str, size_t len, size_t* end)
 {
@@ -215,7 +215,7 @@ static const char* internal_utf8_unaccent(const char* str, size_t len, size_t* e
     return NULL;
 }
 
-#endif // UNI_ALGO_IMPL_DISABLE_NORM
+#endif // UNI_ALGO_DISABLE_NORM
 
 static void sqlite3_utf8_upper(sqlite3_context* context, int argc, sqlite3_value** argv)
 {
@@ -265,7 +265,7 @@ static void sqlite3_utf8_fold(sqlite3_context* context, int argc, sqlite3_value*
     sqlite3_result_text64(context, result, out_len, sqlite3_free, SQLITE_UTF8);
 }
 
-#ifndef UNI_ALGO_IMPL_DISABLE_NORM
+#ifndef UNI_ALGO_DISABLE_NORM
 
 static void sqlite3_utf8_nfc(sqlite3_context* context, int argc, sqlite3_value** argv)
 {
@@ -299,7 +299,7 @@ static void sqlite3_utf8_nfd(sqlite3_context* context, int argc, sqlite3_value**
     sqlite3_result_text64(context, result, out_len, sqlite3_free, SQLITE_UTF8);
 }
 
-#ifndef UNI_ALGO_IMPL_DISABLE_NFKC_NFKD
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 static void sqlite3_utf8_nfkc(sqlite3_context* context, int argc, sqlite3_value** argv)
 {
@@ -333,7 +333,7 @@ static void sqlite3_utf8_nfkd(sqlite3_context* context, int argc, sqlite3_value*
     sqlite3_result_text64(context, result, out_len, sqlite3_free, SQLITE_UTF8);
 }
 
-#endif // UNI_ALGO_IMPL_DISABLE_NFKC_NFKD
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 static void sqlite3_utf8_unaccent(sqlite3_context* context, int argc, sqlite3_value** argv)
 {
@@ -351,7 +351,7 @@ static void sqlite3_utf8_unaccent(sqlite3_context* context, int argc, sqlite3_va
     sqlite3_result_text64(context, result, out_len, sqlite3_free, SQLITE_UTF8);
 }
 
-#endif // UNI_ALGO_IMPL_DISABLE_NORM
+#endif // UNI_ALGO_DISABLE_NORM
 
 static int sqlite3_utf8_collate(void* context, int len1, const void* str1, int len2, const void* str2)
 {
@@ -394,20 +394,20 @@ int sqlite3_unisqlite_init(struct sqlite3* db, char** err_msg, const struct sqli
     if (rc != SQLITE_OK) return rc;
     rc = sqlite3_create_function(db, "fold", 1, SQLITE_UTF8, NULL, sqlite3_utf8_fold, NULL, NULL);
     if (rc != SQLITE_OK) return rc;
-#ifndef UNI_ALGO_IMPL_DISABLE_NORM
+#ifndef UNI_ALGO_DISABLE_NORM
     rc = sqlite3_create_function(db, "nfc", 1, SQLITE_UTF8, NULL, sqlite3_utf8_nfc, NULL, NULL);
     if (rc != SQLITE_OK) return rc;
     rc = sqlite3_create_function(db, "nfd", 1, SQLITE_UTF8, NULL, sqlite3_utf8_nfd, NULL, NULL);
     if (rc != SQLITE_OK) return rc;
-#ifndef UNI_ALGO_IMPL_DISABLE_NFKC_NFKD
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
     rc = sqlite3_create_function(db, "nfkc", 1, SQLITE_UTF8, NULL, sqlite3_utf8_nfkc, NULL, NULL);
     if (rc != SQLITE_OK) return rc;
     rc = sqlite3_create_function(db, "nfkd", 1, SQLITE_UTF8, NULL, sqlite3_utf8_nfkd, NULL, NULL);
     if (rc != SQLITE_OK) return rc;
-#endif // UNI_ALGO_IMPL_DISABLE_NFKC_NFKD
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
     rc = sqlite3_create_function(db, "unaccent", 1, SQLITE_UTF8, NULL, sqlite3_utf8_unaccent, NULL, NULL);
     if (rc != SQLITE_OK) return rc;
-#endif // UNI_ALGO_IMPL_DISABLE_NORM
+#endif // UNI_ALGO_DISABLE_NORM
     rc = sqlite3_create_collation(db, UNI_SQLITE_COLLATION, SQLITE_UTF8, NULL, sqlite3_utf8_collate);
     if (rc != SQLITE_OK) return rc;
     rc = sqlite3_create_collation(db, UNI_SQLITE_COLLATION_NOCASE, SQLITE_UTF8, NULL, sqlite3_utf8_collate_nocase);

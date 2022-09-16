@@ -10,23 +10,23 @@
 #include "cpp_uni_convert.h"
 #include "cpp_uni_ranges.h"
 
-#ifndef UNI_ALGO_IMPL_DISABLE_CASE
+#ifndef UNI_ALGO_DISABLE_CASE
 #include "cpp_uni_case.h"
 #endif
 
-#ifndef UNI_ALGO_IMPL_DISABLE_NORM
+#ifndef UNI_ALGO_DISABLE_NORM
 #include "cpp_uni_norm.h"
 #endif
 
-#ifndef UNI_ALGO_IMPL_DISABLE_PROP
+#ifndef UNI_ALGO_DISABLE_PROP
 #include "cpp_uni_prop.h"
 #endif
 
-#ifndef UNI_ALGO_IMPL_DISABLE_BREAK_GRAPHEME
+#ifndef UNI_ALGO_DISABLE_BREAK_GRAPHEME
 #include "cpp_uni_break_grapheme.h"
 #endif
 
-#ifndef UNI_ALGO_IMPL_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #include "cpp_uni_break_word.h"
 #endif
 
