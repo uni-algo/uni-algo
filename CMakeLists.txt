@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.12)
 
-project("uni-algo" VERSION 0.4.0 CXX)
+project("uni-algo" VERSION 0.4.0 LANGUAGES CXX)
 
 # Force STATIC for now
 add_library(${PROJECT_NAME} STATIC)

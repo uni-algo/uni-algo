@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.12)
 
-project(uni-algo-test CXX)
+project(uni-algo-test LANGUAGES CXX)
 
 # This file is used by GitHub Actions workflows edit with care.
 
