@@ -7,6 +7,8 @@
 
 #include <type_traits>
 #include <cassert>
+#include <string>
+#include <string_view>
 
 #include "cpp_uni_config.h"
 #include "cpp_uni_version.h"
@@ -22,6 +24,20 @@
 // where enum classes can be used for example in switch case.
 
 namespace uni {
+
+#ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
+class locale;
+
+namespace detail {
+
+const uni::locale& locale_system();
+#ifdef UNI_ALGO_EXPERIMENTAL
+const uni::locale& locale_thread();
+void locale_thread_reinit();
+#endif // UNI_ALGO_EXPERIMENTAL
+
+} // namespace detail
+#endif // UNI_ALGO_DISABLE_SYSTEM_LOCALE
 
 class locale
 {
@@ -142,6 +158,13 @@ public:
                scpt.to_value() == 0 &&
                regn.to_value() == 0;
     }
+#ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
+    static locale system() { return detail::locale_system(); }
+#ifdef UNI_ALGO_EXPERIMENTAL
+    static locale thread() { return detail::locale_thread(); }
+    static void thread_reinit() { detail::locale_thread_reinit(); }
+#endif // UNI_ALGO_EXPERIMENTAL
+#endif // UNI_ALGO_DISABLE_SYSTEM_LOCALE
 #ifdef UNI_ALGO_EXPERIMENTAL
     constexpr void normalize()
     {
@@ -155,7 +178,7 @@ public:
         regn.from_value(detail::impl_locale_norm_region(regn.to_value(), 0));
     }
 #endif // UNI_ALGO_EXPERIMENTAL
-    uaiw_constexpr std::string to_string()
+    uaiw_constexpr std::string to_string() const
     {
         std::string result;
         result.resize(4 + 1 + 4 + 1 + 4);
@@ -177,7 +200,9 @@ public:
         result.resize(size);
         return result;
     }
-    uaiw_constexpr explicit locale(std::string_view s)
+private:
+    template <typename T>
+    uaiw_constexpr void parse(std::basic_string_view<T> s)
     {
         // Examples:
         // en-ZZ
@@ -241,6 +266,10 @@ public:
             }
         }
     }
+public:
+    uaiw_constexpr explicit locale(std::string_view s) { parse<char>(s); }
+    uaiw_constexpr explicit locale(std::wstring_view s) { parse<wchar_t>(s); }
+
     friend constexpr bool operator==(const locale& x, const locale& y)
     {
         return x.lang == y.lang &&
