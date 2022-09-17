@@ -1528,9 +1528,53 @@ uaix_static size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_o
     return (size_t)(dst - result);
 }
 
+#ifdef __cplusplus
+template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
+#endif
+uaix_static size_t impl_utf8_sortkey_loc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
+{
+    if (language == 0)
+        return impl_utf8_sortkey(first, last, result, mode ? true : false);
+    return 0;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf8>
+#endif
+uaix_static size_t impl_utf16_sortkey_loc(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, int mode, type_codept language)
+{
+    if (language == 0)
+        impl_utf16_sortkey(first, last, result, mode ? true : false);
+    return 0;
+}
+
 #endif // UNI_ALGO_DISABLE_COLLATE
 
 #endif // UNI_ALGO_EXPERIMENTAL
+
+#ifdef __cplusplus
+template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
+#endif
+uaix_static size_t impl_utf8_casemap_loc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
+{
+    // This function is a simple wrapper for case-insensitive casemap
+    // with the same number of parameters as locale case functions
+    // to make it easier to use with C++ templates.
+
+    if (language == 0)
+        return impl_utf8_casemap(first, last, result, mode);
+    return 0;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
+#endif
+uaix_static size_t impl_utf16_casemap_loc(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode, type_codept language)
+{
+    if (language == 0)
+        return impl_utf16_casemap(first, last, result, mode);
+    return 0;
+}
 
 // Expose properties for a wrapper
 // Must always be at the end of the file

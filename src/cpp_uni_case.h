@@ -47,11 +47,11 @@ namespace detail {
 
 template<typename DST, typename SRC, size_t SZ,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    size_t(*FNMAP)(typename SRC::const_pointer, typename SRC::const_pointer, typename DST::pointer, int)>
+    size_t(*FNMAP)(typename SRC::const_pointer, typename SRC::const_pointer, typename DST::pointer, int, char32_t)>
 #else
-    size_t(*FNMAP)(typename SRC::const_iterator, typename SRC::const_iterator, typename DST::iterator, int)>
+    size_t(*FNMAP)(typename SRC::const_iterator, typename SRC::const_iterator, typename DST::iterator, int, char32_t)>
 #endif
-DST t_map(SRC source, int mode)
+DST t_map(SRC source, int mode, char32_t loc = 0)
 {
     DST destination;
 
@@ -61,9 +61,9 @@ DST t_map(SRC source, int mode)
     {
         destination.resize(length * SZ);
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-        destination.resize(FNMAP(source.data(), source.data() + source.size(), destination.data(), mode));
+        destination.resize(FNMAP(source.data(), source.data() + source.size(), destination.data(), mode, loc));
 #else
-        destination.resize(FNMAP(source.cbegin(), source.cend(), destination.begin(), mode));
+        destination.resize(FNMAP(source.cbegin(), source.cend(), destination.begin(), mode, loc));
 #endif
 #ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
         destination.shrink_to_fit();
@@ -83,7 +83,7 @@ std::basic_string<UTF8> utf8_lower(std::basic_string_view<UTF8> source)
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap>(source,
+            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_loc>(source,
             detail::impl_casemap_mode_lower);
 }
 template<typename UTF16>
@@ -92,7 +92,7 @@ std::basic_string<UTF16> utf16_lower(std::basic_string_view<UTF16> source)
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap>(source,
+            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_loc>(source,
             detail::impl_casemap_mode_lower);
 }
 template<typename UTF8>
@@ -101,7 +101,7 @@ std::basic_string<UTF8> utf8_upper(std::basic_string_view<UTF8> source)
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap>(source,
+            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_loc>(source,
             detail::impl_casemap_mode_upper);
 }
 template<typename UTF16>
@@ -110,7 +110,7 @@ std::basic_string<UTF16> utf16_upper(std::basic_string_view<UTF16> source)
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap>(source,
+            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_loc>(source,
             detail::impl_casemap_mode_upper);
 }
 template<typename UTF8>
@@ -119,7 +119,7 @@ std::basic_string<UTF8> utf8_fold(std::basic_string_view<UTF8> source)
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap>(source,
+            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_loc>(source,
             detail::impl_casemap_mode_fold);
 }
 template<typename UTF16>
@@ -128,7 +128,7 @@ std::basic_string<UTF16> utf16_fold(std::basic_string_view<UTF16> source)
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap>(source,
+            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_loc>(source,
             detail::impl_casemap_mode_fold);
 }
 
@@ -177,92 +177,36 @@ std::basic_string<UTF8> utf8_lower(std::basic_string_view<UTF8> source, const un
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    if (locale == uni::locale::language{"lt"})
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_lower_lt);
-    }
-    if (locale == uni::locale::language{"tr"} || locale == uni::locale::language{"az"})
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_lower_tr_az);
-    }
-
-    return utf8_lower<UTF8>(source);
+    return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+            detail::impl_casemap_mode_lower, static_cast<char32_t>(locale.get_language()));
 }
 template<typename UTF16>
 std::basic_string<UTF16> utf16_lower(std::basic_string_view<UTF16> source, const uni::locale& locale)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    if (locale == uni::locale::language{"lt"})
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_lower_lt);
-    }
-    if (locale == uni::locale::language{"tr"} || locale == uni::locale::language{"az"})
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_lower_tr_az);
-    }
-
-    return utf16_lower<UTF16>(source);
+    return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+            detail::impl_casemap_mode_lower, static_cast<char32_t>(locale.get_language()));
 }
 template<typename UTF8>
 std::basic_string<UTF8> utf8_upper(std::basic_string_view<UTF8> source, const uni::locale& locale)
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    if (locale == uni::locale::language{"lt"})
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_lt);
-    }
-    if (locale == uni::locale::language{"tr"} || locale == uni::locale::language{"az"})
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_tr_az);
-    }
-    if (locale == uni::locale::language{"el"})
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_el);
-    }
-
-    return utf8_upper<UTF8>(source);
+    return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+            detail::impl_casemap_mode_upper, static_cast<char32_t>(locale.get_language()));
 }
 template<typename UTF16>
 std::basic_string<UTF16> utf16_upper(std::basic_string_view<UTF16> source, const uni::locale& locale)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    if (locale == uni::locale::language{"lt"})
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_lt);
-    }
-    if (locale == uni::locale::language{"tr"} || locale == uni::locale::language{"az"})
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_tr_az);
-    }
-    if (locale == uni::locale::language{"el"})
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_upper_el);
-    }
-
-    return utf16_upper<UTF16>(source);
+    return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+            detail::impl_casemap_mode_upper, static_cast<char32_t>(locale.get_language()));
 }
 inline std::string utf8_lower(std::string_view source, const uni::locale& locale)
 {
@@ -299,7 +243,7 @@ std::basic_string<UTF8> utf8_title(std::basic_string_view<UTF8> source)
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap>(source,
+            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_loc>(source,
             detail::impl_casemap_mode_title);
 }
 template<typename UTF16>
@@ -308,7 +252,7 @@ std::basic_string<UTF16> utf16_title(std::basic_string_view<UTF16> source)
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap>(source,
+            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_loc>(source,
             detail::impl_casemap_mode_title);
 }
 inline std::string utf8_title(std::string_view source)
@@ -331,52 +275,18 @@ std::basic_string<UTF8> utf8_title(std::basic_string_view<UTF8> source, const un
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    if (locale == uni::locale::language{"lt"})
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_title_lt);
-    }
-    if (locale == uni::locale::language{"tr"} || locale == uni::locale::language{"az"})
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_title_tr_az);
-    }
-    if (locale == uni::locale::language{"nl"})
-    {
-        return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-                detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-                detail::impl_casemap_locale_title_nl);
-    }
-
-    return utf8_title<UTF8>(source);
+    return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
+            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
+            detail::impl_casemap_mode_title, static_cast<char32_t>(locale.get_language()));
 }
 template<typename UTF16>
 std::basic_string<UTF16> utf16_title(std::basic_string_view<UTF16> source, const uni::locale& locale)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    if (locale == uni::locale::language{"lt"})
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_title_lt);
-    }
-    if (locale == uni::locale::language{"tr"} || locale == uni::locale::language{"az"})
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_title_tr_az);
-    }
-    if (locale == uni::locale::language{"nl"})
-    {
-        return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-                detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-                detail::impl_casemap_locale_title_nl);
-    }
-
-    return utf16_title<UTF16>(source);
+    return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
+            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
+            detail::impl_casemap_mode_title, static_cast<char32_t>(locale.get_language()));
 }
 inline std::string utf8_title(std::string_view source, const uni::locale& locale)
 {
@@ -544,7 +454,7 @@ std::string utf8_sortkey(std::basic_string_view<UTF8> source)
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::string, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_sortkey, detail::impl_utf8_sortkey>(source, false);
+            detail::impl_x_utf8_sortkey, detail::impl_utf8_sortkey_loc>(source, false);
 }
 template<typename UTF16>
 std::string utf16_sortkey(std::basic_string_view<UTF16> source)
@@ -552,7 +462,7 @@ std::string utf16_sortkey(std::basic_string_view<UTF16> source)
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::string, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_sortkey, detail::impl_utf16_sortkey>(source, false);
+            detail::impl_x_utf16_sortkey, detail::impl_utf16_sortkey_loc>(source, false);
 }
 inline std::string utf8_sortkey(std::string_view source)
 {
