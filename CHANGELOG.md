@@ -3,6 +3,7 @@ Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
 ## v0.5.0 (TBD)
+- Added better locale support
 - Added word properties
 - Added reverse grapheme/word algorithms
 - Redesigned transliterators more than two times faster now
