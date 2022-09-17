@@ -98,6 +98,11 @@ int main7()
         uni::version::unicode::minor << '.' <<
         uni::version::unicode::update << '\n';
 
+    if (uni::locale::system().is_empty())
+        std::cout << "System    Locale: EMPTY" << '\n';
+    else
+        std::cout << "System    Locale: " << uni::locale::system().to_string() << '\n';
+
     static_assert(uni::version::library::major >= 0 && uni::version::library::major <= 255);
     static_assert(uni::version::library::minor >= 0 && uni::version::library::minor <= 255);
     static_assert(uni::version::library::patch >= 0 && uni::version::library::patch <= 255);
