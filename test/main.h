@@ -9,6 +9,7 @@
 #include "../src/cpp_uni_break_grapheme.h"
 #include "../src/cpp_uni_break_word.h"
 #include "../src/cpp_uni_ranges.h"
+#include "../src/cpp_uni_locale.h"
 // Transliterators
 #include "../src/ext/translit/macedonian_to_latin_docs.h"
 #include "../src/ext/translit/japanese_kana_to_romaji_hepburn.h"
@@ -58,6 +59,7 @@
 #include "test_norm_unaccent.h"
 #include "test_break.h"
 #include "test_prop.h"
+#include "test_locale.h"
 
 #include "test_lenient_iter.h"
 #include "test_lenient_iter_rev.h"
@@ -189,6 +191,10 @@ int main7()
     test_prop_norm();
 
     std::cout << "DONE: Code Point Properties" << '\n';
+
+    test_locale();
+
+    std::cout << "DONE: Locale" << '\n';
 
     test_short_func_convert();
     test_short_func_case();
