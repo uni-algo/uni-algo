@@ -16,6 +16,7 @@
   - [Case Functions](#case-functions)
   - [Normalization Functions](#normalization-functions)
   - [Code Point Properties](#code-point-properties)
+  - [Locale](#locale)
   - [Basic Ranges](#basic-ranges)
   - [UTF Ranges](#utf-ranges)
   - [Grapheme/Word Ranges](#graphemeword-ranges)
@@ -92,7 +93,7 @@ and/or fixed width types are unavailable and/or CHAR_BIT is not 8.
 Add to your CMakeLists.txt
 
 ```cmake
-add_subdirectory(lib) # the directory where you extracted this repository
+add_subdirectory(repo) # the directory where you extracted this repository
 
 target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 ```
@@ -180,9 +181,9 @@ ctest --verbose --build-config Release
 
 ## Examples
 
-For these examples to work you need to compile them in GCC/Clang with -std=c++17 (or higher)
-or in MSVC with /utf-8 /std:c++17 (or higher) and a terminal that actually supports UTF-8.<br>
-These are the lowest versions the library tested: GCC 7.3, Clang 8.0.1, MSVS 2017 15.9 (MSVC 19.16)
+For these examples to work you need to compile them in GCC/Clang with `-std=c++17` (or higher)
+or in MSVC with `/utf-8 /std:c++17` (or higher) and a terminal that actually supports UTF-8.<br>
+These are the lowest versions the library tested: GCC 7.3, Clang 8.0, MSVS 2017 15.9 (MSVC 19.16)
 
 Note that terms: code point, code unit, grapheme are used in the examples.
 You can read about them here:
@@ -376,6 +377,39 @@ bool is_alphabetic_string(std::string_view view)
 // Note that degenerate cases when a string starts with combining marks or contains
 // only combining marks are not handled so a real function will be a bit more complex.
 ```
+## Locale
+```cpp
+#include "cpp_uni_locale.h" // And compile "cpp_uni_data.cpp"
+
+// Uppercase a string using system locale
+uni::cases::utf8_upper("Test", uni::locale::system());
+
+uni::cases::utf8_upper("Test", uni::locale{"en-US"}); // Using locale string
+uni::cases::utf8_upper("Test", uni::locale::language{"en"}); // Using language subtag directly
+
+// Parse locale string (can be ill-formed the parser will normalize it)
+uni::locale locale{"EN_latn_US"};
+
+assert(locale.is_empty() == false);
+assert(locale == uni::locale::language{"en"});
+assert(locale == uni::locale::script{"Latn"});
+assert(locale == uni::locale::region{"US"});
+assert(locale.to_string() == "en-Latn-US");
+
+// Use locale subtags in switch
+switch (uni::locale::system().get_language())
+{
+    case uni::locale::language{"en"}:
+        std::cout << "English Language" << '\n';
+        break;
+    case uni::locale::language{"ja"}:
+        std::cout << "Japanese Language" << '\n';
+        break;
+    case uni::locale::language{"ar"}:
+        std::cout << "Arabic Language" << '\n';
+        break;
+}
+```
 ## Basic Ranges
 ```cpp
 // This module doesn't require Unicode data so it can be used as header-only
@@ -464,8 +498,8 @@ for (auto it = view.end(); it != view.begin();)
 // And compile "cpp_uni_data.cpp"
 
 // Grapheme/Word aka Break ranges are similar to UTF ranges
-// but they return sunbranges in the form of std::string_view.
-// Break ranges use default grapheme/word boundary rules from The Unicode Standard UAX #29.
+// but they return subranges in the form of std::string_view
+// Break ranges use default grapheme/word boundary rules from The Unicode Standard UAX #29
 
 std::string str8 = "Άλμπερτ Αϊνστάιν";
 
@@ -604,7 +638,7 @@ ICU (International Components for Unicode) library.
 
 ICU (International Components for Unicode) and some functions from WinAPI are used
 for the performance comparison because these implementations are highly optimized.<br>
-See perf/result folder.
+See `perf/result` folder.
 
 ## C Language
 
