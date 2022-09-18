@@ -41,22 +41,38 @@ void test_locale()
     TESTX((uni::locale{"12345"} == uni::locale{}));
 
     TESTX((uni::locale{"en"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX((uni::locale{"en-US"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
     TESTX((uni::locale{"en-Latn"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
     TESTX((uni::locale{"en-Latn-US"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
+    TESTX((uni::locale{"en-Latn-029"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"029"}}));
+    TESTX((uni::locale{"en-029"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"029"}}));
 
     TESTX((uni::locale{"EN"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX((uni::locale{"EN-us"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
     TESTX((uni::locale{"EN-lATN"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
     TESTX((uni::locale{"EN-lATN-us"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
+    TESTX((uni::locale{"EN-lATN-029"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"029"}}));
+    TESTX((uni::locale{"EN-029"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"029"}}));
 
     TESTX((uni::locale{"tzm"} == uni::locale{uni::locale::language{"tzm"}, {}, {}}));
+    TESTX((uni::locale{"tzm-DZ"} == uni::locale{uni::locale::language{"tzm"}, {}, uni::locale::region{"DZ"}}));
     TESTX((uni::locale{"tzm-Latn"} == uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, {}}));
     TESTX((uni::locale{"tzm-Latn-DZ"} == uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, uni::locale::region{"DZ"}}));
+    TESTX((uni::locale{"tzm-Latn-999"} == uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, uni::locale::region{"999"}}));
+    TESTX((uni::locale{"tzm-999"} == uni::locale{uni::locale::language{"tzm"}, {}, uni::locale::region{"999"}}));
 
     TESTX((uni::locale{"en_US.UTF8"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
     TESTX((uni::locale{"en_Latn_US.UTF8"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
     TESTX((uni::locale{"en_US_POSIX"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
     TESTX((uni::locale{"en_POSIX_US"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
     TESTX((uni::locale{"POSIX"} == uni::locale{{}, {}, {}}));
+
+    TESTX((uni::locale{"en-0029"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX((uni::locale{"en-29"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX((uni::locale{"en-9"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX((uni::locale{"en-Latn-0029"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
+    TESTX((uni::locale{"en-Latn-29"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
+    TESTX((uni::locale{"en-Latn-9"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
 
     TESTX((uni::locale{"en-"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
     TESTX((uni::locale{"en-Latn-"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
@@ -71,12 +87,18 @@ void test_locale()
     // TEST Locale to_string
 
     TESTX(uni::locale{""}.to_string() == "");
+    TESTX(uni::locale{"1"}.to_string() == "");
     TESTX(uni::locale{"e"}.to_string() == "");
     TESTX(uni::locale{"en"}.to_string() == "en");
     TESTX(uni::locale{"en-"}.to_string() == "en");
+    TESTX(uni::locale{"en-US"}.to_string() == "en-US");
     TESTX(uni::locale{"en-Latn"}.to_string() == "en-Latn");
     TESTX(uni::locale{"en_Latn_US"}.to_string() == "en-Latn-US");
-    TESTX(uni::locale{"TzM_lATN_us"}.to_string() == "tzm-Latn-US");
+    TESTX(uni::locale{"en_Latn_023"}.to_string() == "en-Latn-023");
+    TESTX(uni::locale{"en_023"}.to_string() == "en-023");
+    TESTX(uni::locale{"TzM_lATN_dz"}.to_string() == "tzm-Latn-DZ");
+    TESTX(uni::locale{"TzM_lATN_999"}.to_string() == "tzm-Latn-999");
+    TESTX(uni::locale{"TzM_999"}.to_string() == "tzm-999");
 
     // Creating locale with ill-formed locale tags directly allows ill-formed locale and ill-formed output (to_string)
 
