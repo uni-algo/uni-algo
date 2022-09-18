@@ -71,6 +71,31 @@ others are based on Default Case Matching and always locale-independent too.
 
 ---
 
+**`cpp_uni_locale.h`** - locale (requeries cpp_uni_data.cpp)
+```
+uni::locale::system - get system locale (static function)
+
+uni::locale class functions:
+
+is_empty     - check if locale is empty
+to_string    - output locale to a string
+get_language - get language subtag
+get_script   - get script subtag
+get_region   - get region subtag
+
+subtag classes:
+
+uni::locale::language - language subtag
+uni::locale::script   - script subtag
+uni::locale::region   - region subtag
+```
+You can treat subtag classes the same as enum classes with a bit different syntax:<br>
+`uni::locale::language{"en"}` instead of `uni::locale::language::en`<br>
+They are constexpr so it's possible to use them in all places<br>
+where enum classes can be used for example in switch case.
+
+---
+
 **`cpp_uni_ranges.h`** - UTF and basic ranges (header-only)
 ```
 uni::views::utf8 - requires integral UTF-8 range produces char32_t range
@@ -194,9 +219,8 @@ class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.
 
 ---
 
-**`classes`**
+**`other classes`**
 ```
 class uni::error    - used by validation functions
-class uni::locale   - used by case module
 class uni::sentinel - used by ranges
 ```
