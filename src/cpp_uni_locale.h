@@ -25,6 +25,7 @@
 
 namespace uni {
 
+// Forward declaration for system locale stuff
 #ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
 class locale;
 
@@ -248,7 +249,7 @@ private:
                 else if (!has_regn)
                 {
                     has_regn = true;
-                    if (size == 2)
+                    if (size == 2 || size == 3)
                         regn.from_value(detail::impl_locale_from_region(s.substr(prev, size), size, 0));
                     break;
                 }

@@ -20,6 +20,7 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 // https://en.wikipedia.org/wiki/ISO_15924
 // https://en.wikipedia.org/wiki/ISO_3166-1
+// https://en.wikipedia.org/wiki/UN_M49
 // https://en.wikipedia.org/wiki/ISO_4217
 // https://www.unicode.org/reports/tr35/#Unknown_or_Invalid_Identifiers
 
@@ -27,7 +28,7 @@ uaix_const type_codept impl_locale_language_und = 0x756E6400; // ISO 639-1 / BCP
 uaix_const type_codept impl_locale_script_Zzzz  = 0x5A7A7A7A; // ISO 15924
 uaix_const type_codept impl_locale_region_ZZ    = 0x5A5A0000; // ISO 3166-1 alpha-2
 //uaix_const type_codept impl_locale_region_ZZZ   = 0x5A5A5A00; // ISO 3166-1 alpha-3
-//uaix_const type_codept impl_locale_region_999   = 0x39393900; // ISO 3166-1 numeric
+//uaix_const type_codept impl_locale_region_999   = 0x39393900; // ISO 3166-1 numeric (UN M.49)
 //uaix_const type_codept impl_locale_currency_XXX = 0x58585800; // ISO 4217
 
 // TODO: Remove this ugly hack when constexpr low-level will be done
@@ -79,7 +80,7 @@ template <typename it_in_utf8>
 #endif
 uaix_static type_codept impl_locale_from_language(it_in_utf8 s, size_t size, type_codept unknown)
 {
-    // EXAMPLE: en/und
+    // EXAMPLE: en/und (shortest ISO 639 code)
     type_codept result = 0;
 
     if (size != 2 && size != 3)
@@ -117,7 +118,7 @@ template <typename it_in_utf8>
 #endif
 uaix_static type_codept impl_locale_from_script(it_in_utf8 s, size_t size, type_codept unknown)
 {
-    // EXAMPLE: Zzzz
+    // EXAMPLE: Zzzz (ISO 15924 code)
     type_codept result = 0;
 
     if (size != 4)
@@ -159,7 +160,19 @@ template <typename it_in_utf8>
 #endif
 uaix_static type_codept impl_locale_from_region(it_in_utf8 s, size_t size, type_codept unknown)
 {
-    // EXAMPLE: ZZ
+    // EXAMPLE: 999 (UN M.49 code)
+    if (size == 3)
+    {
+        if (s[0] >= '0' && s[0] <= '9' &&
+            s[1] >= '0' && s[1] <= '9' &&
+            s[2] >= '0' && s[2] <= '9')
+            return ((s[0] & 0xFF) << 24) | ((s[1] & 0xFF) << 16) | ((s[2] & 0xFF) << 8);
+            // return ((s[0] - 48) * 100) + ((s[1] - 48) * 10) + (s[2] - 48); // REMINDER: Numeric result
+
+        return unknown;
+    }
+
+    // EXAMPLE: ZZ (ISO 3166-1 code)
     type_codept result = 0;
 
     if (size != 2)
@@ -186,7 +199,7 @@ uaix_static type_codept impl_locale_from_region(it_in_utf8 s, size_t size, type_
 
 uaix_inline type_codept impl_locale_norm_language(type_codept v, type_codept unknown)
 {
-    // EXAMPLE: en/und
+    // EXAMPLE: en/und (shortest ISO 639 code)
     type_codept result = 0;
 
     if (((v >> 24) & 0xFF) >= 'A' && ((v >> 24) & 0xFF) <= 'Z')
@@ -221,7 +234,7 @@ uaix_inline type_codept impl_locale_norm_language(type_codept v, type_codept unk
 
 uaix_inline type_codept impl_locale_norm_script(type_codept v, type_codept unknown)
 {
-    // EXAMPLE: Zzzz
+    // EXAMPLE: Zzzz (ISO 15924 code)
     type_codept result = 0;
 
     if (((v >> 24) & 0xFF) >= 'A' && ((v >> 24) & 0xFF) <= 'Z')
@@ -257,7 +270,13 @@ uaix_inline type_codept impl_locale_norm_script(type_codept v, type_codept unkno
 
 uaix_inline type_codept impl_locale_norm_region(type_codept v, type_codept unknown)
 {
-    // EXAMPLE: ZZ
+    // EXAMPLE: 999 (UN M.49 code)
+    if (((v >> 24) & 0xFF) >= '0' && ((v >> 24) & 0xFF) <= '9' &&
+        ((v >> 16) & 0xFF) >= '0' && ((v >> 16) & 0xFF) <= '9' &&
+        ((v >> 8)  & 0xFF) >= '0' && ((v >> 8)  & 0xFF) <= '9' && (v & 0xFF) == 0)
+        return (((v >> 24) & 0xFF) << 24) | (((v >> 16) & 0xFF) << 16) | (((v >> 8) & 0xFF) << 8);
+
+    // EXAMPLE: ZZ (ISO 3166-1 code)
     type_codept result = 0;
 
     if (((v >> 24) & 0xFF) >= 'A' && ((v >> 24) & 0xFF) <= 'Z')
