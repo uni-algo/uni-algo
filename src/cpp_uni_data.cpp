@@ -36,10 +36,12 @@
 #ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
 
 #include "cpp_uni_locale.h"
+
 #ifndef _WIN32
 #include <cstdlib>
 #else
-#include "windows.h"
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #endif
 
 namespace uni::detail {
@@ -65,21 +67,24 @@ uni::locale locale_syscall()
     if (lang && *lang)
         return uni::locale{lang};
 #else
-#  if WINVER >= 0x0600
+    // List of all possible locales on Windows: https://ss64.com/locale.html
+#if WINVER >= 0x0600
     wchar_t name[LOCALE_NAME_MAX_LENGTH] = {};
     if (LCIDToLocaleName(LOCALE_USER_DEFAULT, name, LOCALE_NAME_MAX_LENGTH, 0))
         return uni::locale{name};
-#  else
-    wchar_t name[16] = {};
-    int size = GetLocaleInfoW(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME, name, static_cast<int>(std::size(name)));
-    if (size)
+#else
+    // Maximum lenght for every GetLocaleInfoW call is nine including null char:
+    // https://learn.microsoft.com/en-us/windows/win32/intl/locale-siso-constants
+    wchar_t name[32] = {};
+    int len = GetLocaleInfoW(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME, name, static_cast<int>(std::size(name)));
+    if (len)
     {
-        name[size - 1] = '-';
-        if (GetLocaleInfoW(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME, name + size, static_cast<int>(std::size(name)) - size))
+        name[len - 1] = L'-';
+        if (GetLocaleInfoW(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME, name + len, static_cast<int>(std::size(name)) - len))
             return uni::locale{name};
     }
-#  endif
-#endif
+#endif // WINVER >= 0x0600
+#endif // _WIN32
     return uni::locale{};
 }
 
@@ -107,10 +112,12 @@ const uni::locale& locale_thread_impl(bool reinit)
     }
     return loc;
 }
+
 const uni::locale& locale_thread()
 {
     return locale_thread_impl(false);
 }
+
 void locale_thread_reinit()
 {
     locale_thread_impl(true);
