@@ -55,6 +55,9 @@
 // Reduces the size of Normalization module by ~100 KB.
 //#define UNI_ALGO_DISABLE_NFKC_NFKD
 
+// Disable system locale facilities uni::locale::system() function etc.
+//#define UNI_ALGO_DISABLE_SYSTEM_LOCALE
+
 // With this define pointers will be used instead of C++ iterators internally.
 // The only reason to use the define is to maximize performance in debug builds,
 // for example MSVC debug iterators are very slow.
