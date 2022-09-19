@@ -36,6 +36,7 @@ Note that they are useful only for C wrapper because in C++ everything is templa
 UNI_ALGO_DISABLE_UTF16 - Disable UTF-16 functions.
 UNI_ALGO_DISABLE_CONVERT_UTF32 - Disable UTF-32 functions in convert module.
 See examples/c_wrapper for an example how they can be implemented.
+UNI_ALGO_DISABLE_SYSTEM_LOCALE - Disable system locale.
 
 Reserved for C++ wrapper.
 UNI_ALGO_DISABLE_CPP_ITERATORS
