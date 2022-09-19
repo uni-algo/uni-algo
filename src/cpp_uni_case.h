@@ -486,6 +486,8 @@ namespace caseless {
 template<typename UTF8>
 int utf8_compare(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf8_compare(string1.data(), string1.data() + string1.size(),
                                      string2.data(), string2.data() + string2.size(), true);
@@ -498,7 +500,7 @@ int utf8_compare(std::basic_string_view<UTF8> string1, std::basic_string_view<UT
 template<typename UTF16>
 int utf16_compare(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf16_compare(string1.data(), string1.data() + string1.size(),
@@ -513,6 +515,8 @@ int utf16_compare(std::basic_string_view<UTF16> string1, std::basic_string_view<
 template<typename UTF8>
 int utf8_collate(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf8_collate(string1.data(), string1.data() + string1.size(),
                                      string2.data(), string2.data() + string2.size(), true);
@@ -525,7 +529,7 @@ int utf8_collate(std::basic_string_view<UTF8> string1, std::basic_string_view<UT
 template<typename UTF16>
 int utf16_collate(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     return detail::impl_utf16_collate(string1.data(), string1.data() + string1.size(),
@@ -540,6 +544,8 @@ int utf16_collate(std::basic_string_view<UTF16> string1, std::basic_string_view<
 template<typename UTF8>
 uni::search utf8_search(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
     size_t pos = detail::impl_npos, end = detail::impl_npos;
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     bool ret = detail::impl_utf8_search(string1.data(), string1.data() + string1.size(),
@@ -555,7 +561,7 @@ uni::search utf8_search(std::basic_string_view<UTF8> string1, std::basic_string_
 template<typename UTF16>
 uni::search utf16_search(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
-    static_assert(sizeof(UTF16) >= sizeof(char16_t));
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     size_t pos = detail::impl_npos, end = detail::impl_npos;
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
@@ -620,12 +626,16 @@ inline uni::search utf16_search(std::wstring_view string1, std::wstring_view str
 template<typename UTF8>
 std::string utf8_sortkey(std::basic_string_view<UTF8> source)
 {
+    static_assert(std::is_integral_v<UTF8>);
+
     return detail::t_map<std::string, std::basic_string_view<UTF8>,
             detail::impl_x_utf8_sortkey, detail::impl_utf8_sortkey_loc>(source, true);
 }
 template<typename UTF16>
 std::string utf16_sortkey(std::basic_string_view<UTF16> source)
 {
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+
     return detail::t_map<std::string, std::basic_string_view<UTF16>,
             detail::impl_x_utf16_sortkey, detail::impl_utf16_sortkey_loc>(source, true);
 }
