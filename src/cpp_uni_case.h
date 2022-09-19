@@ -621,13 +621,13 @@ template<typename UTF8>
 std::string utf8_sortkey(std::basic_string_view<UTF8> source)
 {
     return detail::t_map<std::string, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_sortkey, detail::impl_utf8_sortkey>(source, true);
+            detail::impl_x_utf8_sortkey, detail::impl_utf8_sortkey_loc>(source, true);
 }
 template<typename UTF16>
 std::string utf16_sortkey(std::basic_string_view<UTF16> source)
 {
     return detail::t_map<std::string, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_sortkey, detail::impl_utf16_sortkey>(source, true);
+            detail::impl_x_utf16_sortkey, detail::impl_utf16_sortkey_loc>(source, true);
 }
 inline std::string utf8_sortkey(std::string_view source)
 {

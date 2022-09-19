@@ -1435,7 +1435,7 @@ uaix_static it_out_utf8 codepoint_to_sortkey(type_codept c, it_out_utf8 dst)
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_sortkey(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int caseless)
+uaix_static size_t impl_utf8_sortkey(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, bool caseless)
 {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
@@ -1484,7 +1484,7 @@ uaix_static size_t impl_utf8_sortkey(it_in_utf8 first, it_end_utf8 last, it_out_
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, int caseless)
+uaix_static size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, bool caseless)
 {
     it_in_utf16 src = first;
     it_out_utf8 dst = result;
@@ -1544,7 +1544,7 @@ template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf8>
 uaix_static size_t impl_utf16_sortkey_loc(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, int mode, type_codept language)
 {
     if (language == 0)
-        impl_utf16_sortkey(first, last, result, mode ? true : false);
+        return impl_utf16_sortkey(first, last, result, mode ? true : false);
     return 0;
 }
 
