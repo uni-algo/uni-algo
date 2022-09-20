@@ -8,6 +8,7 @@ void test_prop()
     std::size_t count_control        = 0;
     std::size_t count_noncharacter   = 0;
     std::size_t count_private_use    = 0;
+    std::size_t count_supplementary  = 0;
     std::size_t count_invalid        = 0;
     std::size_t count_invalid_scalar = 0;
 
@@ -23,6 +24,12 @@ void test_prop()
         TESTX(uni::codepoint::is_noncharacter(c) == uni::codepoint::prop{c}.Noncharacter_Code_Point());
         TESTX(uni::codepoint::is_reserved(c)     == uni::codepoint::prop{c}.Reserved());
 
+        TESTX(uni::codepoint::is_surrogate(c)    == uni::codepoint::is_surrogate(uni::codepoint::prop{c}));
+        TESTX(uni::codepoint::is_private_use(c)  == uni::codepoint::is_private_use(uni::codepoint::prop{c}));
+        TESTX(uni::codepoint::is_control(c)      == uni::codepoint::is_control(uni::codepoint::prop{c}));
+        TESTX(uni::codepoint::is_noncharacter(c) == uni::codepoint::is_noncharacter(uni::codepoint::prop{c}));
+        TESTX(uni::codepoint::is_reserved(c)     == uni::codepoint::is_reserved(uni::codepoint::prop{c}));
+
         // Count stable code points
         // https://www.unicode.org/policies/stability_policy.html#Property_Value
         // X property is an immutable code point property,
@@ -31,6 +38,7 @@ void test_prop()
         if (uni::codepoint::is_private_use(c))   count_private_use++;
         if (uni::codepoint::is_control(c))       count_control++;
         if (uni::codepoint::is_noncharacter(c))  count_noncharacter++;
+        if (uni::codepoint::is_supplementary(c)) count_supplementary++;
         if (!uni::codepoint::is_valid(c))        count_invalid++;
         if (!uni::codepoint::is_valid_scalar(c)) count_invalid_scalar++;
 
@@ -99,6 +107,7 @@ void test_prop()
     TESTX(count_private_use    == 137468);
     TESTX(count_control        == 65);
     TESTX(count_noncharacter   == 66);
+    TESTX(count_supplementary  == 0x100000);
 
     TESTX(count_invalid        == 3);
     TESTX(count_invalid_scalar == count_surrogate + count_invalid);
@@ -137,11 +146,23 @@ void test_prop()
     TESTX(!uni::codepoint::is_alphabetic(0x110000));
     TESTX(!uni::codepoint::is_alphabetic(0xFFFFFFFF));
 
+    TESTX(uni::codepoint::is_alphabetic(uni::codepoint::prop{U'Q'}));
+    TESTX(!uni::codepoint::is_alphabetic(uni::codepoint::prop{U'1'}));
+    TESTX(!uni::codepoint::is_alphabetic(uni::codepoint::prop{0}));
+    TESTX(!uni::codepoint::is_alphabetic(uni::codepoint::prop{0x110000}));
+    TESTX(!uni::codepoint::is_alphabetic(uni::codepoint::prop{0xFFFFFFFF}));
+
     TESTX(!uni::codepoint::is_numeric(U'R'));
     TESTX(uni::codepoint::is_numeric(U'2'));
     TESTX(!uni::codepoint::is_numeric(0));
     TESTX(!uni::codepoint::is_numeric(0x110000));
     TESTX(!uni::codepoint::is_numeric(0xFFFFFFFF));
+
+    TESTX(!uni::codepoint::is_numeric(uni::codepoint::prop{U'R'}));
+    TESTX(uni::codepoint::is_numeric(uni::codepoint::prop{U'2'}));
+    TESTX(!uni::codepoint::is_numeric(uni::codepoint::prop{0}));
+    TESTX(!uni::codepoint::is_numeric(uni::codepoint::prop{0x110000}));
+    TESTX(!uni::codepoint::is_numeric(uni::codepoint::prop{0xFFFFFFFF}));
 
     TESTX(uni::codepoint::is_alphanumeric(U'S'));
     TESTX(uni::codepoint::is_alphanumeric(U'3'));
@@ -149,11 +170,23 @@ void test_prop()
     TESTX(!uni::codepoint::is_alphanumeric(0x110000));
     TESTX(!uni::codepoint::is_alphanumeric(0xFFFFFFFF));
 
+    TESTX(uni::codepoint::is_alphanumeric(uni::codepoint::prop{U'S'}));
+    TESTX(uni::codepoint::is_alphanumeric(uni::codepoint::prop{U'3'}));
+    TESTX(!uni::codepoint::is_alphanumeric(uni::codepoint::prop{0}));
+    TESTX(!uni::codepoint::is_alphanumeric(uni::codepoint::prop{0x110000}));
+    TESTX(!uni::codepoint::is_alphanumeric(uni::codepoint::prop{0xFFFFFFFF}));
+
     TESTX(uni::codepoint::is_whitespace(U' '));
     TESTX(uni::codepoint::is_whitespace(0x3000));
     TESTX(!uni::codepoint::is_whitespace(0));
     TESTX(!uni::codepoint::is_whitespace(0x110000));
     TESTX(!uni::codepoint::is_whitespace(0xFFFFFFFF));
+
+    TESTX(uni::codepoint::is_whitespace(uni::codepoint::prop{U' '}));
+    TESTX(uni::codepoint::is_whitespace(uni::codepoint::prop{0x3000}));
+    TESTX(!uni::codepoint::is_whitespace(uni::codepoint::prop{0}));
+    TESTX(!uni::codepoint::is_whitespace(uni::codepoint::prop{0x110000}));
+    TESTX(!uni::codepoint::is_whitespace(uni::codepoint::prop{0xFFFFFFFF}));
 
     TESTX(uni::codepoint::is_control(0));
     TESTX(uni::codepoint::is_control(0x1F));
@@ -165,6 +198,16 @@ void test_prop()
     TESTX(!uni::codepoint::is_control(0x110000));
     TESTX(!uni::codepoint::is_control(0xFFFFFFFF));
 
+    TESTX(uni::codepoint::is_control(uni::codepoint::prop{0}));
+    TESTX(uni::codepoint::is_control(uni::codepoint::prop{0x1F}));
+    TESTX(!uni::codepoint::is_control(uni::codepoint::prop{0x20}));
+    TESTX(uni::codepoint::is_control(uni::codepoint::prop{0x7F}));
+    TESTX(uni::codepoint::is_control(uni::codepoint::prop{0x9F}));
+    TESTX(!uni::codepoint::is_control(uni::codepoint::prop{0xFFFF}));
+    TESTX(!uni::codepoint::is_control(uni::codepoint::prop{0x10FFFF}));
+    TESTX(!uni::codepoint::is_control(uni::codepoint::prop{0x110000}));
+    TESTX(!uni::codepoint::is_control(uni::codepoint::prop{0xFFFFFFFF}));
+
     TESTX(!uni::codepoint::is_noncharacter(0));
     TESTX(!uni::codepoint::is_noncharacter(0xFFFD));
     TESTX(uni::codepoint::is_noncharacter(0xFFFE));
@@ -173,6 +216,15 @@ void test_prop()
     TESTX(uni::codepoint::is_noncharacter(0x10FFFF));
     TESTX(!uni::codepoint::is_noncharacter(0x110000));
     TESTX(!uni::codepoint::is_noncharacter(0xFFFFFFFF));
+
+    TESTX(!uni::codepoint::is_noncharacter(uni::codepoint::prop{0}));
+    TESTX(!uni::codepoint::is_noncharacter(uni::codepoint::prop{0xFFFD}));
+    TESTX(uni::codepoint::is_noncharacter(uni::codepoint::prop{0xFFFE}));
+    TESTX(uni::codepoint::is_noncharacter(uni::codepoint::prop{0xFFFF}));
+    TESTX(uni::codepoint::is_noncharacter(uni::codepoint::prop{0x10FFFE}));
+    TESTX(uni::codepoint::is_noncharacter(uni::codepoint::prop{0x10FFFF}));
+    TESTX(!uni::codepoint::is_noncharacter(uni::codepoint::prop{0x110000}));
+    TESTX(!uni::codepoint::is_noncharacter(uni::codepoint::prop{0xFFFFFFFF}));
 
     TESTX(!uni::codepoint::is_private_use(0));
     TESTX(uni::codepoint::is_private_use(0xE000));
@@ -186,6 +238,18 @@ void test_prop()
     TESTX(!uni::codepoint::is_private_use(0x110000));
     TESTX(!uni::codepoint::is_private_use(0xFFFFFFFF));
 
+    TESTX(!uni::codepoint::is_private_use(uni::codepoint::prop{0}));
+    TESTX(uni::codepoint::is_private_use(uni::codepoint::prop{0xE000}));
+    TESTX(uni::codepoint::is_private_use(uni::codepoint::prop{0xF8FF}));
+    TESTX(!uni::codepoint::is_private_use(uni::codepoint::prop{0xFFFF}));
+    TESTX(uni::codepoint::is_private_use(uni::codepoint::prop{0xF0000}));
+    TESTX(uni::codepoint::is_private_use(uni::codepoint::prop{0xFFFFD}));
+    TESTX(uni::codepoint::is_private_use(uni::codepoint::prop{0x100000}));
+    TESTX(uni::codepoint::is_private_use(uni::codepoint::prop{0x10FFFD}));
+    TESTX(!uni::codepoint::is_private_use(uni::codepoint::prop{0x10FFFF}));
+    TESTX(!uni::codepoint::is_private_use(uni::codepoint::prop{0x110000}));
+    TESTX(!uni::codepoint::is_private_use(uni::codepoint::prop{0xFFFFFFFF}));
+
     TESTX(!uni::codepoint::is_surrogate(0));
     TESTX(!uni::codepoint::is_surrogate(0xFFFF));
     TESTX(uni::codepoint::is_surrogate(0xD800));
@@ -195,6 +259,16 @@ void test_prop()
     TESTX(!uni::codepoint::is_surrogate(0x10FFFF));
     TESTX(!uni::codepoint::is_surrogate(0x110000));
     TESTX(!uni::codepoint::is_surrogate(0xFFFFFFFF));
+
+    TESTX(!uni::codepoint::is_surrogate(uni::codepoint::prop{0}));
+    TESTX(!uni::codepoint::is_surrogate(uni::codepoint::prop{0xFFFF}));
+    TESTX(uni::codepoint::is_surrogate(uni::codepoint::prop{0xD800}));
+    TESTX(uni::codepoint::is_surrogate(uni::codepoint::prop{0xDBFF}));
+    TESTX(uni::codepoint::is_surrogate(uni::codepoint::prop{0xDC00}));
+    TESTX(uni::codepoint::is_surrogate(uni::codepoint::prop{0xDFFF}));
+    TESTX(!uni::codepoint::is_surrogate(uni::codepoint::prop{0x10FFFF}));
+    TESTX(!uni::codepoint::is_surrogate(uni::codepoint::prop{0x110000}));
+    TESTX(!uni::codepoint::is_surrogate(uni::codepoint::prop{0xFFFFFFFF}));
 
     TESTX(!uni::codepoint::is_supplementary(0));
     TESTX(!uni::codepoint::is_supplementary(0xFFFF));
@@ -354,6 +428,11 @@ void test_prop_case()
     TESTX(uni::codepoint::is_uppercase(U'W'));
     TESTX(!uni::codepoint::is_uppercase(U'w'));
 
+    TESTX(uni::codepoint::is_lowercase(uni::codepoint::prop_case{U'w'}));
+    TESTX(!uni::codepoint::is_lowercase(uni::codepoint::prop_case{U'W'}));
+    TESTX(uni::codepoint::is_uppercase(uni::codepoint::prop_case{U'W'}));
+    TESTX(!uni::codepoint::is_uppercase(uni::codepoint::prop_case{U'w'}));
+
     TESTX(uni::codepoint::prop_case{U'w'}.Lowercase());
     TESTX(!uni::codepoint::prop_case{U'W'}.Lowercase());
     TESTX(uni::codepoint::prop_case{U'W'}.Uppercase());
@@ -433,6 +512,8 @@ void test_prop_case()
     // Eszett
     TESTX(uni::codepoint::is_lowercase(0x00DF));
     TESTX(uni::codepoint::is_uppercase(0x1E9E));
+    TESTX(uni::codepoint::is_lowercase(uni::codepoint::prop_case{0x00DF}));
+    TESTX(uni::codepoint::is_uppercase(uni::codepoint::prop_case{0x1E9E}));
     TESTX(uni::codepoint::prop_case{0x00DF}.Lowercase());
     TESTX(uni::codepoint::prop_case{0x1E9E}.Uppercase());
 
