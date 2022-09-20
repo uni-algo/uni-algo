@@ -37,7 +37,6 @@ enum class general_category : unsigned char {Cn = 0,
 class prop
 {
     friend general_category get_general_category(const prop& p) noexcept;
-    friend bool is_same_category(const prop& prop1, const prop& prop2) noexcept;
 
 private:
     detail::type_codept data = 0;
@@ -325,18 +324,6 @@ inline bool is_control(const prop& p) noexcept
 {
     // https://www.unicode.org/glossary/#control_codes
     return p.Control();
-}
-
-inline bool is_same_category(char32_t c1, char32_t c2) noexcept
-{
-    return detail::impl_prop_get_prop_gc(detail::impl_prop_get_prop(c1)) ==
-           detail::impl_prop_get_prop_gc(detail::impl_prop_get_prop(c2));
-}
-
-inline bool is_same_category(const prop& p1, const prop& p2) noexcept
-{
-    return detail::impl_prop_get_prop_gc(p1.data) ==
-           detail::impl_prop_get_prop_gc(p2.data);
 }
 
 } // namespace uni::codepoint

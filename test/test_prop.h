@@ -277,13 +277,6 @@ void test_prop()
     TESTX(!uni::codepoint::is_supplementary(0x110000));
     TESTX(!uni::codepoint::is_supplementary(0xFFFFFFFF));
 
-    TESTX(uni::codepoint::is_same_category(U'1', U'2'));
-    TESTX(uni::codepoint::is_same_category(U'Q', U'R'));
-    TESTX(!uni::codepoint::is_same_category(U'1', U'R'));
-    TESTX(uni::codepoint::is_same_category(uni::codepoint::prop{U'1'}, uni::codepoint::prop{U'2'}));
-    TESTX(uni::codepoint::is_same_category(uni::codepoint::prop{U'Q'}, uni::codepoint::prop{U'R'}));
-    TESTX(!uni::codepoint::is_same_category(uni::codepoint::prop{U'1'}, uni::codepoint::prop{U'R'}));
-
     // First code point from UnicodeData.txt with such General_Category
 
     char32_t unassigned = 0x0A7777; // Random unassigned code point (change to something else if it will be assigned)
