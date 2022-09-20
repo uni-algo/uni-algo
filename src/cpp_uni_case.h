@@ -799,9 +799,19 @@ inline bool is_lowercase(char32_t c) noexcept
     return prop_case{c}.Lowercase();
 }
 
+inline bool is_lowercase(const prop_case& p) noexcept
+{
+    return p.Lowercase();
+}
+
 inline bool is_uppercase(char32_t c) noexcept
 {
     return prop_case{c}.Uppercase();
+}
+
+inline bool is_uppercase(const prop_case& p) noexcept
+{
+    return p.Uppercase();
 }
 
 inline char32_t to_simple_lowercase(char32_t c) noexcept

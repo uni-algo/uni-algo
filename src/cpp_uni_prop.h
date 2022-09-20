@@ -204,9 +204,19 @@ inline bool is_alphabetic(char32_t c) noexcept
     return prop{c}.Alphabetic();
 }
 
+inline bool is_alphabetic(const prop& p) noexcept
+{
+    return p.Alphabetic();
+}
+
 inline bool is_numeric(char32_t c) noexcept
 {
     return prop{c}.Numeric();
+}
+
+inline bool is_numeric(const prop& p) noexcept
+{
+    return p.Numeric();
 }
 
 inline bool is_alphanumeric(char32_t c) noexcept
@@ -216,9 +226,19 @@ inline bool is_alphanumeric(char32_t c) noexcept
     return p.Alphabetic() || p.Numeric();
 }
 
+inline bool is_alphanumeric(const prop& p) noexcept
+{
+    return p.Alphabetic() || p.Numeric();
+}
+
 inline bool is_whitespace(char32_t c) noexcept
 {
     return prop{c}.White_Space();
+}
+
+inline bool is_whitespace(const prop& p) noexcept
+{
+    return p.White_Space();
 }
 
 inline bool is_reserved(char32_t c) noexcept
@@ -227,10 +247,10 @@ inline bool is_reserved(char32_t c) noexcept
     return prop{c}.Reserved();
 }
 
-inline bool is_noncharacter(char32_t c) noexcept
+inline bool is_reserved(const prop& p) noexcept
 {
-    // https://www.unicode.org/glossary/#noncharacter
-    return detail::impl_prop_is_non_character(c);
+    // https://www.unicode.org/glossary/#reserved_code_point
+    return p.Reserved();
 }
 
 inline bool is_valid(char32_t c) noexcept
@@ -245,16 +265,34 @@ inline bool is_valid_scalar(char32_t c) noexcept
     return detail::impl_prop_is_valid_scalar(c);
 }
 
+inline bool is_supplementary(char32_t c) noexcept
+{
+    // https://www.unicode.org/glossary/#supplementary_code_point
+    return detail::impl_prop_is_supplementary(c);
+}
+
+inline bool is_noncharacter(char32_t c) noexcept
+{
+    // https://www.unicode.org/glossary/#noncharacter
+    return detail::impl_prop_is_non_character(c);
+}
+
+inline bool is_noncharacter(const prop& p) noexcept
+{
+    // https://www.unicode.org/glossary/#noncharacter
+    return p.Noncharacter_Code_Point();
+}
+
 inline bool is_surrogate(char32_t c) noexcept
 {
     // https://www.unicode.org/glossary/#surrogate_code_point
     return detail::impl_prop_is_surrogate(c);
 }
 
-inline bool is_supplementary(char32_t c) noexcept
+inline bool is_surrogate(const prop& p) noexcept
 {
-    // https://www.unicode.org/glossary/#supplementary_code_point
-    return detail::impl_prop_is_supplementary(c);
+    // https://www.unicode.org/glossary/#surrogate_code_point
+    return p.Surrogate();
 }
 
 inline bool is_private_use(char32_t c) noexcept
@@ -263,10 +301,22 @@ inline bool is_private_use(char32_t c) noexcept
     return detail::impl_prop_is_private_use(c);
 }
 
+inline bool is_private_use(const prop& p) noexcept
+{
+    // https://www.unicode.org/glossary/#private_use_code_point
+    return p.Private_Use();
+}
+
 inline bool is_control(char32_t c) noexcept
 {
     // https://www.unicode.org/glossary/#control_codes
     return detail::impl_prop_is_control(c);
+}
+
+inline bool is_control(const prop& p) noexcept
+{
+    // https://www.unicode.org/glossary/#control_codes
+    return p.Control();
 }
 
 inline bool is_same_category(char32_t c1, char32_t c2) noexcept
