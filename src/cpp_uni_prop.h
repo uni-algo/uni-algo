@@ -25,8 +25,18 @@ inline constexpr char32_t max_value = detail::impl_prop_max_value;
 // Total number of code points 0x110000
 inline constexpr std::size_t total_number = detail::impl_prop_total_number;
 
+enum class general_category : unsigned char {Cn = 0,
+                                             Lu,Ll,Lt,Lm,Lo,
+                                             Mn,Mc,Me,
+                                             Nd,Nl,No,
+                                             Pc,Pd,Ps,Pe,Pi,Pf,Po,
+                                             Sm,Sc,Sk,So,
+                                             Zs,Zl,Zp,
+                                             Cc,Cf,Cs,Co};
+
 class prop
 {
+    friend general_category get_general_category(const prop& p) noexcept;
     friend bool is_same_category(const prop& prop1, const prop& prop2) noexcept;
 
 private:
@@ -182,22 +192,20 @@ public:
     }
 
 #ifdef UNI_ALGO_EXPERIMENTAL
-    // This is how alternative syntax for General_Category might look like
-    // NOTE: if it will be used then maybe remove is_same_category function
-    enum class general_category : unsigned char {cn = 0,
-                                                 lu,ll,lt,lm,lo,
-                                                 mn,mc,me,
-                                                 nd,nl,no,
-                                                 pc,pd,ps,pe,pi,pf,po,
-                                                 sm,sc,sk,so,
-                                                 zs,zl,zp,
-                                                 cc,cf,cs,co};
-
-    general_category get_general_category() const noexcept { return static_cast<general_category>(detail::impl_prop_get_prop_gc(data)); }
     // This might be usefull for tests
     //unsigned char General_Category() const noexcept { return static_cast<unsigned char>(detail::impl_prop_get_prop_gc(data)); }
 #endif
 };
+
+general_category get_general_category(char32_t c) noexcept
+{
+    return static_cast<general_category>(detail::impl_prop_get_prop_gc(detail::impl_prop_get_prop(c)));
+}
+
+general_category get_general_category(const prop& p) noexcept
+{
+    return static_cast<general_category>(detail::impl_prop_get_prop_gc(p.data));
+}
 
 inline bool is_alphabetic(char32_t c) noexcept
 {
