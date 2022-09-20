@@ -17,11 +17,11 @@ void test_prop()
             c = 0xFFFFFFFF;
 
         // Cross test functions that use Unicode data table and don't use it
-        TESTX(uni::codepoint::is_surrogate(c)    == uni::codepoint::prop(c).Surrogate());
-        TESTX(uni::codepoint::is_private_use(c)  == uni::codepoint::prop(c).Private_Use());
-        TESTX(uni::codepoint::is_control(c)      == uni::codepoint::prop(c).Control());
-        TESTX(uni::codepoint::is_noncharacter(c) == uni::codepoint::prop(c).Noncharacter_Code_Point());
-        TESTX(uni::codepoint::is_reserved(c)     == uni::codepoint::prop(c).Reserved());
+        TESTX(uni::codepoint::is_surrogate(c)    == uni::codepoint::prop{c}.Surrogate());
+        TESTX(uni::codepoint::is_private_use(c)  == uni::codepoint::prop{c}.Private_Use());
+        TESTX(uni::codepoint::is_control(c)      == uni::codepoint::prop{c}.Control());
+        TESTX(uni::codepoint::is_noncharacter(c) == uni::codepoint::prop{c}.Noncharacter_Code_Point());
+        TESTX(uni::codepoint::is_reserved(c)     == uni::codepoint::prop{c}.Reserved());
 
         // Count stable code points
         // https://www.unicode.org/policies/stability_policy.html#Property_Value
@@ -35,43 +35,43 @@ void test_prop()
         if (!uni::codepoint::is_valid_scalar(c)) count_invalid_scalar++;
 
         // Other functions
-        TESTX(uni::codepoint::is_alphabetic(c) == uni::codepoint::prop(c).Alphabetic());
-        TESTX(uni::codepoint::is_numeric(c)    == uni::codepoint::prop(c).Numeric());
-        TESTX(uni::codepoint::is_whitespace(c) == uni::codepoint::prop(c).White_Space());
+        TESTX(uni::codepoint::is_alphabetic(c) == uni::codepoint::prop{c}.Alphabetic());
+        TESTX(uni::codepoint::is_numeric(c)    == uni::codepoint::prop{c}.Numeric());
+        TESTX(uni::codepoint::is_whitespace(c) == uni::codepoint::prop{c}.White_Space());
 
-        TESTX(uni::codepoint::prop(c).Surrogate()   == uni::codepoint::prop(c).General_Category_Cs());
-        TESTX(uni::codepoint::prop(c).Private_Use() == uni::codepoint::prop(c).General_Category_Co());
-        TESTX(uni::codepoint::prop(c).Control()     == uni::codepoint::prop(c).General_Category_Cc());
+        TESTX(uni::codepoint::prop{c}.Surrogate()   == uni::codepoint::prop{c}.General_Category_Cs());
+        TESTX(uni::codepoint::prop{c}.Private_Use() == uni::codepoint::prop{c}.General_Category_Co());
+        TESTX(uni::codepoint::prop{c}.Control()     == uni::codepoint::prop{c}.General_Category_Cc());
 
-        if (uni::codepoint::prop(c).Alphabetic() ||
-            uni::codepoint::prop(c).Numeric())
+        if (uni::codepoint::prop{c}.Alphabetic() ||
+            uni::codepoint::prop{c}.Numeric())
             TESTX(uni::codepoint::is_alphanumeric(c));
         else
             TESTX(!uni::codepoint::is_alphanumeric(c));
 
-        if (uni::codepoint::prop(c).General_Category_Zl() ||
-            uni::codepoint::prop(c).General_Category_Zp() ||
-            uni::codepoint::prop(c).General_Category_Cf())
-            TESTX(uni::codepoint::prop(c).Format());
+        if (uni::codepoint::prop{c}.General_Category_Zl() ||
+            uni::codepoint::prop{c}.General_Category_Zp() ||
+            uni::codepoint::prop{c}.General_Category_Cf())
+            TESTX(uni::codepoint::prop{c}.Format());
         else
-            TESTX(!uni::codepoint::prop(c).Format());
+            TESTX(!uni::codepoint::prop{c}.Format());
 
-        if (uni::codepoint::prop(c).General_Category_Cn() &&
-            !uni::codepoint::prop(c).Noncharacter_Code_Point())
-            TESTX(uni::codepoint::prop(c).Reserved());
+        if (uni::codepoint::prop{c}.General_Category_Cn() &&
+            !uni::codepoint::prop{c}.Noncharacter_Code_Point())
+            TESTX(uni::codepoint::prop{c}.Reserved());
         else
-            TESTX(!uni::codepoint::prop(c).Reserved());
+            TESTX(!uni::codepoint::prop{c}.Reserved());
 
-        if (uni::codepoint::prop(c).General_Category_Zl() ||
-            uni::codepoint::prop(c).General_Category_Zp() ||
-            uni::codepoint::prop(c).General_Category_Cc() ||
-            uni::codepoint::prop(c).General_Category_Cf() ||
-            uni::codepoint::prop(c).General_Category_Cs() ||
-            uni::codepoint::prop(c).General_Category_Co() ||
-            uni::codepoint::prop(c).General_Category_Cn())
-            TESTX(!uni::codepoint::prop(c).Graphic());
+        if (uni::codepoint::prop{c}.General_Category_Zl() ||
+            uni::codepoint::prop{c}.General_Category_Zp() ||
+            uni::codepoint::prop{c}.General_Category_Cc() ||
+            uni::codepoint::prop{c}.General_Category_Cf() ||
+            uni::codepoint::prop{c}.General_Category_Cs() ||
+            uni::codepoint::prop{c}.General_Category_Co() ||
+            uni::codepoint::prop{c}.General_Category_Cn())
+            TESTX(!uni::codepoint::prop{c}.Graphic());
         else
-            TESTX(uni::codepoint::prop(c).Graphic());
+            TESTX(uni::codepoint::prop{c}.Graphic());
 
         if (uni::codepoint::is_valid(c) && !uni::codepoint::is_surrogate(c))
             TESTX(uni::codepoint::is_valid_scalar(c));
@@ -206,78 +206,78 @@ void test_prop()
     TESTX(uni::codepoint::is_same_category(U'1', U'2'));
     TESTX(uni::codepoint::is_same_category(U'Q', U'R'));
     TESTX(!uni::codepoint::is_same_category(U'1', U'R'));
-    TESTX(uni::codepoint::is_same_category(uni::codepoint::prop(U'1'), uni::codepoint::prop(U'2')));
-    TESTX(uni::codepoint::is_same_category(uni::codepoint::prop(U'Q'), uni::codepoint::prop(U'R')));
-    TESTX(!uni::codepoint::is_same_category(uni::codepoint::prop(U'1'), uni::codepoint::prop(U'R')));
+    TESTX(uni::codepoint::is_same_category(uni::codepoint::prop{U'1'}, uni::codepoint::prop{U'2'}));
+    TESTX(uni::codepoint::is_same_category(uni::codepoint::prop{U'Q'}, uni::codepoint::prop{U'R'}));
+    TESTX(!uni::codepoint::is_same_category(uni::codepoint::prop{U'1'}, uni::codepoint::prop{U'R'}));
 
     // First code point from UnicodeData.txt with such General_Category
 
     char32_t unassigned = 0x0A7777; // Random unassigned code point (change to something else if it will be assigned)
 
-    TESTX(uni::codepoint::prop(0x0041).General_Category_Lu());
-    TESTX(uni::codepoint::prop(0x0061).General_Category_Ll());
-    TESTX(uni::codepoint::prop(0x01C5).General_Category_Lt());
-    TESTX(uni::codepoint::prop(0x02B0).General_Category_Lm());
-    TESTX(uni::codepoint::prop(0x00AA).General_Category_Lo());
-    TESTX(uni::codepoint::prop(0x0300).General_Category_Mn());
-    TESTX(uni::codepoint::prop(0x0903).General_Category_Mc());
-    TESTX(uni::codepoint::prop(0x0488).General_Category_Me());
-    TESTX(uni::codepoint::prop(0x0030).General_Category_Nd());
-    TESTX(uni::codepoint::prop(0x16EE).General_Category_Nl());
-    TESTX(uni::codepoint::prop(0x00B2).General_Category_No());
-    TESTX(uni::codepoint::prop(0x005F).General_Category_Pc());
-    TESTX(uni::codepoint::prop(0x002D).General_Category_Pd());
-    TESTX(uni::codepoint::prop(0x0028).General_Category_Ps());
-    TESTX(uni::codepoint::prop(0x0029).General_Category_Pe());
-    TESTX(uni::codepoint::prop(0x00AB).General_Category_Pi());
-    TESTX(uni::codepoint::prop(0x00BB).General_Category_Pf());
-    TESTX(uni::codepoint::prop(0x0021).General_Category_Po());
-    TESTX(uni::codepoint::prop(0x002B).General_Category_Sm());
-    TESTX(uni::codepoint::prop(0x0024).General_Category_Sc());
-    TESTX(uni::codepoint::prop(0x005E).General_Category_Sk());
-    TESTX(uni::codepoint::prop(0x00A6).General_Category_So());
-    TESTX(uni::codepoint::prop(0x0020).General_Category_Zs());
-    TESTX(uni::codepoint::prop(0x2028).General_Category_Zl());
-    TESTX(uni::codepoint::prop(0x2029).General_Category_Zp());
-    TESTX(uni::codepoint::prop(0x0000).General_Category_Cc());
-    TESTX(uni::codepoint::prop(0x00AD).General_Category_Cf());
-    TESTX(uni::codepoint::prop(0xD800).General_Category_Cs());
-    TESTX(uni::codepoint::prop(0xE000).General_Category_Co());
-    TESTX(uni::codepoint::prop(unassigned).General_Category_Cn());
+    TESTX(uni::codepoint::prop{0x0041}.General_Category_Lu());
+    TESTX(uni::codepoint::prop{0x0061}.General_Category_Ll());
+    TESTX(uni::codepoint::prop{0x01C5}.General_Category_Lt());
+    TESTX(uni::codepoint::prop{0x02B0}.General_Category_Lm());
+    TESTX(uni::codepoint::prop{0x00AA}.General_Category_Lo());
+    TESTX(uni::codepoint::prop{0x0300}.General_Category_Mn());
+    TESTX(uni::codepoint::prop{0x0903}.General_Category_Mc());
+    TESTX(uni::codepoint::prop{0x0488}.General_Category_Me());
+    TESTX(uni::codepoint::prop{0x0030}.General_Category_Nd());
+    TESTX(uni::codepoint::prop{0x16EE}.General_Category_Nl());
+    TESTX(uni::codepoint::prop{0x00B2}.General_Category_No());
+    TESTX(uni::codepoint::prop{0x005F}.General_Category_Pc());
+    TESTX(uni::codepoint::prop{0x002D}.General_Category_Pd());
+    TESTX(uni::codepoint::prop{0x0028}.General_Category_Ps());
+    TESTX(uni::codepoint::prop{0x0029}.General_Category_Pe());
+    TESTX(uni::codepoint::prop{0x00AB}.General_Category_Pi());
+    TESTX(uni::codepoint::prop{0x00BB}.General_Category_Pf());
+    TESTX(uni::codepoint::prop{0x0021}.General_Category_Po());
+    TESTX(uni::codepoint::prop{0x002B}.General_Category_Sm());
+    TESTX(uni::codepoint::prop{0x0024}.General_Category_Sc());
+    TESTX(uni::codepoint::prop{0x005E}.General_Category_Sk());
+    TESTX(uni::codepoint::prop{0x00A6}.General_Category_So());
+    TESTX(uni::codepoint::prop{0x0020}.General_Category_Zs());
+    TESTX(uni::codepoint::prop{0x2028}.General_Category_Zl());
+    TESTX(uni::codepoint::prop{0x2029}.General_Category_Zp());
+    TESTX(uni::codepoint::prop{0x0000}.General_Category_Cc());
+    TESTX(uni::codepoint::prop{0x00AD}.General_Category_Cf());
+    TESTX(uni::codepoint::prop{0xD800}.General_Category_Cs());
+    TESTX(uni::codepoint::prop{0xE000}.General_Category_Co());
+    TESTX(uni::codepoint::prop{unassigned}.General_Category_Cn());
 
-    TESTX(uni::codepoint::prop(0x0041).General_Category_LC());
-    TESTX(uni::codepoint::prop(0x0061).General_Category_LC());
-    TESTX(uni::codepoint::prop(0x01C5).General_Category_LC());
-    TESTX(uni::codepoint::prop(0x0041).General_Category_L());
-    TESTX(uni::codepoint::prop(0x0061).General_Category_L());
-    TESTX(uni::codepoint::prop(0x01C5).General_Category_L());
-    TESTX(uni::codepoint::prop(0x02B0).General_Category_L());
-    TESTX(uni::codepoint::prop(0x00AA).General_Category_L());
-    TESTX(uni::codepoint::prop(0x0300).General_Category_M());
-    TESTX(uni::codepoint::prop(0x0903).General_Category_M());
-    TESTX(uni::codepoint::prop(0x0488).General_Category_M());
-    TESTX(uni::codepoint::prop(0x0030).General_Category_N());
-    TESTX(uni::codepoint::prop(0x16EE).General_Category_N());
-    TESTX(uni::codepoint::prop(0x00B2).General_Category_N());
-    TESTX(uni::codepoint::prop(0x005F).General_Category_P());
-    TESTX(uni::codepoint::prop(0x002D).General_Category_P());
-    TESTX(uni::codepoint::prop(0x0028).General_Category_P());
-    TESTX(uni::codepoint::prop(0x0029).General_Category_P());
-    TESTX(uni::codepoint::prop(0x00AB).General_Category_P());
-    TESTX(uni::codepoint::prop(0x00BB).General_Category_P());
-    TESTX(uni::codepoint::prop(0x0021).General_Category_P());
-    TESTX(uni::codepoint::prop(0x002B).General_Category_S());
-    TESTX(uni::codepoint::prop(0x0024).General_Category_S());
-    TESTX(uni::codepoint::prop(0x005E).General_Category_S());
-    TESTX(uni::codepoint::prop(0x00A6).General_Category_S());
-    TESTX(uni::codepoint::prop(0x0020).General_Category_Z());
-    TESTX(uni::codepoint::prop(0x2028).General_Category_Z());
-    TESTX(uni::codepoint::prop(0x2029).General_Category_Z());
-    TESTX(uni::codepoint::prop(0x0000).General_Category_C());
-    TESTX(uni::codepoint::prop(0x00AD).General_Category_C());
-    TESTX(uni::codepoint::prop(0xD800).General_Category_C());
-    TESTX(uni::codepoint::prop(0xE000).General_Category_C());
-    TESTX(uni::codepoint::prop(unassigned).General_Category_C());
+    TESTX(uni::codepoint::prop{0x0041}.General_Category_LC());
+    TESTX(uni::codepoint::prop{0x0061}.General_Category_LC());
+    TESTX(uni::codepoint::prop{0x01C5}.General_Category_LC());
+    TESTX(uni::codepoint::prop{0x0041}.General_Category_L());
+    TESTX(uni::codepoint::prop{0x0061}.General_Category_L());
+    TESTX(uni::codepoint::prop{0x01C5}.General_Category_L());
+    TESTX(uni::codepoint::prop{0x02B0}.General_Category_L());
+    TESTX(uni::codepoint::prop{0x00AA}.General_Category_L());
+    TESTX(uni::codepoint::prop{0x0300}.General_Category_M());
+    TESTX(uni::codepoint::prop{0x0903}.General_Category_M());
+    TESTX(uni::codepoint::prop{0x0488}.General_Category_M());
+    TESTX(uni::codepoint::prop{0x0030}.General_Category_N());
+    TESTX(uni::codepoint::prop{0x16EE}.General_Category_N());
+    TESTX(uni::codepoint::prop{0x00B2}.General_Category_N());
+    TESTX(uni::codepoint::prop{0x005F}.General_Category_P());
+    TESTX(uni::codepoint::prop{0x002D}.General_Category_P());
+    TESTX(uni::codepoint::prop{0x0028}.General_Category_P());
+    TESTX(uni::codepoint::prop{0x0029}.General_Category_P());
+    TESTX(uni::codepoint::prop{0x00AB}.General_Category_P());
+    TESTX(uni::codepoint::prop{0x00BB}.General_Category_P());
+    TESTX(uni::codepoint::prop{0x0021}.General_Category_P());
+    TESTX(uni::codepoint::prop{0x002B}.General_Category_S());
+    TESTX(uni::codepoint::prop{0x0024}.General_Category_S());
+    TESTX(uni::codepoint::prop{0x005E}.General_Category_S());
+    TESTX(uni::codepoint::prop{0x00A6}.General_Category_S());
+    TESTX(uni::codepoint::prop{0x0020}.General_Category_Z());
+    TESTX(uni::codepoint::prop{0x2028}.General_Category_Z());
+    TESTX(uni::codepoint::prop{0x2029}.General_Category_Z());
+    TESTX(uni::codepoint::prop{0x0000}.General_Category_C());
+    TESTX(uni::codepoint::prop{0x00AD}.General_Category_C());
+    TESTX(uni::codepoint::prop{0xD800}.General_Category_C());
+    TESTX(uni::codepoint::prop{0xE000}.General_Category_C());
+    TESTX(uni::codepoint::prop{unassigned}.General_Category_C());
 
     // Why did you do that? Change them back. They must be stable.
     static_assert(uni::detail::impl_General_Category_Lu == 1);
@@ -354,19 +354,19 @@ void test_prop_case()
     TESTX(uni::codepoint::is_uppercase(U'W'));
     TESTX(!uni::codepoint::is_uppercase(U'w'));
 
-    TESTX(uni::codepoint::prop_case(U'w').Lowercase());
-    TESTX(!uni::codepoint::prop_case(U'W').Lowercase());
-    TESTX(uni::codepoint::prop_case(U'W').Uppercase());
-    TESTX(!uni::codepoint::prop_case(U'w').Uppercase());
+    TESTX(uni::codepoint::prop_case{U'w'}.Lowercase());
+    TESTX(!uni::codepoint::prop_case{U'W'}.Lowercase());
+    TESTX(uni::codepoint::prop_case{U'W'}.Uppercase());
+    TESTX(!uni::codepoint::prop_case{U'w'}.Uppercase());
 
-    TESTX(uni::codepoint::prop_case(U'w').Cased());
-    TESTX(uni::codepoint::prop_case(U'W').Cased());
-    TESTX(!uni::codepoint::prop_case(U':').Cased());
-    TESTX(uni::codepoint::prop_case(U':').Case_Ignorable());
-    TESTX(!uni::codepoint::prop_case(U';').Case_Ignorable());
+    TESTX(uni::codepoint::prop_case{U'w'}.Cased());
+    TESTX(uni::codepoint::prop_case{U'W'}.Cased());
+    TESTX(!uni::codepoint::prop_case{U':'}.Cased());
+    TESTX(uni::codepoint::prop_case{U':'}.Case_Ignorable());
+    TESTX(!uni::codepoint::prop_case{U';'}.Case_Ignorable());
 
-    TESTX(uni::codepoint::prop_case(U'j').Soft_Dotted());
-    TESTX(!uni::codepoint::prop_case(U'J').Soft_Dotted());
+    TESTX(uni::codepoint::prop_case{U'j'}.Soft_Dotted());
+    TESTX(!uni::codepoint::prop_case{U'J'}.Soft_Dotted());
 
     TESTX(!uni::codepoint::is_lowercase(0));
     TESTX(!uni::codepoint::is_uppercase(0));
@@ -433,8 +433,8 @@ void test_prop_case()
     // Eszett
     TESTX(uni::codepoint::is_lowercase(0x00DF));
     TESTX(uni::codepoint::is_uppercase(0x1E9E));
-    TESTX(uni::codepoint::prop_case(0x00DF).Lowercase());
-    TESTX(uni::codepoint::prop_case(0x1E9E).Uppercase());
+    TESTX(uni::codepoint::prop_case{0x00DF}.Lowercase());
+    TESTX(uni::codepoint::prop_case{0x1E9E}.Uppercase());
 
     TESTX(uni::codepoint::to_simple_lowercase(0x00DF) == 0x00DF);
     TESTX(uni::codepoint::to_simple_uppercase(0x00DF) == 0x00DF);
@@ -512,41 +512,41 @@ void test_prop_case()
 
 void test_prop_norm()
 {
-    TESTX(uni::codepoint::prop_norm(0).Canonical_Combining_Class() == 0);
-    TESTX(uni::codepoint::prop_norm(0x0300).Canonical_Combining_Class() == 230);
-    TESTX(uni::codepoint::prop_norm(0x0315).Canonical_Combining_Class() == 232);
+    TESTX(uni::codepoint::prop_norm{0}.Canonical_Combining_Class() == 0);
+    TESTX(uni::codepoint::prop_norm{0x0300}.Canonical_Combining_Class() == 230);
+    TESTX(uni::codepoint::prop_norm{0x0315}.Canonical_Combining_Class() == 232);
 
-    TESTX(uni::codepoint::prop_norm(0xFFFD).Canonical_Combining_Class() == 0);
-    TESTX(uni::codepoint::prop_norm(0x110000).Canonical_Combining_Class() == 0);
-    TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).Canonical_Combining_Class() == 0);
+    TESTX(uni::codepoint::prop_norm{0xFFFD}.Canonical_Combining_Class() == 0);
+    TESTX(uni::codepoint::prop_norm{0x110000}.Canonical_Combining_Class() == 0);
+    TESTX(uni::codepoint::prop_norm{0xFFFFFFFF}.Canonical_Combining_Class() == 0);
 
-    TESTX(uni::codepoint::prop_norm(0).NFC_Quick_Check_Yes());
-    TESTX(!uni::codepoint::prop_norm(0x0340).NFC_Quick_Check_Yes()); // NFC_QC=No
-    TESTX(!uni::codepoint::prop_norm(0x0300).NFC_Quick_Check_Yes()); // NFC_QC=Maybe
-    TESTX(uni::codepoint::prop_norm(0xFFFD).NFC_Quick_Check_Yes());
-    TESTX(uni::codepoint::prop_norm(0x110000).NFC_Quick_Check_Yes());
-    TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).NFC_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0}.NFC_Quick_Check_Yes());
+    TESTX(!uni::codepoint::prop_norm{0x0340}.NFC_Quick_Check_Yes()); // NFC_QC=No
+    TESTX(!uni::codepoint::prop_norm{0x0300}.NFC_Quick_Check_Yes()); // NFC_QC=Maybe
+    TESTX(uni::codepoint::prop_norm{0xFFFD}.NFC_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0x110000}.NFC_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0xFFFFFFFF}.NFC_Quick_Check_Yes());
 
-    TESTX(uni::codepoint::prop_norm(0).NFD_Quick_Check_Yes());
-    TESTX(!uni::codepoint::prop_norm(0x00C0).NFD_Quick_Check_Yes()); // NFD_QC=No
-    TESTX(uni::codepoint::prop_norm(0x0300).NFD_Quick_Check_Yes());
-    TESTX(uni::codepoint::prop_norm(0xFFFD).NFD_Quick_Check_Yes());
-    TESTX(uni::codepoint::prop_norm(0x110000).NFD_Quick_Check_Yes());
-    TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).NFD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0}.NFD_Quick_Check_Yes());
+    TESTX(!uni::codepoint::prop_norm{0x00C0}.NFD_Quick_Check_Yes()); // NFD_QC=No
+    TESTX(uni::codepoint::prop_norm{0x0300}.NFD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0xFFFD}.NFD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0x110000}.NFD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0xFFFFFFFF}.NFD_Quick_Check_Yes());
 
-    TESTX(uni::codepoint::prop_norm(0).NFKC_Quick_Check_Yes());
-    TESTX(!uni::codepoint::prop_norm(0x00A0).NFKC_Quick_Check_Yes()); // NFKC_QC=No
-    TESTX(!uni::codepoint::prop_norm(0x0300).NFKC_Quick_Check_Yes()); // NFKC_QC=Maybe
-    TESTX(uni::codepoint::prop_norm(0xFFFD).NFKC_Quick_Check_Yes());
-    TESTX(uni::codepoint::prop_norm(0x110000).NFKC_Quick_Check_Yes());
-    TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).NFKC_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0}.NFKC_Quick_Check_Yes());
+    TESTX(!uni::codepoint::prop_norm{0x00A0}.NFKC_Quick_Check_Yes()); // NFKC_QC=No
+    TESTX(!uni::codepoint::prop_norm{0x0300}.NFKC_Quick_Check_Yes()); // NFKC_QC=Maybe
+    TESTX(uni::codepoint::prop_norm{0xFFFD}.NFKC_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0x110000}.NFKC_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0xFFFFFFFF}.NFKC_Quick_Check_Yes());
 
-    TESTX(uni::codepoint::prop_norm(0).NFKD_Quick_Check_Yes());
-    TESTX(!uni::codepoint::prop_norm(0x00A0).NFKD_Quick_Check_Yes()); // NFKD_QC=No
-    TESTX(uni::codepoint::prop_norm(0x0300).NFKD_Quick_Check_Yes());
-    TESTX(uni::codepoint::prop_norm(0xFFFD).NFKD_Quick_Check_Yes());
-    TESTX(uni::codepoint::prop_norm(0x110000).NFKD_Quick_Check_Yes());
-    TESTX(uni::codepoint::prop_norm(0xFFFFFFFF).NFKD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0}.NFKD_Quick_Check_Yes());
+    TESTX(!uni::codepoint::prop_norm{0x00A0}.NFKD_Quick_Check_Yes()); // NFKD_QC=No
+    TESTX(uni::codepoint::prop_norm{0x0300}.NFKD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0xFFFD}.NFKD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0x110000}.NFKD_Quick_Check_Yes());
+    TESTX(uni::codepoint::prop_norm{0xFFFFFFFF}.NFKD_Quick_Check_Yes());
 
     // Decompose
     TESTX(uni::codepoint::to_decompose_u32(0x1F82) == U"\x03B1\x0313\x0300\x0345");
