@@ -196,12 +196,12 @@ public:
 #endif
 };
 
-general_category get_general_category(char32_t c) noexcept
+inline general_category get_general_category(char32_t c) noexcept
 {
     return static_cast<general_category>(detail::impl_prop_get_prop_gc(detail::impl_prop_get_prop(c)));
 }
 
-general_category get_general_category(const prop& p) noexcept
+inline general_category get_general_category(const prop& p) noexcept
 {
     return static_cast<general_category>(detail::impl_prop_get_prop_gc(p.data));
 }
