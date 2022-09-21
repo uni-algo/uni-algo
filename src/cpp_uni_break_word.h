@@ -118,8 +118,9 @@ private:
         uaiw_constexpr bool is_word_kana()        const noexcept { return detail::impl_break_is_word_kana(word_prop); }
         uaiw_constexpr bool is_word_ideographic() const noexcept { return detail::impl_break_is_word_ideo(word_prop); }
         uaiw_constexpr bool is_emoji()            const noexcept { return detail::impl_break_is_word_emoji(word_prop); }
-        //uaiw_constexpr bool is_punctuation()      const noexcept { return detail::impl_break_is_word_punct(word_prop); }
-        //uaiw_constexpr bool is_segspace()         const noexcept { return detail::impl_break_is_word_space(word_prop); }
+        uaiw_constexpr bool is_punctuation()      const noexcept { return detail::impl_break_is_word_punct(word_prop); }
+        uaiw_constexpr bool is_segspace()         const noexcept { return detail::impl_break_is_word_space(word_prop); }
+        uaiw_constexpr bool is_newline()          const noexcept { return detail::impl_break_is_word_newline(word_prop); }
         uaiw_constexpr utf8& operator++()
         {
             iter_func_utf8_break_word();
@@ -279,8 +280,9 @@ private:
         uaiw_constexpr bool is_word_kana()        const noexcept { return detail::impl_break_is_word_kana(word_prop); }
         uaiw_constexpr bool is_word_ideographic() const noexcept { return detail::impl_break_is_word_ideo(word_prop); }
         uaiw_constexpr bool is_emoji()            const noexcept { return detail::impl_break_is_word_emoji(word_prop); }
-        //uaiw_constexpr bool is_punctuation()      const noexcept { return detail::impl_break_is_word_punct(word_prop); }
-        //uaiw_constexpr bool is_segspace()         const noexcept { return detail::impl_break_is_word_space(word_prop); }
+        uaiw_constexpr bool is_punctuation()      const noexcept { return detail::impl_break_is_word_punct(word_prop); }
+        uaiw_constexpr bool is_segspace()         const noexcept { return detail::impl_break_is_word_space(word_prop); }
+        uaiw_constexpr bool is_newline()          const noexcept { return detail::impl_break_is_word_newline(word_prop); }
         uaiw_constexpr utf16& operator++()
         {
             iter_func_utf16_break_word();

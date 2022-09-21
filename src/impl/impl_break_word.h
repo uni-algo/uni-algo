@@ -147,13 +147,12 @@ uaix_static bool impl_break_is_word_emoji(type_codept word_prop)
     // Includes only emojis
     return (word_prop >= prop_WB_Regional_Indicator); // Includes Extended_Pictographic
 }
-/*
+
 uaix_always_inline
 uaix_static bool impl_break_is_word_punct(type_codept word_prop)
 {
     // Includes only punctuation
     return (word_prop > prop_WB_Format && word_prop < prop_WB_WSegSpace);
-    //return (word_prop < prop_WB_Numeric);
 }
 
 uaix_always_inline
@@ -162,7 +161,14 @@ uaix_static bool impl_break_is_word_space(type_codept word_prop)
     // Includes only spaces
     return (word_prop == prop_WB_WSegSpace);
 }
-*/
+
+uaix_always_inline
+uaix_static bool impl_break_is_word_newline(type_codept word_prop)
+{
+    // Includes only spaces
+    return (word_prop == prop_WB_CR || word_prop == prop_WB_LF || word_prop == prop_WB_Newline);
+}
+
 uaix_always_inline
 uaix_static bool break_word_skip(type_codept prop)
 {
