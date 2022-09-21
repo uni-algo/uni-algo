@@ -144,12 +144,15 @@ uni::views::word_only::utf8
 
 word properties (iterator of word view provides these functions):
 
-is_word             - excludes punctuation, spaces and emojis (word_only view uses this property)
+is_word             - excludes punctuation, new lines, spaces, and emojis (word_only view uses this property)
 is_word_letter      - includes only words that contain letters (excludes kana, ideographic and numbers)
 is_word_number      - includes only numbers
 is_word_kana        - includes only kana (hiragana and katakana)
 is_word_ideographic - includes only ideographic (hanzi, kanji, hanja etc.)
 is_emoji            - includes only emojis
+is_punctuation      - includes only punctuation
+is_segspace         - includes only spaces
+is_newline          - includes only new lines
 ```
 Uses UAX #29: Unicode Text Segmentation -> Word Boundary Rules<br>
 `word_only` is a special case of UAX #29 that takes only words and skips all punctuation.
@@ -171,7 +174,6 @@ uni::codepoint::replacement_char - REPLACEMENT CHARACTER U+FFFD
 
 uni::codepoint::is_valid         - check if valid <a href="https://www.unicode.org/glossary/#code_point">code point</a>
 uni::codepoint::is_valid_scalar  - check if valid <a href="https://www.unicode.org/glossary/#unicode_scalar_value">scalar value</a>
-uni::codepoint::is_same_category - check if two code points have the same <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a>
 
 uni::codepoint::is_alphabetic    - <a href="https://www.unicode.org/reports/tr44/#Alphabetic">Alphabetic</a>
 uni::codepoint::is_numeric       - <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a>=Number
@@ -185,7 +187,10 @@ uni::codepoint::is_surrogate     - <a href="https://www.unicode.org/glossary/#su
 uni::codepoint::is_supplementary - <a href="https://www.unicode.org/glossary/#supplementary_code_point">supplementary code point</a>
 uni::codepoint::is_private_use   - <a href="https://www.unicode.org/glossary/#private_use_code_point">private use code point</a>
 
-class uni::codepoint::prop       - provides <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a> and <a href="https://www.unicode.org/glossary/#code_point_type">code point type</a>
+class uni::codepoint::prop       - provides <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a> and <a href="https://www.unicode.org/glossary/#code_point_type">code point type</a> functions
+
+enum uni::codepoint::general_category - provides <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a> values
+uni::codepoint::get_general_category  - get <a href="https://www.unicode.org/reports/tr44/#General_Category_Values">General_Category</a> value
 
 <i>other modules can provide more properties they are listed below</i>
 
@@ -204,7 +209,7 @@ uni::codepoint::to_uppercase_u32    - <a href="https://www.unicode.org/reports/t
 uni::codepoint::to_titlecase_u32    - <a href="https://www.unicode.org/reports/tr44/#Titlecase_Mapping">Titlecase_Mapping</a>
 uni::codepoint::to_casefold_u32     - <a href="https://www.unicode.org/reports/tr44/#Case_Folding">Case_Folding</a>
 
-class uni::codepoint::prop_case     - provides <a href="https://www.unicode.org/reports/tr44/#Cased">Cased</a>, <a href="https://www.unicode.org/reports/tr44/#Case_Ignorable">Case_Ignorable</a> and <a href="https://www.unicode.org/reports/tr44/#Soft_Dotted">Soft_Dotted</a>
+class uni::codepoint::prop_case     - provides <a href="https://www.unicode.org/reports/tr44/#Cased">Cased</a>, <a href="https://www.unicode.org/reports/tr44/#Case_Ignorable">Case_Ignorable</a> and <a href="https://www.unicode.org/reports/tr44/#Soft_Dotted">Soft_Dotted</a> functions
 
 <b>cpp_uni_norm.h</b>
 
@@ -214,7 +219,7 @@ uni::codepoint::to_decompose_hangul_u32 - hangul decomposition
 
 uni::codepoint::to_compose              - composes two code points (includes hangul composition)
 
-class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Compining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a>
+class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Compining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a> functions
 </code></pre>
 
 ---
@@ -222,5 +227,6 @@ class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.
 **`other classes`**
 ```
 class uni::error    - used by validation functions
+class uni::search   - used by search functions
 class uni::sentinel - used by ranges
 ```
