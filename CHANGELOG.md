@@ -6,6 +6,8 @@ See commit history between tags for details.
 - Added better locale support
 - Added word properties
 - Added reverse grapheme/word algorithms
+- Added alternative syntax for code point general category
+- Removed function uni::codepoint::is_same_category
 - Redesigned transliterators more than two times faster now
 
 ## [v0.4.0](https://github.com/uni-algo/uni-algo/tree/v0.4.0) (30.08.2022)
