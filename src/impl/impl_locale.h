@@ -11,9 +11,9 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
 // TODO:
 // Everything related to locales is a mess in Unicode so what is the best approach is still a question.
-// For now this file contains only converstions functions that store locale tags in type_codept
+// For now this file contains only conversion functions that store locale subtags in type_codept
 // See Unicode Technical Standard #35 for all things that ICU supports in locale tags
-// but we definitely don't want most of those things and want to KISS.
+// but we definitely don't want most of those things and want to KISS and follow BCP47.
 
 // https://www.rfc-editor.org/rfc/bcp/bcp47.txt
 // https://en.wikipedia.org/wiki/Script_(Unicode)
@@ -160,6 +160,9 @@ template <typename it_in_utf8>
 #endif
 uaix_static type_codept impl_locale_from_region(it_in_utf8 s, size_t size, type_codept unknown)
 {
+    // NOTE: Even though it's possible to use numeric codes for script subtag too
+    // it's not handled there because BCP47 allows numeric codes for region subtag only.
+
     // EXAMPLE: 999 (UN M.49 code)
     if (size == 3)
     {
