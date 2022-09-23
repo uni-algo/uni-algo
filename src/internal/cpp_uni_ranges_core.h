@@ -138,7 +138,7 @@ private:
     Range* range = nullptr;
 public:
     uaiw_constexpr ref_view() = default;
-    // NOLINTNEXTLINE(google-explicit-constructor)
+    // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
     uaiw_constexpr ref_view(Range& r) : range{std::addressof(r)} {}
     //uaiw_constexpr Range& base() const { return *range; }
     uaiw_constexpr auto begin() const { return std::begin(*range); }
@@ -178,7 +178,7 @@ private:
 public:
     uaiw_constexpr owning_view() = default;
     uaiw_constexpr ~owning_view() = default;
-    // NOLINTNEXTLINE(google-explicit-constructor)
+    // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
     uaiw_constexpr owning_view(Range&& r) : range{std::move(r)} {}
     //uaiw_constexpr Range& base() & noexcept { return range; }
     //uaiw_constexpr const Range& base() const & noexcept { return range; }
