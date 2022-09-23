@@ -17,6 +17,10 @@
 # LLVM 14
 # -hicpp-named-parameter,
 # -bugprone-easily-swappable-parameters,
+# LLVM 15
+# -misc-const-correctness
+# -modernize-macro-to-enum (TODO: Silent in code)
+# -bugprone-assignment-in-if-condition (TODO: Silent in code)
 #
 # TODO: FIXME: modernize-use-nodiscard, -bugprone-easily-swappable-parameters, cppcoreguidelines-init-variables
 
@@ -31,10 +35,13 @@ modernize-*,
 -modernize-avoid-*,
 -modernize-use-nodiscard,
 -modernize-use-trailing-return-type,
+-modernize-macro-to-enum,
 misc-*,
+-misc-const-correctness,
 performance-*,
 bugprone-*,
 -bugprone-easily-swappable-parameters,
+-bugprone-assignment-in-if-condition,
 hicpp-*,
 -hicpp-avoid-*,
 -hicpp-no-*,
@@ -51,4 +58,3 @@ google-*,
 CheckOptions:
   - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
     value: '1'
-
