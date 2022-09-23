@@ -55,7 +55,7 @@
 // Reduces the size of Normalization module by ~100 KB.
 //#define UNI_ALGO_DISABLE_NFKC_NFKD
 
-// Disable system locale facilities uni::locale::system() function etc.
+// Disable system locale facilities: uni::locale::system() function etc.
 //#define UNI_ALGO_DISABLE_SYSTEM_LOCALE
 
 // With this define pointers will be used instead of C++ iterators internally.
@@ -65,7 +65,7 @@
 // The define does not affect behaviour.
 //#define UNI_ALGO_DISABLE_CPP_ITERATORS
 
-// TODO: Deprecate probably
+// Note that this define can be deprecated in the future.
 // Disable full case mapping and use simple case mapping instead.
 // The define is only usefull if you need compatibility with legacy implementations
 // that don't expect that an UTF-16 string can grow in size.
