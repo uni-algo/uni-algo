@@ -117,8 +117,10 @@ void test_short_func_case()
 
     TESTX(uni::cases::utf8_lower(str) == str);
     TESTX(uni::cases::utf8_upper(str) == str);
+#ifndef UNI_ALGO_DISABLE_FULL_CASE
     TESTX(uni::cases::utf8_lower(str, uni::locale{}) == str);
     TESTX(uni::cases::utf8_upper(str, uni::locale{}) == str);
+#endif // UNI_ALGO_DISABLE_FULL_CASE
     TESTX(uni::cases::utf8_fold(str) == str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
@@ -142,8 +144,10 @@ void test_short_func_case()
 
     TESTX(uni::cases::utf16_lower(u16str) == u16str);
     TESTX(uni::cases::utf16_upper(u16str) == u16str);
+#ifndef UNI_ALGO_DISABLE_FULL_CASE
     TESTX(uni::cases::utf16_lower(u16str, uni::locale{}) == u16str);
     TESTX(uni::cases::utf16_upper(u16str, uni::locale{}) == u16str);
+#endif // UNI_ALGO_DISABLE_FULL_CASE
     TESTX(uni::cases::utf16_fold(u16str) == u16str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
@@ -168,8 +172,10 @@ void test_short_func_case()
 
     TESTX(uni::cases::utf16_lower(wstr) == wstr);
     TESTX(uni::cases::utf16_upper(wstr) == wstr);
+#ifndef UNI_ALGO_DISABLE_FULL_CASE
     TESTX(uni::cases::utf16_lower(wstr, uni::locale{}) == wstr);
     TESTX(uni::cases::utf16_upper(wstr, uni::locale{}) == wstr);
+#endif // UNI_ALGO_DISABLE_FULL_CASE
     TESTX(uni::cases::utf16_fold(wstr) == wstr);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
@@ -196,8 +202,10 @@ void test_short_func_case()
 
     TESTX(uni::cases::utf8_lower(u8str) == u8str);
     TESTX(uni::cases::utf8_upper(u8str) == u8str);
+#ifndef UNI_ALGO_DISABLE_FULL_CASE
     TESTX(uni::cases::utf8_lower(u8str, uni::locale{}) == u8str);
     TESTX(uni::cases::utf8_upper(u8str, uni::locale{}) == u8str);
+#endif // UNI_ALGO_DISABLE_FULL_CASE
     TESTX(uni::cases::utf8_fold(u8str) == u8str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
