@@ -49,7 +49,7 @@ public:
     private:
         // Use char32_t for value because that is what low-level uses
         char32_t value = 0;
-        constexpr language(char32_t v) : value{v} {}
+        constexpr explicit language(char32_t v) : value{v} {}
         constexpr void from_value(char32_t v) { value = v; }
         constexpr char32_t to_value() const { return value; }
     public:
@@ -83,7 +83,7 @@ public:
         friend class locale;
     private:
         char32_t value = 0;
-        constexpr region(char32_t v) : value{v} {}
+        constexpr explicit region(char32_t v) : value{v} {}
         constexpr void from_value(char32_t v) { value = v; }
         constexpr char32_t to_value() const { return value; }
     public:
@@ -114,7 +114,7 @@ public:
         friend class locale;
     private:
         char32_t value = 0;
-        constexpr script(char32_t v) : value{v} {}
+        constexpr explicit script(char32_t v) : value{v} {}
         constexpr void from_value(char32_t v) { value = v; }
         constexpr char32_t to_value() const { return value; }
     public:
