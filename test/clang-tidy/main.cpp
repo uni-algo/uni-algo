@@ -9,6 +9,7 @@
 // REMINDER: https://stackoverflow.com/questions/52710180/how-to-use-and-configure-clang-tidy-on-windows
 
 #include "../../src/cpp_uni_convert.h"
+#include "../../src/cpp_uni_locale.h"
 #include "../../src/cpp_uni_case.h"
 #include "../../src/cpp_uni_norm.h"
 #include "../../src/cpp_uni_prop.h"
