@@ -59,7 +59,7 @@ public:
         uaiw_constexpr explicit language(std::string_view s) : value{detail::impl_locate_from_tag(s, s.size())} {}
 
         // Enable emplicit conversion to make this class work in switch case
-        // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
+        // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
         constexpr operator char32_t() const { return value; }
 
         friend constexpr bool operator==(const language& x, const language& y) { return x.value == y.value; }
@@ -92,7 +92,7 @@ public:
         template <std::size_t N>
         constexpr explicit region(const char (&s)[N]) : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
         uaiw_constexpr explicit region(std::string_view s) : value{detail::impl_locate_from_tag(s, s.size())} {}
-        // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
+        // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
         constexpr operator char32_t() const { return value; }
 
         friend constexpr bool operator==(const region& x, const region& y) { return x.value == y.value; }
@@ -124,7 +124,7 @@ public:
         template <std::size_t N>
         constexpr explicit script(const char (&s)[N]) : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
         uaiw_constexpr explicit script(std::string_view s) : value{detail::impl_locate_from_tag(s, s.size())} {}
-        // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
+        // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
         constexpr operator char32_t() const { return value; }
 
         friend constexpr bool operator==(const script& x, const script& y) { return x.value == y.value; }
@@ -150,7 +150,7 @@ private:
 
 public:
     constexpr locale() = default;
-    // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
+    // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
     constexpr locale(language l) : lang(l) {}
     constexpr locale(language l, script s) : lang{l}, scpt{s} {}
     constexpr locale(language l, script s, region r) : lang{l}, scpt{s}, regn{r} {}
