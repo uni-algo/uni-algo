@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef CPP_UNI_CASE_H_UAIX
-#define CPP_UNI_CASE_H_UAIX
+#ifndef UNI_ALGO_CASE_H_UAIX
+#define UNI_ALGO_CASE_H_UAIX
 
 #ifdef UNI_ALGO_DISABLE_CASE
 #  error "Case module is disabled via define UNI_ALGO_DISABLE_CASE"
@@ -894,7 +894,7 @@ inline std::u32string to_titlecase_u32(char32_t c)
 
 } // namespace uni
 
-#endif // CPP_UNI_CASE_H_UAIX
+#endif // UNI_ALGO_CASE_H_UAIX
 
 /* Public Domain License
  *

@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef MACEDONIAN_TO_LATIN_DOCS_H_UAIX
-#define MACEDONIAN_TO_LATIN_DOCS_H_UAIX
+#ifndef UNI_ALGO_MACEDONIAN_TO_LATIN_DOCS_H_UAIX
+#define UNI_ALGO_MACEDONIAN_TO_LATIN_DOCS_H_UAIX
 
 #include <array>
 #include <string>
@@ -236,7 +236,7 @@ inline std::u8string utf8_macedonian_to_latin_docs(std::u8string_view source)
 
 } // namespace uni::translit
 
-#endif // MACEDONIAN_TO_LATIN_DOCS_H_UAIX
+#endif // UNI_ALGO_MACEDONIAN_TO_LATIN_DOCS_H_UAIX
 
 /* Public Domain License
  *

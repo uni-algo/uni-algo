@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef CPP_UNI_BREAK_GRAPHEME_H_UAIX
-#define CPP_UNI_BREAK_GRAPHEME_H_UAIX
+#ifndef UNI_ALGO_BREAK_GRAPHEME_H_UAIX
+#define UNI_ALGO_BREAK_GRAPHEME_H_UAIX
 
 #ifdef UNI_ALGO_DISABLE_BREAK_GRAPHEME
 #  error "Break Grapheme module is disabled via define UNI_ALGO_DISABLE_BREAK_GRAPHEME"
@@ -356,7 +356,7 @@ namespace views = ranges::views;
 
 } // namespace uni
 
-#endif // CPP_UNI_BREAK_GRAPHEME_H_UAIX
+#endif // UNI_ALGO_BREAK_GRAPHEME_H_UAIX
 
 /* Public Domain License
  *

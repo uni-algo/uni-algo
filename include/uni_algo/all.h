@@ -4,8 +4,8 @@
 
 // This file includes all modules that are enabled in uni_algo/config.h
 
-#ifndef CPP_UNI_ALL_H_UAIX
-#define CPP_UNI_ALL_H_UAIX
+#ifndef UNI_ALGO_ALL_H_UAIX
+#define UNI_ALGO_ALL_H_UAIX
 
 #include "convert.h"
 #include "ranges.h"
@@ -30,4 +30,4 @@
 #include "break_word.h"
 #endif
 
-#endif // CPP_UNI_ALL_H_UAIX
+#endif // UNI_ALGO_ALL_H_UAIX

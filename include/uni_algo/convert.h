@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef CPP_UNI_CONVERT_H_UAIX
-#define CPP_UNI_CONVERT_H_UAIX
+#ifndef UNI_ALGO_CONVERT_H_UAIX
+#define UNI_ALGO_CONVERT_H_UAIX
 
 #include <type_traits>
 #include <string>
@@ -436,7 +436,7 @@ inline std::u8string utf32to8u(std::wstring_view source, uni::error& error)
 
 } // namespace uni
 
-#endif // CPP_UNI_CONVERT_H_UAIX
+#endif // UNI_ALGO_CONVERT_H_UAIX
 
 /* Public Domain License
  *

@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#ifndef CPP_UNI_VERSION_H_UAIX
-#define CPP_UNI_VERSION_H_UAIX
+#ifndef UNI_ALGO_VERSION_H_UAIX
+#define UNI_ALGO_VERSION_H_UAIX
 
 #include "impl/impl_cpp_lib_version.h"
 #include "impl/impl_unicode_version.h"
@@ -20,4 +20,4 @@ namespace unicode {
     inline constexpr int major = (UNI_ALGO_UNICODE_VERSION / 1000000);
 }}
 
-#endif // CPP_UNI_VERSION_H_UAIX
+#endif // UNI_ALGO_VERSION_H_UAIX
