@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - sign whatever you want.
  * See notice at the end of this file. */
 
-#ifndef IMPL_LOCALE_H_UAIX
-#define IMPL_LOCALE_H_UAIX
+#ifndef UNI_ALGO_IMPL_LOCALE_H_UAIH
+#define UNI_ALGO_IMPL_LOCALE_H_UAIH
 
 #include "internal_defines.h"
 
@@ -352,7 +352,7 @@ UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"
 
-#endif // IMPL_LOCALE_H_UAIX
+#endif // UNI_ALGO_IMPL_LOCALE_H_UAIH
 
 /* Public Domain Contract
  *

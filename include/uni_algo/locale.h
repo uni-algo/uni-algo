@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_LOCALE_H_UAIX
-#define UNI_ALGO_LOCALE_H_UAIX
+#ifndef UNI_ALGO_LOCALE_H_UAIH
+#define UNI_ALGO_LOCALE_H_UAIH
 
 #include <type_traits>
 #include <cassert>
@@ -298,7 +298,7 @@ public:
 
 } // namespace uni
 
-#endif // UNI_ALGO_LOCALE_H_UAIX
+#endif // UNI_ALGO_LOCALE_H_UAIH
 
 /* Public Domain License
  *

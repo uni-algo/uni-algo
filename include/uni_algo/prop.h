@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_PROP_H_UAIX
-#define UNI_ALGO_PROP_H_UAIX
+#ifndef UNI_ALGO_PROP_H_UAIH
+#define UNI_ALGO_PROP_H_UAIH
 
 #ifdef UNI_ALGO_DISABLE_PROP
 #  error "Property module is disabled via UNI_ALGO_DISABLE_PROP"
@@ -328,7 +328,7 @@ inline bool is_control(const prop& p) noexcept
 
 } // namespace uni::codepoint
 
-#endif // UNI_ALGO_PROP_H_UAIX
+#endif // UNI_ALGO_PROP_H_UAIH
 
 /* Public Domain License:
  *

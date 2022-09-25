@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_NORM_H_UAIX
-#define UNI_ALGO_NORM_H_UAIX
+#ifndef UNI_ALGO_NORM_H_UAIH
+#define UNI_ALGO_NORM_H_UAIH
 
 #ifdef UNI_ALGO_DISABLE_NORM
 #  error "Normalization module is disabled via define UNI_ALGO_DISABLE_NORM"
@@ -1082,7 +1082,7 @@ inline std::u32string to_decompose_hangul_u32(char32_t c)
 
 } // namespace uni
 
-#endif // UNI_ALGO_NORM_H_UAIX
+#endif // UNI_ALGO_NORM_H_UAIH
 
 /* Public Domain License
  *

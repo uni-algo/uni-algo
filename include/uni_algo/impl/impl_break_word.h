@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - sign whatever you want.
  * See notice at the end of this file. */
 
-#ifndef IMPL_BREAK_WORD_H_UAIX
-#define IMPL_BREAK_WORD_H_UAIX
+#ifndef UNI_ALGO_IMPL_BREAK_WORD_H_UAIH
+#define UNI_ALGO_IMPL_BREAK_WORD_H_UAIH
 
 #include "impl_iterator.h"
 
@@ -957,7 +957,7 @@ UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"
 
-#endif // IMPL_BREAK_WORD_H_UAIX
+#endif // UNI_ALGO_IMPL_BREAK_WORD_H_UAIH
 
 /* Public Domain Contract
  *

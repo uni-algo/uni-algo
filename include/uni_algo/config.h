@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#ifndef UNI_ALGO_CONFIG_H_UAIX
-#define UNI_ALGO_CONFIG_H_UAIX
+#ifndef UNI_ALGO_CONFIG_H_UAIH
+#define UNI_ALGO_CONFIG_H_UAIH
 
 // UNI_ALGO_CPP_LIB_VERSION
 // Describes the library version number in XYYYZZZ format such that:
@@ -131,4 +131,4 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 //#define UNI_ALGO_TEST_CPP_THROW_ON_ILL_FORMED
 //#define UNI_ALGO_TEST_CPP_THROW_ASSERT
 
-#endif // UNI_ALGO_CONFIG_H_UAIX
+#endif // UNI_ALGO_CONFIG_H_UAIH

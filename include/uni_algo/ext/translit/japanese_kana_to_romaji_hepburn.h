@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_JAPANESE_KANA_TO_ROMAJI_HEPBURN_H_UAIX
-#define UNI_ALGO_JAPANESE_KANA_TO_ROMAJI_HEPBURN_H_UAIX
+#ifndef UNI_ALGO_JAPANESE_KANA_TO_ROMAJI_HEPBURN_H_UAIH
+#define UNI_ALGO_JAPANESE_KANA_TO_ROMAJI_HEPBURN_H_UAIH
 
 #include <array>
 #include <string>
@@ -316,7 +316,7 @@ inline std::u8string utf8_japanese_kana_to_romaji_hepburn(std::u8string_view sou
 
 } // namespace uni::translit
 
-#endif // UNI_ALGO_JAPANESE_KANA_TO_ROMAJI_HEPBURN_H_UAIX
+#endif // UNI_ALGO_JAPANESE_KANA_TO_ROMAJI_HEPBURN_H_UAIH
 
 /* Public Domain License
  *

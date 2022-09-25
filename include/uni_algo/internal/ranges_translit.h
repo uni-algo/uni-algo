@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_INTERNAL_RANGES_TRANSLIT_H_UAIX
-#define UNI_ALGO_INTERNAL_RANGES_TRANSLIT_H_UAIX
+#ifndef UNI_ALGO_INTERNAL_RANGES_TRANSLIT_H_UAIH
+#define UNI_ALGO_INTERNAL_RANGES_TRANSLIT_H_UAIH
 
 #include <array>
 #include <string_view>
@@ -343,7 +343,7 @@ translit_view(Range&&, Func, std::size_t) -> translit_view<uni::views::all_t<Ran
 
 } // namespace uni
 
-#endif // UNI_ALGO_INTERNAL_RANGES_TRANSLIT_H_UAIX
+#endif // UNI_ALGO_INTERNAL_RANGES_TRANSLIT_H_UAIH
 
 /* Public Domain License
  *

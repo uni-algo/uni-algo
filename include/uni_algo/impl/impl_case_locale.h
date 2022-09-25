@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - sign whatever you want.
  * See notice at the end of this file. */
 
-#ifndef IMPL_CASE_LOCALE_H_UAIX
-#define IMPL_CASE_LOCALE_H_UAIX
+#ifndef UNI_ALGO_IMPL_CASE_LOCALE_H_UAIH
+#define UNI_ALGO_IMPL_CASE_LOCALE_H_UAIH
 
 // The file is an extension for Case module and must be included after impl_case.h
 // The file provides only 2 functions: impl_utf8_casemap_locale and impl_utf16_casemap_locale
@@ -1708,7 +1708,7 @@ UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"
 
-#endif // IMPL_CASE_LOCALE_H_UAIX
+#endif // UNI_ALGO_IMPL_CASE_LOCALE_H_UAIH
 
 /* Public Domain Contract
  *

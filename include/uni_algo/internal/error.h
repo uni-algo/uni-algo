@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#ifndef UNI_ALGO_INTERNAL_ERROR_UAIX
-#define UNI_ALGO_INTERNAL_ERROR_UAIX
+#ifndef UNI_ALGO_INTERNAL_ERROR_UAIH
+#define UNI_ALGO_INTERNAL_ERROR_UAIH
 
 #include <type_traits>
 #include <cassert>
@@ -28,4 +28,4 @@ private:
 
 } // namespace uni
 
-#endif // UNI_ALGO_INTERNAL_ERROR_UAIX
+#endif // UNI_ALGO_INTERNAL_ERROR_UAIH

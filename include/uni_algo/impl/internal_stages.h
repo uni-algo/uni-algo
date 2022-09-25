@@ -6,8 +6,8 @@
 
 // Must be included after impl_defines.h
 
-#ifndef IMPL_STAGES_H_UAIX
-#define IMPL_STAGES_H_UAIX
+#ifndef UNI_ALGO_IMPL_INTERNAL_STAGES_H_UAIH
+#define UNI_ALGO_IMPL_INTERNAL_STAGES_H_UAIH
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
@@ -41,4 +41,4 @@ uaix_static type_codept stages(type_codept c, T1 stage1, T2 stage2)
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
-#endif // IMPL_STAGES_H_UAIX
+#endif // UNI_ALGO_IMPL_INTERNAL_STAGES_H_UAIH

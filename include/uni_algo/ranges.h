@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_RANGES_H_UAIX
-#define UNI_ALGO_RANGES_H_UAIX
+#ifndef UNI_ALGO_RANGES_H_UAIH
+#define UNI_ALGO_RANGES_H_UAIH
 
 #include <functional>
 #ifdef UNI_ALGO_LOG_CPP_ITER
@@ -1173,7 +1173,7 @@ namespace views = ranges::views;
 
 } // namespace uni
 
-#endif // UNI_ALGO_RANGES_H_UAIX
+#endif // UNI_ALGO_RANGES_H_UAIH
 
 /* Public Domain License
  *
