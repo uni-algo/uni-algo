@@ -6,7 +6,7 @@
 
 #ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
 
-#include "../cpp_uni_locale.h"
+#include "../locale.h"
 
 #ifndef _WIN32
 #include <cstdlib>

@@ -7,7 +7,7 @@
 #include <cstddef>
 #include <type_traits>
 
-#include "../cpp_uni_config.h"
+#include "../config.h"
 
 #ifndef UNI_ALGO_DISABLE_CASE
 #include "../impl/impl_case_data_extern.h"

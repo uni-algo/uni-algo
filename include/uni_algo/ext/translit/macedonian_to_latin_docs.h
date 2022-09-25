@@ -9,8 +9,8 @@
 #include <string>
 #include <string_view>
 
-#include "../../cpp_uni_ranges.h"
-#include "../../internal/cpp_uni_ranges_translit.h"
+#include "../../ranges.h"
+#include "../../internal/ranges_translit.h"
 
 namespace uni::detail::translit {
 

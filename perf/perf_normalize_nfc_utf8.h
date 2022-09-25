@@ -31,8 +31,8 @@
 #include <chrono>
 #include <vector>
 #include <stdexcept>
-#include "../src/cpp_uni_convert.h"
-#include "../src/cpp_uni_norm.h"
+#include "../include/uni_algo/convert.h"
+#include "../include/uni_algo/norm.h"
 
 #ifdef ENABLE_UTF8PROC_TEST
 std::string norm_utf8proc(std::string_view str)

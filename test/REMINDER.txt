@@ -15,8 +15,8 @@ ftp://ftp.unicode.org/Public/12.1.0/ucd/auxiliary/WordBreakTest.txt
 etc.
 
 GCC/Clang command lines:
-g++ -O3 -std=c++17 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-compare -Wsign-conversion -Wshadow -Wmissing-braces -Warray-bounds=2 -Wstrict-overflow=2 -Wstack-usage=3000 -Wnull-dereference -Wcast-align -Wcast-qual -Wduplicated-branches -Wduplicated-cond test/main.cpp src/cpp_uni_data.cpp
-clang++ -O3 -std=c++17 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wsign-compare -Wshadow -Wmissing-braces -Warray-bounds -Wcast-align -Wcast-qual test/main.cpp src/cpp_uni_data.cpp
+g++ -O3 -std=c++17 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-compare -Wsign-conversion -Wshadow -Wmissing-braces -Warray-bounds=2 -Wstrict-overflow=2 -Wstack-usage=3000 -Wnull-dereference -Wcast-align -Wcast-qual -Wduplicated-branches -Wduplicated-cond test/main.cpp src/data.cpp
+clang++ -O3 -std=c++17 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wsign-compare -Wshadow -Wmissing-braces -Warray-bounds -Wcast-align -Wcast-qual test/main.cpp src/data.cpp
 
 DEBUG: -g -O0 -D_GLIBCXX_DEBUG -DUNI_ALGO_TEST_ASSERT
 

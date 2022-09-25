@@ -20,7 +20,7 @@
 //#define UNI_ALGO_DISABLE_NORM
 //#define UNI_ALGO_DISABLE_NFKC_NFKD
 
-#include "../src/impl/impl_unicode_version.h"
+#include "../include/uni_algo/impl/impl_unicode_version.h"
 
 // Collation names
 #if UNI_ALGO_UNICODE_VERSION != 14000000
@@ -93,12 +93,12 @@ typedef type_codept    type_char32; // Can be 32-bit or more signed/unsigned
 #define UNI_ALGO_DISABLE_BREAK_WORD
 
 // Include impl_types.h always first then data and then implementation.
-#include "../src/impl/impl_types.h"
-#include "../src/impl/impl_case_data.h"
-#include "../src/impl/impl_case.h"
+#include "../include/uni_algo/impl/impl_types.h"
+#include "../include/uni_algo/impl/impl_case_data.h"
+#include "../include/uni_algo/impl/impl_case.h"
 #ifndef UNI_ALGO_DISABLE_NORM
-#include "../src/impl/impl_norm_data.h"
-#include "../src/impl/impl_norm.h"
+#include "../include/uni_algo/impl/impl_norm_data.h"
+#include "../include/uni_algo/impl/impl_norm.h"
 #endif // UNI_ALGO_DISABLE_NORM
 
 static void sqlite3_utf8_like(sqlite3_context* context, int argc, sqlite3_value** argv)

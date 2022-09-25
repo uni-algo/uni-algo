@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#include "cpp_uni_convert.h"
-#include "cpp_uni_case.h"
+#include "uni_algo/convert.h"
+#include "uni_algo/case.h"
 
 // --------
 // Example: REPLACEMENT CHARACTER (U+FFFD)

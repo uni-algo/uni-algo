@@ -24,9 +24,9 @@
 #include <chrono>
 #include <vector>
 #include <stdexcept>
-#include "../src/cpp_uni_convert.h"
-#include "../src/cpp_uni_break_grapheme.h"
-#include "../src/cpp_uni_break_word.h"
+#include "../include/uni_algo/convert.h"
+#include "../include/uni_algo/break_grapheme.h"
+#include "../include/uni_algo/break_word.h"
 
 int break_uni(std::u16string_view str)
 {

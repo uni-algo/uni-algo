@@ -8,19 +8,19 @@
 //
 // REMINDER: https://stackoverflow.com/questions/52710180/how-to-use-and-configure-clang-tidy-on-windows
 
-#include "../../src/cpp_uni_convert.h"
-#include "../../src/cpp_uni_locale.h"
-#include "../../src/cpp_uni_case.h"
-#include "../../src/cpp_uni_norm.h"
-#include "../../src/cpp_uni_prop.h"
-#include "../../src/cpp_uni_ranges.h"
-#include "../../src/cpp_uni_break_grapheme.h"
-#include "../../src/cpp_uni_break_word.h"
+#include "../../include/uni_algo/convert.h"
+#include "../../include/uni_algo/locale.h"
+#include "../../include/uni_algo/case.h"
+#include "../../include/uni_algo/norm.h"
+#include "../../include/uni_algo/prop.h"
+#include "../../include/uni_algo/ranges.h"
+#include "../../include/uni_algo/break_grapheme.h"
+#include "../../include/uni_algo/break_word.h"
 
 // Include all transliterators
 
-#include "../../src/ext/translit/macedonian_to_latin_docs.h"
-#include "../../src/ext/translit/japanese_kana_to_romaji_hepburn.h"
+#include "../../include/uni_algo/ext/translit/macedonian_to_latin_docs.h"
+#include "../../include/uni_algo/ext/translit/japanese_kana_to_romaji_hepburn.h"
 
 int main()
 {

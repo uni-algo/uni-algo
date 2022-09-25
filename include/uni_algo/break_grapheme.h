@@ -12,9 +12,9 @@
 #include <type_traits>
 #include <cassert>
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
-#include "internal/cpp_uni_ranges_core.h"
+#include "config.h"
+#include "version.h"
+#include "internal/ranges_core.h"
 
 #include "impl/impl_iterator.h"
 #include "impl/impl_break_grapheme.h"

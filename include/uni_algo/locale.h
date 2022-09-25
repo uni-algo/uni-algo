@@ -10,8 +10,8 @@
 #include <string>
 #include <string_view>
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
+#include "config.h"
+#include "version.h"
 
 #include "impl/impl_locale.h"
 

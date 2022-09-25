@@ -12,7 +12,7 @@ void test_ranges()
     TESTX("123" == (std::u32string_view{U"123789"} | uni::views::take(3) | uni::ranges::to_utf8<std::string>()));
     TESTX("987321" == (std::u32string_view{U"123789"} | uni::views::reverse | uni::ranges::to_utf8<std::string>()));
     TESTX("123" == (std::u32string_view{U"   123"} | uni::views::filter([](char32_t c) { return c != ' '; }) | uni::ranges::to_utf8<std::string>()));
-    // See comments in cpp_uni_ranges -> uni::ranges::to_utf8 adaptor
+    // See comments in uni_algo/ranges.h -> uni::ranges::to_utf8 adaptor
     // REMINDER: static_assert(std::is_same_v<decltype((char32_t)1+1), char32_t>) is false
     TESTX("789" == (std::u32string_view{U"123"} | uni::views::transform([](char32_t c) -> char32_t { return c + 6; }) | uni::ranges::to_utf8<std::string>()));
     TESTX("789" == (std::u32string_view{U"123"} | uni::views::transform([](char32_t c) { return c + 6; }) | uni::ranges::to_utf8<std::string>()));
@@ -130,7 +130,7 @@ void test_ranges_static_assert()
 #endif
     // std::decay_t TEST
     /*
-        // std::decay_t TEST (see our all view in cpp_uni_ranges.h for details)
+        // std::decay_t TEST (see our all view in uni_algo/ranges.h for details)
         // Test: std::is_base_of_v<detail::ranges::view_base, std::decay_t<R>>
         const std::string_view str_view{"12345"};
         const auto my_view = str_view | uni::views::reverse;

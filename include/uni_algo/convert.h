@@ -10,9 +10,9 @@
 #include <string_view>
 #include <cassert>
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
-#include "internal/cpp_uni_error.h"
+#include "config.h"
+#include "version.h"
+#include "internal/error.h"
 
 #include "impl/impl_convert.h"
 

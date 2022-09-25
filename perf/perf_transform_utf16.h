@@ -25,8 +25,8 @@
 #include <chrono>
 #include <vector>
 #include <stdexcept>
-#include "../src/cpp_uni_ranges.h"
-#include "../src/cpp_uni_norm.h"
+#include "../include/uni_algo/ranges.h"
+#include "../include/uni_algo/norm.h"
 
 std::u16string trans_uni(std::u16string_view str)
 {

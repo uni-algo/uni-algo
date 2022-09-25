@@ -14,9 +14,9 @@
 #include <string_view>
 #include <cassert>
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
-#include "cpp_uni_locale.h"
+#include "config.h"
+#include "version.h"
+#include "locale.h"
 
 #include "impl/impl_case.h"
 #ifndef UNI_ALGO_DISABLE_FULL_CASE

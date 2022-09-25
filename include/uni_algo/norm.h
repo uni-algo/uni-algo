@@ -14,9 +14,9 @@
 #include <string_view>
 #include <iterator>
 
-#include "cpp_uni_config.h"
-#include "cpp_uni_version.h"
-#include "internal/cpp_uni_ranges_core.h"
+#include "config.h"
+#include "version.h"
+#include "internal/ranges_core.h"
 
 #include "impl/impl_norm.h"
 

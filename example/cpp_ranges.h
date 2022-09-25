@@ -2,9 +2,9 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#include "cpp_uni_ranges.h"
-#include "cpp_uni_norm.h"
-#include "cpp_uni_break_word.h"
+#include "uni_algo/ranges.h"
+#include "uni_algo/norm.h"
+#include "uni_algo/break_word.h"
 
 // -----------------------------
 // Do not overuse ranges example

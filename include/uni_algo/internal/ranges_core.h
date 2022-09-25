@@ -27,8 +27,8 @@
 #include <iostream>
 #endif
 
-#include "../cpp_uni_config.h"
-#include "../cpp_uni_version.h"
+#include "../config.h"
+#include "../version.h"
 
 namespace uni {
 
