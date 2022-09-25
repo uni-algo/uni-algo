@@ -3,6 +3,7 @@ Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
 ## v0.5.0 (TBD)
+- Renamed files from cpp_uni_* to uni_algo/*
 - Added better locale support
 - Added word properties
 - Added reverse grapheme/word algorithms
