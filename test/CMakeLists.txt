@@ -27,7 +27,7 @@ endif()
 #target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../src")
 
 target_sources(${PROJECT_NAME} PRIVATE
-    "${PROJECT_SOURCE_DIR}/../src/cpp_uni_data.cpp"
+    "${PROJECT_SOURCE_DIR}/../src/data.cpp"
     "${PROJECT_SOURCE_DIR}/main.cpp")
 
 if(DOWNLOAD_UNICODE_TEST_FILES)
