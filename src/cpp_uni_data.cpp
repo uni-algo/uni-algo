@@ -3,3 +3,4 @@
  * See LICENSE.md */
 
 #include "internal/cpp_uni_data_inl.h"
+#include "internal/cpp_uni_locale_inl.h"
