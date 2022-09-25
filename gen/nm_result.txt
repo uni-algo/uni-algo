@@ -1,7 +1,7 @@
 Library version: 0.4.0
 Unicode version: 14.0.0
 
-nm --print-size --size-sort --radix=d cpp_uni_data.cpp.o >nm_result.txt
+nm --print-size --size-sort --radix=d data.cpp.o >nm_result.txt
 
 00000000 00000064 r .rdata$zzz
 00422528 00000416 R __ZN3uni6detail20stage3_special_titleE

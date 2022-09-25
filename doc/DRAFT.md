@@ -6,33 +6,33 @@ Things that are not listed in this file:
 
 ---
 
-**`cpp_uni_data.cpp`**
+**`src/data.cpp`**
 
 The only file that you need to compile.<br>
 Contains Unicode data tables.<br>
 
 ---
 
-**`cpp_uni_all.h`**
+**`uni_algo/all.h`**
 
 Includes all enabled modules.
 
 ---
 
-**`cpp_uni_version.h`** - version (header-only)
+**`uni_algo/version.h`** - version (header-only)
 
 Provides information about the library version and Unicode version.<br>
 Other files always include this file.
 
 ---
 
-**`cpp_uni_config.h`** - configuration
+**`uni_algo/config.h`** - configuration
 
 See comments inside the file for more info.
 
 ---
 
-**`cpp_uni_convert.h`** - convertion functions (header-only)
+**`uni_algo/convert.h`** - convertion functions (header-only)
 ```
 uni::utf8to16 - convert a string from UTF-8 to UTF-16
 uni::utf16to8
@@ -50,7 +50,7 @@ then strict conversion instead of lenient.
 
 ---
 
-**`cpp_uni_case.h`** - case functions (requeries cpp_uni_data.cpp)
+**`uni_algo/case.h`** - case functions (requeries src/data.cpp)
 ```
 uni::cases::utf8_lower - convert a string to lower case
 uni::cases::utf8_upper - upper case
@@ -71,7 +71,7 @@ others are based on Default Case Matching and always locale-independent too.
 
 ---
 
-**`cpp_uni_locale.h`** - locale (requeries cpp_uni_data.cpp)
+**`uni_algo/locale.h`** - locale (requeries src/data.cpp)
 ```
 uni::locale::system - get system locale (static function)
 
@@ -96,7 +96,7 @@ where enum classes can be used for example in switch case.
 
 ---
 
-**`cpp_uni_ranges.h`** - UTF and basic ranges (header-only)
+**`uni_algo/ranges.h`** - UTF and basic ranges (header-only)
 ```
 uni::views::utf8 - requires integral UTF-8 range produces char32_t range
 
@@ -110,7 +110,7 @@ uni::views::take      - similar to std::views::take
 ```
 ---
 
-**`cpp_uni_norm.h`** - normalization functions and ranges (requeries cpp_uni_data.cpp)
+**`uni_algo/norm.h`** - normalization functions and ranges (requeries src/data.cpp)
 ```
 uni::norm::utf8_nfc - normalize a string to NFC normalization form
 uni::norm::utf8_nfd
@@ -129,7 +129,7 @@ uni::views::norm::nfkd
 ```
 ---
 
-**`cpp_uni_break_grapheme.h`** - grapheme ranges (requeries cpp_uni_data.cpp)
+**`uni_algo/break_grapheme.h`** - grapheme ranges (requeries src/data.cpp)
 ```
 uni::views::grapheme::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges
 ```
@@ -137,7 +137,7 @@ Uses UAX #29: Unicode Text Segmentation -> Grapheme Cluster Boundary Rules
 
 ---
 
-**`cpp_uni_break_word.h`** - word ranges (requeries cpp_uni_data.cpp)
+**`uni_algo/break_word.h`** - word ranges (requeries src/data.cpp)
 ```
 uni::views::word::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges
 uni::views::word_only::utf8
@@ -159,7 +159,7 @@ Uses UAX #29: Unicode Text Segmentation -> Word Boundary Rules<br>
 
 ---
 
-**`cpp_uni_prop.h`** - code point properties (requeries cpp_uni_data.cpp)
+**`uni_algo/prop.h`** - code point properties (requeries src/data.cpp)
 
 The documentation contains links to:<br>
 Unicode character database: https://www.unicode.org/reports/tr44 <br>
@@ -194,7 +194,7 @@ uni::codepoint::get_general_category  - get <a href="https://www.unicode.org/rep
 
 <i>other modules can provide more properties they are listed below</i>
 
-<b>cpp_uni_case.h</b>
+<b>uni_algo/case.h</b>
 
 uni::codepoint::is_lowercase        - <a href="https://www.unicode.org/reports/tr44/#Lowercase">Lowercase</a>
 uni::codepoint::is_uppercase        - <a href="https://www.unicode.org/reports/tr44/#Uppercase">Uppercase</a>
@@ -211,7 +211,7 @@ uni::codepoint::to_casefold_u32     - <a href="https://www.unicode.org/reports/t
 
 class uni::codepoint::prop_case     - provides <a href="https://www.unicode.org/reports/tr44/#Cased">Cased</a>, <a href="https://www.unicode.org/reports/tr44/#Case_Ignorable">Case_Ignorable</a> and <a href="https://www.unicode.org/reports/tr44/#Soft_Dotted">Soft_Dotted</a> functions
 
-<b>cpp_uni_norm.h</b>
+<b>uni_algo/norm.h</b>
 
 uni::codepoint::to_decompose_u32        - full canonical decomposition (includes hangul decomposition)
 uni::codepoint::to_decompose_compat_u32 - full compatibility decomposition (includes hangul decomposition)

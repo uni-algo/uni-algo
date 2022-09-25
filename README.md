@@ -152,7 +152,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 
 <details><summary><b>Manual usage</b></summary><p>
 
-Include a header file you want to use from `src` directory and compile one file `src/cpp_uni_data.cpp`
+Include a header file you want to use from `include/uni_algo` directory and compile one file `src/data.cpp`
 
 </p></details>
 
@@ -195,7 +195,7 @@ It has nothing to do with C++20 modules.
 ## Convert Functions
 ```cpp
 // This module doesn't require Unicode data so it can be used as header-only
-#include "cpp_uni_convert.h"
+#include "uni_algo/convert.h"
 
 // Lenient conversion (cannot fail) "\xD800" is unpaired high surrogate in UTF-16
 std::string str8 = uni::utf16to8(u"Te\xD800st"); // std::u8string is supported too
@@ -244,7 +244,7 @@ std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test");
 ```
 ## Case Functions
 ```cpp
-#include "cpp_uni_case.h" // And compile "cpp_uni_data.cpp"
+#include "uni_algo/case.h"
 
 std::cout << uni::cases::utf8_upper("Straße") << '\n';
 std::cout << uni::cases::utf8_lower("ДВА") << '\n';
@@ -311,7 +311,7 @@ vec8.erase(it, vec8.end());
 ```
 ## Normalization Functions
 ```cpp
-#include "cpp_uni_norm.h" // And compile "cpp_uni_data.cpp"
+#include "uni_algo/norm.h"
 
 // "W" with circumflex == "Ŵ"
 assert(uni::norm::utf8_nfc("W\u0302") == "Ŵ");
@@ -341,14 +341,14 @@ uni::norm::utf8_nfc(it, end, out);
 ```
 ## Code Point Properties
 ```cpp
-#include "cpp_uni_prop.h" // And compile "cpp_uni_data.cpp"
+#include "uni_algo/prop.h"
 
 assert(uni::codepoint::is_numeric(U'7'));
 assert(uni::codepoint::is_alphabetic(U'W'));
 assert(uni::codepoint::prop{U'W'}.Alphabetic()); // Equivalent to the previous one
 
 // Other modules can provide more properties
-#include "cpp_uni_case.h" // And compile "cpp_uni_data.cpp"
+#include "uni_algo/case.h"
 
 assert(uni::codepoint::is_lowercase(U'w'));
 assert(uni::codepoint::prop_case{U'w'}.Lowercase()); // Equivalent to the previous one
@@ -379,7 +379,7 @@ bool is_alphabetic_string(std::string_view view)
 ```
 ## Locale
 ```cpp
-#include "cpp_uni_locale.h" // And compile "cpp_uni_data.cpp"
+#include "uni_algo/locale.h"
 
 // Uppercase a string using system locale
 uni::cases::utf8_upper("Test", uni::locale::system());
@@ -413,7 +413,7 @@ switch (uni::locale::system().get_language())
 ## Basic Ranges
 ```cpp
 // This module doesn't require Unicode data so it can be used as header-only
-#include "cpp_uni_ranges.h"
+#include "uni_algo/ranges.h"
 
 // Ranges in this library are compatible with C++20 ranges.
 // In C++17 the library implements some basic ranges that are similar to C++20 ranges:
@@ -443,7 +443,7 @@ std::u16string utf8to16(std::string_view view)
 ## UTF Ranges
 ```cpp
 // This module doesn't require Unicode data so it can be used as header-only
-#include "cpp_uni_ranges.h"
+#include "uni_algo/ranges.h"
 
 // This example demonstrates how to work directly with a range view
 
@@ -493,9 +493,8 @@ for (auto it = view.end(); it != view.begin();)
 ```
 ## Grapheme/Word Ranges
 ```cpp
-#include "cpp_uni_break_grapheme.h"
-#include "cpp_uni_break_word.h"
-// And compile "cpp_uni_data.cpp"
+#include "uni_algo/break_grapheme.h"
+#include "uni_algo/break_word.h"
 
 // Grapheme/Word aka Break ranges are similar to UTF ranges
 // but they return subranges in the form of std::string_view
@@ -553,8 +552,8 @@ str8.insert(pos, uni::utf32to8(std::u32string{U'😼'})); // This emoji use 1 co
 // the same result because it removes all accents not specific ones,
 // but it is possible to implement this algorithm using ranges like this.
 
-#include "cpp_uni_ranges.h"
-#include "cpp_uni_norm.h"
+#include "uni_algo/ranges.h"
+#include "uni_algo/norm.h"
 // Note that we include Normalization module because some modules
 // provide not only functions but ranges too.
 
