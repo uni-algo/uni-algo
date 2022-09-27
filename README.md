@@ -239,17 +239,17 @@ std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test");
 // Aside from such corner cases you should use non-template functions because they are just shorter.
 
 // It's not like only wchar_t is broken char has the same problem you never know what it stores
-// so most of functions in the library start with utf8/utf16/utf32 it shows with what data
+// so most of functions in the library end with utf8/utf16/utf32 it shows with what data
 // a function works with, types are irrelevant.
 ```
 ## Case Functions
 ```cpp
 #include "uni_algo/case.h"
 
-std::cout << uni::cases::utf8_upper("Straße") << '\n';
-std::cout << uni::cases::utf8_lower("ДВА") << '\n';
-std::cout << uni::cases::utf8_fold("Ligature ﬃ") << '\n';
-std::cout << uni::cases::utf8_title("teMPuS eDAX reRuM") << '\n';
+std::cout << uni::cases::to_uppercase_utf8("Straße") << '\n';
+std::cout << uni::cases::to_lowercase_utf8("ДВА") << '\n';
+std::cout << uni::cases::to_casefold_utf8("Ligature ﬃ") << '\n';
+std::cout << uni::cases::to_titlecase_utf8("teMPuS eDAX reRuM") << '\n';
 
 // Output:
 // STRASSE
@@ -258,20 +258,20 @@ std::cout << uni::cases::utf8_title("teMPuS eDAX reRuM") << '\n';
 // Tempus Edax Rerum
 
 // With Greek locale, removes diacritics etc.
-std::cout << uni::cases::utf8_upper("Ἀριστοτέλης", uni::locale("el")) << '\n';
+std::cout << uni::cases::to_uppercase_utf8("Ἀριστοτέλης", uni::locale("el")) << '\n';
 // With Turkish locale, maps i to İ etc.
-std::cout << uni::cases::utf8_upper("istanbul", uni::locale("tr")) << '\n';
+std::cout << uni::cases::to_uppercase_utf8("istanbul", uni::locale("tr")) << '\n';
 // With Dutch locale, maps ij to IJ at the start of a word.
-std::cout << uni::cases::utf8_title("ijsland", uni::locale("nl")) << '\n';
+std::cout << uni::cases::to_titlecase_utf8("ijsland", uni::locale("nl")) << '\n';
 
 // Output:
 // ΑΡΙΣΤΟΤΕΛΗΣ
 // İSTANBUL
 // IJsland
 
-assert(uni::caseless::utf8_compare("ﬃ", "FFI") == 0);
+assert(uni::caseless::compare_utf8("ﬃ", "FFI") == 0);
 
-uni::search found = uni::caseless::utf8_search("Ligature ﬁ test", "FI");
+uni::search found = uni::caseless::search_utf8("Ligature ﬁ test", "FI");
 assert(found && found.pos() == 9 && found.end_pos() == 12);
 
 // The module provides a very simple collation function too.
@@ -292,7 +292,7 @@ std::sort(vec8.begin(), vec8.end());
 
 // Sort them with uni::casesens::utf8_collate
 std::sort(vec8.begin(), vec8.end(), [](auto a, auto b) {
-    return uni::casesens::utf8_collate(a, b) < 0;
+    return uni::casesens::collate_utf8(a, b) < 0;
 });
 
 std::for_each(vec8.begin(), vec8.end(), [](auto s) { std::cout << s; });
@@ -303,7 +303,7 @@ std::cout << '\n';
 
 // Group them too
 auto it = std::unique(vec8.begin(), vec8.end(), [](auto a, auto b) {
-    return uni::caseless::utf8_collate(a, b) == 0;
+    return uni::caseless::collate_utf8(a, b) == 0;
 });
 vec8.erase(it, vec8.end());
 
@@ -314,10 +314,10 @@ vec8.erase(it, vec8.end());
 #include "uni_algo/norm.h"
 
 // "W" with circumflex == "Ŵ"
-assert(uni::norm::utf8_nfc("W\u0302") == "Ŵ");
+assert(uni::norm::to_nfc_utf8("W\u0302") == "Ŵ");
 
-assert(uni::norm::utf8_is_nfc("Ŵ") == true);
-assert(uni::norm::utf8_is_nfc("W\u0302") == false);
+assert(uni::norm::is_nfc_utf8("Ŵ") == true);
+assert(uni::norm::is_nfc_utf8("W\u0302") == false);
 
 // Note that the normalization algorithm in the library supports streams
 // so you can use the same function to normalize a file with 0 allocations.
@@ -330,7 +330,7 @@ std::istreambuf_iterator<char> end;
 
 std::ostreambuf_iterator<char> out{output.rdbuf()};
 
-uni::norm::utf8_nfc(it, end, out);
+uni::norm::to_nfc_utf8(it, end, out);
 
 // The function always produces well-formed normalized UTF-8 text in Stream-Safe Text Format
 // even if an input was a binary file, of course in such degenerate case the output will be
@@ -382,10 +382,10 @@ bool is_alphabetic_string(std::string_view view)
 #include "uni_algo/locale.h"
 
 // Uppercase a string using system locale
-uni::cases::utf8_upper("Test", uni::locale::system());
+uni::cases::to_uppercase_utf8("Test", uni::locale::system());
 
-uni::cases::utf8_upper("Test", uni::locale{"en-US"}); // Using locale string
-uni::cases::utf8_upper("Test", uni::locale::language{"en"}); // Using language subtag directly
+uni::cases::to_uppercase_utf8("Test", uni::locale{"en-US"}); // Using locale string
+uni::cases::to_uppercase_utf8("Test", uni::locale::language{"en"}); // Using language subtag directly
 
 // Parse locale string (can be ill-formed the parser will normalize it)
 uni::locale locale{"EN_latn_US"};

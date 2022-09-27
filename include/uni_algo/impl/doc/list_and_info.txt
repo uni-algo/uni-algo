@@ -124,57 +124,58 @@ const size_t impl_x_utf32to16
 -------
 impl_iterator.h
 
-it_in_utf8 impl_utf8_iter(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
-it_in_utf8 impl_utf8_iter_rev(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
-it_in_utf16 impl_utf16_iter(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
-it_in_utf16 impl_utf16_iter_rev(it_in_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
+it_in_utf8 impl_iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
+it_in_utf8 impl_iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
+it_in_utf16 impl_iter_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
+it_in_utf16 impl_iter_rev_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
 
-it_in_utf8 inline_utf8_iter(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
-it_in_utf8 inline_utf8_iter_rev(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
-it_in_utf16 inline_utf16_iter(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
-it_in_utf16 inline_utf16_iter_rev(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
+it_in_utf8 inline_iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
+it_in_utf8 inline_iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
+it_in_utf16 inline_iter_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
+it_in_utf16 inline_iter_rev_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
 
 // error values:
 const type_codept impl_iter_replacement
 const type_codept impl_iter_error
 
-it_out_utf8 impl_utf8_output(type_codept c, it_out_utf8 dst)
-it_out_utf16 impl_utf16_output(type_codept c, it_out_utf16 dst)
+it_out_utf8 impl_output_utf8(type_codept c, it_out_utf8 dst)
+it_out_utf16 impl_output_utf16(type_codept c, it_out_utf16 dst)
 
 -------
 impl_case.h
 
-size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode)
-int impl_utf8_compare(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless)
-int impl_utf8_collate(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless)
-bool impl_utf8_search(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless, size_t* pos, size_t* end)
+size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode)
+size_t impl_case_map_loc_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
+int impl_case_compare_utf8(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless)
+int impl_case_collate_utf8(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless)
+bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless, size_t* pos, size_t* end)
 
-size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode)
-size_t impl_utf16_casemap_loc(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode, type_codept language)
-int impl_utf16_compare(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless)
-int impl_utf16_collate(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless)
-bool impl_utf16_search(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless, size_t* pos, size_t* end)
+size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode)
+size_t impl_case_map_loc_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode, type_codept language)
+int impl_case_compare_utf16(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless)
+int impl_case_collate_utf16(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless)
+bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless, size_t* pos, size_t* end)
 
 // mode values:
-const int impl_casemap_mode_fold
-const int impl_casemap_mode_upper
-const int impl_casemap_mode_lower
-const int impl_casemap_mode_title
+const int impl_case_map_mode_casefold
+const int impl_case_map_mode_uppercase
+const int impl_case_map_mode_lowercase
+const int impl_case_map_mode_titlecase
 
 // experimental:
-bool impl_utf8_like(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless, type_codept all, type_codept one, type_codept escape)
-size_t impl_utf8_sortkey(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, bool caseless)
-size_t impl_utf8_sortkey_loc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
-size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, bool caseless)
-size_t impl_utf16_sortkey_loc(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, int mode, type_codept language)
+bool impl_case_like_utf8(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless, type_codept all, type_codept one, type_codept escape)
+size_t impl_case_sortkey_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, bool caseless)
+size_t impl_case_sortkey_loc_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
+size_t impl_case_sortkey_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, bool caseless)
+size_t impl_case_sortkey_loc_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, int mode, type_codept language)
 
 // properties
 type_codept impl_case_get_prop(type_codept c)
-bool impl_case_is_prop_lowercase(type_codept prop)
-bool impl_case_is_prop_uppercase(type_codept prop)
-bool impl_case_is_prop_cased(type_codept prop)
-bool impl_case_is_prop_case_ignorable(type_codept prop)
-bool impl_case_is_prop_soft_dotted(type_codept prop)
+bool impl_case_is_lowercase_prop(type_codept prop)
+bool impl_case_is_uppercase_prop(type_codept prop)
+bool impl_case_is_cased_prop(type_codept prop)
+bool impl_case_is_case_ignorable_prop(type_codept prop)
+bool impl_case_is_soft_dotted_prop(type_codept prop)
 type_codept impl_case_to_simple_lowercase(type_codept c)
 type_codept impl_case_to_simple_uppercase(type_codept c)
 type_codept impl_case_to_simple_casefold(type_codept c)
@@ -187,45 +188,45 @@ size_t impl_case_to_titlecase(type_codept c, it_out_utf32 dst)
 -------
 impl_case_locale.h
 
-size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
-size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode, type_codept language)
+size_t impl_case_map_locale_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
+size_t impl_case_map_locale_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode, type_codept language)
 
 -------
 impl_norm.h
 
-size_t impl_utf8_nfc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
-size_t impl_utf8_nfd(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
-size_t impl_utf8_nfkc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
-size_t impl_utf8_nfkd(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
-size_t impl_utf8_unaccent(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+size_t impl_norm_to_nfc_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+size_t impl_norm_to_nfd_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+size_t impl_norm_to_nfkc_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+size_t impl_norm_to_nfkd_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+size_t impl_norm_to_unaccent_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
 
-size_t impl_utf16_nfc(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
-size_t impl_utf16_nfd(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
-size_t impl_utf16_nfkc(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
-size_t impl_utf16_nfkd(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
-size_t impl_utf16_unaccent(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+size_t impl_norm_to_nfc_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+size_t impl_norm_to_nfd_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+size_t impl_norm_to_nfkc_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+size_t impl_norm_to_nfkd_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+size_t impl_norm_to_unaccent_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
 
 // premultiply values:
-const size_t impl_x_utf8_nfc
-const size_t impl_x_utf8_nfd
-const size_t impl_x_utf8_nfkc
-const size_t impl_x_utf8_nfkd
-const size_t impl_x_utf8_unaccent
-const size_t impl_x_utf16_nfc
-const size_t impl_x_utf16_nfd
-const size_t impl_x_utf16_nfkc
-const size_t impl_x_utf16_nfkd
-const size_t impl_x_utf16_unaccent
+const size_t impl_x_norm_to_nfc_utf8
+const size_t impl_x_norm_to_nfd_utf8
+const size_t impl_x_norm_to_nfkc_utf8
+const size_t impl_x_norm_to_nfkd_utf8
+const size_t impl_x_norm_to_unaccent_utf8
+const size_t impl_x_norm_to_nfc_utf16
+const size_t impl_x_norm_to_nfd_utf16
+const size_t impl_x_norm_to_nfkc_utf16
+const size_t impl_x_norm_to_nfkd_utf16
+const size_t impl_x_norm_to_unaccent_utf16
 
-int impl_utf8_is_nfc(it_in_utf8 first, it_end_utf8 last)
-int impl_utf8_is_nfd(it_in_utf8 first, it_end_utf8 last)
-int impl_utf8_is_nfkc(it_in_utf8 first, it_end_utf8 last)
-int impl_utf8_is_nfkd(it_in_utf8 first, it_end_utf8 last)
+int impl_norm_is_nfc_utf8(it_in_utf8 first, it_end_utf8 last)
+int impl_norm_is_nfd_utf8(it_in_utf8 first, it_end_utf8 last)
+int impl_norm_is_nfkc_utf8(it_in_utf8 first, it_end_utf8 last)
+int impl_norm_is_nfkd_utf8(it_in_utf8 first, it_end_utf8 last)
 
-int impl_utf16_is_nfc(it_in_utf16 first, it_end_utf16 last)
-int impl_utf16_is_nfd(it_in_utf16 first, it_end_utf16 last)
-int impl_utf16_is_nfkc(it_in_utf16 first, it_end_utf16 last)
-int impl_utf16_is_nfkd(it_in_utf16 first, it_end_utf16 last)
+int impl_norm_is_nfc_utf16(it_in_utf16 first, it_end_utf16 last)
+int impl_norm_is_nfd_utf16(it_in_utf16 first, it_end_utf16 last)
+int impl_norm_is_nfkc_utf16(it_in_utf16 first, it_end_utf16 last)
+int impl_norm_is_nfkd_utf16(it_in_utf16 first, it_end_utf16 last)
 
 // return values:
 const int impl_norm_is_yes
@@ -248,10 +249,10 @@ bool inline_norm_iter_next_nfkd(struct impl_norm_iter_state* s, type_codept* cod
 // properties
 type_codept impl_norm_get_prop(type_codept c)
 unsigned char impl_norm_get_prop_ccc(type_codept prop)
-bool impl_norm_is_prop_nfc_qc_yes(type_codept prop)
-bool impl_norm_is_prop_nfd_qc_yes(type_codept prop)
-bool impl_norm_is_prop_nfkc_qc_yes(type_codept prop)
-bool impl_norm_is_prop_nfkd_qc_yes(type_codept prop)
+bool impl_norm_is_nfc_qc_yes_prop(type_codept prop)
+bool impl_norm_is_nfd_qc_yes_prop(type_codept prop)
+bool impl_norm_is_nfkc_qc_yes_prop(type_codept prop)
+bool impl_norm_is_nfkd_qc_yes_prop(type_codept prop)
 type_codept norm_to_comp_hangul(type_codept c1, type_codept c2)
 type_codept impl_norm_to_compose(type_codept c1, type_codept c2)
 size_t norm_to_decomp_hangul(type_codept c, it_out_utf32 dst)
@@ -266,12 +267,12 @@ struct impl_break_grapheme_state
 void impl_break_grapheme_state_reset(struct impl_break_grapheme_state* state)
 
 bool impl_break_grapheme(struct impl_break_state* state, type_codept c)
-bool impl_utf8_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c, it_in_utf8 first, it_in_utf8 last)
-bool impl_utf16_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c, it_in_utf16 first, it_in_utf16 last)
+bool impl_break_grapheme_rev_utf8(struct impl_break_grapheme_state* state, type_codept c, it_in_utf8 first, it_in_utf8 last)
+bool impl_break_grapheme_rev_utf16(struct impl_break_grapheme_state* state, type_codept c, it_in_utf16 first, it_in_utf16 last)
 
 bool inline_break_grapheme(struct impl_break_state* state, type_codept c)
-bool inline_utf8_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c, it_in_utf8 first, it_in_utf8 last)
-bool inline_utf16_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c, it_in_utf16 first, it_in_utf16 last)
+bool inline_break_grapheme_rev_utf8(struct impl_break_grapheme_state* state, type_codept c, it_in_utf8 first, it_in_utf8 last)
+bool inline_break_grapheme_rev_utf16(struct impl_break_grapheme_state* state, type_codept c, it_in_utf16 first, it_in_utf16 last)
 
 ------
 impl_break_word.h
@@ -279,15 +280,15 @@ impl_break_word.h
 struct impl_break_word_state
 void impl_break_word_state_reset(struct impl_break_word_state* state)
 
-bool impl_utf8_break_word(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf8 first, it_end_utf8 last)
-bool impl_utf8_break_word_rev(struct impl_break_word_state* state, type_codept c, type_codept* word_prop, it_in_utf8 first, it_in_utf8 last)
-bool impl_utf16_break_word(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf16 first, it_end_utf16 last)
-bool impl_utf16_break_word_rev(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf16 first, it_end_utf16 last)
+bool impl_break_word_utf8(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf8 first, it_end_utf8 last)
+bool impl_break_word_rev_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop, it_in_utf8 first, it_in_utf8 last)
+bool impl_break_word_utf16(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf16 first, it_end_utf16 last)
+bool impl_break_word_rev_utf16(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf16 first, it_end_utf16 last)
 
-bool inline_utf8_break_word(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf8 first, it_end_utf8 last)
-bool inline_utf8_break_word_rev(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf8 first, it_end_utf8 last)
-bool inline_utf16_break_word(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf16 first, it_end_utf16 last)
-bool inline_utf16_break_word_rev(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf16 first, it_end_utf16 last)
+bool inline_break_word_utf8(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf8 first, it_end_utf8 last)
+bool inline_break_word_rev_utf8(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf8 first, it_end_utf8 last)
+bool inline_break_word_utf16(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf16 first, it_end_utf16 last)
+bool inline_break_word_rev_utf16(struct impl_break_state* state, type_codept c, type_codept* word_prop, it_in_utf16 first, it_end_utf16 last)
 
 // word properties:
 bool impl_break_is_word(type_codept word_prop)
@@ -323,14 +324,14 @@ const type_codept impl_locale_region_ZZ
 impl_prop.h
 
 type_codept impl_prop_get_prop(type_codept c)
-type_codept impl_prop_get_prop_gc(type_codept prop)
-bool impl_prop_is_prop_reserved(type_codept prop)
-bool impl_prop_is_prop_graphic(type_codept prop)
-bool impl_prop_is_prop_format(type_codept prop)
-bool impl_prop_is_prop_noncharacter(type_codept prop)
-bool impl_prop_is_prop_white_space(type_codept prop)
-bool impl_prop_is_prop_alphabetic(type_codept prop)
-bool impl_prop_is_non_character(type_codept c)
+type_codept impl_prop_get_gc_prop(type_codept prop)
+bool impl_prop_is_reserved_prop(type_codept prop)
+bool impl_prop_is_graphic_prop(type_codept prop)
+bool impl_prop_is_format_prop(type_codept prop)
+bool impl_prop_is_noncharacter_prop(type_codept prop)
+bool impl_prop_is_white_space_prop(type_codept prop)
+bool impl_prop_is_alphabetic_prop(type_codept prop)
+bool impl_prop_is_noncharacter(type_codept c)
 bool impl_prop_is_valid(type_codept c)
 bool impl_prop_is_valid_scalar(type_codept c)
 bool impl_prop_is_supplementary(type_codept c)

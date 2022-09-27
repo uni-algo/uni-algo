@@ -52,18 +52,18 @@ then strict conversion instead of lenient.
 
 **`uni_algo/case.h`** - case functions (requeries src/data.cpp)
 ```
-uni::cases::utf8_lower - convert a string to lower case
-uni::cases::utf8_upper - upper case
-uni::cases::utf8_title - title case
-uni::cases::utf8_fold  - case folding
+uni::cases::to_lowercase_utf8 - convert a string to lower case
+uni::cases::to_uppercase_utf8 - upper case
+uni::cases::to_titlecase_utf8 - title case
+uni::cases::to_casefold_utf8  - case folding
 
-uni::caseless::utf8_compare - case insensitive comparison
-uni::caseless::utf8_collate - collation
-uni::caseless::utf8_search  - search
+uni::caseless::compare_utf8 - case insensitive comparison
+uni::caseless::collate_utf8 - collation
+uni::caseless::search_utf8  - search
 
-uni::casesens::utf8_compare - case sensitive comparison
-uni::casesens::utf8_collate - collation
-uni::casesens::utf8_search  - search
+uni::casesens::compare_utf8 - case sensitive comparison
+uni::casesens::collate_utf8 - collation
+uni::casesens::search_utf8  - search
 ```
 Lower, upper, title case support `uni::locale`<br>
 Case folding is always locale-independent and<br>
@@ -112,15 +112,15 @@ uni::views::take      - similar to std::views::take
 
 **`uni_algo/norm.h`** - normalization functions and ranges (requeries src/data.cpp)
 ```
-uni::norm::utf8_nfc - normalize a string to NFC normalization form
-uni::norm::utf8_nfd
-uni::norm::utf8_nfkc
-uni::norm::utf8_nfkd
-uni::norm::utf8_is_nfc - check if a string in NFC normalization form
-uni::norm::utf8_is_nfd
-uni::norm::utf8_is_nfkc
-uni::norm::utf8_is_nfkd
-uni::norm::utf8_unaccent - remove all accents and normalize a string to NFC
+uni::norm::to_nfc_utf8 - normalize a string to NFC normalization form
+uni::norm::to_nfd_utf8
+uni::norm::to_nfkc_utf8
+uni::norm::to_nfkd_utf8
+uni::norm::is_nfc_utf8 - check if a string in NFC normalization form
+uni::norm::is_nfd_utf8
+uni::norm::is_nfkc_utf8
+uni::norm::is_nfkd_utf8
+uni::norm::to_unaccent_utf8 - remove all accents and normalize a string to NFC
 
 uni::views::norm::nfc - requires char32_t range produces char32_t range
 uni::views::norm::nfd
