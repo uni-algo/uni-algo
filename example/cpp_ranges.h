@@ -51,10 +51,10 @@ std::string rejoin_words2(std::string_view str)
         if (it != view.begin()) // if not the first word
             utf8_result.append(utf8_new_delimiter);
 
-        if (uni::norm::utf8_is_nfc(*it))
+        if (uni::norm::is_nfc_utf8(*it))
             utf8_result.append(*it);
         else // normalize only if not in NFC form
-            utf8_result.append(uni::norm::utf8_nfc(*it));
+            utf8_result.append(uni::norm::to_nfc_utf8(*it));
     }
 
     return  utf8_result;

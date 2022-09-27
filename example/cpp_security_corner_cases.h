@@ -20,18 +20,18 @@
 //
 // Let's use "\x80" and "\x81" ill-formed UTF-8 sequences in this example:
 
-assert(uni::casesens::utf8compare("\x80", "\x81") == 0);
+assert(uni::casesens::compare_utf8("\x80", "\x81") == 0);
 // Note that they are equal because we actually compare two U+FFFD code points
 // and the result is not the same as a binary comparison
 // even though we use case-sensitive comparison.
 
 // All functions in the library are consistent in this case and produce the same result.
 // For example it is guaranteed that these 2 variants are equivalent.
-assert(uni::casesens::utf8compare("\x80", "\x81") == 0);
+assert(uni::casesens::compare_utf8("\x80", "\x81") == 0);
 assert(uni::utf8to16u("\x80") == uni::utf8to16u("\x81"));
 
 // The same with these 2 etc.
-assert(uni::casesens::utf8search("ABC\x80", "\x81").pos() == 3);
+assert(uni::casesens::search_utf8("ABC\x80", "\x81").pos() == 3);
 assert(uni::utf8to16u("ABC\x80").find(uni::utf8to16u("\x81")) == 3);
 
 // Note that this is not a feature of this particular library this is how Unicode works,
@@ -63,7 +63,7 @@ str[2] = 0xFF + 1 + 'C';
 
 // It is guaranteed that the library will follow the same overflow rules always
 // so all functions produce the same result when CHAR_BIT == 8 and CHAR_BIT > 8
-assert(uni::casesens::utf8compare(str, "ABC") == 0);
+assert(uni::casesens::compare_utf8(str, "ABC") == 0);
 assert(uni::utf8to16u(str) == uni::utf8to16u("ABC"));
 
 // Note that the string that wasn't "ABC" is "ABC" now.

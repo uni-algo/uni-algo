@@ -45,39 +45,39 @@ UNI_CHAR16* uni_utf32to16(const UNI_CHAR32* str);
 
 #ifndef UNI_ALGO_DISABLE_CASE
 
-char* uni_utf8_case_lower(const char* str);
-char* uni_utf8_case_upper(const char* str);
-char* uni_utf8_case_fold(const char* str);
+char* uni_to_lowercase_utf8(const char* str);
+char* uni_to_uppercase_utf8(const char* str);
+char* uni_to_casefold_utf8(const char* str);
 
 #ifndef UNI_ALGO_DISABLE_UTF16
-UNI_CHAR16* uni_utf16_case_lower(const UNI_CHAR16* str);
-UNI_CHAR16* uni_utf16_case_upper(const UNI_CHAR16* str);
-UNI_CHAR16* uni_utf16_case_fold(const UNI_CHAR16* str);
+UNI_CHAR16* uni_to_lowercase_utf16(const UNI_CHAR16* str);
+UNI_CHAR16* uni_to_uppercase_utf16(const UNI_CHAR16* str);
+UNI_CHAR16* uni_to_casefold_utf16(const UNI_CHAR16* str);
 #endif // UNI_ALGO_DISABLE_UTF16
 
-int uni_utf8_casesens_compare(const char* str1, const char* str2);
-int uni_utf8_caseless_compare(const char* str1, const char* str2);
+int uni_casesens_compare_utf8(const char* str1, const char* str2);
+int uni_caseless_compare_utf8(const char* str1, const char* str2);
 
 #ifndef UNI_ALGO_DISABLE_COLLATION
-int uni_utf8_casesens_collate(const char* str1, const char* str2);
-int uni_utf8_caseless_collate(const char* str1, const char* str2);
+int uni_casesens_collate_utf8(const char* str1, const char* str2);
+int uni_caseless_collate_utf8(const char* str1, const char* str2);
 #endif // UNI_ALGO_DISABLE_COLLATION
 
-size_t uni_utf8_casesens_search(const char* str1, const char* str2, size_t* pos, size_t* end);
-size_t uni_utf8_caseless_search(const char* str1, const char* str2, size_t* pos, size_t* end);
+size_t uni_casesens_search_utf8(const char* str1, const char* str2, size_t* pos, size_t* end);
+size_t uni_caseless_search_utf8(const char* str1, const char* str2, size_t* pos, size_t* end);
 
 #ifndef UNI_ALGO_DISABLE_UTF16
 
-int uni_utf16_casesens_compare(const UNI_CHAR16* str1, const UNI_CHAR16* str2);
-int uni_utf16_caseless_compare(const UNI_CHAR16* str1, const UNI_CHAR16* str2);
+int uni_casesens_compare_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2);
+int uni_caseless_compare_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2);
 
 #ifndef UNI_ALGO_DISABLE_COLLATION
-int uni_utf16_casesens_collate(const UNI_CHAR16* str1, const UNI_CHAR16* str2);
-int uni_utf16_caseless_collate(const UNI_CHAR16* str1, const UNI_CHAR16* str2);
+int uni_casesens_collate_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2);
+int uni_caseless_collate_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2);
 #endif // UNI_ALGO_DISABLE_COLLATION
 
-size_t uni_utf16_casesens_search(const UNI_CHAR16* str1, const UNI_CHAR16* str2, size_t* pos, size_t* end);
-size_t uni_utf16_caseless_search(const UNI_CHAR16* str1, const UNI_CHAR16* str2, size_t* pos, size_t* end);
+size_t uni_casesens_search_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2, size_t* pos, size_t* end);
+size_t uni_caseless_search_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2, size_t* pos, size_t* end);
 
 #endif // UNI_ALGO_DISABLE_UTF16
 
@@ -88,42 +88,42 @@ extern const size_t uni_npos;
 
 #ifndef UNI_ALGO_DISABLE_NORM
 
-char* uni_utf8_norm_nfc(const char* str);
-char* uni_utf8_norm_nfd(const char* str);
+char* uni_norm_to_nfc_utf8(const char* str);
+char* uni_norm_to_nfd_utf8(const char* str);
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-char* uni_utf8_norm_nfkc(const char* str);
-char* uni_utf8_norm_nfkd(const char* str);
+char* uni_norm_to_nfkc_utf8(const char* str);
+char* uni_norm_to_nfkd_utf8(const char* str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #ifndef UNI_ALGO_DISABLE_UTF16
 
-UNI_CHAR16* uni_utf16_norm_nfc(const UNI_CHAR16* str);
-UNI_CHAR16* uni_utf16_norm_nfd(const UNI_CHAR16* str);
+UNI_CHAR16* uni_norm_to_nfc_utf16(const UNI_CHAR16* str);
+UNI_CHAR16* uni_norm_to_nfd_utf16(const UNI_CHAR16* str);
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-UNI_CHAR16* uni_utf16_norm_nfkc(const UNI_CHAR16* str);
-UNI_CHAR16* uni_utf16_norm_nfkd(const UNI_CHAR16* str);
+UNI_CHAR16* uni_norm_to_nfkc_utf16(const UNI_CHAR16* str);
+UNI_CHAR16* uni_norm_to_nfkd_utf16(const UNI_CHAR16* str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #endif // UNI_ALGO_DISABLE_UTF16
 
-bool uni_utf8_norm_is_nfc(const char* str);
-bool uni_utf8_norm_is_nfd(const char* str);
+bool uni_norm_is_nfc_utf8(const char* str);
+bool uni_norm_is_nfd_utf8(const char* str);
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-bool uni_utf8_norm_is_nfkc(const char* str);
-bool uni_utf8_norm_is_nfkd(const char* str);
+bool uni_norm_is_nfkc_utf8(const char* str);
+bool uni_norm_is_nfkd_utf8(const char* str);
 #endif
 
 #ifndef UNI_ALGO_DISABLE_UTF16
 
-bool uni_utf16_norm_is_nfc(const UNI_CHAR16* str);
-bool uni_utf16_norm_is_nfd(const UNI_CHAR16* str);
+bool uni_norm_is_nfc_utf16(const UNI_CHAR16* str);
+bool uni_norm_is_nfd_utf16(const UNI_CHAR16* str);
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-bool uni_utf16_norm_is_nfkc(const UNI_CHAR16* str);
-bool uni_utf16_norm_is_nfkd(const UNI_CHAR16* str);
+bool uni_norm_is_nfkc_utf16(const UNI_CHAR16* str);
+bool uni_norm_is_nfkd_utf16(const UNI_CHAR16* str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #endif // UNI_ALGO_DISABLE_UTF16
