@@ -50,8 +50,8 @@ public:
         // Use char32_t for value because that is what low-level uses
         char32_t value = 0;
         constexpr explicit language(char32_t v) : value{v} {}
-        constexpr void from_value(char32_t v) { value = v; }
-        constexpr char32_t to_value() const { return value; }
+        constexpr void set_value(char32_t v) { value = v; }
+        constexpr char32_t get_value() const { return value; }
     public:
         constexpr language() = default;
         template <std::size_t N>
@@ -85,8 +85,8 @@ public:
     private:
         char32_t value = 0;
         constexpr explicit region(char32_t v) : value{v} {}
-        constexpr void from_value(char32_t v) { value = v; }
-        constexpr char32_t to_value() const { return value; }
+        constexpr void set_value(char32_t v) { value = v; }
+        constexpr char32_t get_value() const { return value; }
     public:
         constexpr region() = default;
         template <std::size_t N>
@@ -117,8 +117,8 @@ public:
     private:
         char32_t value = 0;
         constexpr explicit script(char32_t v) : value{v} {}
-        constexpr void from_value(char32_t v) { value = v; }
-        constexpr char32_t to_value() const { return value; }
+        constexpr void set_value(char32_t v) { value = v; }
+        constexpr char32_t get_value() const { return value; }
     public:
         constexpr script() = default;
         template <std::size_t N>
@@ -159,9 +159,9 @@ public:
     constexpr region get_region() const { return regn; }
     constexpr bool is_empty() const
     {
-        return lang.to_value() == 0 &&
-               scpt.to_value() == 0 &&
-               regn.to_value() == 0;
+        return lang.get_value() == 0 &&
+               scpt.get_value() == 0 &&
+               regn.get_value() == 0;
     }
 #ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
     static locale system() { return detail::locale_system(); }
@@ -173,14 +173,14 @@ public:
 #ifdef UNI_ALGO_EXPERIMENTAL
     constexpr void normalize()
     {
-        lang.from_value(detail::impl_locale_norm_language(lang.to_value(), 0));
-        if (lang.to_value() == 0)
+        lang.set_value(detail::impl_locale_norm_language(lang.get_value(), 0));
+        if (lang.get_value() == 0)
         {
-            scpt.from_value(0);
-            regn.from_value(0);
+            scpt.set_value(0);
+            regn.set_value(0);
         }
-        scpt.from_value(detail::impl_locale_norm_script(scpt.to_value(), 0));
-        regn.from_value(detail::impl_locale_norm_region(regn.to_value(), 0));
+        scpt.set_value(detail::impl_locale_norm_script(scpt.get_value(), 0));
+        regn.set_value(detail::impl_locale_norm_region(regn.get_value(), 0));
     }
 #endif // UNI_ALGO_EXPERIMENTAL
     uaiw_constexpr std::string to_string() const
@@ -190,16 +190,16 @@ public:
 
         std::size_t size = 0;
 
-        size += detail::impl_locate_to_tag(lang.to_value(), result.begin() + static_cast<std::ptrdiff_t>(size));
-        if (/*size && */scpt.to_value())
+        size += detail::impl_locate_to_tag(lang.get_value(), result.begin() + static_cast<std::ptrdiff_t>(size));
+        if (/*size && */scpt.get_value())
         {
             /*if (size) */result[size++] = '-';
-            size += detail::impl_locate_to_tag(scpt.to_value(), result.begin() + static_cast<std::ptrdiff_t>(size));
+            size += detail::impl_locate_to_tag(scpt.get_value(), result.begin() + static_cast<std::ptrdiff_t>(size));
         }
-        if (/*size && */regn.to_value())
+        if (/*size && */regn.get_value())
         {
             /*if (size) */result[size++] = '-';
-            size += detail::impl_locate_to_tag(regn.to_value(), result.begin() + static_cast<std::ptrdiff_t>(size));
+            size += detail::impl_locate_to_tag(regn.get_value(), result.begin() + static_cast<std::ptrdiff_t>(size));
         }
 
         result.resize(size);
@@ -241,20 +241,20 @@ private:
                 {
                     has_lang = true;
                     if (size == 2 || size == 3)
-                        lang.from_value(detail::impl_locale_from_language(s.substr(prev, size), size, 0));
+                        lang.set_value(detail::impl_locale_from_language(s.substr(prev, size), size, 0));
                     else
                         break;
                 }
                 else if (!has_scpt && size == 4)
                 {
                     has_scpt = true;
-                    scpt.from_value(detail::impl_locale_from_script(s.substr(prev, size), size, 0));
+                    scpt.set_value(detail::impl_locale_from_script(s.substr(prev, size), size, 0));
                 }
                 else if (!has_regn)
                 {
                     has_regn = true;
                     if (size == 2 || size == 3)
-                        regn.from_value(detail::impl_locale_from_region(s.substr(prev, size), size, 0));
+                        regn.set_value(detail::impl_locale_from_region(s.substr(prev, size), size, 0));
                     break;
                 }
 
