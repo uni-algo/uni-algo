@@ -4,6 +4,7 @@ See commit history between tags for details.
 
 ## v0.5.0 (TBD)
 - Renamed files from cpp_uni_* to uni_algo/*
+- Renamed most functions, utf8/utf16 now at the end of a function
 - Added better locale support
 - Added word properties
 - Added reverse grapheme/word algorithms
