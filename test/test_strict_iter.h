@@ -19,7 +19,7 @@ std::u16string test_iter_utf8to16strict(std::string_view str, uni::error& error)
             return std::u16string{};
         }
 
-        uni::detail::impl_utf16_output(*it, output);
+        uni::detail::impl_output_utf16(*it, output);
     }
     return result;
 }
@@ -41,7 +41,7 @@ std::string test_iter_utf16to8strict(std::u16string_view str, uni::error& error)
             return std::string{};
         }
 
-        uni::detail::impl_utf8_output(*it, output);
+        uni::detail::impl_output_utf8(*it, output);
     }
 
     return result;

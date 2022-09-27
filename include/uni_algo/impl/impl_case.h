@@ -206,9 +206,9 @@ uaix_static bool utf8_final_sigma(it_in_utf8 from, it_end_utf8 to, bool reverse)
     while (s != to)
     {
         if (reverse)
-            s = utf8_iter_rev(to, s, &c, iter_replacement);
+            s = iter_rev_utf8(to, s, &c, iter_replacement);
         else
-            s = utf8_iter(s, to, &c, iter_replacement);
+            s = iter_utf8(s, to, &c, iter_replacement);
 
         type_codept prop = stages_case_prop(c);
 
@@ -231,9 +231,9 @@ uaix_static bool utf16_final_sigma(it_in_utf16 from, it_end_utf16 to, bool rever
     while (s != to)
     {
         if (reverse)
-            s = utf16_iter_rev(to, s, &c, iter_replacement);
+            s = iter_rev_utf16(to, s, &c, iter_replacement);
         else
-            s = utf16_iter(s, to, &c, iter_replacement);
+            s = iter_utf16(s, to, &c, iter_replacement);
 
         type_codept prop = stages_case_prop(c);
 
@@ -282,7 +282,7 @@ uaix_static size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             it_in_utf8 prev = src;
 #endif
-            src = utf8_iter(src, last, &c, iter_replacement);
+            src = iter_utf8(src, last, &c, iter_replacement);
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (c == 0x0130) // Handled in place (checked in generator)
@@ -312,7 +312,7 @@ uaix_static size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_
     {
         while (src != last)
         {
-            src = utf8_iter(src, last, &c, iter_replacement);
+            src = iter_utf8(src, last, &c, iter_replacement);
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_upper_check(c))
@@ -337,7 +337,7 @@ uaix_static size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_
     {
         while (src != last)
         {
-            src = utf8_iter(src, last, &c, iter_replacement);
+            src = iter_utf8(src, last, &c, iter_replacement);
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_fold_check(c))
@@ -385,7 +385,7 @@ uaix_static size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_o
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             it_in_utf16 prev = src;
 #endif
-            src = utf16_iter(src, last, &c, iter_replacement);
+            src = iter_utf16(src, last, &c, iter_replacement);
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (c == 0x0130) // Handled in place (checked in generator)
@@ -413,7 +413,7 @@ uaix_static size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_o
     {
         while (src != last)
         {
-            src = utf16_iter(src, last, &c, iter_replacement);
+            src = iter_utf16(src, last, &c, iter_replacement);
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_upper_check(c))
@@ -438,7 +438,7 @@ uaix_static size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_o
     {
         while (src != last)
         {
-            src = utf16_iter(src, last, &c, iter_replacement);
+            src = iter_utf16(src, last, &c, iter_replacement);
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_fold_check(c))
@@ -473,14 +473,14 @@ uaix_static size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_o
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf8 utf8_iter_fold(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint,
+uaix_static it_in_utf8 iter_fold_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint,
                                       size_t* count, size_t* number, type_codept special[3])
 {
     it_in_utf8 src = first;
 
     if (*count == 0)
     {
-        src = utf8_iter(first, last, codepoint, iter_replacement);
+        src = iter_utf8(first, last, codepoint, iter_replacement);
 
         if (stages_special_fold_check(*codepoint))
         {
@@ -498,14 +498,14 @@ uaix_static it_in_utf8 utf8_iter_fold(it_in_utf8 first, it_end_utf8 last, type_c
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf16 utf16_iter_fold(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint,
+uaix_static it_in_utf16 iter_fold_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint,
                                         size_t* count, size_t* number, type_codept special[3])
 {
     it_in_utf16 src = first;
 
     if (*count == 0)
     {
-        src = utf16_iter(first, last, codepoint, iter_replacement);
+        src = iter_utf16(first, last, codepoint, iter_replacement);
 
         if (stages_special_fold_check(*codepoint))
         {
@@ -561,8 +561,8 @@ uaix_static int impl_utf8_compare(it_in_utf8 first1, it_end_utf8 last1,
     {
         while (src1 != last1 && src2 != last2)
         {
-            src1 = utf8_iter(src1, last1, &c1, iter_replacement);
-            src2 = utf8_iter(src2, last2, &c2, iter_replacement);
+            src1 = iter_utf8(src1, last1, &c1, iter_replacement);
+            src2 = iter_utf8(src2, last2, &c2, iter_replacement);
 
             if (c1 != c2)
                 return (c1 < c2) ? -1 : 1;
@@ -573,13 +573,13 @@ uaix_static int impl_utf8_compare(it_in_utf8 first1, it_end_utf8 last1,
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     while ((src1 != last1 || count1) && (src2 != last2 || count2))
     {
-        src1 = utf8_iter_fold(src1, last1, &c1, &count1, &number1, special1);
-        src2 = utf8_iter_fold(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf8(src1, last1, &c1, &count1, &number1, special1);
+        src2 = iter_fold_utf8(src2, last2, &c2, &count2, &number2, special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
-        src1 = utf8_iter(src1, last1, &c1, iter_replacement);
-        src2 = utf8_iter(src2, last2, &c2, iter_replacement);
+        src1 = iter_utf8(src1, last1, &c1, iter_replacement);
+        src2 = iter_utf8(src2, last2, &c2, iter_replacement);
 #endif
         if (c1 == c2) // Optimization
             continue;
@@ -638,8 +638,8 @@ uaix_static int impl_utf16_compare(it_in_utf16 first1, it_end_utf16 last1,
     {
         while (src1 != last1 && src2 != last2)
         {
-            src1 = utf16_iter(src1, last1, &c1, iter_replacement);
-            src2 = utf16_iter(src2, last2, &c2, iter_replacement);
+            src1 = iter_utf16(src1, last1, &c1, iter_replacement);
+            src2 = iter_utf16(src2, last2, &c2, iter_replacement);
 
             if (c1 != c2)
                 return (c1 < c2) ? -1 : 1;
@@ -650,13 +650,13 @@ uaix_static int impl_utf16_compare(it_in_utf16 first1, it_end_utf16 last1,
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     while ((src1 != last1 || count1) && (src2 != last2 || count2))
     {
-        src1 = utf16_iter_fold(src1, last1, &c1, &count1, &number1, special1);
-        src2 = utf16_iter_fold(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf16(src1, last1, &c1, &count1, &number1, special1);
+        src2 = iter_fold_utf16(src2, last2, &c2, &count2, &number2, special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
-        src1 = utf16_iter(src1, last1, &c1, iter_replacement);
-        src2 = utf16_iter(src2, last2, &c2, iter_replacement);
+        src1 = iter_utf16(src1, last1, &c1, iter_replacement);
+        src2 = iter_utf16(src2, last2, &c2, iter_replacement);
 #endif
         if (c1 == c2) // Optimization
             continue;
@@ -717,8 +717,8 @@ uaix_static int impl_utf8_collate(it_in_utf8 first1, it_end_utf8 last1,
     {
         while (src1 != last1 && src2 != last2)
         {
-            src1 = utf8_iter(src1, last1, &c1, iter_replacement);
-            src2 = utf8_iter(src2, last2, &c2, iter_replacement);
+            src1 = iter_utf8(src1, last1, &c1, iter_replacement);
+            src2 = iter_utf8(src2, last2, &c2, iter_replacement);
 
             if (c1 == c2) // Optimization
                 continue;
@@ -735,13 +735,13 @@ uaix_static int impl_utf8_collate(it_in_utf8 first1, it_end_utf8 last1,
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     while ((src1 != last1 || count1) && (src2 != last2 || count2))
     {
-        src1 = utf8_iter_fold(src1, last1, &c1, &count1, &number1, special1);
-        src2 = utf8_iter_fold(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf8(src1, last1, &c1, &count1, &number1, special1);
+        src2 = iter_fold_utf8(src2, last2, &c2, &count2, &number2, special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
-        src1 = utf8_iter(src1, last1, &c1, iter_replacement);
-        src2 = utf8_iter(src2, last2, &c2, iter_replacement);
+        src1 = iter_utf8(src1, last1, &c1, iter_replacement);
+        src2 = iter_utf8(src2, last2, &c2, iter_replacement);
 #endif
         if (c1 == c2) // Optimization
             continue;
@@ -803,8 +803,8 @@ uaix_static int impl_utf16_collate(it_in_utf16 first1, it_end_utf16 last1,
     {
         while (src1 != last1 && src2 != last2)
         {
-            src1 = utf16_iter(src1, last1, &c1, iter_replacement);
-            src2 = utf16_iter(src2, last2, &c2, iter_replacement);
+            src1 = iter_utf16(src1, last1, &c1, iter_replacement);
+            src2 = iter_utf16(src2, last2, &c2, iter_replacement);
 
             if (c1 == c2) // Optimization
                 continue;
@@ -821,13 +821,13 @@ uaix_static int impl_utf16_collate(it_in_utf16 first1, it_end_utf16 last1,
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     while ((src1 != last1 || count1) && (src2 != last2 || count2))
     {
-        src1 = utf16_iter_fold(src1, last1, &c1, &count1, &number1, special1);
-        src2 = utf16_iter_fold(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf16(src1, last1, &c1, &count1, &number1, special1);
+        src2 = iter_fold_utf16(src2, last2, &c2, &count2, &number2, special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
-        src1 = utf16_iter(src1, last1, &c1, iter_replacement);
-        src2 = utf16_iter(src2, last2, &c2, iter_replacement);
+        src1 = iter_utf16(src1, last1, &c1, iter_replacement);
+        src2 = iter_utf16(src2, last2, &c2, iter_replacement);
 #endif
         if (c1 == c2) // Optimization
             continue;
@@ -878,8 +878,8 @@ uaix_static bool impl_utf8_search(it_in_utf8 first1, it_end_utf8 last1,
     {
         while (src1 != last1 && src2 != last2)
         {
-            src1 = utf8_iter(src1, last1, &c1, iter_replacement);
-            src2 = utf8_iter(src2, last2, &c2, iter_replacement);
+            src1 = iter_utf8(src1, last1, &c1, iter_replacement);
+            src2 = iter_utf8(src2, last2, &c2, iter_replacement);
 
             if (back == prev)
                 back = src1;
@@ -906,13 +906,13 @@ uaix_static bool impl_utf8_search(it_in_utf8 first1, it_end_utf8 last1,
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     while ((src1 != last1 || count1) && (src2 != last2 || count2))
     {
-        src1 = utf8_iter_fold(src1, last1, &c1, &count1, &number1, special1);
-        src2 = utf8_iter_fold(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf8(src1, last1, &c1, &count1, &number1, special1);
+        src2 = iter_fold_utf8(src2, last2, &c2, &count2, &number2, special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
-        src1 = utf8_iter(src1, last1, &c1, iter_replacement);
-        src2 = utf8_iter(src2, last2, &c2, iter_replacement);
+        src1 = iter_utf8(src1, last1, &c1, iter_replacement);
+        src2 = iter_utf8(src2, last2, &c2, iter_replacement);
 #endif
         if (back == prev)
             back = src1;
@@ -980,8 +980,8 @@ uaix_static bool impl_utf16_search(it_in_utf16 first1, it_end_utf16 last1,
     {
         while (src1 != last1 && src2 != last2)
         {
-            src1 = utf16_iter(src1, last1, &c1, iter_replacement);
-            src2 = utf16_iter(src2, last2, &c2, iter_replacement);
+            src1 = iter_utf16(src1, last1, &c1, iter_replacement);
+            src2 = iter_utf16(src2, last2, &c2, iter_replacement);
 
             if (back == prev)
                 back = src1;
@@ -1008,13 +1008,13 @@ uaix_static bool impl_utf16_search(it_in_utf16 first1, it_end_utf16 last1,
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     while ((src1 != last1 || count1) && (src2 != last2 || count2))
     {
-        src1 = utf16_iter_fold(src1, last1, &c1, &count1, &number1, special1);
-        src2 = utf16_iter_fold(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf16(src1, last1, &c1, &count1, &number1, special1);
+        src2 = iter_fold_utf16(src2, last2, &c2, &count2, &number2, special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
-        src1 = utf16_iter(src1, last1, &c1, iter_replacement);
-        src2 = utf16_iter(src2, last2, &c2, iter_replacement);
+        src1 = iter_utf16(src1, last1, &c1, iter_replacement);
+        src2 = iter_utf16(src2, last2, &c2, iter_replacement);
 #endif
         if (back == prev)
             back = src1;
@@ -1099,16 +1099,16 @@ uaix_static bool impl_utf8_like(it_in_utf8 first1, it_end_utf8 last1,
         if (skip1)
             skip1 = false;
         else
-            src1 = utf8_iter_fold(src1, last1, &c1, &count1, &number1, special1);
-        src2 = utf8_iter_fold(src2, last2, &c2, &count2, &number2, special2);
+            src1 = iter_fold_utf8(src1, last1, &c1, &count1, &number1, special1);
+        src2 = iter_fold_utf8(src2, last2, &c2, &count2, &number2, special2);
 #else
     while ((src1 != last1 || skip1) && src2 != last2)
     {
         if (skip1)
             skip1 = false;
         else
-            src1 = utf8_iter(src1, last1, &c1, iter_replacement);
-        src2 = utf8_iter(src2, last2, &c2, iter_replacement);
+            src1 = iter_utf8(src1, last1, &c1, iter_replacement);
+        src2 = iter_utf8(src2, last2, &c2, iter_replacement);
 #endif
 
         if (back1 == prev1)
@@ -1219,7 +1219,7 @@ uaix_static size_t utf8_title(it_in_utf8 first, it_end_utf8 last, it_out_utf8 re
     while (src != last)
     {
         it_in_utf8 prev = src;
-        src = utf8_iter(src, last, &c, iter_replacement);
+        src = iter_utf8(src, last, &c, iter_replacement);
 
         if (!found_break)
         {
@@ -1319,7 +1319,7 @@ uaix_static size_t utf16_title(it_in_utf16 first, it_end_utf16 last, it_out_utf1
     while (src != last)
     {
         it_in_utf16 prev = src;
-        src = utf16_iter(src, last, &c, iter_replacement);
+        src = iter_utf16(src, last, &c, iter_replacement);
 
         if (!found_break)
         {
@@ -1451,7 +1451,7 @@ uaix_static size_t impl_utf8_sortkey(it_in_utf8 first, it_end_utf8 last, it_out_
     {
         while (src != last)
         {
-            src = utf8_iter(src, last, &c, iter_replacement);
+            src = iter_utf8(src, last, &c, iter_replacement);
 
             c = stages_order(c);
 
@@ -1464,11 +1464,11 @@ uaix_static size_t impl_utf8_sortkey(it_in_utf8 first, it_end_utf8 last, it_out_
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     while (src != last || count)
     {
-        src = utf8_iter_fold(src, last, &c, &count, &number, special);
+        src = iter_fold_utf8(src, last, &c, &count, &number, special);
 #else
     while (src != last)
     {
-        src = utf8_iter(src, last, &c, iter_replacement);
+        src = iter_utf8(src, last, &c, iter_replacement);
 #endif
         c = stages_fold(c);
         c = stages_order(c);
@@ -1500,7 +1500,7 @@ uaix_static size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_o
     {
         while (src != last)
         {
-            src = utf16_iter(src, last, &c, iter_replacement);
+            src = iter_utf16(src, last, &c, iter_replacement);
 
             c = stages_order(c);
 
@@ -1513,11 +1513,11 @@ uaix_static size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_o
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     while (src != last || count)
     {
-        src = utf16_iter_fold(src, last, &c, &count, &number, special);
+        src = iter_fold_utf16(src, last, &c, &count, &number, special);
 #else
     while (src != last)
     {
-        src = utf16_iter(src, last, &c, iter_replacement);
+        src = iter_utf16(src, last, &c, iter_replacement);
 #endif
         c = stages_fold(c);
         c = stages_order(c);

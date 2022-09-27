@@ -40,7 +40,7 @@ uaix_static bool utf8_after_soft_dotted(it_in_utf8 first, it_in_utf8 src)
 
     while (s != first)
     {
-        s = utf8_iter_rev(first, s, &c, iter_replacement);
+        s = iter_rev_utf8(first, s, &c, iter_replacement);
 
         type_codept prop = stages_case_prop(c);
 
@@ -71,7 +71,7 @@ uaix_static bool utf8_more_above(it_in_utf8 src, it_end_utf8 last)
 
     while (s != last)
     {
-        s = utf8_iter(s, last, &c, iter_replacement);
+        s = iter_utf8(s, last, &c, iter_replacement);
 
         type_codept prop = stages_case_prop(c);
 
@@ -101,7 +101,7 @@ uaix_static bool utf8_before_dot(it_in_utf8 src, it_end_utf8 last)
 
     while (s != last)
     {
-        s = utf8_iter(s, last, &c, iter_replacement);
+        s = iter_utf8(s, last, &c, iter_replacement);
 
         if (c == 0x0307)
             return true;
@@ -131,7 +131,7 @@ uaix_static bool utf8_after_i(it_in_utf8 first, it_in_utf8 src)
 
     while (s != first)
     {
-        s = utf8_iter_rev(first, s, &c, iter_replacement);
+        s = iter_rev_utf8(first, s, &c, iter_replacement);
 
         if (c == 0x0049) // I
             return true;
@@ -158,7 +158,7 @@ uaix_static bool utf16_after_soft_dotted(it_in_utf16 first, it_in_utf16 src)
 
     while (s != first)
     {
-        s = utf16_iter_rev(first, s, &c, iter_replacement);
+        s = iter_rev_utf16(first, s, &c, iter_replacement);
 
         type_codept prop = stages_case_prop(c);
 
@@ -181,7 +181,7 @@ uaix_static bool utf16_more_above(it_in_utf16 src, it_end_utf16 last)
 
     while (s != last)
     {
-        s = utf16_iter(s, last, &c, iter_replacement);
+        s = iter_utf16(s, last, &c, iter_replacement);
 
         type_codept prop = stages_case_prop(c);
 
@@ -204,7 +204,7 @@ uaix_static bool utf16_before_dot(it_in_utf16 src, it_end_utf16 last)
 
     while (s != last)
     {
-        s = utf16_iter(s, last, &c, iter_replacement);
+        s = iter_utf16(s, last, &c, iter_replacement);
 
         if (c == 0x0307)
             return true;
@@ -228,7 +228,7 @@ uaix_static bool utf16_after_i(it_in_utf16 first, it_in_utf16 src)
 
     while (s != first)
     {
-        s = utf16_iter_rev(first, s, &c, iter_replacement);
+        s = iter_rev_utf16(first, s, &c, iter_replacement);
 
         if (c == 0x0049) // I
             return true;
@@ -1139,7 +1139,7 @@ uaix_static size_t utf8_upper_el(it_in_utf8 first, it_end_utf8 last, it_out_utf8
     {
         it_in_utf8 prev = src;
 
-        src = utf8_iter(src, last, &c, iter_replacement);
+        src = iter_utf8(src, last, &c, iter_replacement);
 
         type_codept upper = case_greek_upper(c, &prev_vowel_with_accent, &maybe_eta_with_tonos);
         if (upper)
@@ -1195,7 +1195,7 @@ uaix_static size_t utf16_upper_el(it_in_utf16 first, it_end_utf16 last, it_out_u
     {
         it_in_utf16 prev = src;
 
-        src = utf16_iter(src, last, &c, iter_replacement);
+        src = iter_utf16(src, last, &c, iter_replacement);
 
         type_codept upper = case_greek_upper(c, &after_vowel_with_accent, &maybe_eta_with_tonos);
         if (upper)
@@ -1259,7 +1259,7 @@ uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_
     while (src != last)
     {
         it_in_utf8 prev = src;
-        src = utf8_iter(src, last, &c, iter_replacement);
+        src = iter_utf8(src, last, &c, iter_replacement);
 
         if (!found_break)
         {
@@ -1404,7 +1404,7 @@ uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last, it_o
     while (src != last)
     {
         it_in_utf16 prev = src;
-        src = utf16_iter(src, last, &c, iter_replacement);
+        src = iter_utf16(src, last, &c, iter_replacement);
 
         if (!found_break)
         {
@@ -1543,7 +1543,7 @@ uaix_static size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last, 
             {
                 it_in_utf8 prev = src;
 
-                src = utf8_iter(src, last, &c, iter_replacement);
+                src = iter_utf8(src, last, &c, iter_replacement);
 
                 dst = utf8_locale_lower_lt(c, dst, src, last, first, prev);
             }
@@ -1556,7 +1556,7 @@ uaix_static size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last, 
             {
                 it_in_utf8 prev = src;
 
-                src = utf8_iter(src, last, &c, iter_replacement);
+                src = iter_utf8(src, last, &c, iter_replacement);
 
                 dst = utf8_locale_upper_lt(c, dst, first, prev);
             }
@@ -1576,7 +1576,7 @@ uaix_static size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last, 
             {
                 it_in_utf8 prev = src;
 
-                src = utf8_iter(src, last, &c, iter_replacement);
+                src = iter_utf8(src, last, &c, iter_replacement);
 
                 dst = utf8_locale_lower_tr_az(c, dst, src, last, first, prev);
             }
@@ -1587,7 +1587,7 @@ uaix_static size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last, 
         {
             while (src != last)
             {
-                src = utf8_iter(src, last, &c, iter_replacement);
+                src = iter_utf8(src, last, &c, iter_replacement);
 
                 dst = utf8_locale_upper_tr_az(c, dst);
             }
@@ -1632,7 +1632,7 @@ uaix_static size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 las
             {
                 it_in_utf16 prev = src;
 
-                src = utf16_iter(src, last, &c, iter_replacement);
+                src = iter_utf16(src, last, &c, iter_replacement);
 
                 dst = utf16_locale_lower_lt(c, dst, src, last, first, prev);
             }
@@ -1645,7 +1645,7 @@ uaix_static size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 las
             {
                 it_in_utf16 prev = src;
 
-                src = utf16_iter(src, last, &c, iter_replacement);
+                src = iter_utf16(src, last, &c, iter_replacement);
 
                 dst = utf16_locale_upper_lt(c, dst, first, prev);
             }
@@ -1665,7 +1665,7 @@ uaix_static size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 las
             {
                 it_in_utf16 prev = src;
 
-                src = utf16_iter(src, last, &c, iter_replacement);
+                src = iter_utf16(src, last, &c, iter_replacement);
 
                 dst = utf16_locale_lower_tr_az(c, dst, src, last, first, prev);
             }
@@ -1676,7 +1676,7 @@ uaix_static size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 las
         {
             while (src != last)
             {
-                src = utf16_iter(src, last, &c, iter_replacement);
+                src = iter_utf16(src, last, &c, iter_replacement);
 
                 dst = utf16_locale_upper_tr_az(c, dst);
             }

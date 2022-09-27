@@ -918,7 +918,7 @@ uaix_static size_t impl_utf8_nfc(it_in_utf8 first, it_end_utf8 last, it_out_utf8
     {
         while (src != last)
         {
-            src = utf8_iter(src, last, &c, iter_replacement);
+            src = iter_utf8(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfc(c, &count_ns)))
             {
                 if (uaix_likely(size == 1))
@@ -977,7 +977,7 @@ uaix_static size_t impl_utf8_nfd(it_in_utf8 first, it_end_utf8 last, it_out_utf8
     {
         while (src != last)
         {
-            src = utf8_iter(src, last, &c, iter_replacement);
+            src = iter_utf8(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfd(c, &count_ns)))
             {
                 if (uaix_likely(size == 1))
@@ -1034,7 +1034,7 @@ uaix_static size_t impl_utf8_nfkc(it_in_utf8 first, it_end_utf8 last, it_out_utf
     {
         while (src != last)
         {
-            src = utf8_iter(src, last, &c, iter_replacement);
+            src = iter_utf8(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfkc(c, &count_ns)))
             {
                 if (uaix_likely(size == 1))
@@ -1093,7 +1093,7 @@ uaix_static size_t impl_utf8_nfkd(it_in_utf8 first, it_end_utf8 last, it_out_utf
     {
         while (src != last)
         {
-            src = utf8_iter(src, last, &c, iter_replacement);
+            src = iter_utf8(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfkd(c, &count_ns)))
             {
                 if (uaix_likely(size == 1))
@@ -1152,7 +1152,7 @@ uaix_static size_t impl_utf8_unaccent(it_in_utf8 first, it_end_utf8 last, it_out
     {
         while (src != last)
         {
-            src = utf8_iter(src, last, &c, iter_replacement);
+            src = iter_utf8(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfd(c, &count_ns)))
             {
                 if (uaix_likely(size == 1))
@@ -1205,7 +1205,7 @@ uaix_static int impl_utf8_is_nfc(it_in_utf8 first, it_end_utf8 last)
 
     while (src != last)
     {
-        src = utf8_iter(src, last, &c, iter_error);
+        src = iter_utf8(src, last, &c, iter_error);
         if (c == iter_error)
             return impl_norm_is_ill_formed;
         if (!stages_qc_yes_is_nfc(c, &last_ccc))
@@ -1226,7 +1226,7 @@ uaix_static int impl_utf8_is_nfd(it_in_utf8 first, it_end_utf8 last)
 
     while (src != last)
     {
-        src = utf8_iter(src, last, &c, iter_error);
+        src = iter_utf8(src, last, &c, iter_error);
         if (c == iter_error)
             return impl_norm_is_ill_formed;
         if (!stages_qc_yes_is_nfd(c, &last_ccc))
@@ -1249,7 +1249,7 @@ uaix_static int impl_utf8_is_nfkc(it_in_utf8 first, it_end_utf8 last)
 
     while (src != last)
     {
-        src = utf8_iter(src, last, &c, iter_error);
+        src = iter_utf8(src, last, &c, iter_error);
         if (c == iter_error)
             return impl_norm_is_ill_formed;
         if (!stages_qc_yes_is_nfkc(c, &last_ccc))
@@ -1270,7 +1270,7 @@ uaix_static int impl_utf8_is_nfkd(it_in_utf8 first, it_end_utf8 last)
 
     while (src != last)
     {
-        src = utf8_iter(src, last, &c, iter_error);
+        src = iter_utf8(src, last, &c, iter_error);
         if (c == iter_error)
             return impl_norm_is_ill_formed;
         if (!stages_qc_yes_is_nfkd(c, &last_ccc))
@@ -1302,7 +1302,7 @@ uaix_static size_t impl_utf16_nfc(it_in_utf16 first, it_end_utf16 last, it_out_u
     {
         while (uaix_likely(src != last))
         {
-            src = utf16_iter(src, last, &c, iter_replacement);
+            src = iter_utf16(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfc(c, &count_ns)))
             {
                 if (uaix_likely(size == 1))
@@ -1359,7 +1359,7 @@ uaix_static size_t impl_utf16_nfd(it_in_utf16 first, it_end_utf16 last, it_out_u
     {
         while (src != last)
         {
-            src = utf16_iter(src, last, &c, iter_replacement);
+            src = iter_utf16(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfd(c, &count_ns)))
             {
                 if (uaix_likely(size == 1))
@@ -1414,7 +1414,7 @@ uaix_static size_t impl_utf16_nfkc(it_in_utf16 first, it_end_utf16 last, it_out_
     {
         while (src != last)
         {
-            src = utf16_iter(src, last, &c, iter_replacement);
+            src = iter_utf16(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfkc(c, &count_ns)))
             {
                 if (uaix_likely(size == 1))
@@ -1471,7 +1471,7 @@ uaix_static size_t impl_utf16_nfkd(it_in_utf16 first, it_end_utf16 last, it_out_
     {
         while (src != last)
         {
-            src = utf16_iter(src, last, &c, iter_replacement);
+            src = iter_utf16(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfkd(c, &count_ns)))
             {
                 if (uaix_likely(size == 1))
@@ -1528,7 +1528,7 @@ uaix_static size_t impl_utf16_unaccent(it_in_utf16 first, it_end_utf16 last, it_
     {
         while (src != last)
         {
-            src = utf16_iter(src, last, &c, iter_replacement);
+            src = iter_utf16(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfd(c, &count_ns)))
             {
                 if (uaix_likely(size == 1))
@@ -1581,7 +1581,7 @@ uaix_static int impl_utf16_is_nfc(it_in_utf16 first, it_end_utf16 last)
 
     while (src != last)
     {
-        src = utf16_iter(src, last, &c, iter_error);
+        src = iter_utf16(src, last, &c, iter_error);
         if (c == iter_error)
             return impl_norm_is_ill_formed;
         if (!stages_qc_yes_is_nfc(c, &last_ccc))
@@ -1602,7 +1602,7 @@ uaix_static int impl_utf16_is_nfd(it_in_utf16 first, it_end_utf16 last)
 
     while (src != last)
     {
-        src = utf16_iter(src, last, &c, iter_error);
+        src = iter_utf16(src, last, &c, iter_error);
         if (c == iter_error)
             return impl_norm_is_ill_formed;
         if (!stages_qc_yes_is_nfd(c, &last_ccc))
@@ -1625,7 +1625,7 @@ uaix_static int impl_utf16_is_nfkc(it_in_utf16 first, it_end_utf16 last)
 
     while (src != last)
     {
-        src = utf16_iter(src, last, &c, iter_error);
+        src = iter_utf16(src, last, &c, iter_error);
         if (c == iter_error)
             return impl_norm_is_ill_formed;
         if (!stages_qc_yes_is_nfkc(c, &last_ccc))
@@ -1646,7 +1646,7 @@ uaix_static int impl_utf16_is_nfkd(it_in_utf16 first, it_end_utf16 last)
 
     while (src != last)
     {
-        src = utf16_iter(src, last, &c, iter_error);
+        src = iter_utf16(src, last, &c, iter_error);
         if (c == iter_error)
             return impl_norm_is_ill_formed;
         if (!stages_qc_yes_is_nfkd(c, &last_ccc))

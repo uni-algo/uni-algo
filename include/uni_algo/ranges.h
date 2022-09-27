@@ -58,7 +58,7 @@ private:
             : parent{std::addressof(p)}, it_pos{begin}, it_next{begin}
         {
             if (begin != end)
-                it_next = detail::impl_utf8_iter(it_next, end, &codepoint, Error);
+                it_next = detail::impl_iter_utf8(it_next, end, &codepoint, Error);
         }
         //uaiw_constexpr const Iter& base() const & noexcept { return it_pos; }
         //uaiw_constexpr Iter base() && { return std::move(it_pos); }
@@ -73,7 +73,7 @@ private:
             it_pos = it_next;
             if (it_pos == std::end(parent->range))
                 return *this;
-            it_next = detail::impl_utf8_iter(it_next, std::end(parent->range), &codepoint, Error);
+            it_next = detail::impl_iter_utf8(it_next, std::end(parent->range), &codepoint, Error);
             return *this;
         }
         uaiw_constexpr utf8 operator++(int)
@@ -91,7 +91,7 @@ private:
             it_next = it_pos;
             if (it_pos == std::begin(parent->range))
                 return *this;
-            it_pos = detail::impl_utf8_iter_rev(std::begin(parent->range), it_pos, &codepoint, Error);
+            it_pos = detail::impl_iter_rev_utf8(std::begin(parent->range), it_pos, &codepoint, Error);
             return *this;
         }
         template<class T = utf8> typename std::enable_if_t<is_bidirectional_or_better::value, T>
@@ -184,7 +184,7 @@ private:
             : parent{std::addressof(p)}, it_pos{begin}, it_next{begin}
         {
             if (begin != end)
-                it_next = detail::impl_utf16_iter(it_next, end, &codepoint, Error);
+                it_next = detail::impl_iter_utf16(it_next, end, &codepoint, Error);
         }
         //uaiw_constexpr const Iter& base() const & noexcept { return it_pos; }
         //uaiw_constexpr Iter base() && { return std::move(it_pos); }
@@ -199,7 +199,7 @@ private:
             it_pos = it_next;
             if (it_pos == std::end(parent->range))
                 return *this;
-            it_next = detail::impl_utf16_iter(it_next, std::end(parent->range), &codepoint, Error);
+            it_next = detail::impl_iter_utf16(it_next, std::end(parent->range), &codepoint, Error);
             return *this;
         }
         uaiw_constexpr utf16 operator++(int)
@@ -217,7 +217,7 @@ private:
             it_next = it_pos;
             if (it_pos == std::begin(parent->range))
                 return *this;
-            it_pos = detail::impl_utf16_iter_rev(std::begin(parent->range), it_pos, &codepoint, Error);
+            it_pos = detail::impl_iter_rev_utf16(std::begin(parent->range), it_pos, &codepoint, Error);
             return *this;
         }
         template<class T = utf16> typename std::enable_if_t<is_bidirectional_or_better::value, T>
@@ -979,7 +979,7 @@ struct adaptor_closure_to_utf8
         Result result;
         std::back_insert_iterator output{result};
         for (auto c : r)
-            detail::impl_utf8_output(static_cast<char32_t>(c), output);
+            detail::impl_output_utf8(static_cast<char32_t>(c), output);
         return result;
     }
 };
@@ -1015,7 +1015,7 @@ struct adaptor_closure_to_utf16
         Result result;
         std::back_insert_iterator output{result};
         for (auto c : r)
-            detail::impl_utf16_output(static_cast<char32_t>(c), output);
+            detail::impl_output_utf16(static_cast<char32_t>(c), output);
         return result;
     }
 };
@@ -1053,7 +1053,7 @@ struct adaptor_closure_to_utf8_reserve
         result.reserve(size);
         std::back_insert_iterator output{result};
         for (auto c : r)
-            detail::impl_utf8_output(static_cast<char32_t>(c), output);
+            detail::impl_output_utf8(static_cast<char32_t>(c), output);
         return result;
     }
 };
@@ -1091,7 +1091,7 @@ struct adaptor_closure_to_utf16_reserve
         result.reserve(size);
         std::back_insert_iterator output{result};
         for (auto c : r)
-            detail::impl_utf16_output(static_cast<char32_t>(c), output);
+            detail::impl_output_utf16(static_cast<char32_t>(c), output);
         return result;
     }
 };

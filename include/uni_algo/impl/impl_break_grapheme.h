@@ -181,7 +181,7 @@ uaix_static bool utf8_break_grapheme_rev_EP(it_in_utf8 first, it_in_utf8 last)
 
     while (src != first)
     {
-        src = utf8_iter_rev(first, src, &c, iter_replacement);
+        src = iter_rev_utf8(first, src, &c, iter_replacement);
 
         type_codept prop = stages_break_grapheme_prop(c);
 
@@ -206,7 +206,7 @@ uaix_static bool utf8_break_grapheme_rev_RI(it_in_utf8 first, it_in_utf8 last)
 
     while (src != first)
     {
-        src = utf8_iter_rev(first, src, &c, iter_replacement);
+        src = iter_rev_utf8(first, src, &c, iter_replacement);
 
         type_codept prop = stages_break_grapheme_prop(c);
 
@@ -298,7 +298,7 @@ uaix_static bool utf16_break_grapheme_rev_EP(it_in_utf16 first, it_in_utf16 last
 
     while (src != first)
     {
-        src = utf16_iter_rev(first, src, &c, iter_replacement);
+        src = iter_rev_utf16(first, src, &c, iter_replacement);
 
         type_codept prop = stages_break_grapheme_prop(c);
 
@@ -323,7 +323,7 @@ uaix_static bool utf16_break_grapheme_rev_RI(it_in_utf16 first, it_in_utf16 last
 
     while (src != first)
     {
-        src = utf16_iter_rev(first, src, &c, iter_replacement);
+        src = iter_rev_utf16(first, src, &c, iter_replacement);
 
         type_codept prop = stages_break_grapheme_prop(c);
 

@@ -191,7 +191,7 @@ uaix_static type_codept utf8_break_word_skip(it_in_utf8 first, it_end_utf8 last)
 
     while (src != last)
     {
-        src = utf8_iter(src, last, &c, iter_replacement);
+        src = iter_utf8(src, last, &c, iter_replacement);
 
         type_codept prop = break_word_prop(stages_break_word_prop(c));
 
@@ -367,7 +367,7 @@ uaix_static type_codept utf8_break_word_skip_rev(it_in_utf8 first, it_in_utf8 la
 
     while (src != first)
     {
-        src = utf8_iter_rev(first, src, &c, iter_replacement);
+        src = iter_rev_utf8(first, src, &c, iter_replacement);
 
         type_codept prop = break_word_prop(stages_break_word_prop(c));
 
@@ -390,7 +390,7 @@ uaix_static it_in_utf8 utf8_break_word_skip_rev2(it_in_utf8 first, it_in_utf8 la
 
     while (src != first)
     {
-        src = utf8_iter_rev(first, src, &c, iter_replacement);
+        src = iter_rev_utf8(first, src, &c, iter_replacement);
 
         type_codept prop = break_word_prop(stages_break_word_prop(c));
 
@@ -414,7 +414,7 @@ uaix_static bool utf8_break_word_rev_RI(it_in_utf8 first, it_in_utf8 last)
 
     while (src != first)
     {
-        src = utf8_iter_rev(first, src, &c, iter_replacement);
+        src = iter_rev_utf8(first, src, &c, iter_replacement);
 
         type_codept prop = break_word_prop(stages_break_word_prop(c));
 
@@ -584,7 +584,7 @@ uaix_static type_codept utf16_break_word_skip(it_in_utf16 first, it_end_utf16 la
 
     while (src != last)
     {
-        src = utf16_iter(src, last, &c, iter_replacement);
+        src = iter_utf16(src, last, &c, iter_replacement);
 
         type_codept prop = break_word_prop(stages_break_word_prop(c));
 
@@ -750,7 +750,7 @@ uaix_static type_codept utf16_break_word_skip_rev(it_in_utf16 first, it_in_utf16
 
     while (src != first)
     {
-        src = utf16_iter_rev(first, src, &c, iter_replacement);
+        src = iter_rev_utf16(first, src, &c, iter_replacement);
 
         type_codept prop = break_word_prop(stages_break_word_prop(c));
 
@@ -773,7 +773,7 @@ uaix_static it_in_utf16 utf16_break_word_skip_rev2(it_in_utf16 first, it_in_utf1
 
     while (src != first)
     {
-        src = utf16_iter_rev(first, src, &c, iter_replacement);
+        src = iter_rev_utf16(first, src, &c, iter_replacement);
 
         type_codept prop = break_word_prop(stages_break_word_prop(c));
 
@@ -797,7 +797,7 @@ uaix_static bool utf16_break_word_rev_RI(it_in_utf16 first, it_in_utf16 last)
 
     while (src != first)
     {
-        src = utf16_iter_rev(first, src, &c, iter_replacement);
+        src = iter_rev_utf16(first, src, &c, iter_replacement);
 
         type_codept prop = break_word_prop(stages_break_word_prop(c));
 

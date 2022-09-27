@@ -50,7 +50,7 @@ private:
             {
                 it_pos = it_next;
                 uni::detail::type_codept codepoint = 0;
-                it_next = detail::inline_utf8_iter(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
+                it_next = detail::inline_iter_utf8(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_break_grapheme(&state, codepoint))
                     return;
             }
@@ -67,7 +67,7 @@ private:
             {
                 it_next = it_begin;
                 uni::detail::type_codept codepoint = 0;
-                it_begin = detail::inline_utf8_iter_rev(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
+                it_begin = detail::inline_iter_rev_utf8(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_utf8_break_grapheme_rev(&state, codepoint, std::begin(parent->range), it_begin))
                 {
                     it_begin = it_next;
@@ -196,7 +196,7 @@ private:
             {
                 it_pos = it_next;
                 uni::detail::type_codept codepoint = 0;
-                it_next = detail::inline_utf16_iter(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
+                it_next = detail::inline_iter_utf16(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_break_grapheme(&state, codepoint))
                     return;
             }
@@ -213,7 +213,7 @@ private:
             {
                 it_next = it_begin;
                 uni::detail::type_codept codepoint = 0;
-                it_begin = detail::inline_utf16_iter_rev(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
+                it_begin = detail::inline_iter_rev_utf16(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_utf16_break_grapheme_rev(&state, codepoint, std::begin(parent->range), it_begin))
                 {
                     it_begin = it_next;

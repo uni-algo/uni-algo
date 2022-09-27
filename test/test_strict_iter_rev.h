@@ -25,7 +25,7 @@ std::u16string iter_rev_utf8to16(std::string_view str, uni::error& error)
     std::back_insert_iterator output{result};
 
     for (auto c : codepoints)
-        uni::detail::impl_utf16_output(c, output);
+        uni::detail::impl_output_utf16(c, output);
 
     return result;
 }
@@ -53,7 +53,7 @@ std::string iter_rev_utf16to8(std::u16string_view str, uni::error& error)
     std::back_insert_iterator output{result};
 
     for (auto c : codepoints)
-        uni::detail::impl_utf8_output(c, output);
+        uni::detail::impl_output_utf8(c, output);
 
     return result;
 }
