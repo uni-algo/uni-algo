@@ -178,7 +178,7 @@ uaix_static bool break_word_skip(type_codept prop)
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static type_codept utf8_break_word_skip(it_in_utf8 first, it_end_utf8 last)
+uaix_static type_codept break_word_skip_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     /* C++ Note: this function makes the word segmentation algorithm incompatible with input iterators.
      * This means Word Boundary Rules are not compatible with streams at all.
@@ -207,7 +207,7 @@ uaix_static type_codept utf8_break_word_skip(it_in_utf8 first, it_end_utf8 last)
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool break_word_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                  it_in_utf8 first, it_end_utf8 last)
 {
     // word_prop property must be used only with impl_break_is_word* functions
@@ -259,7 +259,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (c_prop == prop_WB_MidLetter || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             ((s_prop = utf8_break_word_skip(first, last)) != 0 &&
+             ((s_prop = break_word_skip_utf8(first, last)) != 0 &&
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB6
         result = false; // NOLINT
     else if ((p2_prop == prop_WB_ALetter || p2_prop == prop_WB_Hebrew_Letter) &&
@@ -269,7 +269,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
     else if (p1_prop == prop_WB_Hebrew_Letter && c_prop == prop_WB_Single_Quote) // WB7a
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Hebrew_Letter && c_prop == prop_WB_Double_Quote &&
-             utf8_break_word_skip(first, last) == prop_WB_Hebrew_Letter) // WB7b
+             break_word_skip_utf8(first, last) == prop_WB_Hebrew_Letter) // WB7b
         result = false; // NOLINT
     else if (p2_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Double_Quote && c_prop == prop_WB_Hebrew_Letter) // WB7c
         result = false; // NOLINT
@@ -285,7 +285,7 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Numeric &&
              (c_prop == prop_WB_MidNum || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             utf8_break_word_skip(first, last) == prop_WB_Numeric) // WB12
+             break_word_skip_utf8(first, last) == prop_WB_Numeric) // WB12
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Katakana && c_prop == prop_WB_Katakana) // WB13
         result = false; // NOLINT
@@ -337,20 +337,20 @@ uaix_static bool utf8_break_word(struct impl_break_word_state* state, type_codep
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool impl_utf8_break_word(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool impl_break_word_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                       it_in_utf8 first, it_end_utf8 last)
 {
-    return utf8_break_word(state, c, word_prop, first, last);
+    return break_word_utf8(state, c, word_prop, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_utf8_break_word(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool inline_break_word_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                         it_in_utf8 first, it_end_utf8 last)
 {
-    return utf8_break_word(state, c, word_prop, first, last);
+    return break_word_utf8(state, c, word_prop, first, last);
 }
 
 // -------------
@@ -360,7 +360,7 @@ uaix_static bool inline_utf8_break_word(struct impl_break_word_state* state, typ
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static type_codept utf8_break_word_skip_rev(it_in_utf8 first, it_in_utf8 last)
+uaix_static type_codept break_word_skip_rev_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
     type_codept c = 0;
@@ -383,7 +383,7 @@ uaix_static type_codept utf8_break_word_skip_rev(it_in_utf8 first, it_in_utf8 la
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf8 utf8_break_word_skip_rev2(it_in_utf8 first, it_in_utf8 last, type_codept* new_prop)
+uaix_static it_in_utf8 break_word_skip_rev2_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* new_prop)
 {
     it_in_utf8 src = last;
     type_codept c = 0;
@@ -406,7 +406,7 @@ uaix_static it_in_utf8 utf8_break_word_skip_rev2(it_in_utf8 first, it_in_utf8 la
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool utf8_break_word_rev_RI(it_in_utf8 first, it_in_utf8 last)
+uaix_static bool break_word_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
     type_codept c = 0;
@@ -433,7 +433,7 @@ uaix_static bool utf8_break_word_rev_RI(it_in_utf8 first, it_in_utf8 last)
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool utf8_break_word_rev(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool break_word_rev_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                      it_in_utf8 first, it_in_utf8 last)
 {
     // word_prop property must be used only with impl_break_is_word* functions
@@ -480,7 +480,7 @@ uaix_static bool utf8_break_word_rev(struct impl_break_word_state* state, type_c
         it_in_utf8 src = last;
         type_codept n_prop = c_prop;
         if (break_word_skip(c_prop))
-            src = utf8_break_word_skip_rev2(first, last, &n_prop);
+            src = break_word_skip_rev2_utf8(first, last, &n_prop);
 
     if ((n_prop == prop_WB_ALetter || n_prop == prop_WB_Hebrew_Letter) &&
         (p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter)) // WB5
@@ -491,7 +491,7 @@ uaix_static bool utf8_break_word_rev(struct impl_break_word_state* state, type_c
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (n_prop == prop_WB_MidLetter || n_prop == prop_WB_MidNumLet || n_prop == prop_WB_Single_Quote) &&
-             ((s_prop = utf8_break_word_skip_rev(first, src)) != 0 &&
+             ((s_prop = break_word_skip_rev_utf8(first, src)) != 0 &&
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB7
         result = false; // NOLINT
     else if (n_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Single_Quote) // WB7a
@@ -499,7 +499,7 @@ uaix_static bool utf8_break_word_rev(struct impl_break_word_state* state, type_c
     else if (n_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Double_Quote && p2_prop == prop_WB_Hebrew_Letter) // WB7b
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Hebrew_Letter && n_prop == prop_WB_Double_Quote &&
-             utf8_break_word_skip_rev(first, src) == prop_WB_Hebrew_Letter) // WB7c
+             break_word_skip_rev_utf8(first, src) == prop_WB_Hebrew_Letter) // WB7c
         result = false; // NOLINT
     else if (n_prop == prop_WB_Numeric && p1_prop == prop_WB_Numeric) // WB8
         result = false; // NOLINT
@@ -509,7 +509,7 @@ uaix_static bool utf8_break_word_rev(struct impl_break_word_state* state, type_c
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Numeric &&
              (n_prop == prop_WB_MidNum || n_prop == prop_WB_MidNumLet || n_prop == prop_WB_Single_Quote) &&
-             utf8_break_word_skip_rev(first, src) == prop_WB_Numeric) // WB11
+             break_word_skip_rev_utf8(first, src) == prop_WB_Numeric) // WB11
         result = false; // NOLINT
     else if (n_prop == prop_WB_Numeric &&
              (p1_prop == prop_WB_MidNum || p1_prop == prop_WB_MidNumLet || p1_prop == prop_WB_Single_Quote) &&
@@ -526,7 +526,7 @@ uaix_static bool utf8_break_word_rev(struct impl_break_word_state* state, type_c
               p1_prop == prop_WB_Numeric || p1_prop == prop_WB_Katakana)) // WB13b
         result = false; // NOLINT
     else if (n_prop == prop_WB_Regional_Indicator && p1_prop == prop_WB_Regional_Indicator) // WB15/WB16
-        result = utf8_break_word_rev_RI(first, src);
+        result = break_word_rev_RI_utf8(first, src);
     else // WB999
         {
             result = true;
@@ -555,20 +555,20 @@ uaix_static bool utf8_break_word_rev(struct impl_break_word_state* state, type_c
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool impl_utf8_break_word_rev(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool impl_break_word_rev_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                           it_in_utf8 first, it_in_utf8 last)
 {
-    return utf8_break_word_rev(state, c, word_prop, first, last);
+    return break_word_rev_utf8(state, c, word_prop, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_utf8_break_word_rev(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool inline_break_word_rev_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                             it_in_utf8 first, it_in_utf8 last)
 {
-    return utf8_break_word_rev(state, c, word_prop, first, last);
+    return break_word_rev_utf8(state, c, word_prop, first, last);
 }
 
 // BEGIN: GENERATED UTF-16 FUNCTIONS
@@ -577,7 +577,7 @@ uaix_static bool inline_utf8_break_word_rev(struct impl_break_word_state* state,
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static type_codept utf16_break_word_skip(it_in_utf16 first, it_end_utf16 last)
+uaix_static type_codept break_word_skip_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first + 0; // Make it compile only for contiguous or random access iterator for now
     type_codept c = 0;
@@ -600,7 +600,7 @@ uaix_static type_codept utf16_break_word_skip(it_in_utf16 first, it_end_utf16 la
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool break_word_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                   it_in_utf16 first, it_end_utf16 last)
 {
     // word_prop property must be used only with impl_break_is_word* functions
@@ -646,7 +646,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (c_prop == prop_WB_MidLetter || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             ((s_prop = utf16_break_word_skip(first, last)) != 0 &&
+             ((s_prop = break_word_skip_utf16(first, last)) != 0 &&
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB6
         result = false; // NOLINT
     else if ((p2_prop == prop_WB_ALetter || p2_prop == prop_WB_Hebrew_Letter) &&
@@ -656,7 +656,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
     else if (p1_prop == prop_WB_Hebrew_Letter && c_prop == prop_WB_Single_Quote) // WB7a
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Hebrew_Letter && c_prop == prop_WB_Double_Quote &&
-             utf16_break_word_skip(first, last) == prop_WB_Hebrew_Letter) // WB7b
+             break_word_skip_utf16(first, last) == prop_WB_Hebrew_Letter) // WB7b
         result = false; // NOLINT
     else if (p2_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Double_Quote && c_prop == prop_WB_Hebrew_Letter) // WB7c
         result = false; // NOLINT
@@ -672,7 +672,7 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Numeric &&
              (c_prop == prop_WB_MidNum || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             utf16_break_word_skip(first, last) == prop_WB_Numeric) // WB12
+             break_word_skip_utf16(first, last) == prop_WB_Numeric) // WB12
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Katakana && c_prop == prop_WB_Katakana) // WB13
         result = false; // NOLINT
@@ -724,26 +724,26 @@ uaix_static bool utf16_break_word(struct impl_break_word_state* state, type_code
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static bool impl_utf16_break_word(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool impl_break_word_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                        it_in_utf16 first, it_end_utf16 last)
 {
-    return utf16_break_word(state, c, word_prop, first, last);
+    return break_word_utf16(state, c, word_prop, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_utf16_break_word(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool inline_break_word_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                          it_in_utf16 first, it_end_utf16 last)
 {
-    return utf16_break_word(state, c, word_prop, first, last);
+    return break_word_utf16(state, c, word_prop, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static type_codept utf16_break_word_skip_rev(it_in_utf16 first, it_in_utf16 last)
+uaix_static type_codept break_word_skip_rev_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
     type_codept c = 0;
@@ -766,7 +766,7 @@ uaix_static type_codept utf16_break_word_skip_rev(it_in_utf16 first, it_in_utf16
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf16 utf16_break_word_skip_rev2(it_in_utf16 first, it_in_utf16 last, type_codept* new_prop)
+uaix_static it_in_utf16 break_word_skip_rev2_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* new_prop)
 {
     it_in_utf16 src = last;
     type_codept c = 0;
@@ -789,7 +789,7 @@ uaix_static it_in_utf16 utf16_break_word_skip_rev2(it_in_utf16 first, it_in_utf1
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool utf16_break_word_rev_RI(it_in_utf16 first, it_in_utf16 last)
+uaix_static bool break_word_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
     type_codept c = 0;
@@ -816,7 +816,7 @@ uaix_static bool utf16_break_word_rev_RI(it_in_utf16 first, it_in_utf16 last)
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool utf16_break_word_rev(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool break_word_rev_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                       it_in_utf16 first, it_in_utf16 last)
 {
     // word_prop property must be used only with impl_break_is_word* functions
@@ -859,7 +859,7 @@ uaix_static bool utf16_break_word_rev(struct impl_break_word_state* state, type_
         it_in_utf16 src = last;
         type_codept n_prop = c_prop;
         if (break_word_skip(c_prop))
-            src = utf16_break_word_skip_rev2(first, last, &n_prop);
+            src = break_word_skip_rev2_utf16(first, last, &n_prop);
 
     if ((n_prop == prop_WB_ALetter || n_prop == prop_WB_Hebrew_Letter) &&
         (p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter)) // WB5
@@ -870,7 +870,7 @@ uaix_static bool utf16_break_word_rev(struct impl_break_word_state* state, type_
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (n_prop == prop_WB_MidLetter || n_prop == prop_WB_MidNumLet || n_prop == prop_WB_Single_Quote) &&
-             ((s_prop = utf16_break_word_skip_rev(first, src)) != 0 &&
+             ((s_prop = break_word_skip_rev_utf16(first, src)) != 0 &&
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB7
         result = false; // NOLINT
     else if (n_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Single_Quote) // WB7a
@@ -878,7 +878,7 @@ uaix_static bool utf16_break_word_rev(struct impl_break_word_state* state, type_
     else if (n_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Double_Quote && p2_prop == prop_WB_Hebrew_Letter) // WB7b
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Hebrew_Letter && n_prop == prop_WB_Double_Quote &&
-             utf16_break_word_skip_rev(first, src) == prop_WB_Hebrew_Letter) // WB7c
+             break_word_skip_rev_utf16(first, src) == prop_WB_Hebrew_Letter) // WB7c
         result = false; // NOLINT
     else if (n_prop == prop_WB_Numeric && p1_prop == prop_WB_Numeric) // WB8
         result = false; // NOLINT
@@ -888,7 +888,7 @@ uaix_static bool utf16_break_word_rev(struct impl_break_word_state* state, type_
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Numeric &&
              (n_prop == prop_WB_MidNum || n_prop == prop_WB_MidNumLet || n_prop == prop_WB_Single_Quote) &&
-             utf16_break_word_skip_rev(first, src) == prop_WB_Numeric) // WB11
+             break_word_skip_rev_utf16(first, src) == prop_WB_Numeric) // WB11
         result = false; // NOLINT
     else if (n_prop == prop_WB_Numeric &&
              (p1_prop == prop_WB_MidNum || p1_prop == prop_WB_MidNumLet || p1_prop == prop_WB_Single_Quote) &&
@@ -905,7 +905,7 @@ uaix_static bool utf16_break_word_rev(struct impl_break_word_state* state, type_
               p1_prop == prop_WB_Numeric || p1_prop == prop_WB_Katakana)) // WB13b
         result = false; // NOLINT
     else if (n_prop == prop_WB_Regional_Indicator && p1_prop == prop_WB_Regional_Indicator) // WB15/WB16
-        result = utf16_break_word_rev_RI(first, src);
+        result = break_word_rev_RI_utf16(first, src);
     else // WB999
         {
             result = true;
@@ -934,20 +934,20 @@ uaix_static bool utf16_break_word_rev(struct impl_break_word_state* state, type_
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool impl_utf16_break_word_rev(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool impl_break_word_rev_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                            it_in_utf16 first, it_in_utf16 last)
 {
-    return utf16_break_word_rev(state, c, word_prop, first, last);
+    return break_word_rev_utf16(state, c, word_prop, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_utf16_break_word_rev(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool inline_break_word_rev_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
                                              it_in_utf16 first, it_in_utf16 last)
 {
-    return utf16_break_word_rev(state, c, word_prop, first, last);
+    return break_word_rev_utf16(state, c, word_prop, first, last);
 }
 
 #endif // UNI_ALGO_DOC_GENERATED_UTF16

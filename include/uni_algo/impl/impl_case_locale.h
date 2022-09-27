@@ -1264,7 +1264,7 @@ uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_
         if (!found_break)
         {
             // Find break (if at the end then force break)
-            if (utf8_break_word(&state, c, &word_prop, src, last) || src == last)
+            if (break_word_utf8(&state, c, &word_prop, src, last) || src == last)
             {
                 brk = src;
                 src = prev_brk;
@@ -1409,7 +1409,7 @@ uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last, it_o
         if (!found_break)
         {
             // Find break (if at the end then force break)
-            if (utf16_break_word(&state, c, &word_prop, src, last) || src == last)
+            if (break_word_utf16(&state, c, &word_prop, src, last) || src == last)
             {
                 brk = src;
                 src = prev_brk;

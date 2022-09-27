@@ -68,7 +68,7 @@ private:
                 it_next = it_begin;
                 uni::detail::type_codept codepoint = 0;
                 it_begin = detail::inline_iter_rev_utf8(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
-                if (detail::inline_utf8_break_grapheme_rev(&state, codepoint, std::begin(parent->range), it_begin))
+                if (detail::inline_break_grapheme_rev_utf8(&state, codepoint, std::begin(parent->range), it_begin))
                 {
                     it_begin = it_next;
                     break;
@@ -214,7 +214,7 @@ private:
                 it_next = it_begin;
                 uni::detail::type_codept codepoint = 0;
                 it_begin = detail::inline_iter_rev_utf16(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
-                if (detail::inline_utf16_break_grapheme_rev(&state, codepoint, std::begin(parent->range), it_begin))
+                if (detail::inline_break_grapheme_rev_utf16(&state, codepoint, std::begin(parent->range), it_begin))
                 {
                     it_begin = it_next;
                     break;

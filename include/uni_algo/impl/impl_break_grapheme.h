@@ -174,7 +174,7 @@ uaix_static bool inline_break_grapheme(struct impl_break_grapheme_state* state, 
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool utf8_break_grapheme_rev_EP(it_in_utf8 first, it_in_utf8 last)
+uaix_static bool break_grapheme_rev_EP_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
     type_codept c = 0;
@@ -198,7 +198,7 @@ uaix_static bool utf8_break_grapheme_rev_EP(it_in_utf8 first, it_in_utf8 last)
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool utf8_break_grapheme_rev_RI(it_in_utf8 first, it_in_utf8 last)
+uaix_static bool break_grapheme_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
     type_codept c = 0;
@@ -222,7 +222,7 @@ uaix_static bool utf8_break_grapheme_rev_RI(it_in_utf8 first, it_in_utf8 last)
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool utf8_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool break_grapheme_rev_utf8(struct impl_break_grapheme_state* state, type_codept c,
                                          it_in_utf8 first, it_in_utf8 last)
 {
     type_codept c_prop = stages_break_grapheme_prop(c);
@@ -254,9 +254,9 @@ uaix_static bool utf8_break_grapheme_rev(struct impl_break_grapheme_state* state
     else if (c_prop == prop_GB_Prepend) // GB9b
         result = false; // NOLINT
     else if (c_prop == prop_GB_ZWJ && p_prop == prop_GB_Extended_Pictographic) // GB11
-        result = utf8_break_grapheme_rev_EP(first, last);
+        result = break_grapheme_rev_EP_utf8(first, last);
     else if (c_prop == prop_GB_Regional_Indicator && p_prop == prop_GB_Regional_Indicator) // GB12/GB13
-        result = utf8_break_grapheme_rev_RI(first, last);
+        result = break_grapheme_rev_RI_utf8(first, last);
     else // GB999
         result = true; // NOLINT
 
@@ -269,20 +269,20 @@ uaix_static bool utf8_break_grapheme_rev(struct impl_break_grapheme_state* state
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool impl_utf8_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool impl_break_grapheme_rev_utf8(struct impl_break_grapheme_state* state, type_codept c,
                                               it_in_utf8 first, it_in_utf8 last)
 {
-    return utf8_break_grapheme_rev(state, c, first, last);
+    return break_grapheme_rev_utf8(state, c, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_utf8_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool inline_break_grapheme_rev_utf8(struct impl_break_grapheme_state* state, type_codept c,
                                                 it_in_utf8 first, it_in_utf8 last)
 {
-    return utf8_break_grapheme_rev(state, c, first, last);
+    return break_grapheme_rev_utf8(state, c, first, last);
 }
 
 // BEGIN: GENERATED UTF-16 FUNCTIONS
@@ -291,7 +291,7 @@ uaix_static bool inline_utf8_break_grapheme_rev(struct impl_break_grapheme_state
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool utf16_break_grapheme_rev_EP(it_in_utf16 first, it_in_utf16 last)
+uaix_static bool break_grapheme_rev_EP_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
     type_codept c = 0;
@@ -315,7 +315,7 @@ uaix_static bool utf16_break_grapheme_rev_EP(it_in_utf16 first, it_in_utf16 last
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool utf16_break_grapheme_rev_RI(it_in_utf16 first, it_in_utf16 last)
+uaix_static bool break_grapheme_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
     type_codept c = 0;
@@ -339,7 +339,7 @@ uaix_static bool utf16_break_grapheme_rev_RI(it_in_utf16 first, it_in_utf16 last
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool utf16_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool break_grapheme_rev_utf16(struct impl_break_grapheme_state* state, type_codept c,
                                           it_in_utf16 first, it_in_utf16 last)
 {
     type_codept c_prop = stages_break_grapheme_prop(c);
@@ -371,9 +371,9 @@ uaix_static bool utf16_break_grapheme_rev(struct impl_break_grapheme_state* stat
     else if (c_prop == prop_GB_Prepend) // GB9b
         result = false; // NOLINT
     else if (c_prop == prop_GB_ZWJ && p_prop == prop_GB_Extended_Pictographic) // GB11
-        result = utf16_break_grapheme_rev_EP(first, last);
+        result = break_grapheme_rev_EP_utf16(first, last);
     else if (c_prop == prop_GB_Regional_Indicator && p_prop == prop_GB_Regional_Indicator) // GB12/GB13
-        result = utf16_break_grapheme_rev_RI(first, last);
+        result = break_grapheme_rev_RI_utf16(first, last);
     else // GB999
         result = true; // NOLINT
 
@@ -386,20 +386,20 @@ uaix_static bool utf16_break_grapheme_rev(struct impl_break_grapheme_state* stat
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool impl_utf16_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool impl_break_grapheme_rev_utf16(struct impl_break_grapheme_state* state, type_codept c,
                                                it_in_utf16 first, it_in_utf16 last)
 {
-    return utf16_break_grapheme_rev(state, c, first, last);
+    return break_grapheme_rev_utf16(state, c, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_utf16_break_grapheme_rev(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool inline_break_grapheme_rev_utf16(struct impl_break_grapheme_state* state, type_codept c,
                                                  it_in_utf16 first, it_in_utf16 last)
 {
-    return utf16_break_grapheme_rev(state, c, first, last);
+    return break_grapheme_rev_utf16(state, c, first, last);
 }
 
 #endif // UNI_ALGO_DOC_GENERATED_UTF16
