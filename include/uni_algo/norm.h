@@ -120,414 +120,414 @@ DST t_norm2(SRC source)
 namespace norm {
 
 template<typename UTF8>
-std::basic_string<UTF8> utf8_nfc(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> to_nfc_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_norm<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_nfc, detail::impl_utf8_nfc>(source);
+            detail::impl_x_norm_to_nfc_utf8, detail::impl_norm_to_nfc_utf8>(source);
 }
 
 template<typename UTF8>
-std::basic_string<UTF8> utf8_nfd(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> to_nfd_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_norm<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_nfd, detail::impl_utf8_nfd>(source);
+            detail::impl_x_norm_to_nfd_utf8, detail::impl_norm_to_nfd_utf8>(source);
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<typename UTF8>
-std::basic_string<UTF8> utf8_nfkc(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> to_nfkc_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_norm2<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_utf8_nfkc>(source);
+            detail::impl_norm_to_nfkc_utf8>(source);
 }
 
 template<typename UTF8>
-std::basic_string<UTF8> utf8_nfkd(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> to_nfkd_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_norm2<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_utf8_nfkd>(source);
+            detail::impl_norm_to_nfkd_utf8>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #ifndef UNI_ALGO_DISABLE_PROP
 template<typename UTF8>
-std::basic_string<UTF8> utf8_unaccent(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> to_unaccent_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_norm<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_unaccent, detail::impl_utf8_unaccent>(source);
+            detail::impl_x_norm_to_unaccent_utf8, detail::impl_norm_to_unaccent_utf8>(source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
 template<typename UTF16>
-std::basic_string<UTF16> utf16_nfc(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> to_nfc_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_norm<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_nfc, detail::impl_utf16_nfc>(source);
+            detail::impl_x_norm_to_nfc_utf16, detail::impl_norm_to_nfc_utf16>(source);
 }
 
 template<typename UTF16>
-std::basic_string<UTF16> utf16_nfd(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> to_nfd_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_norm<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_nfd, detail::impl_utf16_nfd>(source);
+            detail::impl_x_norm_to_nfd_utf16, detail::impl_norm_to_nfd_utf16>(source);
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<typename UTF16>
-std::basic_string<UTF16> utf16_nfkc(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> to_nfkc_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_norm2<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_utf16_nfkc>(source);
+            detail::impl_norm_to_nfkc_utf16>(source);
 }
 
 template<typename UTF16>
-std::basic_string<UTF16> utf16_nfkd(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> to_nfkd_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_norm2<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_utf16_nfkd>(source);
+            detail::impl_norm_to_nfkd_utf16>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #ifndef UNI_ALGO_DISABLE_PROP
 template<typename UTF16>
-std::basic_string<UTF16> utf16_unaccent(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> to_unaccent_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_norm<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_unaccent, detail::impl_utf16_unaccent>(source);
+            detail::impl_x_norm_to_unaccent_utf16, detail::impl_norm_to_unaccent_utf16>(source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
 template<typename UTF8>
-bool utf8_is_nfc(std::basic_string_view<UTF8> source)
+bool is_nfc_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf8_is_nfc(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfc_utf8(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
 #else
-    return detail::impl_utf8_is_nfc(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfc_utf8(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
 #endif
 }
 
 template<typename UTF8>
-bool utf8_is_nfd(std::basic_string_view<UTF8> source)
+bool is_nfd_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf8_is_nfd(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfd_utf8(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
 #else
-    return detail::impl_utf8_is_nfd(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfd_utf8(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
 #endif
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<typename UTF8>
-bool utf8_is_nfkc(std::basic_string_view<UTF8> source)
+bool is_nfkc_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf8_is_nfkc(source.data(), source.data() + source.size())  == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfkc_utf8(source.data(), source.data() + source.size())  == detail::impl_norm_is_yes;
 #else
-    return detail::impl_utf8_is_nfkc(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfkc_utf8(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
 #endif
 }
 
 template<typename UTF8>
-bool utf8_is_nfkd(std::basic_string_view<UTF8> source)
+bool is_nfkd_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf8_is_nfkd(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfkd_utf8(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
 #else
-    return detail::impl_utf8_is_nfkd(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfkd_utf8(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
 #endif
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 template<typename UTF16>
-bool utf16_is_nfc(std::basic_string_view<UTF16> source)
+bool is_nfc_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf16_is_nfc(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfc_utf16(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
 #else
-    return detail::impl_utf16_is_nfc(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfc_utf16(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
 #endif
 }
 
 template<typename UTF16>
-bool utf16_is_nfd(std::basic_string_view<UTF16> source)
+bool is_nfd_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf16_is_nfd(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfd_utf16(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
 #else
-    return detail::impl_utf16_is_nfd(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfd_utf16(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
 #endif
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<typename UTF16>
-bool utf16_is_nfkc(std::basic_string_view<UTF16> source)
+bool is_nfkc_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf16_is_nfkc(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfkc_utf16(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
 #else
-    return detail::impl_utf16_is_nfkc(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfkc_utf16(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
 #endif
 }
 
 template<typename UTF16>
-bool utf16_is_nfkd(std::basic_string_view<UTF16> source)
+bool is_nfkd_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf16_is_nfkd(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfkd_utf16(source.data(), source.data() + source.size()) == detail::impl_norm_is_yes;
 #else
-    return detail::impl_utf16_is_nfkd(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
+    return detail::impl_norm_is_nfkd_utf16(source.cbegin(), source.cend()) == detail::impl_norm_is_yes;
 #endif
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 template<typename Iter, typename Sent, typename Dest>
-void utf8_nfc(Iter first, Sent last, Dest result)
+void to_nfc_utf8(Iter first, Sent last, Dest result)
 {
     // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
-    detail::impl_utf8_nfc(first, last, it_out);
+    detail::impl_norm_to_nfc_utf8(first, last, it_out);
 }
 
 template<typename Iter, typename Sent, typename Dest>
-void utf8_nfd(Iter first, Sent last, Dest result)
+void to_nfd_utf8(Iter first, Sent last, Dest result)
 {
     // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
-    detail::impl_utf8_nfd(first, last, it_out);
+    detail::impl_norm_to_nfd_utf8(first, last, it_out);
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<typename Iter, typename Sent, typename Dest>
-void utf8_nfkc(Iter first, Sent last, Dest result)
+void to_nfkc_utf8(Iter first, Sent last, Dest result)
 {
     // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
-    detail::impl_utf8_nfkc(first, last, it_out);
+    detail::impl_norm_to_nfkc_utf8(first, last, it_out);
 }
 
 template<typename Iter, typename Sent, typename Dest>
-void utf8_nfkd(Iter first, Sent last, Dest result)
+void to_nfkd_utf8(Iter first, Sent last, Dest result)
 {
     // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
-    detail::impl_utf8_nfkd(first, last, it_out);
+    detail::impl_norm_to_nfkd_utf8(first, last, it_out);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-inline std::string utf8_nfc(std::string_view source)
+inline std::string to_nfc_utf8(std::string_view source)
 {
-    return utf8_nfc<char>(source);
+    return to_nfc_utf8<char>(source);
 }
-inline std::string utf8_nfd(std::string_view source)
+inline std::string to_nfd_utf8(std::string_view source)
 {
-    return utf8_nfd<char>(source);
+    return to_nfd_utf8<char>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline std::string utf8_nfkc(std::string_view source)
+inline std::string to_nfkc_utf8(std::string_view source)
 {
-    return utf8_nfkc<char>(source);
+    return to_nfkc_utf8<char>(source);
 }
-inline std::string utf8_nfkd(std::string_view source)
+inline std::string to_nfkd_utf8(std::string_view source)
 {
-    return utf8_nfkd<char>(source);
+    return to_nfkd_utf8<char>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-inline std::string utf8_unaccent(std::string_view source)
+inline std::string to_unaccent_utf8(std::string_view source)
 {
-    return utf8_unaccent<char>(source);
+    return to_unaccent_utf8<char>(source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
-inline std::u16string utf16_nfc(std::u16string_view source)
+inline std::u16string to_nfc_utf16(std::u16string_view source)
 {
-    return utf16_nfc<char16_t>(source);
+    return to_nfc_utf16<char16_t>(source);
 }
-inline std::u16string utf16_nfd(std::u16string_view source)
+inline std::u16string to_nfd_utf16(std::u16string_view source)
 {
-    return utf16_nfd<char16_t>(source);
+    return to_nfd_utf16<char16_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline std::u16string utf16_nfkc(std::u16string_view source)
+inline std::u16string to_nfkc_utf16(std::u16string_view source)
 {
-    return utf16_nfkc<char16_t>(source);
+    return to_nfkc_utf16<char16_t>(source);
 }
-inline std::u16string utf16_nfkd(std::u16string_view source)
+inline std::u16string to_nfkd_utf16(std::u16string_view source)
 {
-    return utf16_nfkd<char16_t>(source);
+    return to_nfkd_utf16<char16_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-inline std::u16string utf16_unaccent(std::u16string_view source)
+inline std::u16string to_unaccent_utf16(std::u16string_view source)
 {
-    return utf16_unaccent<char16_t>(source);
+    return to_unaccent_utf16<char16_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
-inline bool utf8_is_nfc(std::string_view source)
+inline bool is_nfc_utf8(std::string_view source)
 {
-    return utf8_is_nfc<char>(source);
+    return is_nfc_utf8<char>(source);
 }
-inline bool utf8_is_nfd(std::string_view source)
+inline bool is_nfd_utf8(std::string_view source)
 {
-    return utf8_is_nfd<char>(source);
+    return is_nfd_utf8<char>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline bool utf8_is_nfkc(std::string_view source)
+inline bool is_nfkc_utf8(std::string_view source)
 {
-    return utf8_is_nfkc<char>(source);
+    return is_nfkc_utf8<char>(source);
 }
-inline bool utf8_is_nfkd(std::string_view source)
+inline bool is_nfkd_utf8(std::string_view source)
 {
-    return utf8_is_nfkd<char>(source);
+    return is_nfkd_utf8<char>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-inline bool utf16_is_nfc(std::u16string_view source)
+inline bool is_nfc_utf16(std::u16string_view source)
 {
-    return utf16_is_nfc<char16_t>(source);
+    return is_nfc_utf16<char16_t>(source);
 }
-inline bool utf16_is_nfd(std::u16string_view source)
+inline bool is_nfd_utf16(std::u16string_view source)
 {
-    return utf16_is_nfd<char16_t>(source);
+    return is_nfd_utf16<char16_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline bool utf16_is_nfkc(std::u16string_view source)
+inline bool is_nfkc_utf16(std::u16string_view source)
 {
-    return utf16_is_nfkc<char16_t>(source);
+    return is_nfkc_utf16<char16_t>(source);
 }
-inline bool utf16_is_nfkd(std::u16string_view source)
+inline bool is_nfkd_utf16(std::u16string_view source)
 {
-    return utf16_is_nfkd<char16_t>(source);
+    return is_nfkd_utf16<char16_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf16_nfc(std::wstring_view source)
+inline std::wstring to_nfc_utf16(std::wstring_view source)
 {
-    return utf16_nfc<wchar_t>(source);
+    return to_nfc_utf16<wchar_t>(source);
 }
-inline std::wstring utf16_nfd(std::wstring_view source)
+inline std::wstring to_nfd_utf16(std::wstring_view source)
 {
-    return utf16_nfd<wchar_t>(source);
+    return to_nfd_utf16<wchar_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline std::wstring utf16_nfkc(std::wstring_view source)
+inline std::wstring to_nfkc_utf16(std::wstring_view source)
 {
-    return utf16_nfkc<wchar_t>(source);
+    return to_nfkc_utf16<wchar_t>(source);
 }
-inline std::wstring utf16_nfkd(std::wstring_view source)
+inline std::wstring to_nfkd_utf16(std::wstring_view source)
 {
-    return utf16_nfkd<wchar_t>(source);
+    return to_nfkd_utf16<wchar_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-inline std::wstring utf16_unaccent(std::wstring_view source)
+inline std::wstring to_unaccent_utf16(std::wstring_view source)
 {
-    return utf16_unaccent<wchar_t>(source);
+    return to_unaccent_utf16<wchar_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
-inline bool utf16_is_nfc(std::wstring_view source)
+inline bool is_nfc_utf16(std::wstring_view source)
 {
-    return utf16_is_nfc<wchar_t>(source);
+    return is_nfc_utf16<wchar_t>(source);
 }
-inline bool utf16_is_nfd(std::wstring_view source)
+inline bool is_nfd_utf16(std::wstring_view source)
 {
-    return utf16_is_nfd<wchar_t>(source);
+    return is_nfd_utf16<wchar_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline bool utf16_is_nfkc(std::wstring_view source)
+inline bool is_nfkc_utf16(std::wstring_view source)
 {
-    return utf16_is_nfkc<wchar_t>(source);
+    return is_nfkc_utf16<wchar_t>(source);
 }
-inline bool utf16_is_nfkd(std::wstring_view source)
+inline bool is_nfkd_utf16(std::wstring_view source)
 {
-    return utf16_is_nfkd<wchar_t>(source);
+    return is_nfkd_utf16<wchar_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
 #ifdef __cpp_lib_char8_t
 
-inline std::u8string utf8_nfc(std::u8string_view source)
+inline std::u8string to_nfc_utf8(std::u8string_view source)
 {
-    return utf8_nfc<char8_t>(source);
+    return to_nfc_utf8<char8_t>(source);
 }
-inline std::u8string utf8_nfd(std::u8string_view source)
+inline std::u8string to_nfd_utf8(std::u8string_view source)
 {
-    return utf8_nfd<char8_t>(source);
+    return to_nfd_utf8<char8_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline std::u8string utf8_nfkc(std::u8string_view source)
+inline std::u8string to_nfkc_utf8(std::u8string_view source)
 {
-    return utf8_nfkc<char8_t>(source);
+    return to_nfkc_utf8<char8_t>(source);
 }
-inline std::u8string utf8_nfkd(std::u8string_view source)
+inline std::u8string to_nfkd_utf8(std::u8string_view source)
 {
-    return utf8_nfkd<char8_t>(source);
+    return to_nfkd_utf8<char8_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-inline std::u8string utf8_unaccent(std::u8string_view source)
+inline std::u8string to_unaccent_utf8(std::u8string_view source)
 {
-    return utf8_unaccent<char8_t>(source);
+    return to_unaccent_utf8<char8_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
-inline bool utf8_is_nfc(std::u8string_view source)
+inline bool is_nfc_utf8(std::u8string_view source)
 {
-    return utf8_is_nfc<char8_t>(source);
+    return is_nfc_utf8<char8_t>(source);
 }
-inline bool utf8_is_nfd(std::u8string_view source)
+inline bool is_nfd_utf8(std::u8string_view source)
 {
-    return utf8_is_nfd<char8_t>(source);
+    return is_nfd_utf8<char8_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline bool utf8_is_nfkc(std::u8string_view source)
+inline bool is_nfkc_utf8(std::u8string_view source)
 {
-    return utf8_is_nfkc<char8_t>(source);
+    return is_nfkc_utf8<char8_t>(source);
 }
-inline bool utf8_is_nfkd(std::u8string_view source)
+inline bool is_nfkd_utf8(std::u8string_view source)
 {
-    return utf8_is_nfkd<char8_t>(source);
+    return is_nfkd_utf8<char8_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
@@ -1043,7 +1043,7 @@ inline char32_t to_compose(char32_t c1, char32_t c2) noexcept
 inline std::u32string to_decompose_u32(char32_t c)
 {
     std::u32string destination;
-    destination.resize(uni::detail::impl_x_utf16_nfd); // TODO: Better value
+    destination.resize(uni::detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     destination.resize(detail::impl_norm_to_decompose(c, destination.data()));
 #else
@@ -1056,7 +1056,7 @@ inline std::u32string to_decompose_u32(char32_t c)
 inline std::u32string to_decompose_compat_u32(char32_t c)
 {
     std::u32string destination;
-    destination.resize(uni::detail::impl_x_utf16_nfkd); // TODO: Better value
+    destination.resize(uni::detail::impl_x_norm_to_nfkd_utf16); // TODO: Better value
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     destination.resize(detail::impl_norm_to_decompose_compat(c, destination.data()));
 #else
@@ -1069,7 +1069,7 @@ inline std::u32string to_decompose_compat_u32(char32_t c)
 inline std::u32string to_decompose_hangul_u32(char32_t c)
 {
     std::u32string destination;
-    destination.resize(uni::detail::impl_x_utf16_nfd); // TODO: Better value
+    destination.resize(uni::detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     destination.resize(detail::impl_norm_to_decompose_hangul(c, destination.data()));
 #else

@@ -43,21 +43,21 @@ uaix_const int norm_is_no_or_maybe = 3; // Can be changed in the future. Must ne
 // http://www.unicode.org/faq/normalization.html#12
 // The length of a destination (result) string must be premultiplied with one of these
 // Example: destination_length = source_length * impl_x_function_name
-uaix_const size_t impl_x_utf8_nfc = 3;
-uaix_const size_t impl_x_utf8_nfd = 3;
+uaix_const size_t impl_x_norm_to_nfc_utf8 = 3;
+uaix_const size_t impl_x_norm_to_nfd_utf8 = 3;
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-uaix_const size_t impl_x_utf8_nfkc = 11;
-uaix_const size_t impl_x_utf8_nfkd = 11;
+uaix_const size_t impl_x_norm_to_nfkc_utf8 = 11;
+uaix_const size_t impl_x_norm_to_nfkd_utf8 = 11;
 #endif
-uaix_const size_t impl_x_utf16_nfc = 3;
-uaix_const size_t impl_x_utf16_nfd = 4;
+uaix_const size_t impl_x_norm_to_nfc_utf16 = 3;
+uaix_const size_t impl_x_norm_to_nfd_utf16 = 4;
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-uaix_const size_t impl_x_utf16_nfkc = 18;
-uaix_const size_t impl_x_utf16_nfkd = 18;
+uaix_const size_t impl_x_norm_to_nfkc_utf16 = 18;
+uaix_const size_t impl_x_norm_to_nfkd_utf16 = 18;
 #endif
 #ifndef UNI_ALGO_DISABLE_PROP
-uaix_const size_t impl_x_utf8_unaccent = 3;
-uaix_const size_t impl_x_utf16_unaccent = 3;
+uaix_const size_t impl_x_norm_to_unaccent_utf8 = 3;
+uaix_const size_t impl_x_norm_to_unaccent_utf16 = 3;
 #endif
 
 /* TODO: from yesterdays me to tomorrows me.
@@ -892,7 +892,7 @@ uaix_static void norm_buffer(type_codept buffer[], unsigned char buffer_ccc[], s
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_nfc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+uaix_static size_t impl_norm_to_nfc_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
 {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
@@ -960,7 +960,7 @@ uaix_static size_t impl_utf8_nfc(it_in_utf8 first, it_end_utf8 last, it_out_utf8
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_nfd(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+uaix_static size_t impl_norm_to_nfd_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
 {
     // The same as impl_utf8_nfc but without composition and uses decomposition data
 
@@ -1017,7 +1017,7 @@ uaix_static size_t impl_utf8_nfd(it_in_utf8 first, it_end_utf8 last, it_out_utf8
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_nfkc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+uaix_static size_t impl_norm_to_nfkc_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
 {
     // The same as impl_utf8_nfc but uses NFKC data
 
@@ -1076,7 +1076,7 @@ uaix_static size_t impl_utf8_nfkc(it_in_utf8 first, it_end_utf8 last, it_out_utf
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_nfkd(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+uaix_static size_t impl_norm_to_nfkd_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
 {
     // The same as impl_utf8_nfd but uses NFKD data
 
@@ -1135,7 +1135,7 @@ uaix_static size_t impl_utf8_nfkd(it_in_utf8 first, it_end_utf8 last, it_out_utf
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_unaccent(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+uaix_static size_t impl_norm_to_unaccent_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
 {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
@@ -1196,7 +1196,7 @@ uaix_static size_t impl_utf8_unaccent(it_in_utf8 first, it_end_utf8 last, it_out
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static int impl_utf8_is_nfc(it_in_utf8 first, it_end_utf8 last)
+uaix_static int impl_norm_is_nfc_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
@@ -1217,7 +1217,7 @@ uaix_static int impl_utf8_is_nfc(it_in_utf8 first, it_end_utf8 last)
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static int impl_utf8_is_nfd(it_in_utf8 first, it_end_utf8 last)
+uaix_static int impl_norm_is_nfd_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
@@ -1240,7 +1240,7 @@ uaix_static int impl_utf8_is_nfd(it_in_utf8 first, it_end_utf8 last)
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static int impl_utf8_is_nfkc(it_in_utf8 first, it_end_utf8 last)
+uaix_static int impl_norm_is_nfkc_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
@@ -1261,7 +1261,7 @@ uaix_static int impl_utf8_is_nfkc(it_in_utf8 first, it_end_utf8 last)
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static int impl_utf8_is_nfkd(it_in_utf8 first, it_end_utf8 last)
+uaix_static int impl_norm_is_nfkd_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
@@ -1287,7 +1287,7 @@ uaix_static int impl_utf8_is_nfkd(it_in_utf8 first, it_end_utf8 last)
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf16_nfc(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+uaix_static size_t impl_norm_to_nfc_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
 {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
@@ -1344,7 +1344,7 @@ uaix_static size_t impl_utf16_nfc(it_in_utf16 first, it_end_utf16 last, it_out_u
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf16_nfd(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+uaix_static size_t impl_norm_to_nfd_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
 {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
@@ -1399,7 +1399,7 @@ uaix_static size_t impl_utf16_nfd(it_in_utf16 first, it_end_utf16 last, it_out_u
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf16_nfkc(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+uaix_static size_t impl_norm_to_nfkc_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
 {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
@@ -1456,7 +1456,7 @@ uaix_static size_t impl_utf16_nfkc(it_in_utf16 first, it_end_utf16 last, it_out_
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf16_nfkd(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+uaix_static size_t impl_norm_to_nfkd_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
 {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
@@ -1513,7 +1513,7 @@ uaix_static size_t impl_utf16_nfkd(it_in_utf16 first, it_end_utf16 last, it_out_
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf16_unaccent(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+uaix_static size_t impl_norm_to_unaccent_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
 {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
@@ -1572,7 +1572,7 @@ uaix_static size_t impl_utf16_unaccent(it_in_utf16 first, it_end_utf16 last, it_
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static int impl_utf16_is_nfc(it_in_utf16 first, it_end_utf16 last)
+uaix_static int impl_norm_is_nfc_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
@@ -1593,7 +1593,7 @@ uaix_static int impl_utf16_is_nfc(it_in_utf16 first, it_end_utf16 last)
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static int impl_utf16_is_nfd(it_in_utf16 first, it_end_utf16 last)
+uaix_static int impl_norm_is_nfd_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
@@ -1616,7 +1616,7 @@ uaix_static int impl_utf16_is_nfd(it_in_utf16 first, it_end_utf16 last)
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static int impl_utf16_is_nfkc(it_in_utf16 first, it_end_utf16 last)
+uaix_static int impl_norm_is_nfkc_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
@@ -1637,7 +1637,7 @@ uaix_static int impl_utf16_is_nfkc(it_in_utf16 first, it_end_utf16 last)
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static int impl_utf16_is_nfkd(it_in_utf16 first, it_end_utf16 last)
+uaix_static int impl_norm_is_nfkd_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
