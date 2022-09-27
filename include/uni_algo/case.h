@@ -78,228 +78,228 @@ DST t_map(SRC source, int mode, char32_t loc = 0)
 namespace cases {
 
 template<typename UTF8>
-std::basic_string<UTF8> utf8_lower(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> to_lowercase_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_loc>(source,
-            detail::impl_casemap_mode_lower);
+            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(source,
+            detail::impl_case_map_mode_lowercase);
 }
 template<typename UTF16>
-std::basic_string<UTF16> utf16_lower(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> to_lowercase_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_loc>(source,
-            detail::impl_casemap_mode_lower);
+            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(source,
+            detail::impl_case_map_mode_lowercase);
 }
 template<typename UTF8>
-std::basic_string<UTF8> utf8_upper(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> to_uppercase_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_loc>(source,
-            detail::impl_casemap_mode_upper);
+            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(source,
+            detail::impl_case_map_mode_uppercase);
 }
 template<typename UTF16>
-std::basic_string<UTF16> utf16_upper(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> to_uppercase_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_loc>(source,
-            detail::impl_casemap_mode_upper);
+            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(source,
+            detail::impl_case_map_mode_uppercase);
 }
 template<typename UTF8>
-std::basic_string<UTF8> utf8_fold(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> to_casefold_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_loc>(source,
-            detail::impl_casemap_mode_fold);
+            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(source,
+            detail::impl_case_map_mode_casefold);
 }
 template<typename UTF16>
-std::basic_string<UTF16> utf16_fold(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> to_casefold_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_loc>(source,
-            detail::impl_casemap_mode_fold);
+            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(source,
+            detail::impl_case_map_mode_casefold);
 }
 
-inline std::string utf8_lower(std::string_view source)
+inline std::string to_lowercase_utf8(std::string_view source)
 {
-    return utf8_lower<char>(source);
+    return to_lowercase_utf8<char>(source);
 }
-inline std::string utf8_upper(std::string_view source)
+inline std::string to_uppercase_utf8(std::string_view source)
 {
-    return utf8_upper<char>(source);
+    return to_uppercase_utf8<char>(source);
 }
-inline std::string utf8_fold(std::string_view source)
+inline std::string to_casefold_utf8(std::string_view source)
 {
-    return utf8_fold<char>(source);
+    return to_casefold_utf8<char>(source);
 }
-inline std::u16string utf16_lower(std::u16string_view source)
+inline std::u16string to_lowercase_utf16(std::u16string_view source)
 {
-    return utf16_lower<char16_t>(source);
+    return to_lowercase_utf16<char16_t>(source);
 }
-inline std::u16string utf16_upper(std::u16string_view source)
+inline std::u16string to_uppercase_utf16(std::u16string_view source)
 {
-    return utf16_upper<char16_t>(source);
+    return to_uppercase_utf16<char16_t>(source);
 }
-inline std::u16string utf16_fold(std::u16string_view source)
+inline std::u16string to_casefold_utf16(std::u16string_view source)
 {
-    return utf16_fold<char16_t>(source);
+    return to_casefold_utf16<char16_t>(source);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf16_lower(std::wstring_view source)
+inline std::wstring to_lowercase_utf16(std::wstring_view source)
 {
-    return utf16_lower<wchar_t>(source);
+    return to_lowercase_utf16<wchar_t>(source);
 }
-inline std::wstring utf16_upper(std::wstring_view source)
+inline std::wstring to_uppercase_utf16(std::wstring_view source)
 {
-    return utf16_upper<wchar_t>(source);
+    return to_uppercase_utf16<wchar_t>(source);
 }
-inline std::wstring utf16_fold(std::wstring_view source)
+inline std::wstring to_casefold_utf16(std::wstring_view source)
 {
-    return utf16_fold<wchar_t>(source);
+    return to_casefold_utf16<wchar_t>(source);
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 template<typename UTF8>
-std::basic_string<UTF8> utf8_lower(std::basic_string_view<UTF8> source, const uni::locale& locale)
+std::basic_string<UTF8> to_lowercase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-            detail::impl_casemap_mode_lower, static_cast<char32_t>(locale.get_language()));
+            detail::impl_x_case_map_utf8, detail::impl_case_map_locale_utf8>(source,
+            detail::impl_case_map_mode_lowercase, static_cast<char32_t>(locale.get_language()));
 }
 template<typename UTF16>
-std::basic_string<UTF16> utf16_lower(std::basic_string_view<UTF16> source, const uni::locale& locale)
+std::basic_string<UTF16> to_lowercase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-            detail::impl_casemap_mode_lower, static_cast<char32_t>(locale.get_language()));
+            detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(source,
+            detail::impl_case_map_mode_lowercase, static_cast<char32_t>(locale.get_language()));
 }
 template<typename UTF8>
-std::basic_string<UTF8> utf8_upper(std::basic_string_view<UTF8> source, const uni::locale& locale)
+std::basic_string<UTF8> to_uppercase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-            detail::impl_casemap_mode_upper, static_cast<char32_t>(locale.get_language()));
+            detail::impl_x_case_map_utf8, detail::impl_case_map_locale_utf8>(source,
+            detail::impl_case_map_mode_uppercase, static_cast<char32_t>(locale.get_language()));
 }
 template<typename UTF16>
-std::basic_string<UTF16> utf16_upper(std::basic_string_view<UTF16> source, const uni::locale& locale)
+std::basic_string<UTF16> to_uppercase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-            detail::impl_casemap_mode_upper, static_cast<char32_t>(locale.get_language()));
+            detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(source,
+            detail::impl_case_map_mode_uppercase, static_cast<char32_t>(locale.get_language()));
 }
-inline std::string utf8_lower(std::string_view source, const uni::locale& locale)
+inline std::string to_lowercase_utf8(std::string_view source, const uni::locale& locale)
 {
-    return utf8_lower<char>(source, locale);
+    return to_lowercase_utf8<char>(source, locale);
 }
-inline std::string utf8_upper(std::string_view source, const uni::locale& locale)
+inline std::string to_uppercase_utf8(std::string_view source, const uni::locale& locale)
 {
-    return utf8_upper<char>(source, locale);
+    return to_uppercase_utf8<char>(source, locale);
 }
-inline std::u16string utf16_lower(std::u16string_view source, const uni::locale& locale)
+inline std::u16string to_lowercase_utf16(std::u16string_view source, const uni::locale& locale)
 {
-    return utf16_lower<char16_t>(source, locale);
+    return to_lowercase_utf16<char16_t>(source, locale);
 }
-inline std::u16string utf16_upper(std::u16string_view source, const uni::locale& locale)
+inline std::u16string to_uppercase_utf16(std::u16string_view source, const uni::locale& locale)
 {
-    return utf16_upper<char16_t>(source, locale);
+    return to_uppercase_utf16<char16_t>(source, locale);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf16_lower(std::wstring_view source, const uni::locale& locale)
+inline std::wstring to_lowercase_utf16(std::wstring_view source, const uni::locale& locale)
 {
-    return utf16_lower<wchar_t>(source, locale);
+    return to_lowercase_utf16<wchar_t>(source, locale);
 }
-inline std::wstring utf16_upper(std::wstring_view source, const uni::locale& locale)
+inline std::wstring to_uppercase_utf16(std::wstring_view source, const uni::locale& locale)
 {
-    return utf16_upper<wchar_t>(source, locale);
+    return to_uppercase_utf16<wchar_t>(source, locale);
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 template<typename UTF8>
-std::basic_string<UTF8> utf8_title(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> to_titlecase_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_loc>(source,
-            detail::impl_casemap_mode_title);
+            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(source,
+            detail::impl_case_map_mode_titlecase);
 }
 template<typename UTF16>
-std::basic_string<UTF16> utf16_title(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> to_titlecase_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_loc>(source,
-            detail::impl_casemap_mode_title);
+            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(source,
+            detail::impl_case_map_mode_titlecase);
 }
-inline std::string utf8_title(std::string_view source)
+inline std::string to_titlecase_utf8(std::string_view source)
 {
-    return utf8_title<char>(source);
+    return to_titlecase_utf8<char>(source);
 }
-inline std::u16string utf16_title(std::u16string_view source)
+inline std::u16string to_titlecase_utf16(std::u16string_view source)
 {
-    return utf16_title<char16_t>(source);
+    return to_titlecase_utf16<char16_t>(source);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf16_title(std::wstring_view source)
+inline std::wstring to_titlecase_utf16(std::wstring_view source)
 {
-    return utf16_title<wchar_t>(source);
+    return to_titlecase_utf16<wchar_t>(source);
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 template<typename UTF8>
-std::basic_string<UTF8> utf8_title(std::basic_string_view<UTF8> source, const uni::locale& locale)
+std::basic_string<UTF8> to_titlecase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_casemap, detail::impl_utf8_casemap_locale>(source,
-            detail::impl_casemap_mode_title, static_cast<char32_t>(locale.get_language()));
+            detail::impl_x_case_map_utf8, detail::impl_case_map_locale_utf8>(source,
+            detail::impl_case_map_mode_titlecase, static_cast<char32_t>(locale.get_language()));
 }
 template<typename UTF16>
-std::basic_string<UTF16> utf16_title(std::basic_string_view<UTF16> source, const uni::locale& locale)
+std::basic_string<UTF16> to_titlecase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_casemap, detail::impl_utf16_casemap_locale>(source,
-            detail::impl_casemap_mode_title, static_cast<char32_t>(locale.get_language()));
+            detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(source,
+            detail::impl_case_map_mode_titlecase, static_cast<char32_t>(locale.get_language()));
 }
-inline std::string utf8_title(std::string_view source, const uni::locale& locale)
+inline std::string to_titlecase_utf8(std::string_view source, const uni::locale& locale)
 {
-    return utf8_title<char>(source, locale);
+    return to_titlecase_utf8<char>(source, locale);
 }
-inline std::u16string utf16_title(std::u16string_view source, const uni::locale& locale)
+inline std::u16string to_titlecase_utf16(std::u16string_view source, const uni::locale& locale)
 {
-    return utf16_title<char16_t>(source, locale);
+    return to_titlecase_utf16<char16_t>(source, locale);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf16_title(std::wstring_view source, const uni::locale& locale)
+inline std::wstring to_titlecase_utf16(std::wstring_view source, const uni::locale& locale)
 {
-    return utf16_title<wchar_t>(source, locale);
+    return to_titlecase_utf16<wchar_t>(source, locale);
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #endif // UNI_ALGO_DISABLE_FULL_CASE
@@ -310,139 +310,139 @@ inline std::wstring utf16_title(std::wstring_view source, const uni::locale& loc
 namespace casesens {
 
 template<typename UTF8>
-int utf8_compare(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
+int compare_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
     static_assert(std::is_integral_v<UTF8>);
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf8_compare(string1.data(), string1.data() + string1.size(),
-                                     string2.data(), string2.data() + string2.size(), false);
+    return detail::impl_case_compare_utf8(string1.data(), string1.data() + string1.size(),
+                                          string2.data(), string2.data() + string2.size(), false);
 #else
-    return detail::impl_utf8_compare(string1.cbegin(), string1.cend(),
-                                     string2.cbegin(), string2.cend(), false);
+    return detail::impl_case_compare_utf8(string1.cbegin(), string1.cend(),
+                                          string2.cbegin(), string2.cend(), false);
 #endif
 }
 
 template<typename UTF16>
-int utf16_compare(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
+int compare_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf16_compare(string1.data(), string1.data() + string1.size(),
-                                      string2.data(), string2.data() + string2.size(), false);
+    return detail::impl_case_compare_utf16(string1.data(), string1.data() + string1.size(),
+                                           string2.data(), string2.data() + string2.size(), false);
 #else
-    return detail::impl_utf16_compare(string1.cbegin(), string1.cend(),
-                                      string2.cbegin(), string2.cend(), false);
+    return detail::impl_case_compare_utf16(string1.cbegin(), string1.cend(),
+                                           string2.cbegin(), string2.cend(), false);
 #endif
 }
 
 #ifndef UNI_ALGO_DISABLE_COLLATE
 template<typename UTF8>
-int utf8_collate(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
+int collate_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
     static_assert(std::is_integral_v<UTF8>);
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf8_collate(string1.data(), string1.data() + string1.size(),
-                                     string2.data(), string2.data() + string2.size(), false);
+    return detail::impl_case_collate_utf8(string1.data(), string1.data() + string1.size(),
+                                          string2.data(), string2.data() + string2.size(), false);
 #else
-    return detail::impl_utf8_collate(string1.cbegin(), string1.cend(),
-                                     string2.cbegin(), string2.cend(), false);
+    return detail::impl_case_collate_utf8(string1.cbegin(), string1.cend(),
+                                          string2.cbegin(), string2.cend(), false);
 #endif
 }
 
 template<typename UTF16>
-int utf16_collate(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
+int collate_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf16_collate(string1.data(), string1.data() + string1.size(),
-                                      string2.data(), string2.data() + string2.size(), false);
+    return detail::impl_case_collate_utf16(string1.data(), string1.data() + string1.size(),
+                                           string2.data(), string2.data() + string2.size(), false);
 #else
-    return detail::impl_utf16_collate(string1.cbegin(), string1.cend(),
-                                      string2.cbegin(), string2.cend(), false);
+    return detail::impl_case_collate_utf16(string1.cbegin(), string1.cend(),
+                                           string2.cbegin(), string2.cend(), false);
 #endif
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
 
 template<typename UTF8>
-uni::search utf8_search(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
+uni::search search_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     size_t pos = detail::impl_npos, end = detail::impl_npos;
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_utf8_search(string1.data(), string1.data() + string1.size(),
-                                        string2.data(), string2.data() + string2.size(), false, &pos, &end);
+    bool ret = detail::impl_case_search_utf8(string1.data(), string1.data() + string1.size(),
+                                             string2.data(), string2.data() + string2.size(), false, &pos, &end);
 #else
-    bool ret = detail::impl_utf8_search(string1.cbegin(), string1.cend(),
-                                        string2.cbegin(), string2.cend(), false, &pos, &end);
+    bool ret = detail::impl_case_search_utf8(string1.cbegin(), string1.cend(),
+                                             string2.cbegin(), string2.cend(), false, &pos, &end);
 #endif
 
     return uni::search{ret, pos, end};
 }
 template<typename UTF16>
 
-uni::search utf16_search(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
+uni::search search_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     size_t pos = detail::impl_npos, end = detail::impl_npos;
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_utf16_search(string1.data(), string1.data() + string1.size(),
-                                         string2.data(), string2.data() + string2.size(), false, &pos, &end);
+    bool ret = detail::impl_case_search_utf16(string1.data(), string1.data() + string1.size(),
+                                              string2.data(), string2.data() + string2.size(), false, &pos, &end);
 #else
-    bool ret = detail::impl_utf16_search(string1.cbegin(), string1.cend(),
-                                         string2.cbegin(), string2.cend(), false, &pos, &end);
+    bool ret = detail::impl_case_search_utf16(string1.cbegin(), string1.cend(),
+                                              string2.cbegin(), string2.cend(), false, &pos, &end);
 #endif
 
     return uni::search{ret, pos, end};
 }
 
-inline int utf8_compare(std::string_view string1, std::string_view string2)
+inline int compare_utf8(std::string_view string1, std::string_view string2)
 {
-    return utf8_compare<char>(string1, string2);
+    return compare_utf8<char>(string1, string2);
 }
 #ifndef UNI_ALGO_DISABLE_COLLATE
-inline int utf8_collate(std::string_view string1, std::string_view string2)
+inline int collate_utf8(std::string_view string1, std::string_view string2)
 {
-    return utf8_collate<char>(string1, string2);
+    return collate_utf8<char>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uni::search utf8_search(std::string_view string1, std::string_view string2)
+inline uni::search search_utf8(std::string_view string1, std::string_view string2)
 {
-    return utf8_search<char>(string1, string2);
+    return search_utf8<char>(string1, string2);
 }
-inline int utf16_compare(std::u16string_view string1, std::u16string_view string2)
+inline int compare_utf16(std::u16string_view string1, std::u16string_view string2)
 {
-    return utf16_compare<char16_t>(string1, string2);
+    return compare_utf16<char16_t>(string1, string2);
 }
 #ifndef UNI_ALGO_DISABLE_COLLATE
-inline int utf16_collate(std::u16string_view string1, std::u16string_view string2)
+inline int collate_utf16(std::u16string_view string1, std::u16string_view string2)
 {
-    return utf16_collate<char16_t>(string1, string2);
+    return collate_utf16<char16_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uni::search utf16_search(std::u16string_view string1, std::u16string_view string2)
+inline uni::search search_utf16(std::u16string_view string1, std::u16string_view string2)
 {
-    return utf16_search<char16_t>(string1, string2);
+    return search_utf16<char16_t>(string1, string2);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline int utf16_compare(std::wstring_view string1, std::wstring_view string2)
+inline int compare_utf16(std::wstring_view string1, std::wstring_view string2)
 {
-    return utf16_compare<wchar_t>(string1, string2);
+    return compare_utf16<wchar_t>(string1, string2);
 }
 #ifndef UNI_ALGO_DISABLE_COLLATE
-inline int utf16_collate(std::wstring_view string1, std::wstring_view string2)
+inline int collate_utf16(std::wstring_view string1, std::wstring_view string2)
 {
-    return utf16_collate<wchar_t>(string1, string2);
+    return collate_utf16<wchar_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uni::search utf16_search(std::wstring_view string1, std::wstring_view string2)
+inline uni::search search_utf16(std::wstring_view string1, std::wstring_view string2)
 {
-    return utf16_search<wchar_t>(string1, string2);
+    return search_utf16<wchar_t>(string1, string2);
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
@@ -454,7 +454,7 @@ std::string utf8_sortkey(std::basic_string_view<UTF8> source)
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::string, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_sortkey, detail::impl_utf8_sortkey_loc>(source, false);
+            detail::impl_x_case_sortkey_utf8, detail::impl_case_sortkey_loc_utf8>(source, false);
 }
 template<typename UTF16>
 std::string utf16_sortkey(std::basic_string_view<UTF16> source)
@@ -462,7 +462,7 @@ std::string utf16_sortkey(std::basic_string_view<UTF16> source)
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::string, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_sortkey, detail::impl_utf16_sortkey_loc>(source, false);
+            detail::impl_x_case_sortkey_utf16, detail::impl_case_sortkey_loc_utf16>(source, false);
 }
 inline std::string utf8_sortkey(std::string_view source)
 {
@@ -484,139 +484,139 @@ inline std::string utf16_sortkey(std::wstring_view source)
 namespace caseless {
 
 template<typename UTF8>
-int utf8_compare(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
+int compare_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
     static_assert(std::is_integral_v<UTF8>);
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf8_compare(string1.data(), string1.data() + string1.size(),
-                                     string2.data(), string2.data() + string2.size(), true);
+    return detail::impl_case_compare_utf8(string1.data(), string1.data() + string1.size(),
+                                          string2.data(), string2.data() + string2.size(), true);
 #else
-    return detail::impl_utf8_compare(string1.cbegin(), string1.cend(),
-                                     string2.cbegin(), string2.cend(), true);
+    return detail::impl_case_compare_utf8(string1.cbegin(), string1.cend(),
+                                          string2.cbegin(), string2.cend(), true);
 #endif
 }
 
 template<typename UTF16>
-int utf16_compare(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
+int compare_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf16_compare(string1.data(), string1.data() + string1.size(),
-                                      string2.data(), string2.data() + string2.size(), true);
+    return detail::impl_case_compare_utf16(string1.data(), string1.data() + string1.size(),
+                                           string2.data(), string2.data() + string2.size(), true);
 #else
-    return detail::impl_utf16_compare(string1.cbegin(), string1.cend(),
-                                      string2.cbegin(), string2.cend(), true);
+    return detail::impl_case_compare_utf16(string1.cbegin(), string1.cend(),
+                                           string2.cbegin(), string2.cend(), true);
 #endif
 }
 
 #ifndef UNI_ALGO_DISABLE_COLLATE
 template<typename UTF8>
-int utf8_collate(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
+int collate_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
     static_assert(std::is_integral_v<UTF8>);
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf8_collate(string1.data(), string1.data() + string1.size(),
-                                     string2.data(), string2.data() + string2.size(), true);
+    return detail::impl_case_collate_utf8(string1.data(), string1.data() + string1.size(),
+                                          string2.data(), string2.data() + string2.size(), true);
 #else
-    return detail::impl_utf8_collate(string1.cbegin(), string1.cend(),
-                                     string2.cbegin(), string2.cend(), true);
+    return detail::impl_case_collate_utf8(string1.cbegin(), string1.cend(),
+                                          string2.cbegin(), string2.cend(), true);
 #endif
 }
 
 template<typename UTF16>
-int utf16_collate(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
+int collate_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf16_collate(string1.data(), string1.data() + string1.size(),
-                                      string2.data(), string2.data() + string2.size(), true);
+    return detail::impl_case_collate_utf16(string1.data(), string1.data() + string1.size(),
+                                           string2.data(), string2.data() + string2.size(), true);
 #else
-    return detail::impl_utf16_collate(string1.cbegin(), string1.cend(),
-                                      string2.cbegin(), string2.cend(), true);
+    return detail::impl_case_collate_utf16(string1.cbegin(), string1.cend(),
+                                           string2.cbegin(), string2.cend(), true);
 #endif
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
 
 template<typename UTF8>
-uni::search utf8_search(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
+uni::search search_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
     static_assert(std::is_integral_v<UTF8>);
 
     size_t pos = detail::impl_npos, end = detail::impl_npos;
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_utf8_search(string1.data(), string1.data() + string1.size(),
-                                        string2.data(), string2.data() + string2.size(), true, &pos, &end);
+    bool ret = detail::impl_case_search_utf8(string1.data(), string1.data() + string1.size(),
+                                             string2.data(), string2.data() + string2.size(), true, &pos, &end);
 #else
-    bool ret = detail::impl_utf8_search(string1.cbegin(), string1.cend(),
-                                        string2.cbegin(), string2.cend(), true, &pos, &end);
+    bool ret = detail::impl_case_search_utf8(string1.cbegin(), string1.cend(),
+                                             string2.cbegin(), string2.cend(), true, &pos, &end);
 #endif
 
     return uni::search{ret, pos, end};
 }
 
 template<typename UTF16>
-uni::search utf16_search(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
+uni::search search_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     size_t pos = detail::impl_npos, end = detail::impl_npos;
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_utf16_search(string1.data(), string1.data() + string1.size(),
-                                         string2.data(), string2.data() + string2.size(), true, &pos, &end);
+    bool ret = detail::impl_case_search_utf16(string1.data(), string1.data() + string1.size(),
+                                              string2.data(), string2.data() + string2.size(), true, &pos, &end);
 #else
-    bool ret = detail::impl_utf16_search(string1.cbegin(), string1.cend(),
-                                         string2.cbegin(), string2.cend(), true, &pos, &end);
+    bool ret = detail::impl_case_search_utf16(string1.cbegin(), string1.cend(),
+                                              string2.cbegin(), string2.cend(), true, &pos, &end);
 #endif
 
     return uni::search{ret, pos, end};
 }
 
-inline int utf8_compare(std::string_view string1, std::string_view string2)
+inline int compare_utf8(std::string_view string1, std::string_view string2)
 {
-    return utf8_compare<char>(string1, string2);
+    return compare_utf8<char>(string1, string2);
 }
 #ifndef UNI_ALGO_DISABLE_COLLATE
-inline int utf8_collate(std::string_view string1, std::string_view string2)
+inline int collate_utf8(std::string_view string1, std::string_view string2)
 {
-    return utf8_collate<char>(string1, string2);
+    return collate_utf8<char>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uni::search utf8_search(std::string_view string1, std::string_view string2)
+inline uni::search search_utf8(std::string_view string1, std::string_view string2)
 {
-    return utf8_search<char>(string1, string2);
+    return search_utf8<char>(string1, string2);
 }
-inline int utf16_compare(std::u16string_view string1, std::u16string_view string2)
+inline int compare_utf16(std::u16string_view string1, std::u16string_view string2)
 {
-    return utf16_compare<char16_t>(string1, string2);
+    return compare_utf16<char16_t>(string1, string2);
 }
 #ifndef UNI_ALGO_DISABLE_COLLATE
-inline int utf16_collate(std::u16string_view string1, std::u16string_view string2)
+inline int collate_utf16(std::u16string_view string1, std::u16string_view string2)
 {
-    return utf16_collate<char16_t>(string1, string2);
+    return collate_utf16<char16_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uni::search utf16_search(std::u16string_view string1, std::u16string_view string2)
+inline uni::search search_utf16(std::u16string_view string1, std::u16string_view string2)
 {
-    return utf16_search<char16_t>(string1, string2);
+    return search_utf16<char16_t>(string1, string2);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline int utf16_compare(std::wstring_view string1, std::wstring_view string2)
+inline int compare_utf16(std::wstring_view string1, std::wstring_view string2)
 {
-    return utf16_compare<wchar_t>(string1, string2);
+    return compare_utf16<wchar_t>(string1, string2);
 }
 #ifndef UNI_ALGO_DISABLE_COLLATE
-inline int utf16_collate(std::wstring_view string1, std::wstring_view string2)
+inline int collate_utf16(std::wstring_view string1, std::wstring_view string2)
 {
-    return utf16_collate<wchar_t>(string1, string2);
+    return collate_utf16<wchar_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uni::search utf16_search(std::wstring_view string1, std::wstring_view string2)
+inline uni::search search_utf16(std::wstring_view string1, std::wstring_view string2)
 {
-    return utf16_search<wchar_t>(string1, string2);
+    return search_utf16<wchar_t>(string1, string2);
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
@@ -629,7 +629,7 @@ std::string utf8_sortkey(std::basic_string_view<UTF8> source)
     static_assert(std::is_integral_v<UTF8>);
 
     return detail::t_map<std::string, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8_sortkey, detail::impl_utf8_sortkey_loc>(source, true);
+            detail::impl_x_case_sortkey_utf8, detail::impl_case_sortkey_loc_utf8>(source, true);
 }
 template<typename UTF16>
 std::string utf16_sortkey(std::basic_string_view<UTF16> source)
@@ -637,7 +637,7 @@ std::string utf16_sortkey(std::basic_string_view<UTF16> source)
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::string, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16_sortkey, detail::impl_utf16_sortkey_loc>(source, true);
+            detail::impl_x_case_sortkey_utf16, detail::impl_case_sortkey_loc_utf16>(source, true);
 }
 inline std::string utf8_sortkey(std::string_view source)
 {
@@ -654,19 +654,19 @@ inline std::string utf16_sortkey(std::wstring_view source)
 #endif // UNI_ALGO_DISABLE_COLLATE
 
 template<typename UTF8>
-bool utf8_like(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2, char32_t escape = 0)
+bool like_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2, char32_t escape = 0)
 {
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_utf8_like(string1.data(), string1.data() + string1.size(),
-                                  string2.data(), string2.data() + string2.size(), true, '%', '_', escape);
+    return detail::impl_case_like_utf8(string1.data(), string1.data() + string1.size(),
+                                       string2.data(), string2.data() + string2.size(), true, '%', '_', escape);
 #else
-    return detail::impl_utf8_like(string1.cbegin(), string1.cend(),
-                                  string2.cbegin(), string2.cend(), true, '%', '_', escape);
+    return detail::impl_case_like_utf8(string1.cbegin(), string1.cend(),
+                                       string2.cbegin(), string2.cend(), true, '%', '_', escape);
 #endif
 }
-inline bool utf8_like(std::string_view string1, std::string_view string2, char32_t escape = 0)
+inline bool like_utf8(std::string_view string1, std::string_view string2, char32_t escape = 0)
 {
-    return utf8_like<char>(string1, string2, escape);
+    return like_utf8<char>(string1, string2, escape);
 }
 
 #endif // UNI_ALGO_EXPERIMENTAL
@@ -677,35 +677,35 @@ inline bool utf8_like(std::string_view string1, std::string_view string2, char32
 
 namespace cases {
 
-inline std::u8string utf8_lower(std::u8string_view source)
+inline std::u8string to_lowercase_utf8(std::u8string_view source)
 {
-    return utf8_lower<char8_t>(source);
+    return to_lowercase_utf8<char8_t>(source);
 }
-inline std::u8string utf8_upper(std::u8string_view source)
+inline std::u8string to_uppercase_utf8(std::u8string_view source)
 {
-    return utf8_upper<char8_t>(source);
+    return to_uppercase_utf8<char8_t>(source);
 }
-inline std::u8string utf8_fold(std::u8string_view source)
+inline std::u8string to_casefold_utf8(std::u8string_view source)
 {
-    return utf8_fold<char8_t>(source);
+    return to_casefold_utf8<char8_t>(source);
 }
-inline std::u8string utf8_lower(std::u8string_view source, const uni::locale& locale)
+inline std::u8string to_lowercase_utf8(std::u8string_view source, const uni::locale& locale)
 {
-    return utf8_lower<char8_t>(source, locale);
+    return to_lowercase_utf8<char8_t>(source, locale);
 }
-inline std::u8string utf8_upper(std::u8string_view source, const uni::locale& locale)
+inline std::u8string to_uppercase_utf8(std::u8string_view source, const uni::locale& locale)
 {
-    return utf8_upper<char8_t>(source, locale);
+    return to_uppercase_utf8<char8_t>(source, locale);
 }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-inline std::u8string utf8_title(std::u8string_view source)
+inline std::u8string to_titlecase_utf8(std::u8string_view source)
 {
-    return utf8_title<char8_t>(source);
+    return to_titlecase_utf8<char8_t>(source);
 }
-inline std::u8string utf8_title(std::u8string_view source, const uni::locale& locale)
+inline std::u8string to_titlecase_utf8(std::u8string_view source, const uni::locale& locale)
 {
-    return utf8_title<char8_t>(source, locale);
+    return to_titlecase_utf8<char8_t>(source, locale);
 }
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
@@ -714,38 +714,38 @@ inline std::u8string utf8_title(std::u8string_view source, const uni::locale& lo
 
 namespace casesens {
 
-inline int utf8_compare(std::u8string_view string1, std::u8string_view string2)
+inline int compare_utf8(std::u8string_view string1, std::u8string_view string2)
 {
-    return utf8_compare<char8_t>(string1, string2);
+    return compare_utf8<char8_t>(string1, string2);
 }
 #ifndef UNI_ALGO_DISABLE_COLLATE
-inline int utf8_collate(std::u8string_view string1, std::u8string_view string2)
+inline int collate_utf8(std::u8string_view string1, std::u8string_view string2)
 {
-    return utf8_collate<char8_t>(string1, string2);
+    return collate_utf8<char8_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uni::search utf8_search(std::u8string_view string1, std::u8string_view string2)
+inline uni::search search_utf8(std::u8string_view string1, std::u8string_view string2)
 {
-    return utf8_search<char8_t>(string1, string2);
+    return search_utf8<char8_t>(string1, string2);
 }
 
 } // namespace casesens
 
 namespace caseless {
 
-inline int utf8_compare(std::u8string_view string1, std::u8string_view string2)
+inline int compare_utf8(std::u8string_view string1, std::u8string_view string2)
 {
-    return utf8_compare<char8_t>(string1, string2);
+    return compare_utf8<char8_t>(string1, string2);
 }
 #ifndef UNI_ALGO_DISABLE_COLLATE
-inline int utf8_collate(std::u8string_view string1, std::u8string_view string2)
+inline int collate_utf8(std::u8string_view string1, std::u8string_view string2)
 {
-    return utf8_collate<char8_t>(string1, string2);
+    return collate_utf8<char8_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uni::search utf8_search(std::u8string_view string1, std::u8string_view string2)
+inline uni::search search_utf8(std::u8string_view string1, std::u8string_view string2)
 {
-    return utf8_search<char8_t>(string1, string2);
+    return search_utf8<char8_t>(string1, string2);
 }
 
 } // namespace caseless

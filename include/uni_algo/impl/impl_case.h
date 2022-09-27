@@ -24,19 +24,19 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 // The length of a destination (result) string must be premultiplied with one of these
 // Example: destination_length = source_length * impl_x_function_name
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-uaix_const size_t impl_x_utf8_casemap = 3;
-uaix_const size_t impl_x_utf16_casemap = 3;
+uaix_const size_t impl_x_case_map_utf8 = 3;
+uaix_const size_t impl_x_case_map_utf16 = 3;
 #else
-uaix_const size_t impl_x_utf8_casemap = 3;
-uaix_const size_t impl_x_utf16_casemap = 1;
+uaix_const size_t impl_x_case_map_utf8 = 3;
+uaix_const size_t impl_x_case_map_utf16 = 1;
 #endif
 
 // Modes for casemap functions
 //uaix_const int impl_casemap_mode_null = 0;
-uaix_const int impl_casemap_mode_fold   = 1;
-uaix_const int impl_casemap_mode_upper  = 2;
-uaix_const int impl_casemap_mode_lower  = 3;
-uaix_const int impl_casemap_mode_title  = 4;
+uaix_const int impl_case_map_mode_casefold   = 1;
+uaix_const int impl_case_map_mode_uppercase  = 2;
+uaix_const int impl_case_map_mode_lowercase  = 3;
+uaix_const int impl_case_map_mode_titlecase  = 4;
 
 uaix_const type_codept prop_Cased            = 1 << 0;
 uaix_const type_codept prop_Cased_Ignorable  = 1 << 1;
@@ -191,7 +191,7 @@ uaix_static bool stages_special_title_check(type_codept c)
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool utf8_final_sigma(it_in_utf8 from, it_end_utf8 to, bool reverse)
+uaix_static bool case_final_sigma_utf8(it_in_utf8 from, it_end_utf8 to, bool reverse)
 {
     /* Final_Sigma special case from The Unicode Standard:
      * C is preceded by a sequence consisting of a cased letter and then zero or more
@@ -223,7 +223,7 @@ uaix_static bool utf8_final_sigma(it_in_utf8 from, it_end_utf8 to, bool reverse)
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static bool utf16_final_sigma(it_in_utf16 from, it_end_utf16 to, bool reverse)
+uaix_static bool case_final_sigma_utf16(it_in_utf16 from, it_end_utf16 to, bool reverse)
 {
     it_in_utf16 s = from;
     type_codept c = 0;
@@ -254,12 +254,12 @@ uaix_static bool utf16_final_sigma(it_in_utf16 from, it_end_utf16 to, bool rever
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t utf8_title(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result);
+uaix_static size_t case_title_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result);
 
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t utf16_title(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result);
+uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result);
 
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
@@ -269,13 +269,13 @@ uaix_static size_t utf16_title(it_in_utf16 first, it_end_utf16 last, it_out_utf1
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode)
+uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode)
 {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
     type_codept c = 0;
 
-    if (mode == impl_casemap_mode_lower)
+    if (mode == impl_case_map_mode_lowercase)
     {
         while (src != last)
         {
@@ -294,8 +294,8 @@ uaix_static size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_
             }
             if (c == 0x03A3) // Final_Sigma
             {
-                if (!utf8_final_sigma(src, last, false) &&
-                    utf8_final_sigma(prev, first, true))
+                if (!case_final_sigma_utf8(src, last, false) &&
+                    case_final_sigma_utf8(prev, first, true))
                 {
                     *dst++ = (type_char8)(type_codept)0xCF;
                     *dst++ = (type_char8)(type_codept)0x82;
@@ -308,7 +308,7 @@ uaix_static size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_
             dst = codepoint_to_utf8(c, dst);
         }
     }
-    else if (mode == impl_casemap_mode_upper)
+    else if (mode == impl_case_map_mode_uppercase)
     {
         while (src != last)
         {
@@ -333,7 +333,7 @@ uaix_static size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_
             dst = codepoint_to_utf8(c, dst);
         }
     }
-    else if (mode == impl_casemap_mode_fold)
+    else if (mode == impl_case_map_mode_casefold)
     {
         while (src != last)
         {
@@ -359,8 +359,8 @@ uaix_static size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_
         }
     }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-    else if (mode == impl_casemap_mode_title)
-        return utf8_title(first, last, result);
+    else if (mode == impl_case_map_mode_titlecase)
+        return case_title_utf8(first, last, result);
 #endif
 
     return (size_t)(dst - result);
@@ -372,13 +372,13 @@ uaix_static size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode)
+uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode)
 {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
     type_codept c = 0;
 
-    if (mode == impl_casemap_mode_lower)
+    if (mode == impl_case_map_mode_lowercase)
     {
         while (src != last)
         {
@@ -396,8 +396,8 @@ uaix_static size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_o
             }
             if (c == 0x03A3) // Final_Sigma
             {
-                if (!utf16_final_sigma(src, last, false) &&
-                    utf16_final_sigma(prev, first, true))
+                if (!case_final_sigma_utf16(src, last, false) &&
+                    case_final_sigma_utf16(prev, first, true))
                 {
                     *dst++ = (type_char16)0x03C2;
                     continue;
@@ -409,7 +409,7 @@ uaix_static size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_o
             dst = codepoint_to_utf16(c, dst);
         }
     }
-    else if (mode == impl_casemap_mode_upper)
+    else if (mode == impl_case_map_mode_uppercase)
     {
         while (src != last)
         {
@@ -434,7 +434,7 @@ uaix_static size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_o
             dst = codepoint_to_utf16(c, dst);
         }
     }
-    else if (mode == impl_casemap_mode_fold)
+    else if (mode == impl_case_map_mode_casefold)
     {
         while (src != last)
         {
@@ -460,8 +460,8 @@ uaix_static size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last, it_o
         }
     }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-    else if (mode == impl_casemap_mode_title)
-        return utf16_title(first, last, result);
+    else if (mode == impl_case_map_mode_titlecase)
+        return case_title_utf16(first, last, result);
 #endif
 
     return (size_t)(dst - result);
@@ -527,8 +527,8 @@ uaix_static it_in_utf16 iter_fold_utf16(it_in_utf16 first, it_end_utf16 last, ty
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static int impl_utf8_compare(it_in_utf8 first1, it_end_utf8 last1,
-                                  it_in_utf8 first2, it_end_utf8 last2, bool caseless)
+uaix_static int impl_case_compare_utf8(it_in_utf8 first1, it_end_utf8 last1,
+                                       it_in_utf8 first2, it_end_utf8 last2, bool caseless)
 {
     it_in_utf8 src1 = first1;
     it_in_utf8 src2 = first2;
@@ -604,8 +604,8 @@ uaix_static int impl_utf8_compare(it_in_utf8 first1, it_end_utf8 last1,
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static int impl_utf16_compare(it_in_utf16 first1, it_end_utf16 last1,
-                                   it_in_utf16 first2, it_end_utf16 last2, bool caseless)
+uaix_static int impl_case_compare_utf16(it_in_utf16 first1, it_end_utf16 last1,
+                                        it_in_utf16 first2, it_end_utf16 last2, bool caseless)
 {
     it_in_utf16 src1 = first1;
     it_in_utf16 src2 = first2;
@@ -683,8 +683,8 @@ uaix_static int impl_utf16_compare(it_in_utf16 first1, it_end_utf16 last1,
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static int impl_utf8_collate(it_in_utf8 first1, it_end_utf8 last1,
-                                  it_in_utf8 first2, it_end_utf8 last2, bool caseless)
+uaix_static int impl_case_collate_utf8(it_in_utf8 first1, it_end_utf8 last1,
+                                       it_in_utf8 first2, it_end_utf8 last2, bool caseless)
 {
     it_in_utf8 src1 = first1;
     it_in_utf8 src2 = first2;
@@ -769,8 +769,8 @@ uaix_static int impl_utf8_collate(it_in_utf8 first1, it_end_utf8 last1,
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static int impl_utf16_collate(it_in_utf16 first1, it_end_utf16 last1,
-                                   it_in_utf16 first2, it_end_utf16 last2, bool caseless)
+uaix_static int impl_case_collate_utf16(it_in_utf16 first1, it_end_utf16 last1,
+                                        it_in_utf16 first2, it_end_utf16 last2, bool caseless)
 {
     it_in_utf16 src1 = first1;
     it_in_utf16 src2 = first2;
@@ -857,9 +857,9 @@ uaix_static int impl_utf16_collate(it_in_utf16 first1, it_end_utf16 last1,
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool impl_utf8_search(it_in_utf8 first1, it_end_utf8 last1,
-                                  it_in_utf8 first2, it_end_utf8 last2, bool caseless,
-                                  size_t* pos, size_t* end)
+uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
+                                       it_in_utf8 first2, it_end_utf8 last2, bool caseless,
+                                       size_t* pos, size_t* end)
 {
     it_in_utf8 src1 = first1;
     it_in_utf8 src2 = first2;
@@ -959,9 +959,9 @@ uaix_static bool impl_utf8_search(it_in_utf8 first1, it_end_utf8 last1,
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static bool impl_utf16_search(it_in_utf16 first1, it_end_utf16 last1,
-                                   it_in_utf16 first2, it_end_utf16 last2, bool caseless,
-                                   size_t* pos, size_t* end)
+uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
+                                        it_in_utf16 first2, it_end_utf16 last2, bool caseless,
+                                        size_t* pos, size_t* end)
 {
     it_in_utf16 src1 = first1;
     it_in_utf16 src2 = first2;
@@ -1058,9 +1058,9 @@ uaix_static bool impl_utf16_search(it_in_utf16 first1, it_end_utf16 last1,
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool impl_utf8_like(it_in_utf8 first1, it_end_utf8 last1,
-                                it_in_utf8 first2, it_end_utf8 last2, bool caseless,
-                                type_codept all, type_codept one, type_codept escape)
+uaix_static bool impl_case_like_utf8(it_in_utf8 first1, it_end_utf8 last1,
+                                     it_in_utf8 first2, it_end_utf8 last2, bool caseless,
+                                     type_codept all, type_codept one, type_codept escape)
 {
     it_in_utf8 src1 = first1;
     it_in_utf8 src2 = first2;
@@ -1195,7 +1195,7 @@ uaix_static bool impl_utf8_like(it_in_utf8 first1, it_end_utf8 last1,
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t utf8_title(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+uaix_static size_t case_title_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
 {
     /* Title case rules from The Unicode Standard:
      * toTitlecase(X): Find the word boundaries in X according to The Unicode Standard Annex #29,
@@ -1281,8 +1281,8 @@ uaix_static size_t utf8_title(it_in_utf8 first, it_end_utf8 last, it_out_utf8 re
             }
             if (c == 0x03A3) // Final_Sigma
             {
-                if (!utf8_final_sigma(src, last, false) &&
-                    utf8_final_sigma(prev, first, true))
+                if (!case_final_sigma_utf8(src, last, false) &&
+                    case_final_sigma_utf8(prev, first, true))
                 {
                     *dst++ = (type_char8)(type_codept)0xCF;
                     *dst++ = (type_char8)(type_codept)0x82;
@@ -1302,7 +1302,7 @@ uaix_static size_t utf8_title(it_in_utf8 first, it_end_utf8 last, it_out_utf8 re
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t utf16_title(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
 {
     it_in_utf16 src = first;
     it_in_utf16 brk = first;
@@ -1380,8 +1380,8 @@ uaix_static size_t utf16_title(it_in_utf16 first, it_end_utf16 last, it_out_utf1
             }
             else if (c == 0x03A3) // Final_Sigma
             {
-                if (!utf16_final_sigma(src, last, false) &&
-                    utf16_final_sigma(prev, first, true))
+                if (!case_final_sigma_utf16(src, last, false) &&
+                    case_final_sigma_utf16(prev, first, true))
                 {
                     *dst++ = (type_char16)0x03C2;
                     continue;
@@ -1406,11 +1406,11 @@ uaix_static size_t utf16_title(it_in_utf16 first, it_end_utf16 last, it_out_utf1
 #ifndef UNI_ALGO_DISABLE_COLLATE
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-uaix_const size_t impl_x_utf8_sortkey = 5;
-uaix_const size_t impl_x_utf16_sortkey = 9;
+uaix_const size_t impl_x_case_sortkey_utf8 = 5;
+uaix_const size_t impl_x_case_sortkey_utf16 = 9;
 #else
-uaix_const size_t impl_x_utf8_sortkey = 3;
-uaix_const size_t impl_x_utf16_sortkey = 3;
+uaix_const size_t impl_x_case_sortkey_utf8 = 3;
+uaix_const size_t impl_x_case_sortkey_utf16 = 3;
 #endif
 
 #ifdef __cplusplus
@@ -1431,11 +1431,11 @@ uaix_static it_out_utf8 codepoint_to_sortkey(type_codept c, it_out_utf8 dst)
 }
 
 // This function guarantees that comparing 2 sort keys with binary comparison
-// gives exactly the same result as comparing 2 strings with impl_utf8_collate
+// gives exactly the same result as comparing 2 strings with impl_case_collate_utf8
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_sortkey(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, bool caseless)
+uaix_static size_t impl_case_sortkey_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, bool caseless)
 {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
@@ -1480,11 +1480,11 @@ uaix_static size_t impl_utf8_sortkey(it_in_utf8 first, it_end_utf8 last, it_out_
 }
 
 // This function guarantees that comparing 2 sort keys with binary comparison
-// gives exactly the same result as comparing 2 strings with impl_utf16_collate
+// gives exactly the same result as comparing 2 strings with impl_case_collate_utf16
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, bool caseless)
+uaix_static size_t impl_case_sortkey_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, bool caseless)
 {
     it_in_utf16 src = first;
     it_out_utf8 dst = result;
@@ -1531,20 +1531,20 @@ uaix_static size_t impl_utf16_sortkey(it_in_utf16 first, it_end_utf16 last, it_o
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_sortkey_loc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
+uaix_static size_t impl_case_sortkey_loc_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
 {
     if (language == 0)
-        return impl_utf8_sortkey(first, last, result, mode ? true : false);
+        return impl_case_sortkey_utf8(first, last, result, mode ? true : false);
     return 0;
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf16_sortkey_loc(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, int mode, type_codept language)
+uaix_static size_t impl_case_sortkey_loc_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, int mode, type_codept language)
 {
     if (language == 0)
-        return impl_utf16_sortkey(first, last, result, mode ? true : false);
+        return impl_case_sortkey_utf16(first, last, result, mode ? true : false);
     return 0;
 }
 
@@ -1555,24 +1555,24 @@ uaix_static size_t impl_utf16_sortkey_loc(it_in_utf16 first, it_end_utf16 last, 
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_casemap_loc(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
+uaix_static size_t impl_case_map_loc_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
 {
     // This function is a simple wrapper for case-insensitive casemap
     // with the same number of parameters as locale case functions
     // to make it easier to use with C++ templates.
 
     if (language == 0)
-        return impl_utf8_casemap(first, last, result, mode);
+        return impl_case_map_utf8(first, last, result, mode);
     return 0;
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf16_casemap_loc(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode, type_codept language)
+uaix_static size_t impl_case_map_loc_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode, type_codept language)
 {
     if (language == 0)
-        return impl_utf16_casemap(first, last, result, mode);
+        return impl_case_map_utf16(first, last, result, mode);
     return 0;
 }
 

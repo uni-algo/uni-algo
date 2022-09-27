@@ -18,16 +18,16 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-uaix_const type_codept casemap_language_lt = 0x6C740000;
-uaix_const type_codept casemap_language_tr = 0x74720000;
-uaix_const type_codept casemap_language_az = 0x617A0000;
-uaix_const type_codept casemap_language_el = 0x656C0000;
-uaix_const type_codept casemap_language_nl = 0x6E6C0000;
+uaix_const type_codept case_map_language_lt = 0x6C740000;
+uaix_const type_codept case_map_language_tr = 0x74720000;
+uaix_const type_codept case_map_language_az = 0x617A0000;
+uaix_const type_codept case_map_language_el = 0x656C0000;
+uaix_const type_codept case_map_language_nl = 0x6E6C0000;
 
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool utf8_after_soft_dotted(it_in_utf8 first, it_in_utf8 src)
+uaix_static bool case_after_soft_dotted_utf8(it_in_utf8 first, it_in_utf8 src)
 {
     /* After_Soft_Dotted special case from The Unicode Standard:
      * There is a Soft_Dotted character before C,
@@ -56,7 +56,7 @@ uaix_static bool utf8_after_soft_dotted(it_in_utf8 first, it_in_utf8 src)
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool utf8_more_above(it_in_utf8 src, it_end_utf8 last)
+uaix_static bool case_more_above_utf8(it_in_utf8 src, it_end_utf8 last)
 {
     /* More_Above special case from The Unicode Standard:
      * C is followed by a character of combining class 230 (Above)
@@ -87,7 +87,7 @@ uaix_static bool utf8_more_above(it_in_utf8 src, it_end_utf8 last)
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool utf8_before_dot(it_in_utf8 src, it_end_utf8 last)
+uaix_static bool case_before_dot_utf8(it_in_utf8 src, it_end_utf8 last)
 {
     /* Before_Dot special case from The Unicode Standard:
      * C is followed by combining dot above (U+0307).
@@ -118,7 +118,7 @@ uaix_static bool utf8_before_dot(it_in_utf8 src, it_end_utf8 last)
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool utf8_after_i(it_in_utf8 first, it_in_utf8 src)
+uaix_static bool case_after_i_utf8(it_in_utf8 first, it_in_utf8 src)
 {
     /* After_I special case from The Unicode Standard:
      * There is an uppercase I before C,
@@ -151,7 +151,7 @@ uaix_static bool utf8_after_i(it_in_utf8 first, it_in_utf8 src)
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool utf16_after_soft_dotted(it_in_utf16 first, it_in_utf16 src)
+uaix_static bool case_after_soft_dotted_utf16(it_in_utf16 first, it_in_utf16 src)
 {
     it_in_utf16 s = src;
     type_codept c = 0;
@@ -174,7 +174,7 @@ uaix_static bool utf16_after_soft_dotted(it_in_utf16 first, it_in_utf16 src)
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static bool utf16_more_above(it_in_utf16 src, it_end_utf16 last)
+uaix_static bool case_more_above_utf16(it_in_utf16 src, it_end_utf16 last)
 {
     it_in_utf16 s = src;
     type_codept c = 0;
@@ -197,7 +197,7 @@ uaix_static bool utf16_more_above(it_in_utf16 src, it_end_utf16 last)
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static bool utf16_before_dot(it_in_utf16 src, it_end_utf16 last)
+uaix_static bool case_before_dot_utf16(it_in_utf16 src, it_end_utf16 last)
 {
     it_in_utf16 s = src;
     type_codept c = 0;
@@ -221,7 +221,7 @@ uaix_static bool utf16_before_dot(it_in_utf16 src, it_end_utf16 last)
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool utf16_after_i(it_in_utf16 first, it_in_utf16 src)
+uaix_static bool case_after_i_utf16(it_in_utf16 first, it_in_utf16 src)
 {
     it_in_utf16 s = src;
     type_codept c = 0;
@@ -249,12 +249,12 @@ uaix_static bool utf16_after_i(it_in_utf16 first, it_in_utf16 src)
 template<typename it_out_utf8, typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_out_utf8 utf8_locale_upper_lt(type_codept c, it_out_utf8 dst,
-                                             it_in_utf8 first, it_in_utf8 prev)
+uaix_static it_out_utf8 case_locale_upper_lt_utf8(type_codept c, it_out_utf8 dst,
+                                                  it_in_utf8 first, it_in_utf8 prev)
 {
     // SpecialCasing.txt # Lithuanian
 
-    if (c == 0x0307 && utf8_after_soft_dotted(first, prev))
+    if (c == 0x0307 && case_after_soft_dotted_utf8(first, prev))
         return dst;
 
     // The next part is the same as in impl_utf8_casemap
@@ -283,27 +283,27 @@ uaix_static it_out_utf8 utf8_locale_upper_lt(type_codept c, it_out_utf8 dst,
 template<typename it_out_utf8, typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_out_utf8 utf8_locale_lower_lt(type_codept c, it_out_utf8 dst,
-                                             it_in_utf8 src, it_end_utf8 last,
-                                             it_in_utf8 first, it_in_utf8 prev)
+uaix_static it_out_utf8 case_locale_lower_lt_utf8(type_codept c, it_out_utf8 dst,
+                                                  it_in_utf8 src, it_end_utf8 last,
+                                                  it_in_utf8 first, it_in_utf8 prev)
 {
     // SpecialCasing.txt # Lithuanian
 
-    if (c == 0x0049 && utf8_more_above(src, last))
+    if (c == 0x0049 && case_more_above_utf8(src, last))
     {
         *dst++ = (type_char8)(type_codept)0x69;
         *dst++ = (type_char8)(type_codept)0xCC;
         *dst++ = (type_char8)(type_codept)0x87;
         return dst;
     }
-    if (c == 0x004A && utf8_more_above(src, last))
+    if (c == 0x004A && case_more_above_utf8(src, last))
     {
         *dst++ = (type_char8)(type_codept)0x6A;
         *dst++ = (type_char8)(type_codept)0xCC;
         *dst++ = (type_char8)(type_codept)0x87;
         return dst;
     }
-    if (c == 0x012E && utf8_more_above(src, last))
+    if (c == 0x012E && case_more_above_utf8(src, last))
     {
         *dst++ = (type_char8)(type_codept)0xC4;
         *dst++ = (type_char8)(type_codept)0xAF;
@@ -350,8 +350,8 @@ uaix_static it_out_utf8 utf8_locale_lower_lt(type_codept c, it_out_utf8 dst,
     }
     if (c == 0x03A3) // Final_Sigma
     {
-        if (!utf8_final_sigma(src, last, false) &&
-            utf8_final_sigma(prev, first, true))
+        if (!case_final_sigma_utf8(src, last, false) &&
+            case_final_sigma_utf8(prev, first, true))
         {
             *dst++ = (type_char8)(type_codept)0xCF;
             *dst++ = (type_char8)(type_codept)0x82;
@@ -370,7 +370,7 @@ uaix_static it_out_utf8 utf8_locale_lower_lt(type_codept c, it_out_utf8 dst,
 template<typename it_out_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_out_utf8 utf8_locale_upper_tr_az(type_codept c, it_out_utf8 dst)
+uaix_static it_out_utf8 case_locale_upper_tr_az_utf8(type_codept c, it_out_utf8 dst)
 {
     // SpecialCasing.txt # Turkish and Azeri
 
@@ -407,9 +407,9 @@ uaix_static it_out_utf8 utf8_locale_upper_tr_az(type_codept c, it_out_utf8 dst)
 template<typename it_out_utf8, typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_out_utf8 utf8_locale_lower_tr_az(type_codept c, it_out_utf8 dst,
-                                                it_in_utf8 src, it_end_utf8 last,
-                                                it_in_utf8 first, it_in_utf8 prev)
+uaix_static it_out_utf8 case_locale_lower_tr_az_utf8(type_codept c, it_out_utf8 dst,
+                                                     it_in_utf8 src, it_end_utf8 last,
+                                                     it_in_utf8 first, it_in_utf8 prev)
 {
     // SpecialCasing.txt # Turkish and Azeri
 
@@ -418,11 +418,11 @@ uaix_static it_out_utf8 utf8_locale_lower_tr_az(type_codept c, it_out_utf8 dst,
         *dst++ = (type_char8)(type_codept)0x69;
         return dst;
     }
-    if (c == 0x0307 && utf8_after_i(first, prev))
+    if (c == 0x0307 && case_after_i_utf8(first, prev))
     {
         return dst;
     }
-    if (c == 0x0049 && !utf8_before_dot(src, last))
+    if (c == 0x0049 && !case_before_dot_utf8(src, last))
     {
         *dst++ = (type_char8)(type_codept)0xC4;
         *dst++ = (type_char8)(type_codept)0xB1;
@@ -440,8 +440,8 @@ uaix_static it_out_utf8 utf8_locale_lower_tr_az(type_codept c, it_out_utf8 dst,
     }
     if (c == 0x03A3) // Final_Sigma
     {
-        if (!utf8_final_sigma(src, last, false) &&
-            utf8_final_sigma(prev, first, true))
+        if (!case_final_sigma_utf8(src, last, false) &&
+            case_final_sigma_utf8(prev, first, true))
         {
             *dst++ = (type_char8)(type_codept)0xCF;
             *dst++ = (type_char8)(type_codept)0x82;
@@ -460,12 +460,12 @@ uaix_static it_out_utf8 utf8_locale_lower_tr_az(type_codept c, it_out_utf8 dst,
 template<typename it_out_utf16, typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_out_utf16 utf16_locale_upper_lt(type_codept c, it_out_utf16 dst,
-                                               it_in_utf16 first, it_in_utf16 prev)
+uaix_static it_out_utf16 case_locale_upper_lt_utf16(type_codept c, it_out_utf16 dst,
+                                                    it_in_utf16 first, it_in_utf16 prev)
 {
     // SpecialCasing.txt # Lithuanian
 
-    if (c == 0x0307 && utf16_after_soft_dotted(first, prev))
+    if (c == 0x0307 && case_after_soft_dotted_utf16(first, prev))
         return dst;
 
     // The next part is the same as in impl_utf16_casemap
@@ -494,25 +494,25 @@ uaix_static it_out_utf16 utf16_locale_upper_lt(type_codept c, it_out_utf16 dst,
 template<typename it_out_utf16, typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_out_utf16 utf16_locale_lower_lt(type_codept c, it_out_utf16 dst,
-                                               it_in_utf16 src, it_end_utf16 last,
-                                               it_in_utf16 first, it_in_utf16 prev)
+uaix_static it_out_utf16 case_locale_lower_lt_utf16(type_codept c, it_out_utf16 dst,
+                                                    it_in_utf16 src, it_end_utf16 last,
+                                                    it_in_utf16 first, it_in_utf16 prev)
 {
     // SpecialCasing.txt # Lithuanian
 
-    if (c == 0x0049 && utf16_more_above(src, last))
+    if (c == 0x0049 && case_more_above_utf16(src, last))
     {
         *dst++ = (type_char16)0x0069;
         *dst++ = (type_char16)0x0307;
         return dst;
     }
-    if (c == 0x004A && utf16_more_above(src, last))
+    if (c == 0x004A && case_more_above_utf16(src, last))
     {
         *dst++ = (type_char16)0x006A;
         *dst++ = (type_char16)0x0307;
         return dst;
     }
-    if (c == 0x012E && utf16_more_above(src, last))
+    if (c == 0x012E && case_more_above_utf16(src, last))
     {
         *dst++ = (type_char16)0x012F;
         *dst++ = (type_char16)0x0307;
@@ -550,8 +550,8 @@ uaix_static it_out_utf16 utf16_locale_lower_lt(type_codept c, it_out_utf16 dst,
     }
     if (c == 0x03A3) // Final_Sigma
     {
-        if (!utf16_final_sigma(src, last, false) &&
-            utf16_final_sigma(prev, first, true))
+        if (!case_final_sigma_utf16(src, last, false) &&
+            case_final_sigma_utf16(prev, first, true))
         {
             *dst++ = (type_char16)0x03C2;
             return dst;
@@ -569,7 +569,7 @@ uaix_static it_out_utf16 utf16_locale_lower_lt(type_codept c, it_out_utf16 dst,
 template<typename it_out_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_out_utf16 utf16_locale_upper_tr_az(type_codept c, it_out_utf16 dst)
+uaix_static it_out_utf16 case_locale_upper_tr_az_utf16(type_codept c, it_out_utf16 dst)
 {
     // SpecialCasing.txt # Turkish and Azeri
 
@@ -605,9 +605,9 @@ uaix_static it_out_utf16 utf16_locale_upper_tr_az(type_codept c, it_out_utf16 ds
 template<typename it_out_utf16, typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_out_utf16 utf16_locale_lower_tr_az(type_codept c, it_out_utf16 dst,
-                                                  it_in_utf16 src, it_end_utf16 last,
-                                                  it_in_utf16 first, it_in_utf16 prev)
+uaix_static it_out_utf16 case_locale_lower_tr_az_utf16(type_codept c, it_out_utf16 dst,
+                                                       it_in_utf16 src, it_end_utf16 last,
+                                                       it_in_utf16 first, it_in_utf16 prev)
 {
     // SpecialCasing.txt # Turkish and Azeri
 
@@ -616,11 +616,11 @@ uaix_static it_out_utf16 utf16_locale_lower_tr_az(type_codept c, it_out_utf16 ds
         *dst++ = (type_char16)0x0069;
         return dst;
     }
-    if (c == 0x0307 && utf16_after_i(first, prev))
+    if (c == 0x0307 && case_after_i_utf16(first, prev))
     {
         return dst;
     }
-    if (c == 0x0049 && !utf16_before_dot(src, last))
+    if (c == 0x0049 && !case_before_dot_utf16(src, last))
     {
         *dst++ = (type_char16)0x0131;
         return dst;
@@ -636,8 +636,8 @@ uaix_static it_out_utf16 utf16_locale_lower_tr_az(type_codept c, it_out_utf16 ds
     }
     if (c == 0x03A3) // Final_Sigma
     {
-        if (!utf16_final_sigma(src, last, false) &&
-            utf16_final_sigma(prev, first, true))
+        if (!case_final_sigma_utf16(src, last, false) &&
+            case_final_sigma_utf16(prev, first, true))
         {
             *dst++ = (type_char16)0x03C2;
             return dst;
@@ -1127,7 +1127,7 @@ type_codept case_greek_upper(type_codept c, bool* prev_vowel_with_accent, bool* 
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t utf8_upper_el(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
+uaix_static size_t case_upper_el_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result)
 {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
@@ -1146,8 +1146,8 @@ uaix_static size_t utf8_upper_el(it_in_utf8 first, it_end_utf8 last, it_out_utf8
         {
             // Use Final_Sigma function here because Eta follows the same "word boundary" rules
             if (maybe_eta_with_tonos &&
-                !utf8_final_sigma(src, last, false) &&
-                !utf8_final_sigma(prev, first, true))
+                !case_final_sigma_utf8(src, last, false) &&
+                !case_final_sigma_utf8(prev, first, true))
             {
                 *dst++ = (type_char8)(type_codept)0xCE;
                 *dst++ = (type_char8)(type_codept)0x89;
@@ -1183,7 +1183,7 @@ uaix_static size_t utf8_upper_el(it_in_utf8 first, it_end_utf8 last, it_out_utf8
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t utf16_upper_el(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
+uaix_static size_t case_upper_el_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result)
 {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
@@ -1202,8 +1202,8 @@ uaix_static size_t utf16_upper_el(it_in_utf16 first, it_end_utf16 last, it_out_u
         {
             // Use Final_Sigma function here because Eta follows the same "word boundary" rules
             if (maybe_eta_with_tonos &&
-                !utf16_final_sigma(src, last, false) &&
-                !utf16_final_sigma(prev, first, true))
+                !case_final_sigma_utf16(src, last, false) &&
+                !case_final_sigma_utf16(prev, first, true))
             {
                 *dst++ = (type_char16)0x0389;
                 continue;
@@ -1240,7 +1240,7 @@ uaix_static size_t utf16_upper_el(it_in_utf16 first, it_end_utf16 last, it_out_u
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, type_codept language)
+uaix_static size_t case_title_locale_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, type_codept language)
 {
     // The function is the same as utf8_title except LOCALE BEGIN - LOCALE END parts
 
@@ -1292,7 +1292,7 @@ uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_
 
                 // LOCALE BEGIN
 
-                if (language == casemap_language_tr || language == casemap_language_az)
+                if (language == case_map_language_tr || language == case_map_language_az)
                 {
                     if (c == 0x0069)
                     {
@@ -1301,7 +1301,7 @@ uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_
                         continue;
                     }
                 }
-                else if (language == casemap_language_nl)
+                else if (language == case_map_language_nl)
                 {
                     // i or I with j or J
                     if ((c == 0x0069 || c == 0x0049) && src != last &&
@@ -1314,9 +1314,9 @@ uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_
                     }
                 }
                 // This path is not possible for lt
-                /*else if (locale == impl_casemap_locale_title_lt)
+                /*else if (locale == case_map_language_lt)
                 {
-                    if (c == 0x0307 && utf16_after_soft_dotted(first, prev))
+                    if (c == 0x0307 && case_after_soft_dotted_utf16(first, prev))
                         continue;
                 }*/
 
@@ -1342,14 +1342,14 @@ uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_
         {
             // LOCALE BEGIN
 
-            if (language == casemap_language_lt)
+            if (language == case_map_language_lt)
             {
-                dst = utf8_locale_lower_lt(c, dst, src, last, first, prev);
+                dst = case_locale_lower_lt_utf8(c, dst, src, last, first, prev);
                 continue;
             }
-            if (language == casemap_language_tr || language == casemap_language_az)
+            if (language == case_map_language_tr || language == case_map_language_az)
             {
-                dst = utf8_locale_lower_tr_az(c, dst, src, last, first, prev);
+                dst = case_locale_lower_tr_az_utf8(c, dst, src, last, first, prev);
                 continue;
             }
 
@@ -1364,8 +1364,8 @@ uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_
             }
             if (c == 0x03A3) // Final_Sigma
             {
-                if (!utf8_final_sigma(src, last, false) &&
-                    utf8_final_sigma(prev, first, true))
+                if (!case_final_sigma_utf8(src, last, false) &&
+                    case_final_sigma_utf8(prev, first, true))
                 {
                     *dst++ = (type_char8)(type_codept)0xCF;
                     *dst++ = (type_char8)(type_codept)0x82;
@@ -1385,7 +1385,7 @@ uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, type_codept language)
+uaix_static size_t case_title_locale_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, type_codept language)
 {
     // The function is the same as utf16_title except LOCALE BEGIN - LOCALE END parts
 
@@ -1437,7 +1437,7 @@ uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last, it_o
 
                 // LOCALE BEGIN
 
-                if (language == casemap_language_tr || language == casemap_language_az)
+                if (language == case_map_language_tr || language == case_map_language_az)
                 {
                     if (c == 0x0069)
                     {
@@ -1445,7 +1445,7 @@ uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last, it_o
                         continue;
                     }
                 }
-                else if (language == casemap_language_nl)
+                else if (language == case_map_language_nl)
                 {
                     // i or I with j or J
                     if ((c == 0x0069 || c == 0x0049) && src != last &&
@@ -1458,9 +1458,9 @@ uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last, it_o
                     }
                 }
                 // This path is not possible for lt
-                /*else if (locale == impl_casemap_locale_title_lt)
+                /*else if (locale == case_map_language_lt)
                 {
-                    if (c == 0x0307 && utf16_after_soft_dotted(first, prev))
+                    if (c == 0x0307 && case_after_soft_dotted_utf16(first, prev))
                         continue;
                 }*/
 
@@ -1486,14 +1486,14 @@ uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last, it_o
         {
             // LOCALE BEGIN
 
-            if (language == casemap_language_lt)
+            if (language == case_map_language_lt)
             {
-                dst = utf16_locale_lower_lt(c, dst, src, last, first, prev);
+                dst = case_locale_lower_lt_utf16(c, dst, src, last, first, prev);
                 continue;
             }
-            if (language == casemap_language_tr || language == casemap_language_az)
+            if (language == case_map_language_tr || language == case_map_language_az)
             {
-                dst = utf16_locale_lower_tr_az(c, dst, src, last, first, prev);
+                dst = case_locale_lower_tr_az_utf16(c, dst, src, last, first, prev);
                 continue;
             }
 
@@ -1507,8 +1507,8 @@ uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last, it_o
             }
             if (c == 0x03A3) // Final_Sigma
             {
-                if (!utf16_final_sigma(src, last, false) &&
-                    utf16_final_sigma(prev, first, true))
+                if (!case_final_sigma_utf16(src, last, false) &&
+                    case_final_sigma_utf16(prev, first, true))
                 {
                     *dst++ = (type_char16)0x03C2;
                     continue;
@@ -1529,15 +1529,15 @@ uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last, it_o
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
+uaix_static size_t impl_case_map_locale_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
 {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
     type_codept c = 0;
 
-    if (language == casemap_language_lt)
+    if (language == case_map_language_lt)
     {
-        if (mode == impl_casemap_mode_lower)
+        if (mode == impl_case_map_mode_lowercase)
         {
             while (src != last)
             {
@@ -1545,12 +1545,12 @@ uaix_static size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last, 
 
                 src = iter_utf8(src, last, &c, iter_replacement);
 
-                dst = utf8_locale_lower_lt(c, dst, src, last, first, prev);
+                dst = case_locale_lower_lt_utf8(c, dst, src, last, first, prev);
             }
 
             return (size_t)(dst - result);
         }
-        if (mode == impl_casemap_mode_upper)
+        if (mode == impl_case_map_mode_uppercase)
         {
             while (src != last)
             {
@@ -1558,19 +1558,19 @@ uaix_static size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last, 
 
                 src = iter_utf8(src, last, &c, iter_replacement);
 
-                dst = utf8_locale_upper_lt(c, dst, first, prev);
+                dst = case_locale_upper_lt_utf8(c, dst, first, prev);
             }
 
             return (size_t)(dst - result);
         }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-        if (mode == impl_casemap_mode_title)
-            return utf8_title_locale(first, last, result, language);
+        if (mode == impl_case_map_mode_titlecase)
+            return case_title_locale_utf8(first, last, result, language);
 #endif
     }
-    else if (language == casemap_language_tr || language == casemap_language_az)
+    else if (language == case_map_language_tr || language == case_map_language_az)
     {
-        if (mode == impl_casemap_mode_lower)
+        if (mode == impl_case_map_mode_lowercase)
         {
             while (src != last)
             {
@@ -1578,55 +1578,55 @@ uaix_static size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last, 
 
                 src = iter_utf8(src, last, &c, iter_replacement);
 
-                dst = utf8_locale_lower_tr_az(c, dst, src, last, first, prev);
+                dst = case_locale_lower_tr_az_utf8(c, dst, src, last, first, prev);
             }
 
             return (size_t)(dst - result);
         }
-        if (mode == impl_casemap_mode_upper)
+        if (mode == impl_case_map_mode_uppercase)
         {
             while (src != last)
             {
                 src = iter_utf8(src, last, &c, iter_replacement);
 
-                dst = utf8_locale_upper_tr_az(c, dst);
+                dst = case_locale_upper_tr_az_utf8(c, dst);
             }
 
             return (size_t)(dst - result);
         }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-        if (mode == impl_casemap_mode_title)
-            return utf8_title_locale(first, last, result, language);
+        if (mode == impl_case_map_mode_titlecase)
+            return case_title_locale_utf8(first, last, result, language);
 #endif
     }
-    else if (language == casemap_language_el)
+    else if (language == case_map_language_el)
     {
-        if (mode == impl_casemap_mode_upper)
-            return utf8_upper_el(first, last, result);
+        if (mode == impl_case_map_mode_uppercase)
+            return case_upper_el_utf8(first, last, result);
     }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-    else if (language == casemap_language_nl)
+    else if (language == case_map_language_nl)
     {
-        if (mode == impl_casemap_mode_title)
-            return utf8_title_locale(first, last, result, language);
+        if (mode == impl_case_map_mode_titlecase)
+            return case_title_locale_utf8(first, last, result, language);
     }
 #endif
 
-    return impl_utf8_casemap(first, last, result, mode);
+    return impl_case_map_utf8(first, last, result, mode);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode, type_codept language)
+uaix_static size_t impl_case_map_locale_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode, type_codept language)
 {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
     type_codept c = 0;
 
-    if (language == casemap_language_lt)
+    if (language == case_map_language_lt)
     {
-        if (mode == impl_casemap_mode_lower)
+        if (mode == impl_case_map_mode_lowercase)
         {
             while (src != last)
             {
@@ -1634,12 +1634,12 @@ uaix_static size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 las
 
                 src = iter_utf16(src, last, &c, iter_replacement);
 
-                dst = utf16_locale_lower_lt(c, dst, src, last, first, prev);
+                dst = case_locale_lower_lt_utf16(c, dst, src, last, first, prev);
             }
 
             return (size_t)(dst - result);
         }
-        if (mode == impl_casemap_mode_upper)
+        if (mode == impl_case_map_mode_uppercase)
         {
             while (src != last)
             {
@@ -1647,19 +1647,19 @@ uaix_static size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 las
 
                 src = iter_utf16(src, last, &c, iter_replacement);
 
-                dst = utf16_locale_upper_lt(c, dst, first, prev);
+                dst = case_locale_upper_lt_utf16(c, dst, first, prev);
             }
 
             return (size_t)(dst - result);
         }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-        if (mode == impl_casemap_mode_title)
-            return utf16_title_locale(first, last, result, language);
+        if (mode == impl_case_map_mode_titlecase)
+            return case_title_locale_utf16(first, last, result, language);
 #endif
     }
-    else if (language == casemap_language_tr || language == casemap_language_az)
+    else if (language == case_map_language_tr || language == case_map_language_az)
     {
-        if (mode == impl_casemap_mode_lower)
+        if (mode == impl_case_map_mode_lowercase)
         {
             while (src != last)
             {
@@ -1667,41 +1667,41 @@ uaix_static size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 las
 
                 src = iter_utf16(src, last, &c, iter_replacement);
 
-                dst = utf16_locale_lower_tr_az(c, dst, src, last, first, prev);
+                dst = case_locale_lower_tr_az_utf16(c, dst, src, last, first, prev);
             }
 
             return (size_t)(dst - result);
         }
-        if (mode == impl_casemap_mode_upper)
+        if (mode == impl_case_map_mode_uppercase)
         {
             while (src != last)
             {
                 src = iter_utf16(src, last, &c, iter_replacement);
 
-                dst = utf16_locale_upper_tr_az(c, dst);
+                dst = case_locale_upper_tr_az_utf16(c, dst);
             }
 
             return (size_t)(dst - result);
         }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-        if (mode == impl_casemap_mode_title)
-            return utf16_title_locale(first, last, result, language);
+        if (mode == impl_case_map_mode_titlecase)
+            return case_title_locale_utf16(first, last, result, language);
 #endif
     }
-    else if (language == casemap_language_el)
+    else if (language == case_map_language_el)
     {
-        if (mode == impl_casemap_mode_upper)
-            return utf16_upper_el(first, last, result);
+        if (mode == impl_case_map_mode_uppercase)
+            return case_upper_el_utf16(first, last, result);
     }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-    else if (language == casemap_language_nl)
+    else if (language == case_map_language_nl)
     {
-        if (mode == impl_casemap_mode_title)
-            return utf16_title_locale(first, last, result, language);
+        if (mode == impl_case_map_mode_titlecase)
+            return case_title_locale_utf16(first, last, result, language);
     }
 #endif
 
-    return impl_utf16_casemap(first, last, result, mode);
+    return impl_case_map_utf16(first, last, result, mode);
 }
 
 UNI_ALGO_IMPL_NAMESPACE_END

@@ -115,83 +115,83 @@ void test_short_func_case()
 // std::string
 // -----------
 
-    TESTX(uni::cases::utf8_lower(str) == str);
-    TESTX(uni::cases::utf8_upper(str) == str);
+    TESTX(uni::cases::to_lowercase_utf8(str) == str);
+    TESTX(uni::cases::to_uppercase_utf8(str) == str);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf8_lower(str, uni::locale{}) == str);
-    TESTX(uni::cases::utf8_upper(str, uni::locale{}) == str);
+    TESTX(uni::cases::to_lowercase_utf8(str, uni::locale{}) == str);
+    TESTX(uni::cases::to_uppercase_utf8(str, uni::locale{}) == str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf8_fold(str) == str);
+    TESTX(uni::cases::to_casefold_utf8(str) == str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf8_title(str) == str);
-    TESTX(uni::cases::utf8_title(str, uni::locale{}) == str);
+    TESTX(uni::cases::to_titlecase_utf8(str) == str);
+    TESTX(uni::cases::to_titlecase_utf8(str, uni::locale{}) == str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
-    TESTX(uni::casesens::utf8_compare(str, str) == 0);
-    TESTX(uni::caseless::utf8_compare(str, str) == 0);
+    TESTX(uni::casesens::compare_utf8(str, str) == 0);
+    TESTX(uni::caseless::compare_utf8(str, str) == 0);
 #ifndef UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::utf8_collate(str, str) == 0);
-    TESTX(uni::caseless::utf8_collate(str, str) == 0);
+    TESTX(uni::casesens::collate_utf8(str, str) == 0);
+    TESTX(uni::caseless::collate_utf8(str, str) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::utf8_search(str, str));
-    TESTX(uni::caseless::utf8_search(str, str));
+    TESTX(uni::casesens::search_utf8(str, str));
+    TESTX(uni::caseless::search_utf8(str, str));
 
 // --------------
 // std::u16string
 // --------------
 
-    TESTX(uni::cases::utf16_lower(u16str) == u16str);
-    TESTX(uni::cases::utf16_upper(u16str) == u16str);
+    TESTX(uni::cases::to_lowercase_utf16(u16str) == u16str);
+    TESTX(uni::cases::to_uppercase_utf16(u16str) == u16str);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf16_lower(u16str, uni::locale{}) == u16str);
-    TESTX(uni::cases::utf16_upper(u16str, uni::locale{}) == u16str);
+    TESTX(uni::cases::to_lowercase_utf16(u16str, uni::locale{}) == u16str);
+    TESTX(uni::cases::to_uppercase_utf16(u16str, uni::locale{}) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf16_fold(u16str) == u16str);
+    TESTX(uni::cases::to_casefold_utf16(u16str) == u16str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf16_title(u16str) == u16str);
-    TESTX(uni::cases::utf16_title(u16str, uni::locale{}) == u16str);
+    TESTX(uni::cases::to_titlecase_utf16(u16str) == u16str);
+    TESTX(uni::cases::to_titlecase_utf16(u16str, uni::locale{}) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
-    TESTX(uni::casesens::utf16_compare(u16str, u16str) == 0);
-    TESTX(uni::caseless::utf16_compare(u16str, u16str) == 0);
+    TESTX(uni::casesens::compare_utf16(u16str, u16str) == 0);
+    TESTX(uni::caseless::compare_utf16(u16str, u16str) == 0);
 #ifndef UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::utf16_collate(u16str, u16str) == 0);
-    TESTX(uni::caseless::utf16_collate(u16str, u16str) == 0);
+    TESTX(uni::casesens::collate_utf16(u16str, u16str) == 0);
+    TESTX(uni::caseless::collate_utf16(u16str, u16str) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::utf16_search(u16str, u16str));
-    TESTX(uni::caseless::utf16_search(u16str, u16str));
+    TESTX(uni::casesens::search_utf16(u16str, u16str));
+    TESTX(uni::caseless::search_utf16(u16str, u16str));
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
 // ------------
 // std::wstring
 // ------------
 
-    TESTX(uni::cases::utf16_lower(wstr) == wstr);
-    TESTX(uni::cases::utf16_upper(wstr) == wstr);
+    TESTX(uni::cases::to_lowercase_utf16(wstr) == wstr);
+    TESTX(uni::cases::to_uppercase_utf16(wstr) == wstr);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf16_lower(wstr, uni::locale{}) == wstr);
-    TESTX(uni::cases::utf16_upper(wstr, uni::locale{}) == wstr);
+    TESTX(uni::cases::to_lowercase_utf16(wstr, uni::locale{}) == wstr);
+    TESTX(uni::cases::to_uppercase_utf16(wstr, uni::locale{}) == wstr);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf16_fold(wstr) == wstr);
+    TESTX(uni::cases::to_casefold_utf16(wstr) == wstr);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf16_title(wstr) == wstr);
-    TESTX(uni::cases::utf16_title(wstr, uni::locale{}) == wstr);
+    TESTX(uni::cases::to_titlecase_utf16(wstr) == wstr);
+    TESTX(uni::cases::to_titlecase_utf16(wstr, uni::locale{}) == wstr);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
-    TESTX(uni::casesens::utf16_compare(wstr, wstr) == 0);
-    TESTX(uni::caseless::utf16_compare(wstr, wstr) == 0);
+    TESTX(uni::casesens::compare_utf16(wstr, wstr) == 0);
+    TESTX(uni::caseless::compare_utf16(wstr, wstr) == 0);
 #ifndef UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::utf16_collate(wstr, wstr) == 0);
-    TESTX(uni::caseless::utf16_collate(wstr, wstr) == 0);
+    TESTX(uni::casesens::collate_utf16(wstr, wstr) == 0);
+    TESTX(uni::caseless::collate_utf16(wstr, wstr) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::utf16_search(wstr, wstr));
-    TESTX(uni::caseless::utf16_search(wstr, wstr));
+    TESTX(uni::casesens::search_utf16(wstr, wstr));
+    TESTX(uni::caseless::search_utf16(wstr, wstr));
 
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
@@ -200,28 +200,28 @@ void test_short_func_case()
 // std::u8string
 // -------------
 
-    TESTX(uni::cases::utf8_lower(u8str) == u8str);
-    TESTX(uni::cases::utf8_upper(u8str) == u8str);
+    TESTX(uni::cases::to_lowercase_utf8(u8str) == u8str);
+    TESTX(uni::cases::to_uppercase_utf8(u8str) == u8str);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf8_lower(u8str, uni::locale{}) == u8str);
-    TESTX(uni::cases::utf8_upper(u8str, uni::locale{}) == u8str);
+    TESTX(uni::cases::to_lowercase_utf8(u8str, uni::locale{}) == u8str);
+    TESTX(uni::cases::to_uppercase_utf8(u8str, uni::locale{}) == u8str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf8_fold(u8str) == u8str);
+    TESTX(uni::cases::to_casefold_utf8(u8str) == u8str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::utf8_title(u8str) == u8str);
-    TESTX(uni::cases::utf8_title(u8str, uni::locale{}) == u8str);
+    TESTX(uni::cases::to_titlecase_utf8(u8str) == u8str);
+    TESTX(uni::cases::to_titlecase_utf8(u8str, uni::locale{}) == u8str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
-    TESTX(uni::casesens::utf8_compare(u8str, u8str) == 0);
-    TESTX(uni::caseless::utf8_compare(u8str, u8str) == 0);
+    TESTX(uni::casesens::compare_utf8(u8str, u8str) == 0);
+    TESTX(uni::caseless::compare_utf8(u8str, u8str) == 0);
 #ifndef UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::utf8_collate(u8str, u8str) == 0);
-    TESTX(uni::caseless::utf8_collate(u8str, u8str) == 0);
+    TESTX(uni::casesens::collate_utf8(u8str, u8str) == 0);
+    TESTX(uni::caseless::collate_utf8(u8str, u8str) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::utf8_search(u8str, u8str));
-    TESTX(uni::caseless::utf8_search(u8str, u8str));
+    TESTX(uni::casesens::search_utf8(u8str, u8str));
+    TESTX(uni::caseless::search_utf8(u8str, u8str));
 
 #endif // __cpp_lib_char8_t
 }
