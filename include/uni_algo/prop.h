@@ -53,81 +53,81 @@ public:
 
     // https://www.unicode.org/reports/tr44/#General_Category_Values
 
-    bool General_Category_Lu() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Lu; }
-    bool General_Category_Ll() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Ll; }
-    bool General_Category_Lt() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Lt; }
-    bool General_Category_Lm() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Lm; }
-    bool General_Category_Lo() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Lo; }
+    bool General_Category_Lu() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Lu; }
+    bool General_Category_Ll() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Ll; }
+    bool General_Category_Lt() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Lt; }
+    bool General_Category_Lm() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Lm; }
+    bool General_Category_Lo() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Lo; }
 
-    bool General_Category_Mn() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Mn; }
-    bool General_Category_Mc() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Mc; }
-    bool General_Category_Me() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Me; }
+    bool General_Category_Mn() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Mn; }
+    bool General_Category_Mc() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Mc; }
+    bool General_Category_Me() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Me; }
 
-    bool General_Category_Nd() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Nd; }
-    bool General_Category_Nl() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Nl; }
-    bool General_Category_No() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_No; }
+    bool General_Category_Nd() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Nd; }
+    bool General_Category_Nl() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Nl; }
+    bool General_Category_No() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_No; }
 
-    bool General_Category_Pc() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Pc; }
-    bool General_Category_Pd() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Pd; }
-    bool General_Category_Ps() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Ps; }
-    bool General_Category_Pe() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Pe; }
-    bool General_Category_Pi() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Pi; }
-    bool General_Category_Pf() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Pf; }
-    bool General_Category_Po() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Po; }
+    bool General_Category_Pc() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Pc; }
+    bool General_Category_Pd() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Pd; }
+    bool General_Category_Ps() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Ps; }
+    bool General_Category_Pe() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Pe; }
+    bool General_Category_Pi() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Pi; }
+    bool General_Category_Pf() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Pf; }
+    bool General_Category_Po() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Po; }
 
-    bool General_Category_Sm() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Sm; }
-    bool General_Category_Sc() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Sc; }
-    bool General_Category_Sk() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Sk; }
-    bool General_Category_So() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_So; }
+    bool General_Category_Sm() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Sm; }
+    bool General_Category_Sc() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Sc; }
+    bool General_Category_Sk() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Sk; }
+    bool General_Category_So() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_So; }
 
-    bool General_Category_Zs() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Zs; }
-    bool General_Category_Zl() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Zl; }
-    bool General_Category_Zp() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Zp; }
+    bool General_Category_Zs() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Zs; }
+    bool General_Category_Zl() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Zl; }
+    bool General_Category_Zp() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Zp; }
 
-    bool General_Category_Cc() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Cc; }
-    bool General_Category_Cf() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Cf; }
-    bool General_Category_Cs() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Cs; }
-    bool General_Category_Co() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Co; }
-    bool General_Category_Cn() const noexcept { return detail::impl_prop_get_prop_gc(data) == detail::impl_General_Category_Cn; }
+    bool General_Category_Cc() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Cc; }
+    bool General_Category_Cf() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Cf; }
+    bool General_Category_Cs() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Cs; }
+    bool General_Category_Co() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Co; }
+    bool General_Category_Cn() const noexcept { return detail::impl_prop_get_gc_prop(data) == detail::impl_General_Category_Cn; }
 
     bool General_Category_LC() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_prop_gc(data);
+        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Lu && gc <= detail::impl_General_Category_Lt;
     }
     bool General_Category_L() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_prop_gc(data);
+        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Lu && gc <= detail::impl_General_Category_Lo;
     }
     bool General_Category_M() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_prop_gc(data);
+        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Mn && gc <= detail::impl_General_Category_Me;
     }
     bool General_Category_N() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_prop_gc(data);
+        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Nd && gc <= detail::impl_General_Category_No;
     }
     bool General_Category_P() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_prop_gc(data);
+        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Pc && gc <= detail::impl_General_Category_Po;
     }
     bool General_Category_S() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_prop_gc(data);
+        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Sm && gc <= detail::impl_General_Category_So;
     }
     bool General_Category_Z() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_prop_gc(data);
+        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Zs && gc <= detail::impl_General_Category_Zp;
     }
     bool General_Category_C() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_prop_gc(data);
+        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return (gc >= detail::impl_General_Category_Cc && gc <= detail::impl_General_Category_Co) ||
                 gc == detail::impl_General_Category_Cn;
     }
@@ -139,7 +139,7 @@ public:
     bool Noncharacter_Code_Point() const noexcept
     {
         // https://www.unicode.org/glossary/#noncharacter
-        return detail::impl_prop_is_prop_noncharacter(data);
+        return detail::impl_prop_is_noncharacter_prop(data);
     }
     bool Surrogate() const noexcept
     {
@@ -159,17 +159,17 @@ public:
     bool Graphic() const noexcept
     {
         // https://www.unicode.org/glossary/#graphic_character
-        return detail::impl_prop_is_prop_graphic(data);
+        return detail::impl_prop_is_graphic_prop(data);
     }
     bool Format() const noexcept
     {
         // https://www.unicode.org/glossary/#format_character
-        return detail::impl_prop_is_prop_format(data);
+        return detail::impl_prop_is_format_prop(data);
     }
     bool Reserved() const noexcept
     {
         // https://www.unicode.org/glossary/#reserved_code_point
-        return detail::impl_prop_is_prop_reserved(data);
+        return detail::impl_prop_is_reserved_prop(data);
     }
 
     // Other properties
@@ -177,12 +177,12 @@ public:
     bool White_Space() const noexcept
     {
         // The Unicode Standard: PropList.txt -> White_Space
-        return detail::impl_prop_is_prop_white_space(data);
+        return detail::impl_prop_is_white_space_prop(data);
     }
     bool Alphabetic() const noexcept
     {
         // The Unicode Standard: DerivedCoreProperties.txt -> Alphabetic
-        return detail::impl_prop_is_prop_alphabetic(data);
+        return detail::impl_prop_is_alphabetic_prop(data);
     }
     bool Numeric() const noexcept
     {
@@ -192,18 +192,18 @@ public:
 
 #ifdef UNI_ALGO_EXPERIMENTAL
     // This might be usefull for tests
-    //unsigned char General_Category() const noexcept { return static_cast<unsigned char>(detail::impl_prop_get_prop_gc(data)); }
+    //unsigned char General_Category() const noexcept { return static_cast<unsigned char>(detail::impl_prop_get_gc_prop(data)); }
 #endif
 };
 
 inline general_category get_general_category(char32_t c) noexcept
 {
-    return static_cast<general_category>(detail::impl_prop_get_prop_gc(detail::impl_prop_get_prop(c)));
+    return static_cast<general_category>(detail::impl_prop_get_gc_prop(detail::impl_prop_get_prop(c)));
 }
 
 inline general_category get_general_category(const prop& p) noexcept
 {
-    return static_cast<general_category>(detail::impl_prop_get_prop_gc(p.data));
+    return static_cast<general_category>(detail::impl_prop_get_gc_prop(p.data));
 }
 
 inline bool is_alphabetic(char32_t c) noexcept
@@ -281,7 +281,7 @@ inline bool is_supplementary(char32_t c) noexcept
 inline bool is_noncharacter(char32_t c) noexcept
 {
     // https://www.unicode.org/glossary/#noncharacter
-    return detail::impl_prop_is_non_character(c);
+    return detail::impl_prop_is_noncharacter(c);
 }
 
 inline bool is_noncharacter(const prop& p) noexcept

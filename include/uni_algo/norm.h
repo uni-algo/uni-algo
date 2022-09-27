@@ -1009,28 +1009,28 @@ public:
     unsigned char Canonical_Combining_Class() const noexcept
     {
         // The Unicode Standard: UnicodeData.txt -> Canonical_Combining_Class
-        return detail::impl_norm_get_prop_ccc(data);
+        return detail::impl_norm_get_ccc_prop(data);
     }
     bool NFC_Quick_Check_Yes() const noexcept
     {
         // The Unicode Standard: DerivedNormalizationProps.txt -> NFC_Quick_Check=Yes
-        return detail::impl_norm_is_prop_nfc_qc_yes(data);
+        return detail::impl_norm_is_nfc_qc_yes_prop(data);
     }
     bool NFD_Quick_Check_Yes() const noexcept
     {
         // The Unicode Standard: DerivedNormalizationProps.txt -> NFD_Quick_Check=Yes
-        return detail::impl_norm_is_prop_nfd_qc_yes(data);
+        return detail::impl_norm_is_nfd_qc_yes_prop(data);
     }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
     bool NFKC_Quick_Check_Yes() const noexcept
     {
         // The Unicode Standard: DerivedNormalizationProps.txt -> NFKC_Quick_Check=Yes
-        return detail::impl_norm_is_prop_nfkc_qc_yes(data);
+        return detail::impl_norm_is_nfkc_qc_yes_prop(data);
     }
     bool NFKD_Quick_Check_Yes() const noexcept
     {
         // The Unicode Standard: DerivedNormalizationProps.txt -> NFKD_Quick_Check=Yes
-        return detail::impl_norm_is_prop_nfkd_qc_yes(data);
+        return detail::impl_norm_is_nfkd_qc_yes_prop(data);
     }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 };

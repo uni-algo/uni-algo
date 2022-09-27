@@ -85,7 +85,7 @@ uaix_static type_codept impl_prop_get_prop(type_codept c)
 }
 
 uaix_always_inline
-uaix_static type_codept impl_prop_get_prop_gc(type_codept prop)
+uaix_static type_codept impl_prop_get_gc_prop(type_codept prop)
 {
     return (prop & 0x1F); // First 5 bits
 }
@@ -111,14 +111,14 @@ uaix_static type_codept impl_prop_get_prop_gc(type_codept prop)
 // Helpers for: Graphic, Format, Reserved
 
 uaix_always_inline
-uaix_static bool impl_prop_is_prop_reserved(type_codept prop)
+uaix_static bool impl_prop_is_reserved_prop(type_codept prop)
 {
     // https://www.unicode.org/glossary/#reserved_code_point
 
     // General_Category_Cn (General_Category_Unassigned) includes noncharacters
     // so we need to exclude them to get reserved (unassigned) code points
 
-    if (impl_prop_get_prop_gc(prop) == impl_General_Category_Cn &&
+    if (impl_prop_get_gc_prop(prop) == impl_General_Category_Cn &&
         !(prop & prop_Noncharacter_Code_Point))
         return true;
 
@@ -126,11 +126,11 @@ uaix_static bool impl_prop_is_prop_reserved(type_codept prop)
 }
 
 uaix_always_inline
-uaix_static bool impl_prop_is_prop_graphic(type_codept prop)
+uaix_static bool impl_prop_is_graphic_prop(type_codept prop)
 {
     // https://www.unicode.org/glossary/#graphic_character
 
-    type_codept gc = impl_prop_get_prop_gc(prop);
+    type_codept gc = impl_prop_get_gc_prop(prop);
 
     if (gc >= impl_General_Category_Lu &&
         gc <= impl_General_Category_Zs)
@@ -140,12 +140,12 @@ uaix_static bool impl_prop_is_prop_graphic(type_codept prop)
 }
 
 uaix_always_inline
-uaix_static bool impl_prop_is_prop_format(type_codept prop)
+uaix_static bool impl_prop_is_format_prop(type_codept prop)
 {
     // https://www.unicode.org/glossary/#format_character
     // https://www.unicode.org/versions/Unicode14.0.0/ch02.pdf#M9.61673.TableTitle.Table.22.Types.of.Code.Points
 
-    type_codept gc = impl_prop_get_prop_gc(prop);
+    type_codept gc = impl_prop_get_gc_prop(prop);
 
     if (gc == impl_General_Category_Zl ||
         gc == impl_General_Category_Zp ||
@@ -156,7 +156,7 @@ uaix_static bool impl_prop_is_prop_format(type_codept prop)
 }
 
 uaix_always_inline
-uaix_static bool impl_prop_is_prop_noncharacter(type_codept prop)
+uaix_static bool impl_prop_is_noncharacter_prop(type_codept prop)
 {
     // The Unicode Standard: PropList.txt -> Noncharacter_Code_Point
     // the same as: https://www.unicode.org/glossary/#noncharacter
@@ -165,7 +165,7 @@ uaix_static bool impl_prop_is_prop_noncharacter(type_codept prop)
 }
 
 uaix_always_inline
-uaix_static bool impl_prop_is_prop_white_space(type_codept prop)
+uaix_static bool impl_prop_is_white_space_prop(type_codept prop)
 {
     // The Unicode Standard: PropList.txt -> White_Space
 
@@ -173,7 +173,7 @@ uaix_static bool impl_prop_is_prop_white_space(type_codept prop)
 }
 
 uaix_always_inline
-uaix_static bool impl_prop_is_prop_alphabetic(type_codept prop)
+uaix_static bool impl_prop_is_alphabetic_prop(type_codept prop)
 {
     // The Unicode Standard: DerivedCoreProperties.txt -> Alphabetic
 
@@ -183,7 +183,7 @@ uaix_static bool impl_prop_is_prop_alphabetic(type_codept prop)
 // Some properties can be also checked without table lookup
 
 uaix_always_inline
-uaix_static bool impl_prop_is_non_character(type_codept c)
+uaix_static bool impl_prop_is_noncharacter(type_codept c)
 {
     // https://www.unicode.org/glossary/#noncharacter
     // https://www.unicode.org/faq/private_use.html#nonchar5

@@ -843,7 +843,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, type_codept buffer[], unsig
     size_t offset = stages_decomp_nfd(c);
     if (offset == 0)
     {
-        if (impl_prop_get_prop_gc(impl_prop_get_prop(c)) != impl_General_Category_Mn)
+        if (impl_prop_get_gc_prop(impl_prop_get_prop(c)) != impl_General_Category_Mn)
         {
             buffer[*size] = c;
             buffer_ccc[*size] = stages_ccc(c);
@@ -858,7 +858,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, type_codept buffer[], unsig
         for (size_t i = 0; i < number; ++i)
         {
             type_codept cp = stages_decomp_nfd_cp(offset, i);
-            if (impl_prop_get_prop_gc(impl_prop_get_prop(cp)) != impl_General_Category_Mn)
+            if (impl_prop_get_gc_prop(impl_prop_get_prop(cp)) != impl_General_Category_Mn)
             {
                 buffer[*size] = cp;
                 buffer_ccc[*size] = stages_ccc(cp);
@@ -1889,21 +1889,21 @@ uaix_static type_codept impl_norm_get_prop(type_codept c)
 }
 
 uaix_always_inline
-uaix_static unsigned char impl_norm_get_prop_ccc(type_codept prop)
+uaix_static unsigned char impl_norm_get_ccc_prop(type_codept prop)
 {
     // The Unicode Standard: UnicodeData.txt -> Canonical_Combining_Class
     return (unsigned char)(prop & 0xFF);
 }
 
 uaix_always_inline
-uaix_static bool impl_norm_is_prop_nfc_qc_yes(type_codept prop)
+uaix_static bool impl_norm_is_nfc_qc_yes_prop(type_codept prop)
 {
     // The Unicode Standard: DerivedNormalizationProps.txt -> NFC_Quick_Check=Yes
     return (prop & (type_codept)1 << norm_bit_nfc) ? false : true;
 }
 
 uaix_always_inline
-uaix_static bool impl_norm_is_prop_nfd_qc_yes(type_codept prop)
+uaix_static bool impl_norm_is_nfd_qc_yes_prop(type_codept prop)
 {
     // The Unicode Standard: DerivedNormalizationProps.txt -> NFD_Quick_Check=Yes
     return (prop & (type_codept)1 << norm_bit_nfd) ? false : true;
@@ -1912,14 +1912,14 @@ uaix_static bool impl_norm_is_prop_nfd_qc_yes(type_codept prop)
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool impl_norm_is_prop_nfkc_qc_yes(type_codept prop)
+uaix_static bool impl_norm_is_nfkc_qc_yes_prop(type_codept prop)
 {
     // The Unicode Standard: DerivedNormalizationProps.txt -> NFKC_Quick_Check=Yes
     return (prop & (type_codept)1 << norm_bit_nfkc) ? false : true;
 }
 
 uaix_always_inline
-uaix_static bool impl_norm_is_prop_nfkd_qc_yes(type_codept prop)
+uaix_static bool impl_norm_is_nfkd_qc_yes_prop(type_codept prop)
 {
     // The Unicode Standard: DerivedNormalizationProps.txt -> NFKD_Quick_Check=Yes
     return (prop & (type_codept)1 << norm_bit_nfkd) ? false : true;

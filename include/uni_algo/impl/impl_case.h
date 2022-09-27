@@ -1590,35 +1590,35 @@ uaix_static type_codept impl_case_get_prop(type_codept c)
 }
 
 uaix_always_inline
-uaix_static bool impl_case_is_prop_lowercase(type_codept prop)
+uaix_static bool impl_case_is_lowercase_prop(type_codept prop)
 {
     // The Unicode Standard: DerivedCoreProperties.txt -> Lowercase
     return (prop & prop_Lowercase) ? true : false;
 }
 
 uaix_always_inline
-uaix_static bool impl_case_is_prop_uppercase(type_codept prop)
+uaix_static bool impl_case_is_uppercase_prop(type_codept prop)
 {
     // The Unicode Standard: DerivedCoreProperties.txt -> Uppercase
     return (prop & prop_Uppercase) ? true : false;
 }
 
 uaix_always_inline
-uaix_static bool impl_case_is_prop_cased(type_codept prop)
+uaix_static bool impl_case_is_cased_prop(type_codept prop)
 {
     // The Unicode Standard: DerivedCoreProperties.txt -> Cased
     return (prop & prop_Cased) ? true : false;
 }
 
 uaix_always_inline
-uaix_static bool impl_case_is_prop_case_ignorable(type_codept prop)
+uaix_static bool impl_case_is_case_ignorable_prop(type_codept prop)
 {
     // The Unicode Standard: DerivedCoreProperties.txt -> Case_Ignorable
     return (prop & prop_Cased_Ignorable) ? true : false;
 }
 
 uaix_always_inline
-uaix_static bool impl_case_is_prop_soft_dotted(type_codept prop)
+uaix_static bool impl_case_is_soft_dotted_prop(type_codept prop)
 {
     // The Unicode Standard: PropList.txt -> Soft_Dotted
     return (prop & prop_Soft_Dotted) ? true : false;
@@ -1656,7 +1656,7 @@ uaix_static type_codept impl_case_to_simple_titlecase(type_codept c)
 template<typename it_out_utf32>
 #endif
 uaix_always_inline_tmpl
-size_t impl_case_to_lowercase(type_codept c, it_out_utf32 dst)
+uaix_static size_t impl_case_to_lowercase(type_codept c, it_out_utf32 dst)
 {
     if (c == 0x0130) // Handled in place (checked in generator)
     {
@@ -1673,7 +1673,7 @@ size_t impl_case_to_lowercase(type_codept c, it_out_utf32 dst)
 template<typename it_out_utf32>
 #endif
 uaix_always_inline_tmpl
-size_t impl_case_to_uppercase(type_codept c, it_out_utf32 dst)
+uaix_static size_t impl_case_to_uppercase(type_codept c, it_out_utf32 dst)
 {
     size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_upper, stage2_special_upper) : 0;
     if (n)
@@ -1691,7 +1691,7 @@ size_t impl_case_to_uppercase(type_codept c, it_out_utf32 dst)
 template<typename it_out_utf32>
 #endif
 uaix_always_inline_tmpl
-size_t impl_case_to_casefold(type_codept c, it_out_utf32 dst)
+uaix_static size_t impl_case_to_casefold(type_codept c, it_out_utf32 dst)
 {
     size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_fold, stage2_special_fold) : 0;
     if (n)
@@ -1710,7 +1710,7 @@ size_t impl_case_to_casefold(type_codept c, it_out_utf32 dst)
 template<typename it_out_utf32>
 #endif
 uaix_always_inline_tmpl
-size_t impl_case_to_titlecase(type_codept c, it_out_utf32 dst)
+uaix_static size_t impl_case_to_titlecase(type_codept c, it_out_utf32 dst)
 {
     size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_title, stage2_special_title) : 0;
     if (n)

@@ -770,27 +770,27 @@ public:
     bool Lowercase() const noexcept
     {
         // The Unicode Standard: DerivedCoreProperties.txt -> Lowercase
-        return detail::impl_case_is_prop_lowercase(data);
+        return detail::impl_case_is_lowercase_prop(data);
     }
     bool Uppercase() const noexcept
     {
         // The Unicode Standard: DerivedCoreProperties.txt -> Uppercase
-        return detail::impl_case_is_prop_uppercase(data);
+        return detail::impl_case_is_uppercase_prop(data);
     }
     bool Cased() const noexcept
     {
         // The Unicode Standard: DerivedCoreProperties.txt -> Cased
-        return detail::impl_case_is_prop_cased(data);
+        return detail::impl_case_is_cased_prop(data);
     }
     bool Case_Ignorable() const noexcept
     {
         // The Unicode Standard: DerivedCoreProperties.txt -> Case_Ignorable
-        return detail::impl_case_is_prop_case_ignorable(data);
+        return detail::impl_case_is_case_ignorable_prop(data);
     }
     bool Soft_Dotted() const noexcept
     {
         // The Unicode Standard: PropList.txt -> Soft_Dotted
-        return detail::impl_case_is_prop_soft_dotted(data);
+        return detail::impl_case_is_soft_dotted_prop(data);
     }
 };
 
