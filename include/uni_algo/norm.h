@@ -561,7 +561,7 @@ private:
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
 
-        void iter_func_nfc()
+        void iter_func_norm_nfc()
         {
             if (!detail::unstable_norm_iter_ready(&state))
                 while (it_pos != std::end(parent->range) && !detail::unstable_norm_iter_nfc(&state, *it_pos++));
@@ -581,12 +581,12 @@ private:
         {
             detail::impl_norm_iter_state_reset(&state);
 
-            iter_func_nfc(); // Fn call must not be inlined
+            iter_func_norm_nfc(); // Fn call must not be inlined
         }
         reference operator*() const noexcept { return codepoint; }
         nfc& operator++()
         {
-            iter_func_nfc(); // Fn call must not be inlined
+            iter_func_norm_nfc(); // Fn call must not be inlined
 
             return *this;
         }
@@ -654,7 +654,7 @@ private:
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
 
-        void iter_func_nfd()
+        void iter_func_norm_nfd()
         {
             if (!detail::unstable_norm_iter_ready(&state))
                 while (it_pos != std::end(parent->range) && !detail::unstable_norm_iter_nfd(&state, *it_pos++));
@@ -674,12 +674,12 @@ private:
         {
             detail::impl_norm_iter_state_reset(&state);
 
-            iter_func_nfd(); // Fn call must not be inlined
+            iter_func_norm_nfd(); // Fn call must not be inlined
         }
         reference operator*() const noexcept { return codepoint; }
         nfd& operator++()
         {
-            iter_func_nfd(); // Fn call must not be inlined
+            iter_func_norm_nfd(); // Fn call must not be inlined
 
             return *this;
         }
@@ -749,7 +749,7 @@ private:
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
 
-        void iter_func_nfkc()
+        void iter_func_norm_nfkc()
         {
             if (!detail::unstable_norm_iter_ready(&state))
                 while (it_pos != std::end(parent->range) && !detail::unstable_norm_iter_nfkc(&state, *it_pos++));
@@ -769,12 +769,12 @@ private:
         {
             detail::impl_norm_iter_state_reset(&state);
 
-            iter_func_nfkc(); // Fn call must not be inlined
+            iter_func_norm_nfkc(); // Fn call must not be inlined
         }
         reference operator*() const noexcept { return codepoint; }
         nfkc& operator++()
         {
-            iter_func_nfkc(); // Fn call must not be inlined
+            iter_func_norm_nfkc(); // Fn call must not be inlined
 
             return *this;
         }
@@ -842,7 +842,7 @@ private:
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
 
-        void iter_func_nfkd()
+        void iter_func_norm_nfkd()
         {
             if (!detail::unstable_norm_iter_ready(&state))
                 while (it_pos != std::end(parent->range) && !detail::unstable_norm_iter_nfkd(&state, *it_pos++));
@@ -862,12 +862,12 @@ private:
         {
             detail::impl_norm_iter_state_reset(&state);
 
-            iter_func_nfkd(); // Fn call must not be inlined
+            iter_func_norm_nfkd(); // Fn call must not be inlined
         }
         reference operator*() const noexcept { return codepoint; }
         nfkd& operator++()
         {
-            iter_func_nfkd(); // Fn call must not be inlined
+            iter_func_norm_nfkd(); // Fn call must not be inlined
 
             return *this;
         }

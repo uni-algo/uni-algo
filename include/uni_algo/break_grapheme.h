@@ -42,7 +42,7 @@ private:
 
         detail::impl_break_grapheme_state state{};
 
-        uaiw_constexpr void iter_func_utf8_break_grapheme()
+        uaiw_constexpr void iter_func_break_grapheme_utf8()
         {
             it_begin = it_pos;
 
@@ -58,7 +58,7 @@ private:
             if (it_next == std::end(parent->range))
                 it_pos = it_next;
         }
-        uaiw_constexpr void iter_func_utf8_break_grapheme_rev()
+        uaiw_constexpr void iter_func_break_grapheme_rev_utf8()
         {
             detail::impl_break_grapheme_state_reset(&state);
             it_pos = it_begin;
@@ -95,7 +95,7 @@ private:
 
             detail::impl_break_grapheme_state_reset(&state);
 
-            iter_func_utf8_break_grapheme();
+            iter_func_break_grapheme_utf8();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -105,7 +105,7 @@ private:
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
         uaiw_constexpr utf8& operator++()
         {
-            iter_func_utf8_break_grapheme();
+            iter_func_break_grapheme_utf8();
 
             return *this;
         }
@@ -117,7 +117,7 @@ private:
         }
         uaiw_constexpr utf8& operator--()
         {
-            iter_func_utf8_break_grapheme_rev();
+            iter_func_break_grapheme_rev_utf8();
 
             return *this;
         }
@@ -188,7 +188,7 @@ private:
 
         detail::impl_break_grapheme_state state{};
 
-        uaiw_constexpr void iter_func_utf16_break_grapheme()
+        uaiw_constexpr void iter_func_break_grapheme_utf16()
         {
             it_begin = it_pos;
 
@@ -204,7 +204,7 @@ private:
             if (it_next == std::end(parent->range))
                 it_pos = it_next;
         }
-        uaiw_constexpr void iter_func_utf16_break_grapheme_rev()
+        uaiw_constexpr void iter_func_break_grapheme_rev_utf16()
         {
             detail::impl_break_grapheme_state_reset(&state);
             it_pos = it_begin;
@@ -241,7 +241,7 @@ private:
 
             detail::impl_break_grapheme_state_reset(&state);
 
-            iter_func_utf16_break_grapheme();
+            iter_func_break_grapheme_utf16();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -251,7 +251,7 @@ private:
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
         uaiw_constexpr utf16& operator++()
         {
-            iter_func_utf16_break_grapheme();
+            iter_func_break_grapheme_utf16();
 
             return *this;
         }
@@ -263,7 +263,7 @@ private:
         }
         uaiw_constexpr utf16& operator--()
         {
-            iter_func_utf16_break_grapheme_rev();
+            iter_func_break_grapheme_rev_utf16();
 
             return *this;
         }

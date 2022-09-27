@@ -247,7 +247,7 @@ private:
         detail::translit::buffer data;
         std::size_t skip = 1;
 
-        void func_translit_impl()
+        void iter_func_translit()
         {
             do
             {
@@ -282,12 +282,12 @@ private:
         uaiw_constexpr explicit translit(translit_view& p, Iter begin, Sent)
             : parent{std::addressof(p)}, it_pos{begin}
         {
-            func_translit_impl();
+            iter_func_translit();
         }
         uaiw_constexpr reference operator*() const noexcept { return data[0]; }
         uaiw_constexpr translit& operator++()
         {
-            func_translit_impl();
+            iter_func_translit();
 
             return *this;
         }

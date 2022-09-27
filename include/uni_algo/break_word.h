@@ -46,7 +46,7 @@ private:
 
         detail::impl_break_word_state state{};
 
-        uaiw_constexpr void iter_func_utf8_break_word()
+        uaiw_constexpr void iter_func_break_word_utf8()
         {
             it_begin = it_pos;
 
@@ -66,7 +66,7 @@ private:
                 word_prop = next_word_prop;
             }
         }
-        uaiw_constexpr void iter_func_utf8_break_word_rev()
+        uaiw_constexpr void iter_func_break_word_rev_utf8()
         {
             detail::impl_break_word_state_reset(&state);
             it_pos = it_begin;
@@ -104,7 +104,7 @@ private:
 
             detail::impl_break_word_state_reset(&state);
 
-            iter_func_utf8_break_word();
+            iter_func_break_word_utf8();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -123,7 +123,7 @@ private:
         uaiw_constexpr bool is_newline()          const noexcept { return detail::impl_break_is_word_newline(word_prop); }
         uaiw_constexpr utf8& operator++()
         {
-            iter_func_utf8_break_word();
+            iter_func_break_word_utf8();
 
             return *this;
         }
@@ -135,7 +135,7 @@ private:
         }
         uaiw_constexpr utf8& operator--()
         {
-            iter_func_utf8_break_word_rev();
+            iter_func_break_word_rev_utf8();
 
             return *this;
         }
@@ -208,7 +208,7 @@ private:
 
         detail::impl_break_word_state state{};
 
-        uaiw_constexpr void iter_func_utf16_break_word()
+        uaiw_constexpr void iter_func_break_word_utf16()
         {
             it_begin = it_pos;
 
@@ -228,7 +228,7 @@ private:
                 word_prop = next_word_prop;
             }
         }
-        uaiw_constexpr void iter_func_utf16_break_word_rev()
+        uaiw_constexpr void iter_func_break_word_rev_utf16()
         {
             detail::impl_break_word_state_reset(&state);
             it_pos = it_begin;
@@ -266,7 +266,7 @@ private:
 
             detail::impl_break_word_state_reset(&state);
 
-            iter_func_utf16_break_word();
+            iter_func_break_word_utf16();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -285,7 +285,7 @@ private:
         uaiw_constexpr bool is_newline()          const noexcept { return detail::impl_break_is_word_newline(word_prop); }
         uaiw_constexpr utf16& operator++()
         {
-            iter_func_utf16_break_word();
+            iter_func_break_word_utf16();
 
             return *this;
         }
@@ -297,7 +297,7 @@ private:
         }
         uaiw_constexpr utf16& operator--()
         {
-            iter_func_utf16_break_word_rev();
+            iter_func_break_word_rev_utf16();
 
             return *this;
         }
@@ -373,7 +373,7 @@ private:
 
         detail::impl_break_word_state state{};
 
-        uaiw_constexpr void iter_func_utf8_break_word_only()
+        uaiw_constexpr void iter_func_break_word_only_utf8()
         {
             it_begin = it_pos;
 
@@ -402,7 +402,7 @@ private:
             }
         }
 
-        uaiw_constexpr void iter_func_utf8_break_word_only_rev()
+        uaiw_constexpr void iter_func_break_word_only_rev_utf8()
         {
             detail::impl_break_word_state_reset(&state);
             it_pos = it_begin;
@@ -444,7 +444,7 @@ private:
 
             detail::impl_break_word_state_reset(&state);
 
-            iter_func_utf8_break_word_only();
+            iter_func_break_word_only_utf8();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -454,7 +454,7 @@ private:
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
         uaiw_constexpr utf8& operator++()
         {
-            iter_func_utf8_break_word_only();
+            iter_func_break_word_only_utf8();
 
             return *this;
         }
@@ -466,7 +466,7 @@ private:
         }
         uaiw_constexpr utf8& operator--()
         {
-            iter_func_utf8_break_word_only_rev();
+            iter_func_break_word_only_rev_utf8();
 
             return *this;
         }
@@ -539,7 +539,7 @@ private:
 
         detail::impl_break_word_state state{};
 
-        uaiw_constexpr void iter_func_utf16_break_word_only()
+        uaiw_constexpr void iter_func_break_word_only_utf16()
         {
             it_begin = it_pos;
 
@@ -568,7 +568,7 @@ private:
             }
         }
 
-        uaiw_constexpr void iter_func_utf16_break_word_only_rev()
+        uaiw_constexpr void iter_func_break_word_only_rev_utf16()
         {
             detail::impl_break_word_state_reset(&state);
             it_pos = it_begin;
@@ -610,7 +610,7 @@ private:
 
             detail::impl_break_word_state_reset(&state);
 
-            iter_func_utf16_break_word_only();
+            iter_func_break_word_only_utf16();
         }
         uaiw_constexpr reference operator*() const
         {
@@ -620,7 +620,7 @@ private:
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
         uaiw_constexpr utf16& operator++()
         {
-            iter_func_utf16_break_word_only();
+            iter_func_break_word_only_utf16();
 
             return *this;
         }
@@ -632,7 +632,7 @@ private:
         }
         uaiw_constexpr utf16& operator--()
         {
-            iter_func_utf16_break_word_only_rev();
+            iter_func_break_word_only_rev_utf16();
 
             return *this;
         }
