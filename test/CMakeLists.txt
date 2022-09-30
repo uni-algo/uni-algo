@@ -42,9 +42,9 @@ if(DOWNLOAD_UNICODE_TEST_FILES)
         endif()
     endfunction()
 
-    FUNC_DOWNLOAD("https://unicode.org/Public/14.0.0/ucd/NormalizationTest.txt")
-    FUNC_DOWNLOAD("https://unicode.org/Public/14.0.0/ucd/auxiliary/GraphemeBreakTest.txt")
-    FUNC_DOWNLOAD("https://unicode.org/Public/14.0.0/ucd/auxiliary/WordBreakTest.txt")
+    FUNC_DOWNLOAD("https://www.unicode.org/Public/15.0.0/ucd/NormalizationTest.txt")
+    FUNC_DOWNLOAD("https://www.unicode.org/Public/15.0.0/ucd/auxiliary/GraphemeBreakTest.txt")
+    FUNC_DOWNLOAD("https://www.unicode.org/Public/15.0.0/ucd/auxiliary/WordBreakTest.txt")
 endif() # DOWNLOAD_UNICODE_TEST_FILES
 
 enable_testing()
