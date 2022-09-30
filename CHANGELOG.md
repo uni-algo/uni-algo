@@ -3,6 +3,7 @@ Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
 ## v0.5.0 (TBD)
+- Added single include version
 - Renamed files from cpp_uni_* to uni_algo/*
 - Renamed most functions, utf8/utf16 now at the end of a function
 - Added better locale support
