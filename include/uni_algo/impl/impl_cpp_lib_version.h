@@ -2,4 +2,4 @@
 // (VERSION % 1000) is the patch version 0..255,
 // (VERSION / 1000 % 1000) is the minor version 0..255,
 // (VERSION / 1000000) is the major version 0..255.
-#define UNI_ALGO_CPP_LIB_VERSION 4000
+#define UNI_ALGO_CPP_LIB_VERSION 5000

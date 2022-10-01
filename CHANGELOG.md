@@ -2,7 +2,8 @@
 Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
-## v0.5.0 (TBD)
+## [v0.5.0](https://github.com/uni-algo/uni-algo/tree/v0.5.0) (01.10.2022)
+- Updated to Unicode 15.0.0
 - Added single include version
 - Renamed files from cpp_uni_* to uni_algo/*
 - Renamed most functions, utf8/utf16 now at the end of a function
