@@ -1,5 +1,5 @@
-[![Version](https://img.shields.io/badge/Version-0.4.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.4.0)
-[![Unicode](https://img.shields.io/badge/Unicode-14.0.0-blue)](https://www.unicode.org/versions/Unicode14.0.0/)
+[![Version](https://img.shields.io/badge/Version-0.5.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.5.0)
+[![Unicode](https://img.shields.io/badge/Unicode-15.0.0-blue)](https://www.unicode.org/versions/Unicode15.0.0/)
 [![Language](https://img.shields.io/badge/C%2B%2B-17/20/23-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
 [![License](https://img.shields.io/badge/License-Unlicense/MIT-darkorchid.svg)](https://opensource.org/licenses/MIT)
 [![Linux](https://github.com/uni-algo/uni-algo/workflows/Linux/badge.svg)](https://github.com/uni-algo/uni-algo/actions?query=workflow%3ALinux)
@@ -88,6 +88,10 @@ and/or fixed width types are unavailable and/or CHAR_BIT is not 8.
 
 ## Usage
 
+<details><summary><b>Single include</b></summary><p>
+See this repository: https://github.com/uni-algo/uni-algo-single-include
+</p></details>
+
 <details><summary><b>CMake add_subdirectory</b></summary><p>
 
 Add to your CMakeLists.txt
@@ -138,11 +142,11 @@ include(FetchContent)
 # Note that you need Git installed for this to work.
 FetchContent_Declare(uni-algo
   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
-  GIT_TAG v0.4.0) # the version you want to download
+  GIT_TAG v0.5.0) # the version you want to download
 
 # Or you can use it like this without Git.
 # FetchContent_Declare(uni-algo
-#   URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.4.0.zip)
+#   URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.5.0.zip)
 
 FetchContent_MakeAvailable(uni-algo)
 
