@@ -177,7 +177,7 @@ void test_performance()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                std::string result = uni::norm::utf8_nfc<char>(strs[i]);
+                std::string result = uni::norm::to_nfc_utf8<char>(strs[i]);
                 //std::string result = norm_utf8proc(strs2[i]);
                 //std::string result = norm_ICU(strs2[i]);
 
@@ -210,7 +210,7 @@ void generate_table()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                std::string result = uni::norm::utf8_nfc<char>(strs[i]);
+                std::string result = uni::norm::to_nfc_utf8<char>(strs[i]);
                 nothing += result.back();
             }
             auto time2 = std::chrono::steady_clock::now();
