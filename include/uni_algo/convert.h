@@ -51,9 +51,17 @@ DST t_utf(const SRC& source)
 
     std::size_t length = source.size();
 
-    //if (length && length <= destination.max_size() / SZ)
     if (length)
     {
+        if (length > destination.max_size() / SZ) // Overflow protection
+        {
+#if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || (_HAS_EXCEPTIONS != 0)
+            throw std::bad_alloc();
+#else
+            std::abort();
+#endif
+        }
+
         destination.resize(length * SZ);
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
         destination.resize(FNUTF(source.data(), source.data() + source.size(), destination.data(), nullptr));
@@ -84,6 +92,15 @@ DST t_utf(const SRC& source, uni::error& error)
 
     if (length)
     {
+        if (length > destination.max_size() / SZ) // Overflow protection
+        {
+#if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || (_HAS_EXCEPTIONS != 0)
+            throw std::bad_alloc();
+#else
+            std::abort();
+#endif
+        }
+
         destination.resize(length * SZ);
         std::size_t err = impl_npos;
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS

@@ -40,6 +40,15 @@ DST t_norm(SRC source)
 
     if (length)
     {
+        if (length > destination.max_size() / SZ) // Overflow protection
+        {
+#if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || (_HAS_EXCEPTIONS != 0)
+            throw std::bad_alloc();
+#else
+            std::abort();
+#endif
+        }
+
         destination.resize(length * SZ);
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
         destination.resize(FNNORM(source.data(), source.data() + source.size(), destination.data()));
@@ -93,9 +102,17 @@ DST t_norm2(SRC source)
 
     std::size_t length = source.size();
 
-    //if (length && length <= destination.max_size() / 3)
     if (length)
     {
+        if (length > destination.max_size() / 3) // Overflow protection
+        {
+#if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || (_HAS_EXCEPTIONS != 0)
+            throw std::bad_alloc();
+#else
+            std::abort();
+#endif
+        }
+
         destination.reserve(length * 3 / 2);
 
         proxy_it_out<std::back_insert_iterator<DST>> it_out(std::back_inserter(destination));

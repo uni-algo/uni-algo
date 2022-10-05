@@ -59,6 +59,15 @@ DST t_map(SRC source, int mode, char32_t loc = 0)
 
     if (length)
     {
+        if (length > destination.max_size() / SZ) // Overflow protection
+        {
+#if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || (_HAS_EXCEPTIONS != 0)
+            throw std::bad_alloc();
+#else
+            std::abort();
+#endif
+        }
+
         destination.resize(length * SZ);
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
         destination.resize(FNMAP(source.data(), source.data() + source.size(), destination.data(), mode, loc));
