@@ -954,13 +954,28 @@ struct adaptor_transform
     uaiw_constexpr auto operator()(Func f) const { return adaptor_closure_transform<Func>{std::move(f)}; }
 };
 
-/* TO_UTF8 */
+// SFINAE helpers that are needed for the following adaptors
+
+template <typename T, typename = void>
+struct sfinae_has_begin : std::false_type {};
+template <typename T>
+struct sfinae_has_begin<T, decltype(void(std::begin(std::declval<T&>())))> : std::true_type {};
+
+template <typename T, typename = void>
+struct sfinae_has_allocate : std::false_type {};
+template <typename T>
+struct sfinae_has_allocate<T, decltype(void(std::declval<T&>().allocate(0)))> : std::true_type {};
 
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1206r7.pdf
 
-template<class Result>
+/* TO_UTF8 */
+
+template<class Result, class Alloc = std::allocator<uni::detail::ranges::range_value_t<Result>>>
 struct adaptor_closure_to_utf8
 {
+    Alloc alloc;
+    uaiw_constexpr explicit adaptor_closure_to_utf8(const Alloc& a = Alloc()): alloc{a} {}
+
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
     {
@@ -976,29 +991,36 @@ struct adaptor_closure_to_utf8
         static_assert(std::is_integral_v<result_v>,
                       "to_utf8 result type cannot store UTF-8");
 
-        Result result;
+        Result result{alloc};
         std::back_insert_iterator output{result};
         for (auto c : r)
             detail::impl_output_utf8(static_cast<char32_t>(c), output);
         return result;
     }
 };
-template<class R, class Result>
-uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf8<Result>& a) { return a(std::forward<R>(r)); }
+template<class R, class Result, class Alloc>
+uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf8<Result, Alloc>& a) { return a(std::forward<R>(r)); }
 
 template<class Result>
 struct adaptor_to_utf8
 {
     uaiw_constexpr auto operator()() const { return adaptor_closure_to_utf8<Result>{}; }
-    template<class R>
+    template<class R, class = std::enable_if_t<sfinae_has_begin<R>::value>>
     uaiw_constexpr auto operator()(R&& r) const { return adaptor_closure_to_utf8<Result>{}(std::forward<R>(r)); }
+    template<class Alloc, class = std::enable_if_t<sfinae_has_allocate<Alloc>::value>>
+    uaiw_constexpr auto operator()(const Alloc& a) const { return adaptor_closure_to_utf8<Result, Alloc>{a}; }
+    template<class R, class Alloc>
+    uaiw_constexpr auto operator()(R&& r, const Alloc& a) const { return adaptor_closure_to_utf8<Result, Alloc>{a}(std::forward<R>(r)); }
 };
 
 /* TO_UTF16 */
 
-template<class Result>
+template<class Result, class Alloc = std::allocator<uni::detail::ranges::range_value_t<Result>>>
 struct adaptor_closure_to_utf16
 {
+    Alloc alloc;
+    uaiw_constexpr explicit adaptor_closure_to_utf16(const Alloc& a = Alloc()): alloc{a} {}
+
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
     {
@@ -1012,31 +1034,36 @@ struct adaptor_closure_to_utf16
         static_assert(std::is_integral_v<result_v> && sizeof(result_v) >= sizeof(char16_t),
                       "to_utf16 result type cannot store UTF-16");
 
-        Result result;
+        Result result{alloc};
         std::back_insert_iterator output{result};
         for (auto c : r)
             detail::impl_output_utf16(static_cast<char32_t>(c), output);
         return result;
     }
 };
-template<class R, class Result>
-uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf16<Result>& a) { return a(std::forward<R>(r)); }
+template<class R, class Result, class Alloc>
+uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf16<Result, Alloc>& a) { return a(std::forward<R>(r)); }
 
 template<class Result>
 struct adaptor_to_utf16
 {
     uaiw_constexpr auto operator()() const { return adaptor_closure_to_utf16<Result>{}; }
-    template<class R>
+    template<class R, class = std::enable_if_t<sfinae_has_begin<R>::value>>
     uaiw_constexpr auto operator()(R&& r) const { return adaptor_closure_to_utf16<Result>{}(std::forward<R>(r)); }
+    template<class Alloc, class = std::enable_if_t<sfinae_has_allocate<Alloc>::value>>
+    uaiw_constexpr auto operator()(const Alloc& a) const { return adaptor_closure_to_utf16<Result, Alloc>{a}; }
+    template<class R, class Alloc>
+    uaiw_constexpr auto operator()(R&& r, const Alloc& a) const { return adaptor_closure_to_utf16<Result, Alloc>{a}(std::forward<R>(r)); }
 };
 
 /* TO_UTF8_RESERVE */
 
-template<class Result>
+template<class Result, class Alloc = std::allocator<uni::detail::ranges::range_value_t<Result>>>
 struct adaptor_closure_to_utf8_reserve
 {
     std::size_t size = 0;
-    uaiw_constexpr explicit adaptor_closure_to_utf8_reserve(std::size_t n): size{n} {}
+    Alloc alloc;
+    uaiw_constexpr explicit adaptor_closure_to_utf8_reserve(std::size_t n, const Alloc& a = Alloc()): size{n}, alloc{a} {}
 
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
@@ -1049,7 +1076,7 @@ struct adaptor_closure_to_utf8_reserve
         static_assert(std::is_integral_v<result_v>,
                       "to_utf8_reserve result type cannot store UTF-8");
 
-        Result result;
+        Result result{alloc};
         result.reserve(size);
         std::back_insert_iterator output{result};
         for (auto c : r)
@@ -1057,24 +1084,29 @@ struct adaptor_closure_to_utf8_reserve
         return result;
     }
 };
-template<class R, class Result>
-uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf8_reserve<Result>& a) { return a(std::forward<R>(r)); }
+template<class R, class Result, class Alloc>
+uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf8_reserve<Result, Alloc>& a) { return a(std::forward<R>(r)); }
 
 template<class Result>
 struct adaptor_to_utf8_reserve
 {
-    uaiw_constexpr auto operator()(std::size_t size) const { return adaptor_closure_to_utf8_reserve<Result>{size}; }
+    uaiw_constexpr auto operator()(std::size_t n) const { return adaptor_closure_to_utf8_reserve<Result>{n}; }
     template<class R>
-    uaiw_constexpr auto operator()(R&& r, std::size_t size) const { return adaptor_closure_to_utf8_reserve<Result>{size}(std::forward<R>(r)); }
+    uaiw_constexpr auto operator()(R&& r, std::size_t n) const { return adaptor_closure_to_utf8_reserve<Result>{n}(std::forward<R>(r)); }
+    template<class Alloc>
+    uaiw_constexpr auto operator()(std::size_t n, const Alloc& a) const { return adaptor_closure_to_utf8_reserve<Result, Alloc>{n, a}; }
+    template<class R, class Alloc>
+    uaiw_constexpr auto operator()(R&& r, std::size_t n, const Alloc& a) const { return adaptor_closure_to_utf8_reserve<Result, Alloc>{n, a}(std::forward<R>(r)); }
 };
 
 /* TO_UTF16_RESERVE */
 
-template<class Result>
+template<class Result, class Alloc = std::allocator<uni::detail::ranges::range_value_t<Result>>>
 struct adaptor_closure_to_utf16_reserve
 {
     std::size_t size = 0;
-    uaiw_constexpr explicit adaptor_closure_to_utf16_reserve(std::size_t n): size{n} {}
+    Alloc alloc;
+    uaiw_constexpr explicit adaptor_closure_to_utf16_reserve(std::size_t n, const Alloc& a = Alloc()): size{n}, alloc{a} {}
 
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
@@ -1087,7 +1119,7 @@ struct adaptor_closure_to_utf16_reserve
         static_assert(std::is_integral_v<result_v> && sizeof(result_v) >= sizeof(char16_t),
                       "to_utf16_reserve result type cannot store UTF-16");
 
-        Result result;
+        Result result{alloc};
         result.reserve(size);
         std::back_insert_iterator output{result};
         for (auto c : r)
@@ -1095,15 +1127,19 @@ struct adaptor_closure_to_utf16_reserve
         return result;
     }
 };
-template<class R, class Result>
-uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf16_reserve<Result>& a) { return a(std::forward<R>(r)); }
+template<class R, class Result, class Alloc>
+uaiw_constexpr auto operator|(R&& r, const adaptor_closure_to_utf16_reserve<Result, Alloc>& a) { return a(std::forward<R>(r)); }
 
 template<class Result>
 struct adaptor_to_utf16_reserve
 {
-    uaiw_constexpr auto operator()(std::size_t size) const { return adaptor_closure_to_utf16_reserve<Result>{size}; }
+    uaiw_constexpr auto operator()(std::size_t n) const { return adaptor_closure_to_utf16_reserve<Result>{n}; }
     template<class R>
-    uaiw_constexpr auto operator()(R&& r, std::size_t size) const { return adaptor_closure_to_utf16_reserve<Result>{size}(std::forward<R>(r)); }
+    uaiw_constexpr auto operator()(R&& r, std::size_t n) const { return adaptor_closure_to_utf16_reserve<Result>{n}(std::forward<R>(r)); }
+    template<class Alloc>
+    uaiw_constexpr auto operator()(std::size_t n, const Alloc& a) const { return adaptor_closure_to_utf16_reserve<Result, Alloc>{n, a}; }
+    template<class R, class Alloc>
+    uaiw_constexpr auto operator()(R&& r, std::size_t n, const Alloc& a) const { return adaptor_closure_to_utf16_reserve<Result, Alloc>{n, a}(std::forward<R>(r)); }
 };
 
 } // namespace detail
