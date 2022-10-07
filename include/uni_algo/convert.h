@@ -39,15 +39,15 @@ namespace detail {
 // Performance impact of shrink_to_fit call is 2-20% slower depends on the length of the string.
 // This define must be used for test purposes only.
 
-template<typename DST, typename SRC, size_t SZ,
+template<typename DST, typename ALLOC, typename SRC, size_t SZ,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     size_t(*FNUTF)(typename SRC::const_pointer, typename SRC::const_pointer, typename DST::pointer, size_t*)>
 #else
     size_t(*FNUTF)(typename SRC::const_iterator, typename SRC::const_iterator, typename DST::iterator, size_t*)>
 #endif
-DST t_utf(const SRC& source)
+DST t_utf(const ALLOC& alloc, const SRC& source)
 {
-    DST destination;
+    DST destination{alloc};
 
     std::size_t length = source.size();
 
@@ -76,17 +76,17 @@ DST t_utf(const SRC& source)
     return destination;
 }
 
-template<typename DST, typename SRC, size_t SZ,
+template<typename DST, typename ALLOC, typename SRC, size_t SZ,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     size_t(*FNUTF)(typename SRC::const_pointer, typename SRC::const_pointer, typename DST::pointer, size_t*)>
 #else
     size_t(*FNUTF)(typename SRC::const_iterator, typename SRC::const_iterator, typename DST::iterator, size_t*)>
 #endif
-DST t_utf(const SRC& source, uni::error& error)
+DST t_utf(const ALLOC& alloc, const SRC& source, uni::error& error)
 {
     error.reset();
 
-    DST destination;
+    DST destination{alloc};
 
     std::size_t length = source.size();
 
@@ -127,59 +127,65 @@ DST t_utf(const SRC& source, uni::error& error)
 
 // Template functions
 
-template<typename UTF8, typename UTF16>
-std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+utf8to16(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_utf<std::basic_string<UTF16>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8to16, detail::impl_utf8to16>(source);
+    return detail::t_utf<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_utf8to16, detail::impl_utf8to16>(alloc, source);
 }
-template<typename UTF16, typename UTF8>
-std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+utf16to8(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_utf<std::basic_string<UTF8>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16to8, detail::impl_utf16to8>(source);
+    return detail::t_utf<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_utf16to8, detail::impl_utf16to8>(alloc, source);
 }
-template<typename UTF8, typename UTF32>
-std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename UTF32, typename Alloc = std::allocator<UTF32>>
+std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
+utf8to32(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    return detail::t_utf<std::basic_string<UTF32>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8to32, detail::impl_utf8to32>(source);
+    return detail::t_utf<std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_utf8to32, detail::impl_utf8to32>(alloc, source);
 }
-template<typename UTF32, typename UTF8>
-std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> source)
+template<typename UTF32, typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+utf32to8(std::basic_string_view<UTF32> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    return detail::t_utf<std::basic_string<UTF8>, std::basic_string_view<UTF32>,
-            detail::impl_x_utf32to8, detail::impl_utf32to8>(source);
+    return detail::t_utf<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF32>,
+            detail::impl_x_utf32to8, detail::impl_utf32to8>(alloc, source);
 }
-template<typename UTF16, typename UTF32>
-std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename UTF32, typename Alloc = std::allocator<UTF32>>
+std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
+utf16to32(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    return detail::t_utf<std::basic_string<UTF32>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16to32, detail::impl_utf16to32>(source);
+    return detail::t_utf<std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_utf16to32, detail::impl_utf16to32>(alloc, source);
 }
-template<typename UTF32, typename UTF16>
-std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source)
+template<typename UTF32, typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+utf32to16(std::basic_string_view<UTF32> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    return detail::t_utf<std::basic_string<UTF16>, std::basic_string_view<UTF32>,
-            detail::impl_x_utf32to16, detail::impl_utf32to16>(source);
+    return detail::t_utf<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF32>,
+            detail::impl_x_utf32to16, detail::impl_utf32to16>(alloc, source);
 }
 
 // Short non-template functions for std::string, std::wstring, std::u16string, std::u32string
@@ -249,59 +255,65 @@ namespace strict {
 
 // Template functions
 
-template<typename UTF8, typename UTF16>
-std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source, uni::error& error)
+template<typename UTF8, typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+utf8to16(std::basic_string_view<UTF8> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_utf<std::basic_string<UTF16>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8to16, detail::impl_utf8to16>(source, error);
+    return detail::t_utf<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_utf8to16, detail::impl_utf8to16>(alloc, source, error);
 }
-template<typename UTF16, typename UTF8>
-std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source, uni::error& error)
+template<typename UTF16, typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+utf16to8(std::basic_string_view<UTF16> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_utf<std::basic_string<UTF8>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16to8, detail::impl_utf16to8>(source, error);
+    return detail::t_utf<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_utf16to8, detail::impl_utf16to8>(alloc, source, error);
 }
-template<typename UTF8, typename UTF32>
-std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source, uni::error& error)
+template<typename UTF8, typename UTF32, typename Alloc = std::allocator<UTF32>>
+std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
+utf8to32(std::basic_string_view<UTF8> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    return detail::t_utf<std::basic_string<UTF32>, std::basic_string_view<UTF8>,
-            detail::impl_x_utf8to32, detail::impl_utf8to32>(source, error);
+    return detail::t_utf<std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_utf8to32, detail::impl_utf8to32>(alloc, source, error);
 }
-template<typename UTF32, typename UTF8>
-std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> source, uni::error& error)
+template<typename UTF32, typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+utf32to8(std::basic_string_view<UTF32> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    return detail::t_utf<std::basic_string<UTF8>, std::basic_string_view<UTF32>,
-            detail::impl_x_utf32to8, detail::impl_utf32to8>(source, error);
+    return detail::t_utf<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF32>,
+            detail::impl_x_utf32to8, detail::impl_utf32to8>(alloc, source, error);
 }
-template<typename UTF16, typename UTF32>
-std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source, uni::error& error)
+template<typename UTF16, typename UTF32, typename Alloc = std::allocator<UTF32>>
+std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
+utf16to32(std::basic_string_view<UTF16> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    return detail::t_utf<std::basic_string<UTF32>, std::basic_string_view<UTF16>,
-            detail::impl_x_utf16to32, detail::impl_utf16to32>(source, error);
+    return detail::t_utf<std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_utf16to32, detail::impl_utf16to32>(alloc, source, error);
 }
-template<typename UTF32, typename UTF16>
-std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source, uni::error& error)
+template<typename UTF32, typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+utf32to16(std::basic_string_view<UTF32> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    return detail::t_utf<std::basic_string<UTF16>, std::basic_string_view<UTF32>,
-            detail::impl_x_utf32to16, detail::impl_utf32to16>(source, error);
+    return detail::t_utf<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF32>,
+            detail::impl_x_utf32to16, detail::impl_utf32to16>(alloc, source, error);
 }
 
 // Short non-template functions for std::string, std::wstring, std::u16string, std::u32string

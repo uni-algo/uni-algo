@@ -26,15 +26,15 @@ namespace uni {
 
 namespace detail {
 
-template<typename DST, typename SRC, size_t SZ,
+template<typename DST, typename ALLOC, typename SRC, size_t SZ,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     size_t(*FNNORM)(typename SRC::const_pointer, typename SRC::const_pointer, typename DST::pointer)>
 #else
     size_t(*FNNORM)(typename SRC::const_iterator, typename SRC::const_iterator, typename DST::iterator)>
 #endif
-DST t_norm(SRC source)
+DST t_norm(const ALLOC& alloc, SRC source)
 {
-    DST destination;
+    DST destination{alloc};
 
     std::size_t length = source.size();
 
@@ -90,15 +90,15 @@ public:
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
-template<typename DST, typename SRC,
+template<typename DST, typename ALLOC, typename SRC,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     size_t(*FNNORM)(typename SRC::const_pointer, typename SRC::const_pointer, proxy_it_out<std::back_insert_iterator<DST>>)>
 #else
     size_t(*FNNORM)(typename SRC::const_iterator, typename SRC::const_iterator, proxy_it_out<std::back_insert_iterator<DST>>)>
 #endif
-DST t_norm2(SRC source)
+DST t_norm2(const ALLOC& alloc, SRC source)
 {
-    DST destination;
+    DST destination{alloc};
 
     std::size_t length = source.size();
 
@@ -136,101 +136,111 @@ DST t_norm2(SRC source)
 
 namespace norm {
 
-template<typename UTF8>
-std::basic_string<UTF8> to_nfc_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_nfc_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_norm<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_norm_to_nfc_utf8, detail::impl_norm_to_nfc_utf8>(source);
+    return detail::t_norm<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_norm_to_nfc_utf8, detail::impl_norm_to_nfc_utf8>(alloc, source);
 }
 
-template<typename UTF8>
-std::basic_string<UTF8> to_nfd_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_nfd_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_norm<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_norm_to_nfd_utf8, detail::impl_norm_to_nfd_utf8>(source);
+    return detail::t_norm<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_norm_to_nfd_utf8, detail::impl_norm_to_nfd_utf8>(alloc, source);
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-template<typename UTF8>
-std::basic_string<UTF8> to_nfkc_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_nfkc_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_norm2<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_norm_to_nfkc_utf8>(source);
+    return detail::t_norm2<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_norm_to_nfkc_utf8>(alloc, source);
 }
 
-template<typename UTF8>
-std::basic_string<UTF8> to_nfkd_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_nfkd_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_norm2<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_norm_to_nfkd_utf8>(source);
+    return detail::t_norm2<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_norm_to_nfkd_utf8>(alloc, source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #ifndef UNI_ALGO_DISABLE_PROP
-template<typename UTF8>
-std::basic_string<UTF8> to_unaccent_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_unaccent_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_norm<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_norm_to_unaccent_utf8, detail::impl_norm_to_unaccent_utf8>(source);
+    return detail::t_norm<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_norm_to_unaccent_utf8, detail::impl_norm_to_unaccent_utf8>(alloc, source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
-template<typename UTF16>
-std::basic_string<UTF16> to_nfc_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_nfc_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_norm<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_norm_to_nfc_utf16, detail::impl_norm_to_nfc_utf16>(source);
+    return detail::t_norm<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_norm_to_nfc_utf16, detail::impl_norm_to_nfc_utf16>(alloc, source);
 }
 
-template<typename UTF16>
-std::basic_string<UTF16> to_nfd_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_nfd_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_norm<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_norm_to_nfd_utf16, detail::impl_norm_to_nfd_utf16>(source);
+    return detail::t_norm<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_norm_to_nfd_utf16, detail::impl_norm_to_nfd_utf16>(alloc, source);
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-template<typename UTF16>
-std::basic_string<UTF16> to_nfkc_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_nfkc_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_norm2<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_norm_to_nfkc_utf16>(source);
+    return detail::t_norm2<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_norm_to_nfkc_utf16>(alloc, source);
 }
 
-template<typename UTF16>
-std::basic_string<UTF16> to_nfkd_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_nfkd_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_norm2<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_norm_to_nfkd_utf16>(source);
+    return detail::t_norm2<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_norm_to_nfkd_utf16>(alloc, source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #ifndef UNI_ALGO_DISABLE_PROP
-template<typename UTF16>
-std::basic_string<UTF16> to_unaccent_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_unaccent_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_norm<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_norm_to_unaccent_utf16, detail::impl_norm_to_unaccent_utf16>(source);
+    return detail::t_norm<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_norm_to_unaccent_utf16, detail::impl_norm_to_unaccent_utf16>(alloc, source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 

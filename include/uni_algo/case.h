@@ -45,15 +45,15 @@ private:
 
 namespace detail {
 
-template<typename DST, typename SRC, size_t SZ,
+template<typename DST, typename ALLOC, typename SRC, size_t SZ,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     size_t(*FNMAP)(typename SRC::const_pointer, typename SRC::const_pointer, typename DST::pointer, int, char32_t)>
 #else
     size_t(*FNMAP)(typename SRC::const_iterator, typename SRC::const_iterator, typename DST::iterator, int, char32_t)>
 #endif
-DST t_map(SRC source, int mode, char32_t loc = 0)
+DST t_map(const ALLOC& alloc, SRC source, int mode, char32_t loc = 0)
 {
-    DST destination;
+    DST destination{alloc};
 
     std::size_t length = source.size();
 
@@ -86,58 +86,64 @@ DST t_map(SRC source, int mode, char32_t loc = 0)
 
 namespace cases {
 
-template<typename UTF8>
-std::basic_string<UTF8> to_lowercase_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_lowercase_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(source,
+    return detail::t_map<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(alloc, source,
             detail::impl_case_map_mode_lowercase);
 }
-template<typename UTF16>
-std::basic_string<UTF16> to_lowercase_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_lowercase_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(source,
+    return detail::t_map<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(alloc, source,
             detail::impl_case_map_mode_lowercase);
 }
-template<typename UTF8>
-std::basic_string<UTF8> to_uppercase_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_uppercase_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(source,
+    return detail::t_map<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(alloc, source,
             detail::impl_case_map_mode_uppercase);
 }
-template<typename UTF16>
-std::basic_string<UTF16> to_uppercase_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_uppercase_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(source,
+    return detail::t_map<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(alloc, source,
             detail::impl_case_map_mode_uppercase);
 }
-template<typename UTF8>
-std::basic_string<UTF8> to_casefold_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_casefold_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(source,
+    return detail::t_map<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(alloc, source,
             detail::impl_case_map_mode_casefold);
 }
-template<typename UTF16>
-std::basic_string<UTF16> to_casefold_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_casefold_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(source,
+    return detail::t_map<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(alloc, source,
             detail::impl_case_map_mode_casefold);
 }
 
@@ -181,40 +187,44 @@ inline std::wstring to_casefold_utf16(std::wstring_view source)
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-template<typename UTF8>
-std::basic_string<UTF8> to_lowercase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_lowercase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_case_map_utf8, detail::impl_case_map_locale_utf8>(source,
+    return detail::t_map<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_case_map_utf8, detail::impl_case_map_locale_utf8>(alloc, source,
             detail::impl_case_map_mode_lowercase, static_cast<char32_t>(locale.get_language()));
 }
-template<typename UTF16>
-std::basic_string<UTF16> to_lowercase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_lowercase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(source,
+    return detail::t_map<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(alloc, source,
             detail::impl_case_map_mode_lowercase, static_cast<char32_t>(locale.get_language()));
 }
-template<typename UTF8>
-std::basic_string<UTF8> to_uppercase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_uppercase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_case_map_utf8, detail::impl_case_map_locale_utf8>(source,
+    return detail::t_map<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_case_map_utf8, detail::impl_case_map_locale_utf8>(alloc, source,
             detail::impl_case_map_mode_uppercase, static_cast<char32_t>(locale.get_language()));
 }
-template<typename UTF16>
-std::basic_string<UTF16> to_uppercase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_uppercase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(source,
+    return detail::t_map<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(alloc, source,
             detail::impl_case_map_mode_uppercase, static_cast<char32_t>(locale.get_language()));
 }
 inline std::string to_lowercase_utf8(std::string_view source, const uni::locale& locale)
@@ -246,22 +256,24 @@ inline std::wstring to_uppercase_utf16(std::wstring_view source, const uni::loca
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-template<typename UTF8>
-std::basic_string<UTF8> to_titlecase_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_titlecase_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(source,
+    return detail::t_map<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_case_map_utf8, detail::impl_case_map_loc_utf8>(alloc, source,
             detail::impl_case_map_mode_titlecase);
 }
-template<typename UTF16>
-std::basic_string<UTF16> to_titlecase_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_titlecase_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(source,
+    return detail::t_map<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_case_map_utf16, detail::impl_case_map_loc_utf16>(alloc, source,
             detail::impl_case_map_mode_titlecase);
 }
 inline std::string to_titlecase_utf8(std::string_view source)
@@ -279,22 +291,24 @@ inline std::wstring to_titlecase_utf16(std::wstring_view source)
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-template<typename UTF8>
-std::basic_string<UTF8> to_titlecase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+to_titlecase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_map<std::basic_string<UTF8>, std::basic_string_view<UTF8>,
-            detail::impl_x_case_map_utf8, detail::impl_case_map_locale_utf8>(source,
+    return detail::t_map<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_case_map_utf8, detail::impl_case_map_locale_utf8>(alloc, source,
             detail::impl_case_map_mode_titlecase, static_cast<char32_t>(locale.get_language()));
 }
-template<typename UTF16>
-std::basic_string<UTF16> to_titlecase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+to_titlecase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_map<std::basic_string<UTF16>, std::basic_string_view<UTF16>,
-            detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(source,
+    return detail::t_map<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(alloc, source,
             detail::impl_case_map_mode_titlecase, static_cast<char32_t>(locale.get_language()));
 }
 inline std::string to_titlecase_utf8(std::string_view source, const uni::locale& locale)
@@ -457,21 +471,23 @@ inline uni::search search_utf16(std::wstring_view string1, std::wstring_view str
 
 #ifdef UNI_ALGO_EXPERIMENTAL
 #ifndef UNI_ALGO_DISABLE_COLLATE
-template<typename UTF8>
-std::string sortkey_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<char>>
+std::basic_string<char, std::char_traits<char>, Alloc>
+sortkey_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_map<std::string, std::basic_string_view<UTF8>,
-            detail::impl_x_case_sortkey_utf8, detail::impl_case_sortkey_loc_utf8>(source, false);
+    return detail::t_map<std::basic_string<char, std::char_traits<char>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_case_sortkey_utf8, detail::impl_case_sortkey_loc_utf8>(alloc, source, false);
 }
-template<typename UTF16>
-std::string utf16_sortkey(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<char>>
+std::basic_string<char, std::char_traits<char>, Alloc>
+utf16_sortkey(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_map<std::string, std::basic_string_view<UTF16>,
-            detail::impl_x_case_sortkey_utf16, detail::impl_case_sortkey_loc_utf16>(source, false);
+    return detail::t_map<std::basic_string<char, std::char_traits<char>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_case_sortkey_utf16, detail::impl_case_sortkey_loc_utf16>(alloc, source, false);
 }
 inline std::string sortkey_utf8(std::string_view source)
 {
@@ -632,21 +648,23 @@ inline uni::search search_utf16(std::wstring_view string1, std::wstring_view str
 #ifdef UNI_ALGO_EXPERIMENTAL
 
 #ifndef UNI_ALGO_DISABLE_COLLATE
-template<typename UTF8>
-std::string sortkey_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<char>>
+std::basic_string<char, std::char_traits<char>, Alloc>
+sortkey_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    return detail::t_map<std::string, std::basic_string_view<UTF8>,
-            detail::impl_x_case_sortkey_utf8, detail::impl_case_sortkey_loc_utf8>(source, true);
+    return detail::t_map<std::basic_string<char, std::char_traits<char>, Alloc>, Alloc, std::basic_string_view<UTF8>,
+            detail::impl_x_case_sortkey_utf8, detail::impl_case_sortkey_loc_utf8>(alloc, source, true);
 }
-template<typename UTF16>
-std::string sortkey_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<char>>
+std::basic_string<char, std::char_traits<char>, Alloc>
+sortkey_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return detail::t_map<std::string, std::basic_string_view<UTF16>,
-            detail::impl_x_case_sortkey_utf16, detail::impl_case_sortkey_loc_utf16>(source, true);
+    return detail::t_map<std::basic_string<char, std::char_traits<char>, Alloc>, Alloc, std::basic_string_view<UTF16>,
+            detail::impl_x_case_sortkey_utf16, detail::impl_case_sortkey_loc_utf16>(alloc, source, true);
 }
 inline std::string sortkey_utf8(std::string_view source)
 {
