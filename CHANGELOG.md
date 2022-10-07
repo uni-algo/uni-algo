@@ -2,6 +2,9 @@
 Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
+## v0.6.0 (TBD)
+- Added custom allocator support for template functions and output ranges
+
 ## [v0.5.0](https://github.com/uni-algo/uni-algo/tree/v0.5.0) (01.10.2022)
 - Updated to Unicode 15.0.0
 - Added single include version
