@@ -458,7 +458,7 @@ inline uni::search search_utf16(std::wstring_view string1, std::wstring_view str
 #ifdef UNI_ALGO_EXPERIMENTAL
 #ifndef UNI_ALGO_DISABLE_COLLATE
 template<typename UTF8>
-std::string utf8_sortkey(std::basic_string_view<UTF8> source)
+std::string sortkey_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -473,17 +473,17 @@ std::string utf16_sortkey(std::basic_string_view<UTF16> source)
     return detail::t_map<std::string, std::basic_string_view<UTF16>,
             detail::impl_x_case_sortkey_utf16, detail::impl_case_sortkey_loc_utf16>(source, false);
 }
-inline std::string utf8_sortkey(std::string_view source)
+inline std::string sortkey_utf8(std::string_view source)
 {
-    return utf8_sortkey<char>(source);
+    return sortkey_utf8<char>(source);
 }
 inline std::string utf16_sortkey(std::u16string_view source)
 {
-    return utf16_sortkey<char16_t>(source);
+    return sortkey_utf16<char16_t>(source);
 }
-inline std::string utf16_sortkey(std::wstring_view source)
+inline std::string sortkey_utf16(std::wstring_view source)
 {
-    return utf16_sortkey<wchar_t>(source);
+    return sortkey_utf16<wchar_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
 #endif // UNI_ALGO_EXPERIMENTAL
@@ -633,7 +633,7 @@ inline uni::search search_utf16(std::wstring_view string1, std::wstring_view str
 
 #ifndef UNI_ALGO_DISABLE_COLLATE
 template<typename UTF8>
-std::string utf8_sortkey(std::basic_string_view<UTF8> source)
+std::string sortkey_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -641,24 +641,24 @@ std::string utf8_sortkey(std::basic_string_view<UTF8> source)
             detail::impl_x_case_sortkey_utf8, detail::impl_case_sortkey_loc_utf8>(source, true);
 }
 template<typename UTF16>
-std::string utf16_sortkey(std::basic_string_view<UTF16> source)
+std::string sortkey_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     return detail::t_map<std::string, std::basic_string_view<UTF16>,
             detail::impl_x_case_sortkey_utf16, detail::impl_case_sortkey_loc_utf16>(source, true);
 }
-inline std::string utf8_sortkey(std::string_view source)
+inline std::string sortkey_utf8(std::string_view source)
 {
-    return utf8_sortkey<char>(source);
+    return sortkey_utf8<char>(source);
 }
-inline std::string utf16_sortkey(std::u16string_view source)
+inline std::string sortkey_utf16(std::u16string_view source)
 {
-    return utf16_sortkey<char16_t>(source);
+    return sortkey_utf16<char16_t>(source);
 }
-inline std::string utf16_sortkey(std::wstring_view source)
+inline std::string sortkey_utf16(std::wstring_view source)
 {
-    return utf16_sortkey<wchar_t>(source);
+    return sortkey_utf16<wchar_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
 

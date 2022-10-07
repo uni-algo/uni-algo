@@ -259,21 +259,23 @@ void test_case_final_sigma()
 void test_case_sort_key()
 {
 #ifdef UNI_ALGO_EXPERIMENTAL
-    TESTX(uni::casesens::collate_utf8("Џ", "Ч") > 0 && uni::casesens::utf8_sortkey("Џ") > uni::casesens::utf8_sortkey("Ч"));
-    TESTX(uni::casesens::collate_utf8("џ", "ш") < 0 && uni::casesens::utf8_sortkey("џ") < uni::casesens::utf8_sortkey("ш"));
-    TESTX(uni::caseless::collate_utf8("Џ", "ш") < 0 && uni::caseless::utf8_sortkey("Џ") < uni::caseless::utf8_sortkey("ш"));
-    TESTX(uni::caseless::collate_utf8("Џ", "џ") == 0 && uni::caseless::utf8_sortkey("Џ") == uni::caseless::utf8_sortkey("џ"));
+    TESTX(uni::casesens::collate_utf8("Џ", "Ч") > 0 && uni::casesens::sortkey_utf8("Џ") > uni::casesens::sortkey_utf8("Ч"));
+    TESTX(uni::casesens::collate_utf8("џ", "ш") < 0 && uni::casesens::sortkey_utf8("џ") < uni::casesens::sortkey_utf8("ш"));
+    TESTX(uni::caseless::collate_utf8("Џ", "ш") < 0 && uni::caseless::sortkey_utf8("Џ") < uni::caseless::sortkey_utf8("ш"));
+    TESTX(uni::caseless::collate_utf8("Џ", "џ") == 0 && uni::caseless::sortkey_utf8("Џ") == uni::caseless::sortkey_utf8("џ"));
 
-    TESTX(uni::casesens::collate_utf16(u"Џ", u"Ч") > 0 && uni::casesens::utf16_sortkey(u"Џ") > uni::casesens::utf16_sortkey(u"Ч"));
-    TESTX(uni::casesens::collate_utf16(u"џ", u"ш") < 0 && uni::casesens::utf16_sortkey(u"џ") < uni::casesens::utf16_sortkey(u"ш"));
-    TESTX(uni::caseless::collate_utf16(u"Џ", u"ш") < 0 && uni::caseless::utf16_sortkey(u"Џ") < uni::caseless::utf16_sortkey(u"ш"));
-    TESTX(uni::caseless::collate_utf16(u"Џ", u"џ") == 0 && uni::caseless::utf16_sortkey(u"Џ") == uni::caseless::utf16_sortkey(u"џ"));
+    TESTX(uni::casesens::collate_utf16(u"Џ", u"Ч") > 0 && uni::casesens::sortkey_utf16(u"Џ") > uni::casesens::sortkey_utf16(u"Ч"));
+    TESTX(uni::casesens::collate_utf16(u"џ", u"ш") < 0 && uni::casesens::sortkey_utf16(u"џ") < uni::casesens::sortkey_utf16(u"ш"));
+    TESTX(uni::caseless::collate_utf16(u"Џ", u"ш") < 0 && uni::caseless::sortkey_utf16(u"Џ") < uni::caseless::sortkey_utf16(u"ш"));
+    TESTX(uni::caseless::collate_utf16(u"Џ", u"џ") == 0 && uni::caseless::sortkey_utf16(u"Џ") == uni::caseless::sortkey_utf16(u"џ"));
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::caseless::collate_utf8("ﬁ", "FI") == 0 && uni::caseless::utf8_sortkey("ﬁ") == uni::caseless::utf8_sortkey("FI"));
-    TESTX(uni::caseless::collate_utf16(u"ﬁ", u"FI") == 0 && uni::caseless::utf16_sortkey(u"ﬁ") == uni::caseless::utf16_sortkey(u"FI"));
-    TESTX(uni::caseless::collate_utf8("\xCE\x90", "\xCE\xB9\xCC\x88\xCC\x81") == 0 && uni::caseless::utf8_sortkey("\xCE\x90") == uni::caseless::utf8_sortkey("\xCE\xB9\xCC\x88\xCC\x81"));
-    TESTX(uni::caseless::collate_utf16(u"\x0390", u"\x03B9\x0308\x0301") == 0 && uni::caseless::utf16_sortkey(u"\x0390") == uni::caseless::utf16_sortkey(u"\x03B9\x0308\x0301"));
+    TESTX(uni::caseless::collate_utf8("ﬁ", "FI") == 0 && uni::caseless::sortkey_utf8("ﬁ") == uni::caseless::sortkey_utf8("FI"));
+    TESTX(uni::caseless::collate_utf16(u"ﬁ", u"FI") == 0 && uni::caseless::sortkey_utf16(u"ﬁ") == uni::caseless::sortkey_utf16(u"FI"));
+    TESTX(uni::caseless::collate_utf8("\xCE\x90", "\xCE\xB9\xCC\x88\xCC\x81") == 0 &&
+          uni::caseless::sortkey_utf8("\xCE\x90") == uni::caseless::sortkey_utf8("\xCE\xB9\xCC\x88\xCC\x81"));
+    TESTX(uni::caseless::collate_utf16(u"\x0390", u"\x03B9\x0308\x0301") == 0 &&
+          uni::caseless::sortkey_utf16(u"\x0390") == uni::caseless::sortkey_utf16(u"\x03B9\x0308\x0301"));
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_EXPERIMENTAL
 }
