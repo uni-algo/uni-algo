@@ -39,21 +39,21 @@ namespace detail {
 // Performance impact of shrink_to_fit call is 2-20% slower depends on the length of the string.
 // This define must be used for test purposes only.
 
-template<typename DST, typename ALLOC, typename SRC, size_t SZ,
+template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    size_t(*FNUTF)(typename SRC::const_pointer, typename SRC::const_pointer, typename DST::pointer, size_t*)>
+    size_t(*FnUTF)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer, size_t*)>
 #else
-    size_t(*FNUTF)(typename SRC::const_iterator, typename SRC::const_iterator, typename DST::iterator, size_t*)>
+    size_t(*FnUTF)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator, size_t*)>
 #endif
-DST t_utf(const ALLOC& alloc, const SRC& source)
+Dst t_utf(const Alloc& alloc, const Src& src)
 {
-    DST destination{alloc};
+    Dst dst{alloc};
 
-    std::size_t length = source.size();
+    std::size_t length = src.size();
 
     if (length)
     {
-        if (length > destination.max_size() / SZ) // Overflow protection
+        if (length > dst.max_size() / SizeX) // Overflow protection
         {
 #if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || (_HAS_EXCEPTIONS != 0)
             throw std::bad_alloc();
@@ -62,37 +62,37 @@ DST t_utf(const ALLOC& alloc, const SRC& source)
 #endif
         }
 
-        destination.resize(length * SZ);
+        dst.resize(length * SizeX);
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-        destination.resize(FNUTF(source.data(), source.data() + source.size(), destination.data(), nullptr));
+        dst.resize(FnUTF(src.data(), src.data() + src.size(), dst.data(), nullptr));
 #else
-        destination.resize(FNUTF(source.cbegin(), source.cend(), destination.begin(), nullptr));
+        dst.resize(FnUTF(src.cbegin(), src.cend(), dst.begin(), nullptr));
 #endif
 #ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
-        destination.shrink_to_fit();
+        dst.shrink_to_fit();
 #endif
     }
 
-    return destination;
+    return dst;
 }
 
-template<typename DST, typename ALLOC, typename SRC, size_t SZ,
+template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    size_t(*FNUTF)(typename SRC::const_pointer, typename SRC::const_pointer, typename DST::pointer, size_t*)>
+    size_t(*FnUTF)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer, size_t*)>
 #else
-    size_t(*FNUTF)(typename SRC::const_iterator, typename SRC::const_iterator, typename DST::iterator, size_t*)>
+    size_t(*FnUTF)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator, size_t*)>
 #endif
-DST t_utf(const ALLOC& alloc, const SRC& source, uni::error& error)
+Dst t_utf(const Alloc& alloc, const Src& src, uni::error& error)
 {
     error.reset();
 
-    DST destination{alloc};
+    Dst dst{alloc};
 
-    std::size_t length = source.size();
+    std::size_t length = src.size();
 
     if (length)
     {
-        if (length > destination.max_size() / SZ) // Overflow protection
+        if (length > dst.max_size() / SizeX) // Overflow protection
         {
 #if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || (_HAS_EXCEPTIONS != 0)
             throw std::bad_alloc();
@@ -101,26 +101,26 @@ DST t_utf(const ALLOC& alloc, const SRC& source, uni::error& error)
 #endif
         }
 
-        destination.resize(length * SZ);
+        dst.resize(length * SizeX);
         std::size_t err = impl_npos;
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-        std::size_t size = FNUTF(source.data(), source.data() + source.size(), destination.data(), &err);
+        std::size_t size = FnUTF(src.data(), src.data() + src.size(), dst.data(), &err);
 #else
-        std::size_t size = FNUTF(source.cbegin(), source.cend(), destination.begin(), &err);
+        std::size_t size = FnUTF(src.cbegin(), src.cend(), dst.begin(), &err);
 #endif
         if (err == impl_npos)
-            destination.resize(size);
+            dst.resize(size);
         else
         {
-            destination.clear();
+            dst.clear();
             error = uni::error{true, err};
         }
 #ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
-        destination.shrink_to_fit();
+        dst.shrink_to_fit();
 #endif
     }
 
-    return destination;
+    return dst;
 }
 
 } // namespace detail

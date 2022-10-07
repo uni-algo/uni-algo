@@ -26,21 +26,21 @@ namespace uni {
 
 namespace detail {
 
-template<typename DST, typename ALLOC, typename SRC, size_t SZ,
+template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    size_t(*FNNORM)(typename SRC::const_pointer, typename SRC::const_pointer, typename DST::pointer)>
+    size_t(*FnNorm)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer)>
 #else
-    size_t(*FNNORM)(typename SRC::const_iterator, typename SRC::const_iterator, typename DST::iterator)>
+    size_t(*FnNorm)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator)>
 #endif
-DST t_norm(const ALLOC& alloc, SRC source)
+Dst t_norm(const Alloc& alloc, Src src)
 {
-    DST destination{alloc};
+    Dst dst{alloc};
 
-    std::size_t length = source.size();
+    std::size_t length = src.size();
 
     if (length)
     {
-        if (length > destination.max_size() / SZ) // Overflow protection
+        if (length > dst.max_size() / SizeX) // Overflow protection
         {
 #if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || (_HAS_EXCEPTIONS != 0)
             throw std::bad_alloc();
@@ -49,18 +49,18 @@ DST t_norm(const ALLOC& alloc, SRC source)
 #endif
         }
 
-        destination.resize(length * SZ);
+        dst.resize(length * SizeX);
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-        destination.resize(FNNORM(source.data(), source.data() + source.size(), destination.data()));
+        dst.resize(FnNorm(src.data(), src.data() + src.size(), dst.data()));
 #else
-        destination.resize(FNNORM(source.cbegin(), source.cend(), destination.begin()));
+        dst.resize(FnNorm(src.cbegin(), src.cend(), dst.begin()));
 #endif
 #ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
-        destination.shrink_to_fit();
+        dst.shrink_to_fit();
 #endif
     }
 
-    return destination;
+    return dst;
 }
 
 // For NFKC and NFKD it is ineffective to preallocate a string because max decomposition is 11/18
@@ -90,21 +90,21 @@ public:
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
-template<typename DST, typename ALLOC, typename SRC,
+template<typename Dst, typename Alloc, typename Src,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    size_t(*FNNORM)(typename SRC::const_pointer, typename SRC::const_pointer, proxy_it_out<std::back_insert_iterator<DST>>)>
+    size_t(*FnNorm)(typename Src::const_pointer, typename Src::const_pointer, proxy_it_out<std::back_insert_iterator<Dst>>)>
 #else
-    size_t(*FNNORM)(typename SRC::const_iterator, typename SRC::const_iterator, proxy_it_out<std::back_insert_iterator<DST>>)>
+    size_t(*FnNorm)(typename Src::const_iterator, typename Src::const_iterator, proxy_it_out<std::back_insert_iterator<Dst>>)>
 #endif
-DST t_norm2(const ALLOC& alloc, SRC source)
+Dst t_norm2(const Alloc& alloc, Src src)
 {
-    DST destination{alloc};
+    Dst dst{alloc};
 
-    std::size_t length = source.size();
+    std::size_t length = src.size();
 
     if (length)
     {
-        if (length > destination.max_size() / 3) // Overflow protection
+        if (length > dst.max_size() / 3) // Overflow protection
         {
 #if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || (_HAS_EXCEPTIONS != 0)
             throw std::bad_alloc();
@@ -113,21 +113,21 @@ DST t_norm2(const ALLOC& alloc, SRC source)
 #endif
         }
 
-        destination.reserve(length * 3 / 2);
+        dst.reserve(length * 3 / 2);
 
-        proxy_it_out<std::back_insert_iterator<DST>> it_out(std::back_inserter(destination));
+        proxy_it_out<std::back_insert_iterator<Dst>> it_out{std::back_inserter(dst)};
 
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-        FNNORM(source.data(), source.data() + source.size(), it_out);
+        FnNorm(src.data(), src.data() + src.size(), it_out);
 #else
-        FNNORM(source.cbegin(), source.cend(), it_out);
+        FnNorm(src.cbegin(), src.cend(), it_out);
 #endif
 #ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
-        destination.shrink_to_fit();
+        dst.shrink_to_fit();
 #endif
     }
 
-    return destination;
+    return dst;
 }
 
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
@@ -1069,40 +1069,40 @@ inline char32_t to_compose(char32_t c1, char32_t c2) noexcept
 
 inline std::u32string to_decompose_u32(char32_t c)
 {
-    std::u32string destination;
-    destination.resize(uni::detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
+    std::u32string dst;
+    dst.resize(uni::detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    destination.resize(detail::impl_norm_to_decompose(c, destination.data()));
+    dst.resize(detail::impl_norm_to_decompose(c, dst.data()));
 #else
-    destination.resize(detail::impl_norm_to_decompose(c, destination.begin()));
+    dst.resize(detail::impl_norm_to_decompose(c, dst.begin()));
 #endif
-    return destination;
+    return dst;
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 inline std::u32string to_decompose_compat_u32(char32_t c)
 {
-    std::u32string destination;
-    destination.resize(uni::detail::impl_x_norm_to_nfkd_utf16); // TODO: Better value
+    std::u32string dst;
+    dst.resize(uni::detail::impl_x_norm_to_nfkd_utf16); // TODO: Better value
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    destination.resize(detail::impl_norm_to_decompose_compat(c, destination.data()));
+    dst.resize(detail::impl_norm_to_decompose_compat(c, dst.data()));
 #else
-    destination.resize(detail::impl_norm_to_decompose_compat(c, destination.begin()));
+    dst.resize(detail::impl_norm_to_decompose_compat(c, dst.begin()));
 #endif
-    return destination;
+    return dst;
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 inline std::u32string to_decompose_hangul_u32(char32_t c)
 {
-    std::u32string destination;
-    destination.resize(uni::detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
+    std::u32string dst;
+    dst.resize(uni::detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    destination.resize(detail::impl_norm_to_decompose_hangul(c, destination.data()));
+    dst.resize(detail::impl_norm_to_decompose_hangul(c, dst.data()));
 #else
-    destination.resize(detail::impl_norm_to_decompose_hangul(c, destination.begin()));
+    dst.resize(detail::impl_norm_to_decompose_hangul(c, dst.begin()));
 #endif
-    return destination;
+    return dst;
 }
 
 } // namespace codepoint

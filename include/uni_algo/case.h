@@ -45,21 +45,21 @@ private:
 
 namespace detail {
 
-template<typename DST, typename ALLOC, typename SRC, size_t SZ,
+template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    size_t(*FNMAP)(typename SRC::const_pointer, typename SRC::const_pointer, typename DST::pointer, int, char32_t)>
+    size_t(*FnMap)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer, int, char32_t)>
 #else
-    size_t(*FNMAP)(typename SRC::const_iterator, typename SRC::const_iterator, typename DST::iterator, int, char32_t)>
+    size_t(*FnMap)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator, int, char32_t)>
 #endif
-DST t_map(const ALLOC& alloc, SRC source, int mode, char32_t loc = 0)
+Dst t_map(const Alloc& alloc, Src src, int mode, char32_t loc = 0)
 {
-    DST destination{alloc};
+    Dst dst{alloc};
 
-    std::size_t length = source.size();
+    std::size_t length = src.size();
 
     if (length)
     {
-        if (length > destination.max_size() / SZ) // Overflow protection
+        if (length > dst.max_size() / SizeX) // Overflow protection
         {
 #if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || (_HAS_EXCEPTIONS != 0)
             throw std::bad_alloc();
@@ -68,18 +68,18 @@ DST t_map(const ALLOC& alloc, SRC source, int mode, char32_t loc = 0)
 #endif
         }
 
-        destination.resize(length * SZ);
+        dst.resize(length * SizeX);
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-        destination.resize(FNMAP(source.data(), source.data() + source.size(), destination.data(), mode, loc));
+        dst.resize(FnMap(src.data(), src.data() + src.size(), dst.data(), mode, loc));
 #else
-        destination.resize(FNMAP(source.cbegin(), source.cend(), destination.begin(), mode, loc));
+        dst.resize(FnMap(src.cbegin(), src.cend(), dst.begin(), mode, loc));
 #endif
 #ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
-        destination.shrink_to_fit();
+        dst.shrink_to_fit();
 #endif
     }
 
-    return destination;
+    return dst;
 }
 
 } // namespace detail
@@ -867,51 +867,51 @@ inline char32_t to_simple_titlecase(char32_t c) noexcept
 
 inline std::u32string to_lowercase_u32(char32_t c)
 {
-    std::u32string destination;
-    destination.resize(3); // TODO: Magic number
+    std::u32string dst;
+    dst.resize(3); // TODO: Magic number
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    destination.resize(detail::impl_case_to_lowercase(c, destination.data()));
+    dst.resize(detail::impl_case_to_lowercase(c, dst.data()));
 #else
-    destination.resize(detail::impl_case_to_lowercase(c, destination.begin()));
+    dst.resize(detail::impl_case_to_lowercase(c, dst.begin()));
 #endif
-    return destination;
+    return dst;
 }
 
 inline std::u32string to_uppercase_u32(char32_t c)
 {
-    std::u32string destination;
-    destination.resize(3); // TODO: Magic number
+    std::u32string dst;
+    dst.resize(3); // TODO: Magic number
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    destination.resize(detail::impl_case_to_uppercase(c, destination.data()));
+    dst.resize(detail::impl_case_to_uppercase(c, dst.data()));
 #else
-    destination.resize(detail::impl_case_to_uppercase(c, destination.begin()));
+    dst.resize(detail::impl_case_to_uppercase(c, dst.begin()));
 #endif
-    return destination;
+    return dst;
 }
 
 inline std::u32string to_casefold_u32(char32_t c)
 {
-    std::u32string destination;
-    destination.resize(3); // TODO: Magic number
+    std::u32string dst;
+    dst.resize(3); // TODO: Magic number
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    destination.resize(detail::impl_case_to_casefold(c, destination.data()));
+    dst.resize(detail::impl_case_to_casefold(c, dst.data()));
 #else
-    destination.resize(detail::impl_case_to_casefold(c, destination.begin()));
+    dst.resize(detail::impl_case_to_casefold(c, dst.begin()));
 #endif
-    return destination;
+    return dst;
 }
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 inline std::u32string to_titlecase_u32(char32_t c)
 {
-    std::u32string destination;
-    destination.resize(3); // TODO: Magic number
+    std::u32string dst;
+    dst.resize(3); // TODO: Magic number
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    destination.resize(detail::impl_case_to_titlecase(c, destination.data()));
+    dst.resize(detail::impl_case_to_titlecase(c, dst.data()));
 #else
-    destination.resize(detail::impl_case_to_titlecase(c, destination.begin()));
+    dst.resize(detail::impl_case_to_titlecase(c, dst.begin()));
 #endif
-    return destination;
+    return dst;
 }
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
