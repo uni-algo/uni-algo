@@ -60,6 +60,27 @@ void test_ranges()
     TESTX(result3 == U"ココケクキ");
 }
 
+// Custom allocator for the following tests
+template<class T>
+struct alloc_range
+{
+    using value_type = T;
+
+    alloc_range() = default;
+    T* allocate(std::size_t n)
+    {
+        T* p = static_cast<T*>(std::malloc(n * sizeof(T)));
+        //std::cout << "Alloc  : " << n << " at: " << std::hex << static_cast<void*>(p) << std::dec << '\n';
+        return p;
+    }
+    void deallocate(T* p, std::size_t n)
+    {
+        (void)n;
+        //std::cout << "Dealloc: " << n << " at: " << std::hex << static_cast<void*>(p) << std::dec << '\n';
+        std::free(static_cast<void*>(p));
+    }
+};
+
 void test_ranges_to()
 {
     TESTX("123" == (std::u32string_view{U"123"} | uni::ranges::to_utf8<std::string>()));
@@ -71,6 +92,41 @@ void test_ranges_to()
     TESTX("123" == uni::ranges::to_utf8_reserve<std::string>(std::u32string_view{U"123"}, 3));
     TESTX(u"123" == (std::u32string_view{U"123"} | uni::ranges::to_utf16_reserve<std::u16string>(3)));
     TESTX(u"123" == uni::ranges::to_utf16_reserve<std::u16string>(std::u32string_view{U"123"}, 3));
+
+    TESTX(std::string_view("12", 3) == (U"12" | uni::ranges::to_utf8<std::string>()));
+    TESTX(std::string_view("12", 3) == uni::ranges::to_utf8<std::string>(U"12"));
+    TESTX(std::u16string_view(u"12", 3) == (U"12" | uni::ranges::to_utf16<std::u16string>()));
+    TESTX(std::u16string_view(u"12", 3) == uni::ranges::to_utf16<std::u16string>(U"12"));
+
+    TESTX(std::string_view("12", 3) == (U"12" | uni::ranges::to_utf8_reserve<std::string>(3)));
+    TESTX(std::string_view("12", 3) == uni::ranges::to_utf8_reserve<std::string>(U"12", 3));
+    TESTX(std::u16string_view(u"12", 3) == (U"12" | uni::ranges::to_utf16_reserve<std::u16string>(3)));
+    TESTX(std::u16string_view(u"12", 3) == uni::ranges::to_utf16_reserve<std::u16string>(U"12", 3));
+
+    // With custom allocator
+
+    using string = std::basic_string<char, std::char_traits<char>, alloc_range<char>>;
+    using u16string = std::basic_string<char16_t, std::char_traits<char16_t>, alloc_range<char16_t>>;
+
+    TESTX("123" == (std::u32string_view{U"123"} | uni::ranges::to_utf8<string>(alloc_range<char>{})));
+    TESTX("123" == uni::ranges::to_utf8<string>(std::u32string_view{U"123"}, alloc_range<char>{}));
+    TESTX(u"123" == (std::u32string_view{U"123"} | uni::ranges::to_utf16<u16string>(alloc_range<char16_t>{})));
+    TESTX(u"123" == uni::ranges::to_utf16<u16string>(std::u32string_view{U"123"}, alloc_range<char16_t>{}));
+
+    TESTX("123" == (std::u32string_view{U"123"} | uni::ranges::to_utf8_reserve<string>(3, alloc_range<char>{})));
+    TESTX("123" == uni::ranges::to_utf8_reserve<string>(std::u32string_view{U"123"}, 3, alloc_range<char>{}));
+    TESTX(u"123" == (std::u32string_view{U"123"} | uni::ranges::to_utf16_reserve<u16string>(3, alloc_range<char16_t>{})));
+    TESTX(u"123" == uni::ranges::to_utf16_reserve<u16string>(std::u32string_view{U"123"}, 3, alloc_range<char16_t>{}));
+
+    TESTX(std::string_view("12", 3) == (U"12" | uni::ranges::to_utf8<string>(alloc_range<char>{})));
+    TESTX(std::string_view("12", 3) == uni::ranges::to_utf8<string>(U"12", alloc_range<char>{}));
+    TESTX(std::u16string_view(u"12", 3) == (U"12" | uni::ranges::to_utf16<u16string>(alloc_range<char16_t>{})));
+    TESTX(std::u16string_view(u"12", 3) == uni::ranges::to_utf16<u16string>(U"12", alloc_range<char16_t>{}));
+
+    TESTX(std::string_view("12", 3) == (U"12" | uni::ranges::to_utf8_reserve<string>(3, alloc_range<char>{})));
+    TESTX(std::string_view("12", 3) == uni::ranges::to_utf8_reserve<string>(U"12", 3, alloc_range<char>{}));
+    TESTX(std::u16string_view(u"12", 3) == (U"12" | uni::ranges::to_utf16_reserve<u16string>(3, alloc_range<char16_t>{})));
+    TESTX(std::u16string_view(u"12", 3) == uni::ranges::to_utf16_reserve<u16string>(U"12", 3, alloc_range<char16_t>{}));
 }
 
 void test_ranges_ctad()
