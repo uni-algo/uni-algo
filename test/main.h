@@ -67,6 +67,7 @@
 #include "test_strict_iter_rev.h"
 
 #include "test_short_func.h"
+#include "test_alloc_func.h"
 
 #include "test_translit.h"
 #include "test_translit_buffer.h"
@@ -209,7 +210,11 @@ int main7()
     test_short_func_case();
     test_short_func_norm();
 
-    std::cout << "DONE: Short Non-Template Functions" << '\n';
+    test_alloc_func_convert();
+    test_alloc_func_case();
+    test_alloc_func_norm();
+
+    std::cout << "DONE: Functions" << '\n';
 
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
     test_break_grapheme();

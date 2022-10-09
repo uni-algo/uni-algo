@@ -62,21 +62,22 @@ void test_ranges()
 
 // Custom allocator for the following tests
 template<class T>
-struct alloc_range
+class alloc_range
 {
+public:
     using value_type = T;
 
     alloc_range() = default;
     T* allocate(std::size_t n)
     {
         T* p = static_cast<T*>(std::malloc(n * sizeof(T)));
-        //std::cout << "Alloc  : " << n << " at: " << std::hex << static_cast<void*>(p) << std::dec << '\n';
+        //std::cout << "Alloc  : " << n << " bytes at " << static_cast<void*>(p) << '\n';
         return p;
     }
     void deallocate(T* p, std::size_t n)
     {
         (void)n;
-        //std::cout << "Dealloc: " << n << " at: " << std::hex << static_cast<void*>(p) << std::dec << '\n';
+        //std::cout << "Dealloc: " << n << " bytes at " << static_cast<void*>(p) << '\n';
         std::free(static_cast<void*>(p));
     }
 };
