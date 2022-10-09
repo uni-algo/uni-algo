@@ -89,7 +89,9 @@ and/or fixed width types are unavailable and/or CHAR_BIT is not 8.
 ## Usage
 
 <details><summary><b>Single include</b></summary><p>
+
 See this repository: https://github.com/uni-algo/uni-algo-single-include
+
 </p></details>
 
 <details><summary><b>CMake add_subdirectory</b></summary><p>
@@ -146,7 +148,7 @@ FetchContent_Declare(uni-algo
 
 # Or you can use it like this without Git.
 # FetchContent_Declare(uni-algo
-#   URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.5.0.zip)
+#   URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.5.0.tar.gz)
 
 FetchContent_MakeAvailable(uni-algo)
 
@@ -245,6 +247,9 @@ std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test");
 // It's not like only wchar_t is broken char has the same problem you never know what it stores
 // so most of functions in the library end with utf8/utf16/utf32 it shows with what data
 // a function works with, types are irrelevant.
+
+// Note that you need to use template functions if you want to use a custom allocator,
+// because non-template functions always use default std::allocator.
 ```
 ## Case Functions
 ```cpp
