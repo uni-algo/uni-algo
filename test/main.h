@@ -52,27 +52,27 @@
 #include "test_extra.h"
 #include "test_visual.h"
 
-#include "test_convert_and_iter.h"
-
-#include "test_case.h"
-#include "test_norm.h"
-#include "test_norm_unaccent.h"
-#include "test_break.h"
-#include "test_prop.h"
-#include "test_locale.h"
-
 #include "test_lenient_iter.h"
 #include "test_lenient_iter_rev.h"
 #include "test_strict_iter.h"
 #include "test_strict_iter_rev.h"
 
+#include "test_convert_and_iter.h"
+
 #include "test_short_func.h"
 #include "test_alloc_func.h"
 
+#include "test_ranges.h"
+
+#include "test_locale.h"
+#include "test_case.h"
+#include "test_norm.h"
+#include "test_norm_unaccent.h"
+#include "test_break.h"
+#include "test_prop.h"
+
 #include "test_translit.h"
 #include "test_translit_buffer.h"
-
-#include "test_ranges.h"
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
@@ -166,12 +166,26 @@ int main7()
 
     std::cout << "DONE: Convert Ranges" << '\n';
 
+    test_short_func_convert();
+    test_short_func_case();
+    test_short_func_norm();
+
+    test_alloc_func_convert();
+    test_alloc_func_case();
+    test_alloc_func_norm();
+
+    std::cout << "DONE: Functions" << '\n';
+
     test_ranges();
     test_ranges_to();
     test_ranges_ctad();
     test_ranges_static_assert();
 
     std::cout << "DONE: Ranges" << '\n';
+
+    test_locale();
+
+    std::cout << "DONE: Locale" << '\n';
 
     test_case_compare_collate();
     test_case_search();
@@ -201,20 +215,6 @@ int main7()
     test_prop_norm();
 
     std::cout << "DONE: Code Point Properties" << '\n';
-
-    test_locale();
-
-    std::cout << "DONE: Locale" << '\n';
-
-    test_short_func_convert();
-    test_short_func_case();
-    test_short_func_norm();
-
-    test_alloc_func_convert();
-    test_alloc_func_case();
-    test_alloc_func_norm();
-
-    std::cout << "DONE: Functions" << '\n';
 
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
     test_break_grapheme();
