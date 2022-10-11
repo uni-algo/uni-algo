@@ -266,7 +266,7 @@ public:
 namespace uni::translit {
 
 template<typename UTF8>
-std::basic_string<UTF8> utf8_japanese_kana_to_romaji_hepburn(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> japanese_kana_to_romaji_hepburn_utf8(std::basic_string_view<UTF8> source)
 {
     using tr = detail::translit::japanese_kana_to_romaji_hepburn;
 
@@ -280,7 +280,7 @@ std::basic_string<UTF8> utf8_japanese_kana_to_romaji_hepburn(std::basic_string_v
     return result;
 }
 template<typename UTF16>
-std::basic_string<UTF16> utf16_japanese_kana_to_romaji_hepburn(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> japanese_kana_to_romaji_hepburn_utf16(std::basic_string_view<UTF16> source)
 {
     using tr = detail::translit::japanese_kana_to_romaji_hepburn;
 
@@ -293,24 +293,24 @@ std::basic_string<UTF16> utf16_japanese_kana_to_romaji_hepburn(std::basic_string
     result.shrink_to_fit();
     return result;
 }
-inline std::string utf8_japanese_kana_to_romaji_hepburn(std::string_view source)
+inline std::string japanese_kana_to_romaji_hepburn_utf8(std::string_view source)
 {
-    return utf8_japanese_kana_to_romaji_hepburn<char>(source);
+    return japanese_kana_to_romaji_hepburn_utf8<char>(source);
 }
-inline std::u16string utf16_japanese_kana_to_romaji_hepburn(std::u16string_view source)
+inline std::u16string japanese_kana_to_romaji_hepburn_utf16(std::u16string_view source)
 {
-    return utf16_japanese_kana_to_romaji_hepburn<char16_t>(source);
+    return japanese_kana_to_romaji_hepburn_utf16<char16_t>(source);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf16_japanese_kana_to_romaji_hepburn(std::wstring_view source)
+inline std::wstring japanese_kana_to_romaji_hepburn_utf16(std::wstring_view source)
 {
-    return utf16_japanese_kana_to_romaji_hepburn<wchar_t>(source);
+    return japanese_kana_to_romaji_hepburn_utf16<wchar_t>(source);
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #ifdef __cpp_lib_char8_t
 inline std::u8string utf8_japanese_kana_to_romaji_hepburn(std::u8string_view source)
 {
-    return utf8_japanese_kana_to_romaji_hepburn<char8_t>(source);
+    return japanese_kana_to_romaji_hepburn_utf8<char8_t>(source);
 }
 #endif // __cpp_lib_char8_t
 

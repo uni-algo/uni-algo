@@ -188,7 +188,7 @@ public:
 namespace uni::translit {
 
 template<typename UTF8>
-std::basic_string<UTF8> utf8_macedonian_to_latin_docs(std::basic_string_view<UTF8> source)
+std::basic_string<UTF8> macedonian_to_latin_docs_utf8(std::basic_string_view<UTF8> source)
 {
     // Note that we use views from uni::ranges instead of adaptors from uni::views
     // because translit view is internal and doesn't have view adaptor
@@ -203,7 +203,7 @@ std::basic_string<UTF8> utf8_macedonian_to_latin_docs(std::basic_string_view<UTF
     return result;
 }
 template<typename UTF16>
-std::basic_string<UTF16> utf16_macedonian_to_latin_docs(std::basic_string_view<UTF16> source)
+std::basic_string<UTF16> macedonian_to_latin_docs_utf16(std::basic_string_view<UTF16> source)
 {
     using tr = detail::translit::macedonian_to_latin_docs;
 
@@ -213,24 +213,24 @@ std::basic_string<UTF16> utf16_macedonian_to_latin_docs(std::basic_string_view<U
     result.shrink_to_fit();
     return result;
 }
-inline std::string utf8_macedonian_to_latin_docs(std::string_view source)
+inline std::string macedonian_to_latin_docs_utf8(std::string_view source)
 {
-    return utf8_macedonian_to_latin_docs<char>(source);
+    return macedonian_to_latin_docs_utf8<char>(source);
 }
-inline std::u16string utf16_macedonian_to_latin_docs(std::u16string_view source)
+inline std::u16string macedonian_to_latin_docs_utf16(std::u16string_view source)
 {
-    return utf16_macedonian_to_latin_docs<char16_t>(source);
+    return macedonian_to_latin_docs_utf16<char16_t>(source);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf16_macedonian_to_latin_docs(std::wstring_view source)
+inline std::wstring macedonian_to_latin_docs_utf16(std::wstring_view source)
 {
-    return utf16_macedonian_to_latin_docs<wchar_t>(source);
+    return macedonian_to_latin_docs_utf16<wchar_t>(source);
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #ifdef __cpp_lib_char8_t
-inline std::u8string utf8_macedonian_to_latin_docs(std::u8string_view source)
+inline std::u8string macedonian_to_latin_docs_utf8(std::u8string_view source)
 {
-    return utf8_macedonian_to_latin_docs<char8_t>(source);
+    return macedonian_to_latin_docs_utf8<char8_t>(source);
 }
 #endif // __cpp_lib_char8_t
 
