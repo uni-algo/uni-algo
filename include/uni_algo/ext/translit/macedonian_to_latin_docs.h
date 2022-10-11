@@ -200,7 +200,9 @@ macedonian_to_latin_docs_utf8(std::basic_string_view<UTF8> source, const Alloc& 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf8_view{source}, tr::buf_func, tr::buf_size}
         | uni::ranges::to_utf8_reserve<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>>(source.size(), alloc);
 
+#ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
     result.shrink_to_fit();
+#endif
     return result;
 }
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
@@ -212,7 +214,9 @@ macedonian_to_latin_docs_utf16(std::basic_string_view<UTF16> source, const Alloc
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf16_view{source}, tr::buf_func, tr::buf_size}
         | uni::ranges::to_utf16_reserve<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>>(source.size(), alloc);
 
+#ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
     result.shrink_to_fit();
+#endif
     return result;
 }
 inline std::string macedonian_to_latin_docs_utf8(std::string_view source)
