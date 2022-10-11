@@ -187,8 +187,9 @@ public:
 
 namespace uni::translit {
 
-template<typename UTF8>
-std::basic_string<UTF8> macedonian_to_latin_docs_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+macedonian_to_latin_docs_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     // Note that we use views from uni::ranges instead of adaptors from uni::views
     // because translit view is internal and doesn't have view adaptor
@@ -197,18 +198,19 @@ std::basic_string<UTF8> macedonian_to_latin_docs_utf8(std::basic_string_view<UTF
     using tr = detail::translit::macedonian_to_latin_docs;
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf8_view{source}, tr::buf_func, tr::buf_size}
-                | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
+        | uni::ranges::to_utf8_reserve<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>>(source.size(), alloc);
 
     result.shrink_to_fit();
     return result;
 }
-template<typename UTF16>
-std::basic_string<UTF16> macedonian_to_latin_docs_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+macedonian_to_latin_docs_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     using tr = detail::translit::macedonian_to_latin_docs;
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf16_view{source}, tr::buf_func, tr::buf_size}
-                | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());
+        | uni::ranges::to_utf16_reserve<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>>(source.size(), alloc);
 
     result.shrink_to_fit();
     return result;

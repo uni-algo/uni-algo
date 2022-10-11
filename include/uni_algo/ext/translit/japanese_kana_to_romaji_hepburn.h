@@ -265,8 +265,9 @@ public:
 
 namespace uni::translit {
 
-template<typename UTF8>
-std::basic_string<UTF8> japanese_kana_to_romaji_hepburn_utf8(std::basic_string_view<UTF8> source)
+template<typename UTF8, typename Alloc = std::allocator<UTF8>>
+std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+japanese_kana_to_romaji_hepburn_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     using tr = detail::translit::japanese_kana_to_romaji_hepburn;
 
@@ -274,13 +275,14 @@ std::basic_string<UTF8> japanese_kana_to_romaji_hepburn_utf8(std::basic_string_v
     auto func = [&prev](detail::translit::buffer& buf) { return tr::buf_func(buf, prev); };
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf8_view{source}, func, tr::buf_size}
-                | uni::ranges::to_utf8_reserve<std::basic_string<UTF8>>(source.size());
+        | uni::ranges::to_utf8_reserve<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>>(source.size(), alloc);
 
     result.shrink_to_fit();
     return result;
 }
-template<typename UTF16>
-std::basic_string<UTF16> japanese_kana_to_romaji_hepburn_utf16(std::basic_string_view<UTF16> source)
+template<typename UTF16, typename Alloc = std::allocator<UTF16>>
+std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+japanese_kana_to_romaji_hepburn_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     using tr = detail::translit::japanese_kana_to_romaji_hepburn;
 
@@ -288,7 +290,7 @@ std::basic_string<UTF16> japanese_kana_to_romaji_hepburn_utf16(std::basic_string
     auto func = [&prev](detail::translit::buffer& buf) { return tr::buf_func(buf, prev); };
 
     auto result = uni::detail::ranges::translit_view{uni::ranges::utf16_view{source}, func, tr::buf_size}
-                | uni::ranges::to_utf16_reserve<std::basic_string<UTF16>>(source.size());
+        | uni::ranges::to_utf16_reserve<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>>(source.size(), alloc);
 
     result.shrink_to_fit();
     return result;
