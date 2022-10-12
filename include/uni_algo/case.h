@@ -74,7 +74,7 @@ Dst t_map(const Alloc& alloc, Src src, int mode, char32_t loc = 0)
 #else
         dst.resize(FnMap(src.cbegin(), src.cend(), dst.begin(), mode, loc));
 #endif
-#ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
+#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
     }

@@ -34,10 +34,9 @@ namespace detail {
 // is about 1-2% slower/faster in different compilers and must be considered irrelevant.
 // The behaviour of pointers and iterators versions always absolutely the same.
 
-//#define UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
+//#define UNI_ALGO_DISABLE_SHRINK_TO_FIT
 // With this define shrink_to_fit call will be omitted.
 // Performance impact of shrink_to_fit call is 2-20% slower depends on the length of the string.
-// This define must be used for test purposes only.
 
 template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
@@ -68,7 +67,7 @@ Dst t_utf(const Alloc& alloc, const Src& src)
 #else
         dst.resize(FnUTF(src.cbegin(), src.cend(), dst.begin(), nullptr));
 #endif
-#ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
+#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
     }
@@ -115,7 +114,7 @@ Dst t_utf(const Alloc& alloc, const Src& src, uni::error& error)
             dst.clear();
             error = uni::error{true, err};
         }
-#ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
+#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
     }

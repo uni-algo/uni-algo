@@ -55,7 +55,7 @@ Dst t_norm(const Alloc& alloc, Src src)
 #else
         dst.resize(FnNorm(src.cbegin(), src.cend(), dst.begin()));
 #endif
-#ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
+#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
     }
@@ -122,7 +122,7 @@ Dst t_norm2(const Alloc& alloc, Src src)
 #else
         FnNorm(src.cbegin(), src.cend(), it_out);
 #endif
-#ifndef UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
+#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
     }

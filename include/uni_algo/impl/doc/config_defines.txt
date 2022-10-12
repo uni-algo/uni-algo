@@ -40,7 +40,7 @@ UNI_ALGO_DISABLE_SYSTEM_LOCALE - Disable system locale.
 
 Reserved for C++ wrapper.
 UNI_ALGO_DISABLE_CPP_ITERATORS
-UNI_ALGO_DISABLE_CPP_SHRINK_TO_FIT
+UNI_ALGO_DISABLE_SHRINK_TO_FIT
 
 Other configuration defines.
 UNI_ALGO_UNICODE_VERSION - See impl_unicode_version.h
