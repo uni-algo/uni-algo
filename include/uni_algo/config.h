@@ -22,49 +22,55 @@
 // Note that you can just add the following defines to your project
 // instead of uncommenting the defines here.
 
+//#define UNI_ALGO_DISABLE_CASE
 // Disable Case module.
 // Reduces the size of the library by ~200 KB.
-//#define UNI_ALGO_DISABLE_CASE
 
+//#define UNI_ALGO_DISABLE_NORM
 // Disable Normalization module.
 // Reduces the size of the library by ~300 KB.
-//#define UNI_ALGO_DISABLE_NORM
 
+//#define UNI_ALGO_DISABLE_PROP
 // Disable Code Point Properties module.
 // Reduces the size of the library by ~35 KB.
 // Note that if this module is disabled unaccent functions
 // in Normalization module will be disabled too.
-//#define UNI_ALGO_DISABLE_PROP
 
+//#define UNI_ALGO_DISABLE_BREAK_GRAPHEME
 // Disable Break Grapheme module.
 // Reduces the size of the library by ~25 KB.
-//#define UNI_ALGO_DISABLE_BREAK_GRAPHEME
 
+//#define UNI_ALGO_DISABLE_BREAK_WORD
 // Disable Break Word module.
 // Reduces the size of the library by ~35 KB.
 // Note that if Break Word module is disabled title case functions
 // in Case module will be disabled too because it is needed for them.
-//#define UNI_ALGO_DISABLE_BREAK_WORD
 
+//#define UNI_ALGO_DISABLE_COLLATE
 // Disable collation functions (part of Case module).
 // Reduces the size of Case module by ~100 KB.
-//#define UNI_ALGO_DISABLE_COLLATE
 
+//#define UNI_ALGO_DISABLE_NFKC_NFKD
 // Disable NFKC and NFKD normalization forms (part of Normalization module).
 // These forms are rarely used and can be disabled.
 // Reduces the size of Normalization module by ~100 KB.
-//#define UNI_ALGO_DISABLE_NFKC_NFKD
 
-// Disable system locale facilities: uni::locale::system() function etc.
 //#define UNI_ALGO_DISABLE_SYSTEM_LOCALE
+// Disable system locale facilities: uni::locale::system() function etc.
 
+//#define UNI_ALGO_DISABLE_SHRINK_TO_FIT
+// Most of functions do shrink_to_fit() call at the of a function by default
+// but if you use a custom allocator or want to maximize the performance
+// it might be better to disable it and do the call manually only when needed.
+
+//#define UNI_ALGO_DISABLE_CPP_ITERATORS
 // With this define pointers will be used instead of C++ iterators internally.
 // The only reason to use the define is to maximize performance in debug builds,
 // for example MSVC debug iterators are very slow.
 // Note that the define only affects some functions.
 // The define does not affect behaviour.
-//#define UNI_ALGO_DISABLE_CPP_ITERATORS
 
+//#define UNI_ALGO_DISABLE_FULL_CASE
 // Note that this define can be deprecated in the future.
 // Disable full case mapping and use simple case mapping instead.
 // The define is only usefull if you need compatibility with legacy implementations
@@ -75,12 +81,11 @@
 // In other words the define must be avoided at all cost.
 // The define affects only Case module.
 // The define is used for some internal tests.
-//#define UNI_ALGO_DISABLE_FULL_CASE
 
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
 
 #if (__cplusplus < 201703L && !defined(_MSVC_LANG)) || (defined(_MSVC_LANG) && _MSVC_LANG < 201703L)
-#  error "C++17 or better is required"
+#error "C++17 or better is required"
 #endif
 
 // All the comments below are not for users of the library
