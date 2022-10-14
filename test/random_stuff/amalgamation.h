@@ -176,6 +176,9 @@ void amalgam()
     output << "#include <type_traits>" << '\n';
     output << "#include <cstddef>" << '\n' << '\n';
 
+    // Make all data tables inline constexpr
+    output << "#define UNI_ALGO_STATIC_DATA" << '\n';
+
     // Disable system locale or it will leak windows.h
     // And won't compile without this define at the monent anyway
     output << "#define UNI_ALGO_DISABLE_SYSTEM_LOCALE" << '\n' << '\n';
