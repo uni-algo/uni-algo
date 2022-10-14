@@ -152,6 +152,7 @@ public:
     constexpr locale() = default;
     // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
     constexpr locale(language l) : lang(l) {}
+    constexpr locale(language l, region s) : lang{l}, regn{s} {}
     constexpr locale(language l, script s) : lang{l}, scpt{s} {}
     constexpr locale(language l, script s, region r) : lang{l}, scpt{s}, regn{r} {}
     constexpr language get_language() const { return lang; }
