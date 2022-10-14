@@ -6,7 +6,7 @@
 #define UNI_ALGO_BREAK_WORD_H_UAIH
 
 #ifdef UNI_ALGO_DISABLE_BREAK_WORD
-#  error "Break Word module is disabled via define UNI_ALGO_DISABLE_BREAK_WORD"
+#error "Break Word module is disabled via define UNI_ALGO_DISABLE_BREAK_WORD"
 #endif
 
 #include <type_traits>

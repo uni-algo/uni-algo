@@ -6,7 +6,7 @@
 #define UNI_ALGO_NORM_H_UAIH
 
 #ifdef UNI_ALGO_DISABLE_NORM
-#  error "Normalization module is disabled via define UNI_ALGO_DISABLE_NORM"
+#error "Normalization module is disabled via define UNI_ALGO_DISABLE_NORM"
 #endif
 
 #include <type_traits>

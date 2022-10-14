@@ -6,7 +6,7 @@
 #define UNI_ALGO_CASE_H_UAIH
 
 #ifdef UNI_ALGO_DISABLE_CASE
-#  error "Case module is disabled via define UNI_ALGO_DISABLE_CASE"
+#error "Case module is disabled via define UNI_ALGO_DISABLE_CASE"
 #endif
 
 #include <type_traits>

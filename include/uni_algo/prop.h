@@ -6,7 +6,7 @@
 #define UNI_ALGO_PROP_H_UAIH
 
 #ifdef UNI_ALGO_DISABLE_PROP
-#  error "Property module is disabled via UNI_ALGO_DISABLE_PROP"
+#error "Property module is disabled via define UNI_ALGO_DISABLE_PROP"
 #endif
 
 #include <type_traits>
