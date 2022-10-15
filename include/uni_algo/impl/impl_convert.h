@@ -561,6 +561,214 @@ uaix_static size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_u
     return (size_t)(dst - result);
 }
 
+#ifdef __cplusplus
+template<typename it_in_utf8, typename it_end_utf8>
+#endif
+uaix_static bool impl_is_valid_utf8(it_in_utf8 first, it_end_utf8 last, size_t* error)
+{
+    // Based on impl_utf8to16 function
+
+    it_in_utf8 s = first;
+    it_in_utf8 prev = s;
+
+    while (s != last)
+    {
+        type_codept c = (*s & 0xFF), c2, c3, c4;
+        prev = s; // Save previous position for error
+
+        if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
+        {
+            ++s;
+            continue;
+        }
+        else if (c >= 0xC2 && c <= 0xDF)
+        {
+            if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF))
+            {
+                ++s;
+                continue;
+            }
+        }
+        else if (c >= 0xE1 && c <= 0xEC)
+        { // NOLINT(bugprone-branch-clone)
+            if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF) &&
+                ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))
+            {
+                ++s;
+                continue;
+            }
+        }
+        else if (c >= 0xEE && c <= 0xEF)
+        { // NOLINT(bugprone-branch-clone)
+            if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF) &&
+                ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))
+            {
+                ++s;
+                continue;
+            }
+        }
+        else if (c == 0xE0)
+        {
+            if (++s != last && ((c2 = (*s & 0xFF)) >= 0xA0 && c2 <= 0xBF) &&
+                ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))
+            {
+                ++s;
+                continue;
+            }
+        }
+        else if (c == 0xED)
+        {
+            if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0x9F) &&
+                ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))
+            {
+                ++s;
+                continue;
+            }
+        }
+        else if (c == 0xF0)
+        {
+            if (++s != last && ((c2 = (*s & 0xFF)) >= 0x90 && c2 <= 0xBF) &&
+                ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF) &&
+                ++s != last && ((c4 = (*s & 0xFF)) >= 0x80 && c4 <= 0xBF))
+            {
+                ++s;
+                continue;
+            }
+        }
+        else if (c == 0xF4)
+        {
+            if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0x8F) &&
+                ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF) &&
+                ++s != last && ((c4 = (*s & 0xFF)) >= 0x80 && c4 <= 0xBF))
+            {
+                ++s;
+                continue;
+            }
+        }
+        else if (c >= 0xF1 && c <= 0xF3)
+        {
+            if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF) &&
+                ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF) &&
+                ++s != last && ((c4 = (*s & 0xFF)) >= 0x80 && c4 <= 0xBF))
+            {
+                ++s;
+                continue;
+            }
+        }
+        else
+        {
+            // invalid code unit
+            ++s;
+        }
+
+        // Error: invalid code unit or overlong code point or truncated sequence in UTF-8
+
+        if (error) // *error points to the start of ill-formed sequence
+            *error = (size_t)(prev - first);
+
+        return false;
+    }
+
+    return true;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf16, typename it_end_utf16>
+#endif
+uaix_static bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_t* error)
+{
+    // Based on impl_utf16to8 function
+
+    it_in_utf16 src = first;
+
+    while (src != last)
+    {
+        type_codept h = (*src++ & 0xFFFF);
+
+        if (h <= 0x7F)
+        {
+            continue;
+        }
+        else if (h <= 0x7FF)
+        {
+            continue;
+        }
+        else if (h >= 0xD800 && h <= 0xDFFF) // Surrogate pair
+        {
+            if (/*h >= 0xD800 &&*/ h <= 0xDBFF) // High surrogate is in range
+            {
+                if (src != last) // Unpaired high surrogate if reached the end here
+                {
+                    type_codept l = (*src & 0xFFFF);
+
+                    if (l >= 0xDC00 && l <= 0xDFFF) // Low surrogate is in range
+                    {
+                        src++;
+                        continue;
+                    }
+                }
+            }
+        }
+        else
+        {
+            continue;
+        }
+
+        // Error: lone low surrogate or broken surrogate pair in UTF-16
+
+        if (error) // *error points to the start of ill-formed sequence
+            *error = (size_t)(src - first) - 1;
+
+        return false;
+    }
+
+    return true;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf32, typename it_end_utf32>
+#endif
+uaix_static bool impl_is_valid_utf32(it_in_utf32 first, it_end_utf32 last, size_t* error)
+{
+    // Based on impl_utf32to8 function
+
+    it_in_utf32 src = first;
+
+    while (src != last)
+    {
+        type_codept c = ((type_codept)*src++ & 0xFFFFFFFF);
+
+        if (c <= 0x7F)
+        {
+            continue;
+        }
+        else if (c <= 0x7FF)
+        {
+            continue;
+        }
+        else if (c <= 0xFFFF)
+        {
+            if (!(c >= 0xD800 && c <= 0xDFFF)) // If not in surrogate pairs range
+            {
+                continue;
+            }
+        }
+        else if (c <= 0x10FFFF)
+        {
+            continue;
+        }
+
+        // Error: code point > 0x10FFFF or surrogate in UTF-32
+
+        if (error) // *error points to invalid code point
+            *error = (size_t)(src - first) - 1;
+
+        return false;
+    }
+
+    return true;
+}
+
 UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"

@@ -380,6 +380,135 @@ inline std::u16string utf32to16u(std::wstring_view source, uni::error& error)
 
 } // namespace strict
 
+template<typename UTF8>
+bool is_valid_utf8(std::basic_string_view<UTF8> source)
+{
+    static_assert(std::is_integral_v<UTF8>);
+
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    return detail::impl_is_valid_utf8(source.data(), source.data() + source.size(), nullptr);
+#else
+    return detail::impl_is_valid_utf8(source.cbegin(), source.cend(), nullptr);
+#endif
+}
+
+template<typename UTF16>
+bool is_valid_utf16(std::basic_string_view<UTF16> source)
+{
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    return detail::impl_is_valid_utf16(source.data(), source.data() + source.size(), nullptr);
+#else
+    return detail::impl_is_valid_utf16(source.cbegin(), source.cend(), nullptr);
+#endif
+}
+
+template<typename UTF32>
+bool is_valid_utf32(std::basic_string_view<UTF32> source)
+{
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
+
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    return detail::impl_is_valid_utf32(source.data(), source.data() + source.size(), nullptr);
+#else
+    return detail::impl_is_valid_utf32(source.cbegin(), source.cend(), nullptr);
+#endif
+}
+
+template<typename UTF8>
+bool is_valid_utf8(std::basic_string_view<UTF8> source, uni::error& error)
+{
+    static_assert(std::is_integral_v<UTF8>);
+
+    size_t err = detail::impl_npos;
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    bool ret = detail::impl_is_valid_utf8(source.data(), source.data() + source.size(), &err);
+#else
+    bool ret = detail::impl_is_valid_utf8(source.cbegin(), source.cend(), &err);
+#endif
+    error = uni::error{!ret, err};
+
+    return ret;
+}
+
+template<typename UTF16>
+bool is_valid_utf16(std::basic_string_view<UTF16> source, uni::error& error)
+{
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+
+    size_t err = detail::impl_npos;
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    bool ret = detail::impl_is_valid_utf16(source.data(), source.data() + source.size(), &err);
+#else
+    bool ret = detail::impl_is_valid_utf16(source.cbegin(), source.cend(), &err);
+#endif
+    error = uni::error{!ret, err};
+
+    return ret;
+}
+
+template<typename UTF32>
+bool is_valid_utf32(std::basic_string_view<UTF32> source, uni::error& error)
+{
+    static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
+
+    size_t err = detail::impl_npos;
+#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+    bool ret = detail::impl_is_valid_utf32(source.data(), source.data() + source.size(), &err);
+#else
+    bool ret = detail::impl_is_valid_utf32(source.cbegin(), source.cend(), &err);
+#endif
+    error = uni::error{!ret, err};
+
+    return ret;
+}
+
+inline bool is_valid_utf8(std::string_view source)
+{
+    return is_valid_utf8<char>(source);
+}
+inline bool is_valid_utf16(std::u16string_view source)
+{
+    return is_valid_utf16<char16_t>(source);
+}
+inline bool is_valid_utf32(std::u32string_view source)
+{
+    return is_valid_utf32<char32_t>(source);
+}
+inline bool is_valid_utf8(std::string_view source, uni::error& error)
+{
+    return is_valid_utf8<char>(source, error);
+}
+inline bool is_valid_utf16(std::u16string_view source, uni::error& error)
+{
+    return is_valid_utf16<char16_t>(source, error);
+}
+inline bool is_valid_utf32(std::u32string_view source, uni::error& error)
+{
+    return is_valid_utf32<char32_t>(source, error);
+}
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+inline bool is_valid_utf16(std::wstring_view source)
+{
+    return is_valid_utf16<wchar_t>(source);
+}
+inline bool is_valid_utf16(std::wstring_view source, uni::error& error)
+{
+    return is_valid_utf16<wchar_t>(source, error);
+}
+#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
+inline bool is_valid_utf32(std::wstring_view source)
+{
+    return is_valid_utf32<wchar_t>(source);
+}
+inline bool is_valid_utf32(std::wstring_view source, uni::error& error)
+{
+    return is_valid_utf32<wchar_t>(source, error);
+}
+#endif // WCHAR_MAX >= 0x7FFFFFFF
+
+
 #ifdef __cpp_lib_char8_t
 
 inline std::u16string utf8to16u(std::u8string_view source)
@@ -397,6 +526,15 @@ inline std::u32string utf8to32u(std::u8string_view source)
 inline std::u8string utf32to8u(std::u32string_view source)
 {
     return utf32to8<char32_t, char8_t>(source);
+}
+
+inline bool is_valid_utf8(std::u8string_view source)
+{
+    return is_valid_utf8<char8_t>(source);
+}
+inline bool is_valid_utf8(std::u8string_view source, uni::error& error)
+{
+    return is_valid_utf8<char8_t>(source, error);
 }
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
