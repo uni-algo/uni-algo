@@ -98,6 +98,30 @@ void test_short_func_convert()
     TESTX(uni::strict::utf32to8u(wstr, error) == u8str);
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 #endif // __cpp_lib_char8_t
+
+//---------------------------------------------
+// Validation functions
+//---------------------------------------------
+
+    TESTX(uni::is_valid_utf8(str));
+    TESTX(uni::is_valid_utf8(str, error));
+    TESTX(uni::is_valid_utf16(u16str));
+    TESTX(uni::is_valid_utf16(u16str, error));
+    TESTX(uni::is_valid_utf32(u32str));
+    TESTX(uni::is_valid_utf32(u32str, error));
+
+#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
+    TESTX(uni::is_valid_utf16(wstr));
+    TESTX(uni::is_valid_utf16(wstr, error));
+#elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
+    TESTX(uni::is_valid_utf32(wstr));
+    TESTX(uni::is_valid_utf32(wstr, error));
+#endif // WCHAR_MAX >= 0x7FFFFFFF
+
+#ifdef __cpp_lib_char8_t
+    TESTX(uni::is_valid_utf8(u8str));
+    TESTX(uni::is_valid_utf8(u8str, error));
+#endif // __cpp_lib_char8_t
 }
 
 void test_short_func_case()

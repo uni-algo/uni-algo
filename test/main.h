@@ -49,6 +49,7 @@
 #include "test_strict.h"
 #include "test_lenient2.h"
 #include "test_strict2.h"
+#include "test_valid.h"
 #include "test_extra.h"
 #include "test_visual.h"
 
@@ -149,6 +150,13 @@ int main7()
     test2_strict_utf32to8();
     test2_strict_utf16to32();
     test2_strict_utf32to16();
+
+    test_valid_utf8();
+    test_valid_utf16();
+    test_valid_utf32();
+    test2_valid_utf8();
+    test2_valid_utf16();
+    test2_valid_utf32();
 
     test_overflow();
     test_alter_value();
