@@ -1,7 +1,7 @@
 **DRAFT**
 
 Things that are not listed in this file:
-- Functions and ranges that work with UTF starts with `utf8` and `utf16` only UTF-8 functions and ranges are listed
+- Functions and ranges that work with UTF end with `utf8` and `utf16` only UTF-8 functions and ranges are listed
 - Ranges come in pairs for example: `uni::ranges::word::utf8_view` / `uni::views::word::utf8` only views are listed
 
 ---
@@ -40,6 +40,10 @@ uni::utf8to32
 uni::utf32to8
 uni::utf16to32
 uni::utf32to16
+
+uni::is_valid_utf8 - check if UTF-8 string is well-formed
+uni::is_valid_utf16
+uni::is_valid_utf32
 ```
 The same functions but when end with `u`<br>
 then output `std::u8string` / `std::u16string` / `std::u32string`<br>
@@ -47,6 +51,9 @@ instead of `std::string` / `std::wstring`
 
 The same functions but from `uni::strict` namespace<br>
 then strict conversion instead of lenient.
+
+Validation and strict functions support `uni::error` that<br>
+can be used to find out the position where an error occured.
 
 ---
 
@@ -219,7 +226,7 @@ uni::codepoint::to_decompose_hangul_u32 - hangul decomposition
 
 uni::codepoint::to_compose              - composes two code points (includes hangul composition)
 
-class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Compining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a> functions
+class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Combining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a> functions
 </code></pre>
 
 ---

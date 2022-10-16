@@ -121,6 +121,10 @@ const size_t impl_x_utf32to8
 const size_t impl_x_utf16to32
 const size_t impl_x_utf32to16
 
+bool impl_is_valid_utf8(it_in_utf8 first, it_end_utf8 last, size_t* error)
+bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_t* error)
+bool impl_is_valid_utf32(it_in_utf32 first, it_end_utf32 last, size_t* error)
+
 -------
 impl_iterator.h
 
@@ -339,34 +343,39 @@ bool impl_prop_is_surrogate(type_codept c)
 bool impl_prop_is_private_use(type_codept c)
 bool impl_prop_is_control(type_codept c)
 
+// const values:
+const type_codept impl_prop_replacement_char
+const type_codept impl_prop_max_value
+const size_t      impl_prop_total_number
+
 // general category values:
-type_codept impl_General_Category_Lu
-type_codept impl_General_Category_Ll
-type_codept impl_General_Category_Lt
-type_codept impl_General_Category_Lm
-type_codept impl_General_Category_Lo
-type_codept impl_General_Category_Mn
-type_codept impl_General_Category_Mc
-type_codept impl_General_Category_Me
-type_codept impl_General_Category_Nd
-type_codept impl_General_Category_Nl
-type_codept impl_General_Category_No
-type_codept impl_General_Category_Pc
-type_codept impl_General_Category_Pd
-type_codept impl_General_Category_Ps
-type_codept impl_General_Category_Pe
-type_codept impl_General_Category_Pi
-type_codept impl_General_Category_Pf
-type_codept impl_General_Category_Po
-type_codept impl_General_Category_Sm
-type_codept impl_General_Category_Sc
-type_codept impl_General_Category_Sk
-type_codept impl_General_Category_So
-type_codept impl_General_Category_Zs
-type_codept impl_General_Category_Zl
-type_codept impl_General_Category_Zp
-type_codept impl_General_Category_Cc
-type_codept impl_General_Category_Cf
-type_codept impl_General_Category_Cs
-type_codept impl_General_Category_Co
-type_codept impl_General_Category_Cn
+const type_codept impl_General_Category_Lu
+const type_codept impl_General_Category_Ll
+const type_codept impl_General_Category_Lt
+const type_codept impl_General_Category_Lm
+const type_codept impl_General_Category_Lo
+const type_codept impl_General_Category_Mn
+const type_codept impl_General_Category_Mc
+const type_codept impl_General_Category_Me
+const type_codept impl_General_Category_Nd
+const type_codept impl_General_Category_Nl
+const type_codept impl_General_Category_No
+const type_codept impl_General_Category_Pc
+const type_codept impl_General_Category_Pd
+const type_codept impl_General_Category_Ps
+const type_codept impl_General_Category_Pe
+const type_codept impl_General_Category_Pi
+const type_codept impl_General_Category_Pf
+const type_codept impl_General_Category_Po
+const type_codept impl_General_Category_Sm
+const type_codept impl_General_Category_Sc
+const type_codept impl_General_Category_Sk
+const type_codept impl_General_Category_So
+const type_codept impl_General_Category_Zs
+const type_codept impl_General_Category_Zl
+const type_codept impl_General_Category_Zp
+const type_codept impl_General_Category_Cc
+const type_codept impl_General_Category_Cf
+const type_codept impl_General_Category_Cs
+const type_codept impl_General_Category_Co
+const type_codept impl_General_Category_Cn
