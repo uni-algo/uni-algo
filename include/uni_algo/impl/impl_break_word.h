@@ -11,7 +11,7 @@
 #include "internal_stages.h"
 
 #ifndef UNI_ALGO_STATIC_DATA
-#include "impl_break_word_data_extern.h"
+#include "data/extern_break_word.h"
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN

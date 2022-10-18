@@ -9,7 +9,7 @@
 #include "internal_stages.h"
 
 #ifndef UNI_ALGO_STATIC_DATA
-#include "impl_prop_data_extern.h"
+#include "data/extern_prop.h"
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
