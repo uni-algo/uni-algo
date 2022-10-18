@@ -1,7 +1,5 @@
 // Unicode 15.0.0
 
-#include "internal_defines.h"
-
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
 uaix_const_data unsigned char stage1_prop[] = {
@@ -5432,5 +5430,3 @@ uaix_const_data unsigned char stage2_prop[] = {
 29,29,29,29,29,29,128,128};
 
 UNI_ALGO_IMPL_NAMESPACE_END
-
-#include "internal_undefs.h"

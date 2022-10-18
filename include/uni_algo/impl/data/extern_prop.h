@@ -1,6 +1,4 @@
-/* Unicode Algorithms Implementation by Marl Gigical.
- * License: Public Domain or MIT - sign whatever you want.
- * See LICENSE.txt */
+// Unicode 15.0.0
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 

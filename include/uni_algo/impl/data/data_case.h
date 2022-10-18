@@ -1,7 +1,5 @@
 // Unicode 15.0.0
 
-#include "internal_defines.h"
-
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
 uaix_const_data unsigned char stage1_lower[] = {
@@ -18439,5 +18437,3 @@ uaix_const_data unsigned short stage3_special_lower[][4] = {
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 
 UNI_ALGO_IMPL_NAMESPACE_END
-
-#include "internal_undefs.h"

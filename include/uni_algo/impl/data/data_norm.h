@@ -1,7 +1,5 @@
 // Unicode 15.0.0
 
-#include "internal_defines.h"
-
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
 uaix_const_data unsigned char stage1_ccc_qc[] = {
@@ -14801,5 +14799,3 @@ uaix_const_data type_codept stage3_comp[][64] = {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71992}};
 
 UNI_ALGO_IMPL_NAMESPACE_END
-
-#include "internal_undefs.h"

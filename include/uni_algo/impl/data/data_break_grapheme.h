@@ -1,7 +1,5 @@
 // Unicode 15.0.0
 
-#include "internal_defines.h"
-
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
 uaix_const_data unsigned char stage1_break_grapheme[] = {
@@ -3681,5 +3679,3 @@ uaix_const_data unsigned char stage2_break_grapheme[] = {
 4,4,4,4,4,4,4,4};
 
 UNI_ALGO_IMPL_NAMESPACE_END
-
-#include "internal_undefs.h"
