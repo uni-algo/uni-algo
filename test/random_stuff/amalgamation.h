@@ -63,12 +63,6 @@ std::string amalgam_part(const std::string& file)
 // Use for files without header guards
 std::string amalgam_full(const std::string& file)
 {
-    // REMINDER: return all content of the file
-    //std::string result;
-    //std::ifstream input{file};
-    //result.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
-    //return result;
-
     std::string result;
     result += "// AMALGAMATION: " + file + '\n' + '\n';
 
@@ -95,6 +89,21 @@ std::string amalgam_full(const std::string& file)
             result += '\n';
         }
     }
+
+    result += '\n';
+    return result;
+}
+
+// Use to add all the content of the file
+std::string amalgam_data(const std::string& file)
+{
+    std::string result;
+    result += "// AMALGAMATION: " + file + '\n' + '\n';
+
+    std::ifstream input{file};
+    NOTFOUND(input.is_open(), file);
+
+    result += std::string{std::istreambuf_iterator<char>{input}, std::istreambuf_iterator<char>{}};
 
     result += '\n';
     return result;
@@ -195,11 +204,11 @@ void amalgam()
     output << amalgam_full("uni_algo/impl/internal_defines.h");
 
     // The order for data files are not important
-    output << amalgam_full("uni_algo/impl/impl_case_data.h");
-    output << amalgam_full("uni_algo/impl/impl_norm_data.h");
-    output << amalgam_full("uni_algo/impl/impl_prop_data.h");
-    output << amalgam_full("uni_algo/impl/impl_break_grapheme_data.h");
-    output << amalgam_full("uni_algo/impl/impl_break_word_data.h");
+    output << amalgam_data("uni_algo/impl/data/data_case.h");
+    output << amalgam_data("uni_algo/impl/data/data_norm.h");
+    output << amalgam_data("uni_algo/impl/data/data_prop.h");
+    output << amalgam_data("uni_algo/impl/data/data_break_grapheme.h");
+    output << amalgam_data("uni_algo/impl/data/data_break_word.h");
 
     output << amalgam_part("uni_algo/impl/internal_stages.h"); // Old full
 
