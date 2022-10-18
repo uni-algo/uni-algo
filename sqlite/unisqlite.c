@@ -94,11 +94,11 @@ typedef type_codept    type_char32; // Can be 32-bit or more signed/unsigned
 
 // Include impl_types.h always first then data and then implementation.
 #include "../include/uni_algo/impl/impl_types.h"
-#include "../include/uni_algo/impl/impl_case_data.h"
+#include "../include/uni_algo/impl/data/data_case.h"
 #include "../include/uni_algo/impl/impl_case.h"
 #ifndef UNI_ALGO_DISABLE_NORM
-#include "../include/uni_algo/impl/impl_prop_data.h" // Needed for unaccent function
-#include "../include/uni_algo/impl/impl_norm_data.h"
+#include "../include/uni_algo/impl/data/data_prop.h" // Needed for unaccent function
+#include "../include/uni_algo/impl/data/data_norm.h"
 #include "../include/uni_algo/impl/impl_prop.h"
 #include "../include/uni_algo/impl/impl_norm.h"
 #endif // UNI_ALGO_DISABLE_NORM

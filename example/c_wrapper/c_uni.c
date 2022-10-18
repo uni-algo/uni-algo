@@ -68,10 +68,10 @@ typedef UNI_CHAR32    type_char32; // Can be 32-bit or more signed/unsigned
 
 // Include Unicode data tables for Case and Normalization modules
 #ifndef UNI_ALGO_DISABLE_CASE
-#include "impl/impl_case_data.h"
+#include "impl/data/data_case.h"
 #endif
 #ifndef UNI_ALGO_DISABLE_NORM
-#include "impl/impl_norm_data.h"
+#include "impl/data/data_norm.h"
 #endif
 
 // Include Case and Normalization modules
