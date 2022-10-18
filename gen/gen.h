@@ -1837,7 +1837,7 @@ static void new_merger_replace_string(std::string& data, const std::string& file
 
 static void new_merger()
 {
-    std::ifstream input("impl_case_data.h_blank");
+    std::ifstream input("data_case.h_blank");
     ASSERTX(input.is_open());
 
     std::string data;
@@ -1868,14 +1868,14 @@ static void new_merger()
     new_merger_replace_string(data, "new_stage2_special_title.txt");
     new_merger_replace_string(data, "new_stage3_special_title.txt");
 
-    std::ofstream output("impl_case_data.h");
+    std::ofstream output("data_case.h");
     ASSERTX(output.is_open());
     output << data;
 
     input.close();
     output.close();
 
-    input.open("impl_norm_data.h_blank");
+    input.open("data_norm.h_blank");
     ASSERTX(input.is_open());
 
     data.clear();
@@ -1895,14 +1895,14 @@ static void new_merger()
     new_merger_replace_string(data, "new_stage2_comp_cp2.txt");
     new_merger_replace_string(data, "new_stage3_comp.txt");
 
-    output.open("impl_norm_data.h");
+    output.open("data_norm.h");
     ASSERTX(output.is_open());
     output << data;
 
     input.close();
     output.close();
 
-    input.open("impl_break_grapheme_data.h_blank");
+    input.open("data_break_grapheme.h_blank");
     ASSERTX(input.is_open());
 
     data.clear();
@@ -1911,14 +1911,14 @@ static void new_merger()
     new_merger_replace_string(data, "new_stage1_break_grapheme.txt");
     new_merger_replace_string(data, "new_stage2_break_grapheme.txt");
 
-    output.open("impl_break_grapheme_data.h");
+    output.open("data_break_grapheme.h");
     ASSERTX(output.is_open());
     output << data;
 
     input.close();
     output.close();
 
-    input.open("impl_break_word_data.h_blank");
+    input.open("data_break_word.h_blank");
     ASSERTX(input.is_open());
 
     data.clear();
@@ -1927,14 +1927,14 @@ static void new_merger()
     new_merger_replace_string(data, "new_stage1_break_word.txt");
     new_merger_replace_string(data, "new_stage2_break_word.txt");
 
-    output.open("impl_break_word_data.h");
+    output.open("data_break_word.h");
     ASSERTX(output.is_open());
     output << data;
 
     input.close();
     output.close();
 
-    input.open("impl_prop_data.h_blank");
+    input.open("data_prop.h_blank");
     ASSERTX(input.is_open());
 
     data.clear();
@@ -1943,7 +1943,7 @@ static void new_merger()
     new_merger_replace_string(data, "new_stage1_prop.txt");
     new_merger_replace_string(data, "new_stage2_prop.txt");
 
-    output.open("impl_prop_data.h");
+    output.open("data_prop.h");
     ASSERTX(output.is_open());
     output << data;
 
