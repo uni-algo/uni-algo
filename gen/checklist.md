@@ -1,9 +1,9 @@
 New Unicode version checklist:
 
-1. Change Unicode version in: gen/*.h_blank files
-2. Generate data files using gen/main.cpp
-3. Copy and replace generated files to include/uni_algo/impl
-5. Generate gen/nm_result.md (x86 Release with UNI_ALGO_DISABLE_SYSTEM_LOCALE define)
+1. Change Unicode version in: gen/blank/*.h_blank files
+2. Generate data files using gen/main.cpp and gen/blank files
+3. Copy and replace generated files to include/uni_algo/impl/data
+5. Generate gen/nm_result.txt (x86 Release with UNI_ALGO_DISABLE_SYSTEM_LOCALE define)
 6. Change Unicode version in: include/uni_algo/impl/impl_unicode_version.h
 7. Change collation names in sqlite/unisqlite.c
 8. Change Unicode test files version in: test/CMakeLists.txt
