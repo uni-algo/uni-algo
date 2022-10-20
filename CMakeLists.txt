@@ -2,20 +2,39 @@ cmake_minimum_required(VERSION 3.12)
 
 project("uni-algo" VERSION 0.5.0 LANGUAGES CXX)
 
-# Force STATIC for now
-add_library(${PROJECT_NAME} STATIC)
+option(UNI_ALGO_HEADER_ONLY "Header-only" OFF)
+
+if(NOT UNI_ALGO_HEADER_ONLY)
+    add_library(${PROJECT_NAME} STATIC) # Force STATIC for now
+else()
+    add_library(${PROJECT_NAME} INTERFACE)
+endif()
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 include(GNUInstallDirs)
 
-target_include_directories(${PROJECT_NAME} PUBLIC
-    $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+if(NOT UNI_ALGO_HEADER_ONLY)
+    target_include_directories(${PROJECT_NAME} PUBLIC
+        $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-target_sources(${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/data.cpp)
+    target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+    target_sources(${PROJECT_NAME} PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/data.cpp)
+else()
+    target_include_directories(${PROJECT_NAME} INTERFACE
+        $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+    target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
+
+    target_compile_definitions(${PROJECT_NAME} INTERFACE UNI_ALGO_STATIC_DATA)
+endif()
+
+# -------
+# INSTALL
+# -------
 
 install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}-targets
