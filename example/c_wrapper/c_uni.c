@@ -63,16 +63,8 @@ typedef UNI_CHAR32    type_char32; // Can be 32-bit or more signed/unsigned
 // Include Convert module (doesn't need Unicode data tables)
 #include "impl/impl_convert.h"
 
-// Do not define it if you include the following Unicode data in a different c file
+// Do not define it if you include Unicode data (impl/impl_data.h file) in a different .c file
 #define UNI_ALGO_STATIC_DATA
-
-// Include Unicode data tables for Case and Normalization modules
-#ifndef UNI_ALGO_DISABLE_CASE
-#include "impl/data/data_case.h"
-#endif
-#ifndef UNI_ALGO_DISABLE_NORM
-#include "impl/data/data_norm.h"
-#endif
 
 // Include Case and Normalization modules
 #ifndef UNI_ALGO_DISABLE_CASE
