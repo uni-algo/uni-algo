@@ -1,0 +1,10 @@
+The implementation can handle data files in 2 modes:
+
+1. Use impl_data.h to include all data files and disable them with config defines if needed
+2. Automatically include specific data file in the implementation file that use that data
+
+Define UNI_ALGO_STATIC_DATA is used to enable mode 2.
+
+For example in C++ it can be used to implement a library that compiles data files in .cpp file (mode 1)
+or header-only library that includes data files in .h files (mode 2).
+Default C++ Standard Library wrapper implements both modes.
