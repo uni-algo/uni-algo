@@ -27,6 +27,7 @@ namespace uni {
 
 // Forward declaration for system locale stuff
 #ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
+#ifndef UNI_ALGO_STATIC_DATA
 class locale;
 
 namespace detail {
@@ -38,6 +39,7 @@ void locale_thread_reinit();
 #endif // UNI_ALGO_EXPERIMENTAL
 
 } // namespace detail
+#endif // UNI_ALGO_STATIC_DATA
 #endif // UNI_ALGO_DISABLE_SYSTEM_LOCALE
 
 class locale
@@ -165,11 +167,13 @@ public:
                regn.get_value() == 0;
     }
 #ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
+#ifndef UNI_ALGO_STATIC_DATA
     static locale system() { return detail::locale_system(); }
 #ifdef UNI_ALGO_EXPERIMENTAL
     static locale thread() { return detail::locale_thread(); }
     static void thread_reinit() { detail::locale_thread_reinit(); }
 #endif // UNI_ALGO_EXPERIMENTAL
+#endif // UNI_ALGO_STATIC_DATA
 #endif // UNI_ALGO_DISABLE_SYSTEM_LOCALE
 #ifdef UNI_ALGO_EXPERIMENTAL
     constexpr void normalize()

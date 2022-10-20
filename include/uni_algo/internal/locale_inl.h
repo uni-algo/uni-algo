@@ -5,6 +5,7 @@
 // IMPORTANT: This file doesn't have include guards and must be inlined into .cpp file
 
 #ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
+#ifndef UNI_ALGO_STATIC_DATA
 
 #include "../locale.h"
 
@@ -98,4 +99,5 @@ void locale_thread_reinit()
 
 } // namespace uni::detail
 
+#endif // UNI_ALGO_STATIC_DATA
 #endif // UNI_ALGO_DISABLE_SYSTEM_LOCALE
