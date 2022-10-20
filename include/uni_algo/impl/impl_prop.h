@@ -10,6 +10,8 @@
 
 #ifndef UNI_ALGO_STATIC_DATA
 #include "data/extern_prop.h"
+#else
+#include "data/data_prop.h"
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN

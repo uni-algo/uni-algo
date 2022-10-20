@@ -16,6 +16,8 @@
 
 #ifndef UNI_ALGO_STATIC_DATA
 #include "data/extern_norm.h"
+#else
+#include "data/data_norm.h"
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN

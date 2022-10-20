@@ -17,6 +17,8 @@
 
 #ifndef UNI_ALGO_STATIC_DATA
 #include "data/extern_case.h"
+#else
+#include "data/data_case.h"
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN

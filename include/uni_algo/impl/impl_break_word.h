@@ -12,6 +12,8 @@
 
 #ifndef UNI_ALGO_STATIC_DATA
 #include "data/extern_break_word.h"
+#else
+#include "data/data_break_word.h"
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
