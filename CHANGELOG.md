@@ -5,6 +5,7 @@ See commit history between tags for details.
 ## v0.6.0 (TBD)
 - Added custom allocator support for template functions and output ranges
 - Added uni::is_valid_utf8/16/32 functions for strings
+- Added header-only support (CMake option UNI_ALGO_HEADER_ONLY=ON)
 
 ## [v0.5.0](https://github.com/uni-algo/uni-algo/tree/v0.5.0) (01.10.2022)
 - Updated to Unicode 15.0.0
