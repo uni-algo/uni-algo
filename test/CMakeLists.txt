@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(uni-algo-test LANGUAGES CXX)
+# NOTE: This file is used by GitHub Actions workflows edit with care
 
-# This file is used by GitHub Actions workflows edit with care.
+project(uni-algo-test LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME})
 
@@ -24,11 +24,22 @@ if(NOT DOWNLOAD_UNICODE_TEST_FILES)
     target_compile_definitions(${PROJECT_NAME} PRIVATE "TEST_MODE_WITHOUT_UNICODE_TEST_FILES")
 endif()
 
-#target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../src")
+# NOTE: By default tests compile together with uni-algo library (manual use) without building it first
+# but if needed to test building the library or with header-only mode for example
+# then pass to CMake: -DBUILD_UNI_ALGO=ON -DUNI_ALGO_HEADER_ONLY=ON
+if(NOT BUILD_UNI_ALGO)
+    # Manual use should work even without include directory compile option
+    #target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../include/uni_algo")
+    target_sources(${PROJECT_NAME} PRIVATE
+        "${PROJECT_SOURCE_DIR}/../src/data.cpp"
+        "${PROJECT_SOURCE_DIR}/main.cpp")
+else()
+    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/.." build_uni_algo)
+    target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 
-target_sources(${PROJECT_NAME} PRIVATE
-    "${PROJECT_SOURCE_DIR}/../src/data.cpp"
-    "${PROJECT_SOURCE_DIR}/main.cpp")
+    target_sources(${PROJECT_NAME} PRIVATE
+        "${PROJECT_SOURCE_DIR}/main.cpp")
+endif()
 
 if(DOWNLOAD_UNICODE_TEST_FILES)
     # https://stackoverflow.com/questions/61255773/cmake-file-download-ignores-errors
