@@ -82,6 +82,10 @@
 // The define affects only Case module.
 // The define is used for some internal tests.
 
+//#define UNI_ALGO_STATIC_DATA
+// Note that with CMake use UNI_ALGO_HEADER_ONLY=ON option instead.
+// The define can be used to build header-only version of the library.
+
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
 
 #if (__cplusplus < 201703L && !defined(_MSVC_LANG)) || (defined(_MSVC_LANG) && _MSVC_LANG < 201703L)
