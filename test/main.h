@@ -100,8 +100,10 @@ int main7()
         uni::version::unicode::minor << '.' <<
         uni::version::unicode::update << '\n';
 
-#ifdef UNI_ALGO_DISABLE_SYSTEM_LOCALE
+#if defined(UNI_ALGO_DISABLE_SYSTEM_LOCALE)
     std::cout << "System    Locale: DISABLED" << '\n';
+#elif defined(UNI_ALGO_STATIC_DATA)
+    std::cout << "System    Locale: DISABLED HEADER-ONLY" << '\n';
 #else
     if (uni::locale::system().is_empty())
         std::cout << "System    Locale: EMPTY" << '\n';
