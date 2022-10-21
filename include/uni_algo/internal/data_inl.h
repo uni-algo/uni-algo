@@ -9,4 +9,8 @@
 
 #include "../config.h"
 
+#ifdef UNI_ALGO_STATIC_DATA
+#error "data.cpp file must not be compiled when header-only is enabled"
+#else
 #include "../impl/impl_data.h"
+#endif
