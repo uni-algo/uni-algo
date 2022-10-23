@@ -18,14 +18,16 @@ endif()
 
 target_compile_options(${PROJECT_NAME} PRIVATE
     "$<$<CXX_COMPILER_ID:MSVC>:/utf-8;/W4>"
-    "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall;-Wextra;-Wconversion;-Wsign-conversion;-Wsign-compare;-Wshadow;-Wmissing-braces>")
+    "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:"
+        "-Wall;-Wextra;-Wconversion;-Wsign-conversion;-Wsign-compare;"
+        "-Wshadow;-Wmissing-braces>")
 
 if(NOT DOWNLOAD_UNICODE_TEST_FILES)
     target_compile_definitions(${PROJECT_NAME} PRIVATE "TEST_MODE_WITHOUT_UNICODE_TEST_FILES")
 endif()
 
 # NOTE: By default tests compile together with uni-algo library (manual use) without building it first
-# but if needed to test building the library or with header-only mode for example
+# but if needed to test with building the library or with header-only mode for example
 # then pass to CMake: -DBUILD_UNI_ALGO=ON -DUNI_ALGO_HEADER_ONLY=ON
 if(NOT BUILD_UNI_ALGO)
     # Manual use should work even without include directory compile option
@@ -34,7 +36,7 @@ if(NOT BUILD_UNI_ALGO)
         "${PROJECT_SOURCE_DIR}/../src/data.cpp"
         "${PROJECT_SOURCE_DIR}/main.cpp")
 else()
-    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/.." build_uni_algo)
+    add_subdirectory("${PROJECT_SOURCE_DIR}/.." build_uni_algo)
     target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 
     target_sources(${PROJECT_NAME} PRIVATE
@@ -46,7 +48,7 @@ if(DOWNLOAD_UNICODE_TEST_FILES)
     function(FUNC_DOWNLOAD FUNC_ARG)
         get_filename_component(FILE_NAME ${FUNC_ARG} NAME)
         message(STATUS "Downloading... " ${FILE_NAME})
-        file(DOWNLOAD ${FUNC_ARG} ${CMAKE_CURRENT_BINARY_DIR}/${FILE_NAME} STATUS DOWNLOAD_STATUS)
+        file(DOWNLOAD ${FUNC_ARG} ${PROJECT_BINARY_DIR}/${FILE_NAME} STATUS DOWNLOAD_STATUS)
         list(GET DOWNLOAD_STATUS 0 STATUS_CODE)
         if(NOT ${STATUS_CODE} EQUAL 0)
             message(FATAL_ERROR "Error while downloading: " ${FILE_NAME})

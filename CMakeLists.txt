@@ -16,7 +16,7 @@ include(GNUInstallDirs)
 
 if(NOT UNI_ALGO_HEADER_ONLY)
     target_include_directories(${PROJECT_NAME} PUBLIC
-        $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
     target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -26,10 +26,10 @@ if(NOT UNI_ALGO_HEADER_ONLY)
     endif()
 
     target_sources(${PROJECT_NAME} PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/data.cpp)
+        ${PROJECT_SOURCE_DIR}/src/data.cpp)
 else()
     target_include_directories(${PROJECT_NAME} INTERFACE
-        $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
     target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
@@ -46,12 +46,12 @@ if(BUILD_SHARED_LIBS AND NOT UNI_ALGO_HEADER_ONLY)
     # because ABI breakage is allowed in minor versions for now.
     if(WIN32)
         set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME
-            ${PROJECT_NAME}-v${${PROJECT_NAME}_VERSION_MAJOR}-${${PROJECT_NAME}_VERSION_MINOR})
+            ${PROJECT_NAME}-v${PROJECT_VERSION_MAJOR}-${PROJECT_VERSION_MINOR})
         # Remove "lib" prefix in MinGW
         #set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" IMPORT_PREFIX "")
     else()
-        set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${${PROJECT_NAME}_VERSION}
-            SOVERSION ${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR})
+        set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION}
+            SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
     endif()
 endif()
 
