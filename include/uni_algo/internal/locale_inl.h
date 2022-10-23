@@ -60,7 +60,7 @@ uni::locale locale_syscall()
     return uni::locale{};
 }
 
-const locale& locale_system()
+UNI_ALGO_DLL const locale& locale_system()
 {
     // Cannot be data race here locale object init only once and never changes
     static locale loc{detail::locale_syscall()};
@@ -85,12 +85,12 @@ const uni::locale& locale_thread_impl(bool reinit)
     return loc;
 }
 
-const uni::locale& locale_thread()
+UNI_ALGO_DLL const uni::locale& locale_thread()
 {
     return locale_thread_impl(false);
 }
 
-void locale_thread_reinit()
+UNI_ALGO_DLL void locale_thread_reinit()
 {
     locale_thread_impl(true);
 }

@@ -86,6 +86,12 @@
 // Note that with CMake use UNI_ALGO_HEADER_ONLY=ON option instead.
 // The define can be used to build header-only version of the library.
 
+//#define UNI_ALGO_DLL_EXPORT
+//#define UNI_ALGO_DLL_IMPORT
+// Note that with CMake use BUILD_SHARED_LIBS=ON option instead.
+// The defines can be used to build shared library
+// export must be defined when building and import when using.
+
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
 
 #if (__cplusplus < 201703L && !defined(_MSVC_LANG)) || (defined(_MSVC_LANG) && _MSVC_LANG < 201703L)
@@ -118,6 +124,24 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 // Define namespace that low-level will use
 #define UNI_ALGO_IMPL_NAMESPACE_BEGIN namespace uni::detail {
 #define UNI_ALGO_IMPL_NAMESPACE_END }
+
+// Define dllexport/dllimport for shared library
+#if defined(UNI_ALGO_DLL_EXPORT) && !defined(UNI_ALGO_STATIC_DATA)
+#  if defined(_WIN32)
+#    define UNI_ALGO_DLL __declspec(dllexport)
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define UNI_ALGO_DLL __attribute__((visibility("default")))
+#  endif
+#elif defined(UNI_ALGO_DLL_IMPORT) && !defined(UNI_ALGO_STATIC_DATA)
+#  if defined(_WIN32)
+#    define UNI_ALGO_DLL __declspec(dllimport)
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define UNI_ALGO_DLL __attribute__((visibility("default")))
+#  endif
+#endif
+#ifndef UNI_ALGO_DLL
+#define UNI_ALGO_DLL
+#endif
 
 // TODO: Disable constexpr for now it doesn't work properly in some cases
 #define uaiw_constexpr //constexpr

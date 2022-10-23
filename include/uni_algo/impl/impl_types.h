@@ -54,7 +54,12 @@ typedef type_char32*       it_out_utf32;
 
 #define UNI_ALGO_IMPL_NAMESPACE_BEGIN
 #define UNI_ALGO_IMPL_NAMESPACE_END
+
+#ifndef UNI_ALGO_DLL
+#define UNI_ALGO_DLL
 #endif
+
+#endif // __cplusplus
 
 /* This file is not used in C++ wrapper but it's here for a reference.
  * In C++ the types must be defined by a wrapper.

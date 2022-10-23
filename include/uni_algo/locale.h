@@ -32,10 +32,10 @@ class locale;
 
 namespace detail {
 
-const uni::locale& locale_system();
+UNI_ALGO_DLL const uni::locale& locale_system();
 #ifdef UNI_ALGO_EXPERIMENTAL
-const uni::locale& locale_thread();
-void locale_thread_reinit();
+UNI_ALGO_DLL const uni::locale& locale_thread();
+UNI_ALGO_DLL void locale_thread_reinit();
 #endif // UNI_ALGO_EXPERIMENTAL
 
 } // namespace detail
