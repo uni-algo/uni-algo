@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 3.12)
 
 project("uni-algo" VERSION 0.5.0 LANGUAGES CXX)
 
+option(BUILD_SHARED_LIBS "Build shared libs" OFF)
 option(UNI_ALGO_HEADER_ONLY "Header-only" OFF)
 
 if(NOT UNI_ALGO_HEADER_ONLY)
-    add_library(${PROJECT_NAME} STATIC) # Force STATIC for now
+    add_library(${PROJECT_NAME})
 else()
     add_library(${PROJECT_NAME} INTERFACE)
 endif()
@@ -20,6 +21,10 @@ if(NOT UNI_ALGO_HEADER_ONLY)
 
     target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
+    if(NOT DEFINED CMAKE_DEBUG_POSTFIX)
+        set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
+    endif()
+
     target_sources(${PROJECT_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/data.cpp)
 else()
@@ -30,6 +35,24 @@ else()
     target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 
     target_compile_definitions(${PROJECT_NAME} INTERFACE UNI_ALGO_STATIC_DATA)
+endif()
+
+if(BUILD_SHARED_LIBS AND NOT UNI_ALGO_HEADER_ONLY)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE UNI_ALGO_DLL_EXPORT INTERFACE UNI_ALGO_DLL_IMPORT)
+    # Set hidden visibility for the shared library (doesn't matter on Windows)
+    set_target_properties(${PROJECT_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden)
+    set_target_properties(${PROJECT_NAME} PROPERTIES VISIBILITY_INLINES_HIDDEN ON)
+    # Make soname/output name include major.minor version instead of only major
+    # because ABI breakage is allowed in minor versions for now.
+    if(WIN32)
+        set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME
+            ${PROJECT_NAME}-v${${PROJECT_NAME}_VERSION_MAJOR}-${${PROJECT_NAME}_VERSION_MINOR})
+        # Remove "lib" prefix in MinGW
+        #set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" IMPORT_PREFIX "")
+    else()
+        set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${${PROJECT_NAME}_VERSION}
+            SOVERSION ${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR})
+    endif()
 endif()
 
 # -------
@@ -45,7 +68,7 @@ install(TARGETS ${PROJECT_NAME}
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file("${PROJECT_NAME}-config-version.cmake"
                                  VERSION ${PROJECT_VERSION}
-                                 COMPATIBILITY SameMajorVersion)
+                                 COMPATIBILITY SameMinorVersion)
 
 configure_package_config_file(
     "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in"
