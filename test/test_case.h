@@ -618,10 +618,11 @@ bool caseless_starts_with(std::basic_string_view<T> string1, std::basic_string_v
     return found && found.pos() == 0;
 }
 
-// TODO: FIXME:
-// This function doesn't compile on macOS Xcode with very strange template error
-// so disable it for now the test is not that important anyway.
-#if 0
+// TODO: This function doesn't compile on macOS Xcode with very strange template error
+// so disable it for now in AppleClang.
+#if !(defined(__clang__) && defined(__apple_build_version__))
+#define TEST_CASELESS_FIND_ALL
+
 template<typename T>
 std::vector<std::pair<std::size_t, std::size_t>>
 caseless_find_all(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
@@ -684,7 +685,7 @@ void test_case_search_ex()
     TESTX(caseless_starts_with<char>("", ""));
     TESTX(caseless_starts_with<char>("ABC", ""));
     TESTX(!caseless_starts_with<char>("", "ABC"));
-#if 0
+#ifdef TEST_CASELESS_FIND_ALL
     auto vec = caseless_find_all<char>("ﬁABCﬁ", "FI");
     TESTX(vec.size() == 2);
     TESTX(vec[0].first == 0 && vec[0].second == 3);
@@ -695,7 +696,8 @@ void test_case_search_ex()
     TESTX(vec[1].first == 3 && vec[1].second == 6);
     vec = caseless_find_all<char>("", "");
     TESTX(vec.size() == 0);
-#endif
+#endif // TEST_CASELESS_FIND_ALL
+
     // UTF-16
 
     TESTX(caseless_ends_with<char16_t>(u"ABCﬁ", u"FI"));
@@ -725,7 +727,7 @@ void test_case_search_ex()
     TESTX(caseless_starts_with<char16_t>(u"", u""));
     TESTX(caseless_starts_with<char16_t>(u"ABC", u""));
     TESTX(!caseless_starts_with<char16_t>(u"", u"ABC"));
-#if 0
+#ifdef TEST_CASELESS_FIND_ALL
     vec = caseless_find_all<char16_t>(u"ﬁABCﬁ", u"FI");
     TESTX(vec.size() == 2);
     TESTX(vec[0].first == 0 && vec[0].second == 1);
@@ -736,8 +738,9 @@ void test_case_search_ex()
     TESTX(vec[1].first == 1 && vec[1].second == 2);
     vec = caseless_find_all<char16_t>(u"", u"");
     TESTX(vec.size() == 0);
-#endif
-    //
+#endif // TEST_CASELESS_FIND_ALL
+
+    // TEST std::string::erase
 
     uni::search s;
 
