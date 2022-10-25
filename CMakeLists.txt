@@ -5,6 +5,20 @@ project("uni-algo" VERSION 0.5.0 LANGUAGES CXX)
 option(BUILD_SHARED_LIBS "Build shared libs" OFF)
 option(UNI_ALGO_HEADER_ONLY "Header-only" OFF)
 
+# ON if main project OFF if subproject (add_subdirectory etc.)
+# REMINDER: Remove and use PROJECT_IS_TOP_LEVEL in CMake 3.21
+set(IS_TOP_LEVEL OFF)
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    set(IS_TOP_LEVEL ON)
+endif()
+
+option(UNI_ALGO_INSTALL "Generate install targets" ${IS_TOP_LEVEL})
+
+message(STATUS "Configuring: " ${PROJECT_NAME} " " ${PROJECT_VERSION})
+message(STATUS "BUILD_SHARED_LIBS   : " ${BUILD_SHARED_LIBS})
+message(STATUS "UNI_ALGO_HEADER_ONLY: " ${UNI_ALGO_HEADER_ONLY})
+message(STATUS "UNI_ALGO_INSTALL    : " ${UNI_ALGO_INSTALL})
+
 if(NOT UNI_ALGO_HEADER_ONLY)
     add_library(${PROJECT_NAME})
 else()
@@ -59,6 +73,8 @@ endif()
 # INSTALL
 # -------
 
+if(UNI_ALGO_INSTALL)
+
 install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}-targets
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -88,3 +104,5 @@ install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/uni_algo"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
         FILES_MATCHING PATTERN "*.h")
+
+endif() # UNI_ALGO_INSTALL
