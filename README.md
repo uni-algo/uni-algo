@@ -99,7 +99,15 @@ See this repository: https://github.com/uni-algo/uni-algo-single-include
 Add to your CMakeLists.txt
 
 ```cmake
-add_subdirectory(repo) # the directory where you extracted this repository
+# CMake option example (enable header-only version)
+# set(UNI_ALGO_HEADER_ONLY ON CACHE INTERNAL "")
+
+add_subdirectory(repo) # The directory where you extracted this repository
+
+# Config define example (disable normalization)
+# target_compile_definitions(uni-algo PUBLIC UNI_ALGO_DISABLE_NORM)
+# Note that you can ignore config defines if header-only is enabled
+# because a Unicode data won't be compiled if not used anyway.
 
 target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 ```
@@ -141,14 +149,13 @@ Add to your CMakeLists.txt
 ```cmake
 include(FetchContent)
 
-# Note that you need Git installed for this to work.
 FetchContent_Declare(uni-algo
-  GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
-  GIT_TAG v0.5.0) # the version you want to download
+  URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.5.0.tar.gz)
 
-# Or you can use it like this without Git.
+# Or if you have Git installed
 # FetchContent_Declare(uni-algo
-#   URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.5.0.tar.gz)
+#   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
+#   GIT_TAG v0.5.0) # The version you want to download
 
 FetchContent_MakeAvailable(uni-algo)
 
@@ -156,7 +163,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 ```
 </p></details>
 
-<details><summary><b>Manual usage</b></summary><p>
+<details><summary><b>Manual use</b></summary><p>
 
 Include a header file you want to use from `include/uni_algo` directory and compile one file `src/data.cpp`
 
