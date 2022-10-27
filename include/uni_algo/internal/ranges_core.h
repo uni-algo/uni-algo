@@ -95,17 +95,17 @@ using iter_tag = typename std::conditional_t<std::bidirectional_iterator<Iter>,
 template <typename T, typename = void>
 struct sfinae_has_begin : std::false_type {};
 template <typename T>
-struct sfinae_has_begin<T, decltype(void(std::begin(std::declval<T&>())))> : std::true_type {};
+struct sfinae_has_begin<T, std::void_t<decltype(std::begin(std::declval<T&>()))>> : std::true_type {};
 
 template <typename T, typename = void>
 struct sfinae_has_allocate : std::false_type {};
 template <typename T>
-struct sfinae_has_allocate<T, decltype(void(std::declval<T&>().allocate(0)))> : std::true_type {};
+struct sfinae_has_allocate<T, std::void_t<decltype(std::declval<T&>().allocate(0))>> : std::true_type {};
 
 template <typename T, typename = void>
 struct sfinae_has_data : std::false_type {};
 template <typename T>
-struct sfinae_has_data<T, decltype(void(std::data(std::declval<T&>())))> : std::true_type {};
+struct sfinae_has_data<T, std::void_t<decltype(std::data(std::declval<T&>()))>> : std::true_type {};
 
 // "is" helpers
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
