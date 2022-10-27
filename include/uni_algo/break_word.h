@@ -32,9 +32,9 @@ private:
     template<class Iter, class Sent>
     class utf8
     {
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
+        static_assert(detail::ranges::is_iter_bidi_or_better<Iter>::value &&
                       std::is_integral_v<detail::ranges::iter_value_t<Iter>>,
-                      "word::utf8 view requires contiguous UTF-8 range");
+                      "word::utf8 view requires bidirectional or better UTF-8 range");
 
     private:
         utf8_view* parent = nullptr;
@@ -88,9 +88,12 @@ private:
             detail::impl_break_word_state_reset(&state);
         }
 
+        using is_contiguous = detail::ranges::is_range_contiguous<Range>;
+
     public:
         using iterator_category = std::bidirectional_iterator_tag;
-        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
+        using value_type        = std::conditional_t<is_contiguous::value,
+            std::basic_string_view<detail::ranges::iter_value_t<Iter>>, void>;
         using pointer           = void;
         using reference         = value_type;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
@@ -106,7 +109,8 @@ private:
 
             iter_func_break_word_utf8();
         }
-        uaiw_constexpr reference operator*() const
+        template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
+        uaiw_constexpr operator*() const
         {
             return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
@@ -193,10 +197,10 @@ private:
     template<class Iter, class Sent>
     class utf16
     {
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
+        static_assert(detail::ranges::is_iter_bidi_or_better<Iter>::value &&
                       std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
                       sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t),
-                      "word::utf16 view requires contiguous UTF-16 range");
+                      "word::utf16 view requires bidirectional or better UTF-16 range");
 
     private:
         utf16_view* parent = nullptr;
@@ -250,9 +254,12 @@ private:
             detail::impl_break_word_state_reset(&state);
         }
 
+        using is_contiguous = detail::ranges::is_range_contiguous<Range>;
+
     public:
         using iterator_category = std::bidirectional_iterator_tag;
-        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
+        using value_type        = std::conditional_t<is_contiguous::value,
+            std::basic_string_view<detail::ranges::iter_value_t<Iter>>, void>;
         using pointer           = void;
         using reference         = value_type;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
@@ -268,7 +275,8 @@ private:
 
             iter_func_break_word_utf16();
         }
-        uaiw_constexpr reference operator*() const
+        template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
+        uaiw_constexpr operator*() const
         {
             return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
@@ -359,9 +367,9 @@ private:
     template<class Iter, class Sent>
     class utf8
     {
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
+        static_assert(detail::ranges::is_iter_bidi_or_better<Iter>::value &&
                       std::is_integral_v<detail::ranges::iter_value_t<Iter>>,
-                      "word_only::utf8 view requires contiguous UTF-8 range");
+                      "word_only::utf8 view requires bidirectional or better UTF-8 range");
 
     private:
         utf8_view* parent = nullptr;
@@ -428,9 +436,12 @@ private:
             detail::impl_break_word_state_reset(&state);
         }
 
+        using is_contiguous = detail::ranges::is_range_contiguous<Range>;
+
     public:
         using iterator_category = std::bidirectional_iterator_tag;
-        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
+        using value_type        = std::conditional_t<is_contiguous::value,
+            std::basic_string_view<detail::ranges::iter_value_t<Iter>>, void>;
         using pointer           = void;
         using reference         = value_type;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
@@ -446,7 +457,8 @@ private:
 
             iter_func_break_word_only_utf8();
         }
-        uaiw_constexpr reference operator*() const
+        template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
+        uaiw_constexpr operator*() const
         {
             return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
@@ -524,10 +536,10 @@ private:
     template<class Iter, class Sent>
     class utf16
     {
-        static_assert(detail::ranges::sa_iter_contiguous<Iter>::value &&
+        static_assert(detail::ranges::is_iter_bidi_or_better<Iter>::value &&
                       std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
                       sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t),
-                      "word_only::utf16 view requires contiguous UTF-16 range");
+                      "word_only::utf16 view requires bidirectional or better UTF-16 range");
 
     private:
         utf16_view* parent = nullptr;
@@ -594,9 +606,12 @@ private:
             detail::impl_break_word_state_reset(&state);
         }
 
+        using is_contiguous = detail::ranges::is_range_contiguous<Range>;
+
     public:
         using iterator_category = std::bidirectional_iterator_tag;
-        using value_type        = std::basic_string_view<detail::ranges::iter_value_t<Iter>>;
+        using value_type        = std::conditional_t<is_contiguous::value,
+            std::basic_string_view<detail::ranges::iter_value_t<Iter>>, void>;
         using pointer           = void;
         using reference         = value_type;
         using difference_type   = detail::ranges::iter_difference_t<Iter>;
@@ -612,7 +627,8 @@ private:
 
             iter_func_break_word_only_utf16();
         }
-        uaiw_constexpr reference operator*() const
+        template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
+        uaiw_constexpr operator*() const
         {
             return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
         }

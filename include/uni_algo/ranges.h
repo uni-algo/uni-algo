@@ -285,7 +285,7 @@ private:
     template<class Iter, class Sent>
     class reverse
     {
-        static_assert(detail::ranges::sa_iter_bidi_or_better<Iter>::value,
+        static_assert(detail::ranges::is_iter_bidi_or_better<Iter>::value,
                       "reverse view requires bidirectional or better range");
 
     private:

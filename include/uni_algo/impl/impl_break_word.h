@@ -183,12 +183,12 @@ template<typename it_in_utf8, typename it_end_utf8>
 uaix_static type_codept break_word_skip_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     /* C++ Note: this function makes the word segmentation algorithm incompatible with input iterators.
-     * This means Word Boundary Rules are not compatible with streams at all.
+     * This means Word Boundary Rules are not compatible with streams at all and require at least forward iterator.
      * It can even look like it works but it never pass tests because we must go back after this function.
      * The test line where it fails: "\x0061\x003A\x0001" - AHLetter + MidLetter + Other.
      * Must be 3 words but if we don't go back it will be 2. */
 
-    it_in_utf8 src = first + 0; // Make it compile only for contiguous or random access iterator for now
+    it_in_utf8 src = first;
     type_codept c = 0;
 
     while (src != last)
@@ -581,7 +581,7 @@ template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_static type_codept break_word_skip_utf16(it_in_utf16 first, it_end_utf16 last)
 {
-    it_in_utf16 src = first + 0; // Make it compile only for contiguous or random access iterator for now
+    it_in_utf16 src = first;
     type_codept c = 0;
 
     while (src != last)

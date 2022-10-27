@@ -90,21 +90,26 @@ using iter_tag = typename std::conditional_t<std::bidirectional_iterator<Iter>,
 //    std::forward_iterator_tag, std::input_iterator_tag>>>;
 #endif
 
-// Use sa_* types only for static_assert
+// SFINAE helpers that are mostly used to disable/enable functions
+
+template <typename T, typename = void>
+struct sfinae_has_data : std::false_type {};
+template <typename T>
+struct sfinae_has_data<T, decltype(void(std::data(std::declval<T&>())))> : std::true_type {};
+
+// "is" helpers
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class Iter>
-using sa_iter_bidi_or_better = std::conditional_t<
+using is_iter_bidi_or_better = std::conditional_t<
     std::is_convertible_v<typename std::iterator_traits<Iter>::iterator_category, std::bidirectional_iterator_tag>,
     std::true_type, std::false_type>;
-template<class Iter>
-using sa_iter_contiguous = std::conditional_t<
-    std::is_convertible_v<typename std::iterator_traits<Iter>::iterator_category, std::random_access_iterator_tag>,
-    std::true_type, std::false_type>;
+template<class Range>
+using is_range_contiguous = std::conditional_t<sfinae_has_data<Range>::value, std::true_type, std::false_type>;
 #else
 template<class Iter>
-using sa_iter_bidi_or_better = std::conditional_t<std::bidirectional_iterator<Iter>, std::true_type, std::false_type>;
-template<class Iter>
-using sa_iter_contiguous = std::conditional_t<std::contiguous_iterator<Iter>, std::true_type, std::false_type>;
+using is_iter_bidi_or_better = std::conditional_t<std::bidirectional_iterator<Iter>, std::true_type, std::false_type>;
+template<class Range>
+using is_range_contiguous = std::conditional_t<std::ranges::contiguous_range<Range>, std::true_type, std::false_type>;
 #endif
 
 // In C++17 std::string_view doesn't have iterators pair constructor
@@ -143,19 +148,9 @@ public:
     //uaiw_constexpr Range& base() const { return *range; }
     uaiw_constexpr auto begin() const { return std::begin(*range); }
     uaiw_constexpr auto end() const { return std::end(*range); }
-    //template<class = std::enable_if_t<sfinae_has_data<Range>::value>>
+    template<class T = void, class = std::enable_if_t<detail::ranges::sfinae_has_data<Range>::value, T>>
     uaiw_constexpr auto data() const { return std::data(*range); }
 };
-// TODO: Test more
-// data() should work (it won't compile if Range doesn't have data())
-// even without this SFINAE crap but if it won't then try it
-//template <typename T, typename = void>
-//struct sfinae_has_data : std::false_type {};
-//template <typename T>
-//struct sfinae_has_data<T, decltype(void(std::data(std::declval<T&>())))> : std::true_type {};
-// second ver:
-//template <typename T>
-//struct sfinae_has_data<T, decltype(void(std::declval<T&>().data()))> : std::true_type {};
 #else
 template<class R>
 using ref_view = std::ranges::ref_view<R>;
@@ -192,7 +187,9 @@ public:
     uaiw_constexpr auto end() { return std::end(range); }
     //uaiw_constexpr auto begin() const { return ranges::begin(range); }
     //uaiw_constexpr auto end() const { return ranges::end(range); }
+    template<class T = void, class = std::enable_if_t<detail::ranges::sfinae_has_data<Range>::value, T>>
     uaiw_constexpr auto data() { return std::data(range); }
+    template<class T = void, class = std::enable_if_t<detail::ranges::sfinae_has_data<Range>::value, T>>
     uaiw_constexpr auto data() const { return std::data(range); }
 };
 #else
