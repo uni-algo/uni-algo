@@ -7,6 +7,7 @@ See commit history between tags for details.
 - Added uni::is_valid_utf8/16/32 functions for strings
 - Added header-only support (CMake option UNI_ALGO_HEADER_ONLY=ON)
 - Added shared library support (CMake option BUILD_SHARED_LIBS=ON)
+- Lowered requirements for word/grapheme breaks to bidirectional range
 
 ## [v0.5.0](https://github.com/uni-algo/uni-algo/tree/v0.5.0) (01.10.2022)
 - Updated to Unicode 15.0.0
