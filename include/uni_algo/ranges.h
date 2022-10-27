@@ -954,21 +954,9 @@ struct adaptor_transform
     uaiw_constexpr auto operator()(Func f) const { return adaptor_closure_transform<Func>{std::move(f)}; }
 };
 
-// SFINAE helpers that are needed for the following adaptors
-
-template <typename T, typename = void>
-struct sfinae_has_begin : std::false_type {};
-template <typename T>
-struct sfinae_has_begin<T, decltype(void(std::begin(std::declval<T&>())))> : std::true_type {};
-
-template <typename T, typename = void>
-struct sfinae_has_allocate : std::false_type {};
-template <typename T>
-struct sfinae_has_allocate<T, decltype(void(std::declval<T&>().allocate(0)))> : std::true_type {};
+/* TO_UTF8 */
 
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1206r7.pdf
-
-/* TO_UTF8 */
 
 template<class Result, class Alloc = std::allocator<uni::detail::ranges::range_value_t<Result>>>
 struct adaptor_closure_to_utf8
@@ -1005,9 +993,9 @@ template<class Result>
 struct adaptor_to_utf8
 {
     uaiw_constexpr auto operator()() const { return adaptor_closure_to_utf8<Result>{}; }
-    template<class R, class = std::enable_if_t<sfinae_has_begin<R>::value>>
+    template<class R, class = std::enable_if_t<detail::ranges::sfinae_has_begin<R>::value>>
     uaiw_constexpr auto operator()(R&& r) const { return adaptor_closure_to_utf8<Result>{}(std::forward<R>(r)); }
-    template<class Alloc, class = std::enable_if_t<sfinae_has_allocate<Alloc>::value>>
+    template<class Alloc, class = std::enable_if_t<detail::ranges::sfinae_has_allocate<Alloc>::value>>
     uaiw_constexpr auto operator()(const Alloc& a) const { return adaptor_closure_to_utf8<Result, Alloc>{a}; }
     template<class R, class Alloc>
     uaiw_constexpr auto operator()(R&& r, const Alloc& a) const { return adaptor_closure_to_utf8<Result, Alloc>{a}(std::forward<R>(r)); }
@@ -1048,9 +1036,9 @@ template<class Result>
 struct adaptor_to_utf16
 {
     uaiw_constexpr auto operator()() const { return adaptor_closure_to_utf16<Result>{}; }
-    template<class R, class = std::enable_if_t<sfinae_has_begin<R>::value>>
+    template<class R, class = std::enable_if_t<detail::ranges::sfinae_has_begin<R>::value>>
     uaiw_constexpr auto operator()(R&& r) const { return adaptor_closure_to_utf16<Result>{}(std::forward<R>(r)); }
-    template<class Alloc, class = std::enable_if_t<sfinae_has_allocate<Alloc>::value>>
+    template<class Alloc, class = std::enable_if_t<detail::ranges::sfinae_has_allocate<Alloc>::value>>
     uaiw_constexpr auto operator()(const Alloc& a) const { return adaptor_closure_to_utf16<Result, Alloc>{a}; }
     template<class R, class Alloc>
     uaiw_constexpr auto operator()(R&& r, const Alloc& a) const { return adaptor_closure_to_utf16<Result, Alloc>{a}(std::forward<R>(r)); }
