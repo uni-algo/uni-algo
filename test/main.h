@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <vector>
 #include <set>
+#include <list>
 #include <iostream>
 #include <fstream>
 
@@ -234,6 +235,7 @@ int main7()
 #endif
     test_break_word_corner_cases();
     test_break_word_prop();
+    test_break_bidi();
 
     std::cout << "DONE: Break Grapheme and Word" << '\n';
 

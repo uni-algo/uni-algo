@@ -544,3 +544,101 @@ void test_break_word_prop()
     for (std::u16string_view s : sv16 | uni::views::word_only::utf16 | uni::views::reverse) { result16 += s; result16 += u'|'; }
     TESTX(result16 == u"\x6A31|\x30D0\x30AB|test7|7test|123,5|Tes't|");
 }
+
+void test_break_bidi()
+{
+    std::string_view sv = "Tes't. 123,5 7test,test7 \xE3\x83\x90\xE3\x82\xAB \xE6\xA8\xB1 \xF0\x9F\x98\xBA";
+    std::u16string_view sv16 = u"Tes't. 123,5 7test,test7 \x30D0\x30AB \x6A31 \xD83D\xDE3A";
+
+    // Use std::list for the bidirectional range test
+    std::list<char> list = {sv.begin(), sv.end()};
+    std::list<char16_t> list16 = {sv16.begin(), sv16.end()};
+
+    std::string result;
+    std::u16string result16;
+
+    // ---------
+    // TEST word
+    // ---------
+
+    auto view = uni::ranges::word::utf8_view{list};
+    auto view16 = uni::ranges::word::utf16_view{list16};
+
+    // FORWARD
+
+    result.clear();
+    for (auto it = view.begin(); it != view.end(); ++it) { result += std::string{it.begin(), it.end()}; result += '|'; }
+    TESTX(result == "Tes't|.| |123,5| |7test|,|test7| |\xE3\x83\x90\xE3\x82\xAB| |\xE6\xA8\xB1| |\xF0\x9F\x98\xBA|");
+
+    result16.clear();
+    for (auto it = view16.begin(); it != view16.end(); ++it) { result16 += std::u16string{it.begin(), it.end()}; result16 += u'|'; }
+    TESTX(result16 == u"Tes't|.| |123,5| |7test|,|test7| |\x30D0\x30AB| |\x6A31| |\xD83D\xDE3A|");
+
+    // REVERSE
+
+    result.clear();
+    for (auto it = view.end(); it != view.begin();) { --it; result += std::string{it.begin(), it.end()}; result += '|'; }
+    TESTX(result == "\xF0\x9F\x98\xBA| |\xE6\xA8\xB1| |\xE3\x83\x90\xE3\x82\xAB| |test7|,|7test| |123,5| |.|Tes't|");
+
+    result16.clear();
+    for (auto it = view16.end(); it != view16.begin();) { --it; result16 += std::u16string{it.begin(), it.end()}; result16 += u'|'; }
+    TESTX(result16 == u"\xD83D\xDE3A| |\x6A31| |\x30D0\x30AB| |test7|,|7test| |123,5| |.|Tes't|");
+
+    // --------------
+    // TEST word_only
+    // --------------
+
+    auto vwwo = uni::ranges::word_only::utf8_view{list};
+    auto vwwo16 = uni::ranges::word_only::utf16_view{list16};
+
+    // FORWARD
+
+    result.clear();
+    for (auto it = vwwo.begin(); it != vwwo.end(); ++it) { result += std::string{it.begin(), it.end()}; result += '|'; }
+    TESTX(result == "Tes't|123,5|7test|test7|\xE3\x83\x90\xE3\x82\xAB|\xE6\xA8\xB1|");
+
+    result16.clear();
+    for (auto it = vwwo16.begin(); it != vwwo16.end(); ++it) { result16 += std::u16string{it.begin(), it.end()}; result16 += u'|'; }
+    TESTX(result16 == u"Tes't|123,5|7test|test7|\x30D0\x30AB|\x6A31|");
+
+    // REVERSE
+
+    result.clear();
+    for (auto it = vwwo.end(); it != vwwo.begin();) { --it; result += std::string{it.begin(), it.end()}; result += '|'; }
+    TESTX(result == "\xE6\xA8\xB1|\xE3\x83\x90\xE3\x82\xAB|test7|7test|123,5|Tes't|");
+
+    result16.clear();
+    for (auto it = vwwo16.end(); it != vwwo16.begin();) { --it; result16 += std::u16string{it.begin(), it.end()}; result16 += u'|'; }
+    TESTX(result16 == u"\x6A31|\x30D0\x30AB|test7|7test|123,5|Tes't|");
+
+    // -------------
+    // TEST grapheme
+    // -------------
+
+    sv = "Tes't. \xE3\x83\x90\xE3\x82\xAB \xE6\xA8\xB1 \xF0\x9F\x98\xBA";
+    sv16 = u"Tes't. \x30D0\x30AB \x6A31 \xD83D\xDE3A";
+    list = {sv.begin(), sv.end()};
+    list16 = {sv16.begin(), sv16.end()};
+    auto vwgp = uni::ranges::grapheme::utf8_view{list};
+    auto vwgp16 = uni::ranges::grapheme::utf16_view{list16};
+
+    // FORWARD
+
+    result.clear();
+    for (auto it = vwgp.begin(); it != vwgp.end(); ++it) { result += std::string{it.begin(), it.end()}; result += '|'; }
+    TESTX(result == "T|e|s|'|t|.| |\xE3\x83\x90|\xE3\x82\xAB| |\xE6\xA8\xB1| |\xF0\x9F\x98\xBA|");
+
+    result16.clear();
+    for (auto it = vwgp16.begin(); it != vwgp16.end(); ++it) { result16 += std::u16string{it.begin(), it.end()}; result16 += u'|'; }
+    TESTX(result16 == u"T|e|s|'|t|.| |\x30D0|\x30AB| |\x6A31| |\xD83D\xDE3A|");
+
+    // REVERSE
+
+    result.clear();
+    for (auto it = vwgp.end(); it != vwgp.begin();) { --it; result += std::string{it.begin(), it.end()}; result += '|'; }
+    TESTX(result == "\xF0\x9F\x98\xBA| |\xE6\xA8\xB1| |\xE3\x82\xAB|\xE3\x83\x90| |.|t|'|s|e|T|");
+
+    result16.clear();
+    for (auto it = vwgp16.end(); it != vwgp16.begin();) { --it; result16 += std::u16string{it.begin(), it.end()}; result16 += u'|'; }
+    TESTX(result16 == u"\xD83D\xDE3A| |\x6A31| |\x30AB|\x30D0| |.|t|'|s|e|T|");
+}
