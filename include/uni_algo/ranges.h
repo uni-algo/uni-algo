@@ -1009,10 +1009,10 @@ struct adaptor_to_utf8
 {
     uaiw_constexpr auto operator()() const
     { return adaptor_closure_to_utf8<Result>{}; }
-    template<class R, class = std::enable_if_t<detail::ranges::sfinae_has_begin<R>::value>>
+    template<class R, class = std::enable_if_t<detail::ranges::has_member_begin<R>::value>>
     uaiw_constexpr auto operator()(R&& r) const
     { return adaptor_closure_to_utf8<Result>{}(std::forward<R>(r)); }
-    template<class Alloc, class = std::enable_if_t<detail::ranges::sfinae_has_allocate<Alloc>::value>>
+    template<class Alloc, class = std::enable_if_t<detail::ranges::has_member_allocate<Alloc>::value>>
     uaiw_constexpr auto operator()(const Alloc& a) const
     { return adaptor_closure_to_utf8<Result, Alloc>{a}; }
     template<class R, class Alloc>
@@ -1056,10 +1056,10 @@ struct adaptor_to_utf16
 {
     uaiw_constexpr auto operator()() const
     { return adaptor_closure_to_utf16<Result>{}; }
-    template<class R, class = std::enable_if_t<detail::ranges::sfinae_has_begin<R>::value>>
+    template<class R, class = std::enable_if_t<detail::ranges::has_member_begin<R>::value>>
     uaiw_constexpr auto operator()(R&& r) const
     { return adaptor_closure_to_utf16<Result>{}(std::forward<R>(r)); }
-    template<class Alloc, class = std::enable_if_t<detail::ranges::sfinae_has_allocate<Alloc>::value>>
+    template<class Alloc, class = std::enable_if_t<detail::ranges::has_member_allocate<Alloc>::value>>
     uaiw_constexpr auto operator()(const Alloc& a) const
     { return adaptor_closure_to_utf16<Result, Alloc>{a}; }
     template<class R, class Alloc>
