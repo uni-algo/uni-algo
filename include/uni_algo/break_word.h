@@ -723,7 +723,8 @@ namespace detail {
 struct adaptor_word_utf8
 {
     template<class R>
-    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::word::utf8_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const
+    { return uni::ranges::word::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_word_utf8& a) { return a(std::forward<R>(r)); }
@@ -733,7 +734,8 @@ uaiw_constexpr auto operator|(R&& r, const adaptor_word_utf8& a) { return a(std:
 struct adaptor_word_utf16
 {
     template<class R>
-    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::word::utf16_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const
+    { return uni::ranges::word::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_word_utf16& a) { return a(std::forward<R>(r)); }
@@ -743,7 +745,8 @@ uaiw_constexpr auto operator|(R&& r, const adaptor_word_utf16& a) { return a(std
 struct adaptor_word_only_utf8
 {
     template<class R>
-    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::word_only::utf8_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const
+    { return uni::ranges::word_only::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_word_only_utf8& a) { return a(std::forward<R>(r)); }
@@ -753,7 +756,8 @@ uaiw_constexpr auto operator|(R&& r, const adaptor_word_only_utf8& a) { return a
 struct adaptor_word_only_utf16
 {
     template<class R>
-    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::word_only::utf16_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const
+    { return uni::ranges::word_only::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_word_only_utf16& a) { return a(std::forward<R>(r)); }

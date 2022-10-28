@@ -336,7 +336,8 @@ namespace detail {
 struct adaptor_grapheme_utf8
 {
     template<class R>
-    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::grapheme::utf8_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const
+    { return uni::ranges::grapheme::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_grapheme_utf8& a) { return a(std::forward<R>(r)); }
@@ -346,7 +347,8 @@ uaiw_constexpr auto operator|(R&& r, const adaptor_grapheme_utf8& a) { return a(
 struct adaptor_grapheme_utf16
 {
     template<class R>
-    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::grapheme::utf16_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const
+    { return uni::ranges::grapheme::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_grapheme_utf16& a) { return a(std::forward<R>(r)); }

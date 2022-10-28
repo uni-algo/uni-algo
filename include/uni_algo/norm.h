@@ -964,7 +964,8 @@ namespace detail {
 struct adaptor_nfc
 {
     template<class R>
-    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfc_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const
+    { return uni::ranges::norm::nfc_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_nfc& a) { return a(std::forward<R>(r)); }
@@ -974,7 +975,8 @@ uaiw_constexpr auto operator|(R&& r, const adaptor_nfc& a) { return a(std::forwa
 struct adaptor_nfd
 {
     template<class R>
-    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfd_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const
+    { return uni::ranges::norm::nfd_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_nfd& a) { return a(std::forward<R>(r)); }
@@ -986,7 +988,8 @@ uaiw_constexpr auto operator|(R&& r, const adaptor_nfd& a) { return a(std::forwa
 struct adaptor_nfkc
 {
     template<class R>
-    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfkc_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const
+    { return uni::ranges::norm::nfkc_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_nfkc& a) { return a(std::forward<R>(r)); }
@@ -996,7 +999,8 @@ uaiw_constexpr auto operator|(R&& r, const adaptor_nfkc& a) { return a(std::forw
 struct adaptor_nfkd
 {
     template<class R>
-    uaiw_constexpr auto operator()(R&& r) const { return uni::ranges::norm::nfkd_view{std::forward<R>(r)}; }
+    uaiw_constexpr auto operator()(R&& r) const
+    { return uni::ranges::norm::nfkd_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forward<R>(r)); }
