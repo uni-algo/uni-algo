@@ -16,9 +16,10 @@ elseif(NOT DEFINED CMAKE_CXX_STANDARD)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(${PROJECT_NAME} PRIVATE "/utf-8;/W4")
+    target_compile_options(${PROJECT_NAME} PRIVATE "/utf-8;/W4;/WX")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE
+        "-Werror"
         "-Wall;-Wextra;-Wpedantic"
         "-Wconversion;-Wsign-conversion;-Wsign-compare"
         "-Wshadow;-Wmissing-braces")
