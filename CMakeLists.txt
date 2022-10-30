@@ -106,3 +106,15 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/uni_algo"
         FILES_MATCHING PATTERN "*.h")
 
 endif() # UNI_ALGO_INSTALL
+
+# -----
+# CPACK
+# -----
+
+if (IS_TOP_LEVEL)
+
+set(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/include/uni_algo/impl/LICENSE.txt)
+
+include(CPack)
+
+endif() # IS_TOP_LEVEL
