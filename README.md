@@ -107,7 +107,7 @@ add_subdirectory(repo) # The directory where you extracted this repository
 # Config define example (disable normalization)
 # target_compile_definitions(uni-algo PUBLIC UNI_ALGO_DISABLE_NORM)
 # Note that you can ignore config defines if header-only is enabled
-# because a Unicode data won't be compiled if not used anyway.
+# because a Unicode data that is not used won't be compiled anyway.
 
 target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 ```
@@ -425,6 +425,8 @@ switch (uni::locale::system().get_language())
         std::cout << "Arabic Language" << '\n';
         break;
 }
+
+// Note that system locale functions are not available in header-only and single include versions.
 ```
 ## Basic Ranges
 ```cpp
