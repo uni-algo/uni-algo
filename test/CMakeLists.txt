@@ -18,7 +18,7 @@ endif()
 target_compile_options(${PROJECT_NAME} PRIVATE
     "$<$<CXX_COMPILER_ID:MSVC>:/utf-8;/W4>"
     "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:"
-        "-Wall;-Wextra;-Wconversion;-Wsign-conversion;-Wsign-compare;"
+        "-Wall;-Wextra;-Wconversion;-Wsign-conversion;-Wsign-compare"
         "-Wshadow;-Wmissing-braces>")
 
 if(NOT DOWNLOAD_UNICODE_TEST_FILES)
@@ -44,19 +44,19 @@ endif()
 
 if(DOWNLOAD_UNICODE_TEST_FILES)
     # https://stackoverflow.com/questions/61255773/cmake-file-download-ignores-errors
-    function(FUNC_DOWNLOAD FUNC_ARG)
-        get_filename_component(FILE_NAME ${FUNC_ARG} NAME)
-        message(STATUS "Downloading... " ${FILE_NAME})
-        file(DOWNLOAD ${FUNC_ARG} ${PROJECT_BINARY_DIR}/${FILE_NAME} STATUS DOWNLOAD_STATUS)
-        list(GET DOWNLOAD_STATUS 0 STATUS_CODE)
-        if(NOT ${STATUS_CODE} EQUAL 0)
-            message(FATAL_ERROR "Error while downloading: " ${FILE_NAME})
+    function(func_download func_arg)
+        get_filename_component(file_name ${func_arg} NAME)
+        message(STATUS "Downloading... " ${file_name})
+        file(DOWNLOAD ${func_arg} ${PROJECT_BINARY_DIR}/${file_name} STATUS download_status)
+        list(GET download_status 0 status_code)
+        if(NOT ${status_code} EQUAL 0)
+            message(FATAL_ERROR "Error while downloading: " ${file_name})
         endif()
     endfunction()
 
-    FUNC_DOWNLOAD("https://www.unicode.org/Public/15.0.0/ucd/NormalizationTest.txt")
-    FUNC_DOWNLOAD("https://www.unicode.org/Public/15.0.0/ucd/auxiliary/GraphemeBreakTest.txt")
-    FUNC_DOWNLOAD("https://www.unicode.org/Public/15.0.0/ucd/auxiliary/WordBreakTest.txt")
+    func_download("https://www.unicode.org/Public/15.0.0/ucd/NormalizationTest.txt")
+    func_download("https://www.unicode.org/Public/15.0.0/ucd/auxiliary/GraphemeBreakTest.txt")
+    func_download("https://www.unicode.org/Public/15.0.0/ucd/auxiliary/WordBreakTest.txt")
 endif() # DOWNLOAD_UNICODE_TEST_FILES
 
 enable_testing()
