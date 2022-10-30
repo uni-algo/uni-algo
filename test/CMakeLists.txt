@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.12...3.20)
 
 # NOTE: This file is used by GitHub Actions workflows edit with care
 
@@ -15,11 +15,14 @@ elseif(NOT DEFINED CMAKE_CXX_STANDARD)
     target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 endif()
 
-target_compile_options(${PROJECT_NAME} PRIVATE
-    "$<$<CXX_COMPILER_ID:MSVC>:/utf-8;/W4>"
-    "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:"
-        "-Wall;-Wextra;-Wconversion;-Wsign-conversion;-Wsign-compare"
-        "-Wshadow;-Wmissing-braces>")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${PROJECT_NAME} PRIVATE "/utf-8;/W4")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        "-Wall;-Wextra;-Wpedantic"
+        "-Wconversion;-Wsign-conversion;-Wsign-compare"
+        "-Wshadow;-Wmissing-braces")
+endif()
 
 if(NOT DOWNLOAD_UNICODE_TEST_FILES)
     target_compile_definitions(${PROJECT_NAME} PRIVATE "TEST_MODE_WITHOUT_UNICODE_TEST_FILES")
