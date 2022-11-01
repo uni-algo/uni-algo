@@ -222,20 +222,20 @@ public:
 
 } // namespace detail::translit
 
-namespace detail::ranges {
+namespace detail::rng {
 
 // See ext/translit/macedonian_to_latin_docs.h for an example how to use it.
 
 template<class Range, class Func>
-class translit_view : public detail::ranges::view_base
+class translit_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class translit
     {
         // Translit view is internal so skip static assert. For a reference it looks like this:
-        //static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-        //              sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char32_t),
+        //static_assert(std::is_integral_v<detail::rng::iter_value_t<Iter>> &&
+        //              sizeof(detail::rng::iter_value_t<Iter>) >= sizeof(char32_t),
         //              "translit view requires char32_t range");
 
     private:
@@ -276,7 +276,7 @@ private:
         using value_type        = char32_t;
         using pointer           = void;
         using reference         = char32_t;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         uaiw_constexpr translit() = default;
         uaiw_constexpr explicit translit(translit_view& p, Iter begin, Sent)
@@ -305,8 +305,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const translit& x) { return !x.stream_end; }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     Func func_translit;
@@ -339,7 +339,7 @@ public:
 template<class Range, class Func>
 translit_view(Range&&, Func, std::size_t) -> translit_view<uni::views::all_t<Range>, Func>;
 
-} // namespace detail::ranges
+} // namespace detail::rng
 
 } // namespace uni
 

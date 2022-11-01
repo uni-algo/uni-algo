@@ -569,14 +569,14 @@ inline bool is_nfkd_utf8(std::u8string_view source)
 namespace ranges::norm {
 
 template<class Range>
-class nfc_view : public detail::ranges::view_base
+class nfc_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class nfc
     {
-        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char32_t),
+        static_assert(std::is_integral_v<detail::rng::iter_value_t<Iter>> &&
+                      sizeof(detail::rng::iter_value_t<Iter>) >= sizeof(char32_t),
                       "norm::nfc view requires char32_t range");
 
     private:
@@ -631,8 +631,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfc& x) { return !x.stream_end; }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     nfc<iter_t, sent_t> cached_begin_value;
@@ -662,14 +662,14 @@ public:
 };
 
 template<class Range>
-class nfd_view : public detail::ranges::view_base
+class nfd_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class nfd
     {
-        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char32_t),
+        static_assert(std::is_integral_v<detail::rng::iter_value_t<Iter>> &&
+                      sizeof(detail::rng::iter_value_t<Iter>) >= sizeof(char32_t),
                       "norm::nfd view requires char32_t range");
 
     private:
@@ -724,8 +724,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfd& x) { return !x.stream_end; }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     nfd<iter_t, sent_t> cached_begin_value;
@@ -757,14 +757,14 @@ public:
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 template<class Range>
-class nfkc_view : public detail::ranges::view_base
+class nfkc_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class nfkc
     {
-        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char32_t),
+        static_assert(std::is_integral_v<detail::rng::iter_value_t<Iter>> &&
+                      sizeof(detail::rng::iter_value_t<Iter>) >= sizeof(char32_t),
                       "norm::nfkc view requires char32_t range");
 
     private:
@@ -819,8 +819,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfkc& x) { return !x.stream_end; }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     nfkc<iter_t, sent_t> cached_begin_value;
@@ -850,14 +850,14 @@ public:
 };
 
 template<class Range>
-class nfkd_view : public detail::ranges::view_base
+class nfkd_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class nfkd
     {
-        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char32_t),
+        static_assert(std::is_integral_v<detail::rng::iter_value_t<Iter>> &&
+                      sizeof(detail::rng::iter_value_t<Iter>) >= sizeof(char32_t),
                       "norm::nfkd view requires char32_t range");
 
     private:
@@ -912,8 +912,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfkd& x) { return !x.stream_end; }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     nfkd<iter_t, sent_t> cached_begin_value;

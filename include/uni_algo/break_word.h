@@ -26,14 +26,14 @@ namespace ranges {
 namespace word {
 
 template<class Range>
-class utf8_view : public detail::ranges::view_base
+class utf8_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class utf8
     {
-        static_assert(detail::ranges::is_iter_bidi_or_better<Iter>::value &&
-                      std::is_integral_v<detail::ranges::iter_value_t<Iter>>,
+        static_assert(detail::rng::is_iter_bidi_or_better<Iter>::value &&
+                      std::is_integral_v<detail::rng::iter_value_t<Iter>>,
                       "word::utf8 view requires bidirectional or better UTF-8 range");
 
     private:
@@ -88,15 +88,15 @@ private:
             detail::impl_break_word_state_reset(&state);
         }
 
-        using is_contiguous = detail::ranges::is_range_contiguous<Range>;
+        using is_contiguous = detail::rng::is_range_contiguous<Range>;
 
     public:
         using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = std::conditional_t<is_contiguous::value,
-            std::basic_string_view<detail::ranges::iter_value_t<Iter>>, void>;
+            std::basic_string_view<detail::rng::iter_value_t<Iter>>, void>;
         using pointer           = void;
         using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         utf8() = default;
         explicit utf8(utf8_view& p, Iter begin, Sent end)
@@ -112,7 +112,7 @@ private:
         template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
         uaiw_constexpr operator*() const
         {
-            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
+            return detail::rng::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         uaiw_constexpr Iter begin() const noexcept { return it_begin; }
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
@@ -160,8 +160,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     utf8<iter_t, sent_t> cached_begin_value;
@@ -191,15 +191,15 @@ public:
 };
 
 template<class Range>
-class utf16_view : public detail::ranges::view_base
+class utf16_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class utf16
     {
-        static_assert(detail::ranges::is_iter_bidi_or_better<Iter>::value &&
-                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t),
+        static_assert(detail::rng::is_iter_bidi_or_better<Iter>::value &&
+                      std::is_integral_v<detail::rng::iter_value_t<Iter>> &&
+                      sizeof(detail::rng::iter_value_t<Iter>) >= sizeof(char16_t),
                       "word::utf16 view requires bidirectional or better UTF-16 range");
 
     private:
@@ -254,15 +254,15 @@ private:
             detail::impl_break_word_state_reset(&state);
         }
 
-        using is_contiguous = detail::ranges::is_range_contiguous<Range>;
+        using is_contiguous = detail::rng::is_range_contiguous<Range>;
 
     public:
         using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = std::conditional_t<is_contiguous::value,
-            std::basic_string_view<detail::ranges::iter_value_t<Iter>>, void>;
+            std::basic_string_view<detail::rng::iter_value_t<Iter>>, void>;
         using pointer           = void;
         using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         utf16() = default;
         explicit utf16(utf16_view& p, Iter begin, Sent end)
@@ -278,7 +278,7 @@ private:
         template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
         uaiw_constexpr operator*() const
         {
-            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
+            return detail::rng::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         uaiw_constexpr Iter begin() const noexcept { return it_begin; }
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
@@ -326,8 +326,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     utf16<iter_t, sent_t> cached_begin_value;
@@ -361,14 +361,14 @@ public:
 namespace word_only {
 
 template<class Range>
-class utf8_view : public detail::ranges::view_base
+class utf8_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class utf8
     {
-        static_assert(detail::ranges::is_iter_bidi_or_better<Iter>::value &&
-                      std::is_integral_v<detail::ranges::iter_value_t<Iter>>,
+        static_assert(detail::rng::is_iter_bidi_or_better<Iter>::value &&
+                      std::is_integral_v<detail::rng::iter_value_t<Iter>>,
                       "word_only::utf8 view requires bidirectional or better UTF-8 range");
 
     private:
@@ -436,15 +436,15 @@ private:
             detail::impl_break_word_state_reset(&state);
         }
 
-        using is_contiguous = detail::ranges::is_range_contiguous<Range>;
+        using is_contiguous = detail::rng::is_range_contiguous<Range>;
 
     public:
         using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = std::conditional_t<is_contiguous::value,
-            std::basic_string_view<detail::ranges::iter_value_t<Iter>>, void>;
+            std::basic_string_view<detail::rng::iter_value_t<Iter>>, void>;
         using pointer           = void;
         using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         utf8() = default;
         explicit utf8(utf8_view& p, Iter begin, Sent end)
@@ -460,7 +460,7 @@ private:
         template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
         uaiw_constexpr operator*() const
         {
-            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
+            return detail::rng::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         uaiw_constexpr Iter begin() const noexcept { return it_begin; }
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
@@ -499,8 +499,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     utf8<iter_t, sent_t> cached_begin_value;
@@ -530,15 +530,15 @@ public:
 };
 
 template<class Range>
-class utf16_view : public detail::ranges::view_base
+class utf16_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class utf16
     {
-        static_assert(detail::ranges::is_iter_bidi_or_better<Iter>::value &&
-                      std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t),
+        static_assert(detail::rng::is_iter_bidi_or_better<Iter>::value &&
+                      std::is_integral_v<detail::rng::iter_value_t<Iter>> &&
+                      sizeof(detail::rng::iter_value_t<Iter>) >= sizeof(char16_t),
                       "word_only::utf16 view requires bidirectional or better UTF-16 range");
 
     private:
@@ -606,15 +606,15 @@ private:
             detail::impl_break_word_state_reset(&state);
         }
 
-        using is_contiguous = detail::ranges::is_range_contiguous<Range>;
+        using is_contiguous = detail::rng::is_range_contiguous<Range>;
 
     public:
         using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = std::conditional_t<is_contiguous::value,
-            std::basic_string_view<detail::ranges::iter_value_t<Iter>>, void>;
+            std::basic_string_view<detail::rng::iter_value_t<Iter>>, void>;
         using pointer           = void;
         using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         utf16() = default;
         explicit utf16(utf16_view& p, Iter begin, Sent end)
@@ -630,7 +630,7 @@ private:
         template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
         uaiw_constexpr operator*() const
         {
-            return detail::ranges::to_string_view<reference>(parent->range, it_begin, it_pos);
+            return detail::rng::to_string_view<reference>(parent->range, it_begin, it_pos);
         }
         uaiw_constexpr Iter begin() const noexcept { return it_begin; }
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
@@ -669,8 +669,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     utf16<iter_t, sent_t> cached_begin_value;

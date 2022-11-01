@@ -188,7 +188,7 @@ void test_ranges_static_assert()
     // std::decay_t TEST
     /*
         // std::decay_t TEST (see our all view in uni_algo/ranges.h for details)
-        // Test: std::is_base_of_v<detail::ranges::view_base, std::decay_t<R>>
+        // Test: std::is_base_of_v<detail::rng::view_base, std::decay_t<R>>
         const std::string_view str_view{"12345"};
         const auto my_view = str_view | uni::views::reverse;
         my_view | uni::views::drop(1) = 0; // must not be ref_view here
@@ -196,7 +196,7 @@ void test_ranges_static_assert()
         const std::string_view str_view{"12345"};
         str_view | uni::views::utf8 = 0; // must not be ref_view here
     */
-    { // Test: std::is_base_of_v<detail::ranges::view_base, std::decay_t<R>>
+    { // Test: std::is_base_of_v<detail::rng::view_base, std::decay_t<R>>
         const std::string_view str_view{"12345"};
         auto my_view = str_view | uni::views::reverse;
         static_assert(std::is_same_v<decltype(my_view | uni::views::drop(1)),
@@ -233,9 +233,9 @@ void test_ranges_static_assert()
                 decltype(uni::ranges::reverse_view{str_view})>); // must not be ref_view here
     }
 
-    // Test uni::detail::ranges::iter_pointer_t
-    static_assert(std::is_same_v<char*, uni::detail::ranges::iter_pointer_t<decltype(std::string{"123"}.begin())>>);
-    static_assert(std::is_same_v<const char*, uni::detail::ranges::iter_pointer_t<decltype(std::string{"123"}.cbegin())>>);
-    static_assert(std::is_same_v<const char*, uni::detail::ranges::iter_pointer_t<decltype(std::string_view{"123"}.begin())>>);
-    static_assert(std::is_same_v<const char*, uni::detail::ranges::iter_pointer_t<decltype(std::string_view{"123"}.cbegin())>>);
+    // Test uni::detail::rng::iter_pointer_t
+    static_assert(std::is_same_v<char*, uni::detail::rng::iter_pointer_t<decltype(std::string{"123"}.begin())>>);
+    static_assert(std::is_same_v<const char*, uni::detail::rng::iter_pointer_t<decltype(std::string{"123"}.cbegin())>>);
+    static_assert(std::is_same_v<const char*, uni::detail::rng::iter_pointer_t<decltype(std::string_view{"123"}.begin())>>);
+    static_assert(std::is_same_v<const char*, uni::detail::rng::iter_pointer_t<decltype(std::string_view{"123"}.cbegin())>>);
 }

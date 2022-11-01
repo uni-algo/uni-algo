@@ -35,7 +35,7 @@ namespace uni {
 struct sentinel_t {};
 inline constexpr sentinel_t sentinel;
 
-namespace detail::ranges {
+namespace detail::rng {
 
 // We need to use public std::ranges::view_base for compatibility with std::ranges
 // when a std::view on the right side of operator|
@@ -139,7 +139,7 @@ StringViewResult to_string_view(const Range&, Iter it_begin, Iter it_pos)
 }
 #endif
 
-} // namespace detail::ranges
+} // namespace detail::rng
 
 namespace ranges {
 
@@ -147,7 +147,7 @@ namespace ranges {
 // It has the similar design as std::views::ref_view so in C++20 we just use that
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class Range>
-class ref_view : public detail::ranges::view_base
+class ref_view : public detail::rng::view_base
 {
 private:
     Range* range = nullptr;
@@ -158,7 +158,7 @@ public:
     //uaiw_constexpr Range& base() const { return *range; }
     uaiw_constexpr auto begin() const { return std::begin(*range); }
     uaiw_constexpr auto end() const { return std::end(*range); }
-    template<class T = void, class = std::enable_if_t<detail::ranges::has_member_data<Range>::value, T>>
+    template<class T = void, class = std::enable_if_t<detail::rng::has_member_data<Range>::value, T>>
     uaiw_constexpr auto data() const { return std::data(*range); }
 };
 #else
@@ -176,7 +176,7 @@ using ref_view = std::ranges::ref_view<R>;
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2415r2.html
 template<class Range>
-class owning_view : public detail::ranges::view_base
+class owning_view : public detail::rng::view_base
 {
 private:
     Range range = Range{};
@@ -197,9 +197,9 @@ public:
     uaiw_constexpr auto end() { return std::end(range); }
     //uaiw_constexpr auto begin() const { return ranges::begin(range); }
     //uaiw_constexpr auto end() const { return ranges::end(range); }
-    template<class T = void, class = std::enable_if_t<detail::ranges::has_member_data<Range>::value, T>>
+    template<class T = void, class = std::enable_if_t<detail::rng::has_member_data<Range>::value, T>>
     uaiw_constexpr auto data() { return std::data(range); }
-    template<class T = void, class = std::enable_if_t<detail::ranges::has_member_data<Range>::value, T>>
+    template<class T = void, class = std::enable_if_t<detail::rng::has_member_data<Range>::value, T>>
     uaiw_constexpr auto data() const { return std::data(range); }
 };
 #else
@@ -242,7 +242,7 @@ struct adaptor_all
         // and for rvalues we use owning_view as a proxy
         // this is the similar design as std::ranges
 
-        using range_v = detail::ranges::range_value_t<R>;
+        using range_v = detail::rng::range_value_t<R>;
 
         // Check if the range is our range or std::ranges::view
         // Note that the better check in C++20 will look like this:
@@ -250,7 +250,7 @@ struct adaptor_all
         // but in C++20 it is just better to use all view/ref_view/owning_view provided by the standard library
         // std::decay_t is important here to handle some corner cases properly
         // see: test/test_ranges.h -> test_ranges_static_assert()
-        if constexpr (std::is_base_of_v<detail::ranges::view_base, std::decay_t<R>> ||
+        if constexpr (std::is_base_of_v<detail::rng::view_base, std::decay_t<R>> ||
                 //std::is_base_of_v<std::ranges::view_interface<std::decay_t<R>>, std::decay_t<R>> || // view_interface check
                 std::is_same_v<std::basic_string_view<range_v>, std::decay_t<R>>)
             return std::forward<R>(r);

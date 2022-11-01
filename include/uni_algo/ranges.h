@@ -21,13 +21,13 @@ namespace uni {
 namespace ranges {
 
 template<class Range, char32_t Error = detail::impl_iter_replacement>
-class utf8_view : public detail::ranges::view_base
+class utf8_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class utf8
     {
-        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>>,
+        static_assert(std::is_integral_v<detail::rng::iter_value_t<Iter>>,
                       "utf8 view requires integral UTF-8 range");
 
         // Error is only used for tests, do not document it
@@ -39,7 +39,7 @@ private:
         Iter it_next;
         detail::type_codept codepoint = 0;
 
-        using iter_tag = detail::ranges::iter_tag<Iter>;
+        using iter_tag = detail::rng::iter_tag<Iter>;
 
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
@@ -51,7 +51,7 @@ private:
         using value_type        = char32_t;
         using pointer           = void;
         using reference         = char32_t;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         uaiw_constexpr utf8() = default;
         uaiw_constexpr explicit utf8(utf8_view& p, Iter begin, Sent end)
@@ -112,8 +112,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     utf8<iter_t, sent_t> cached_begin_value;
@@ -146,14 +146,14 @@ public:
 };
 
 template<class Range, char32_t Error = detail::impl_iter_replacement>
-class utf16_view : public detail::ranges::view_base
+class utf16_view : public detail::rng::view_base
 {
 private:
     template<class Iter, class Sent>
     class utf16
     {
-        static_assert(std::is_integral_v<detail::ranges::iter_value_t<Iter>> &&
-                      sizeof(detail::ranges::iter_value_t<Iter>) >= sizeof(char16_t),
+        static_assert(std::is_integral_v<detail::rng::iter_value_t<Iter>> &&
+                      sizeof(detail::rng::iter_value_t<Iter>) >= sizeof(char16_t),
                       "utf16 view requires integral UTF-16 range");
 
         // Error is only used for tests, do not document it
@@ -165,7 +165,7 @@ private:
         Iter it_next;
         detail::type_codept codepoint = 0;
 
-        using iter_tag = detail::ranges::iter_tag<Iter>;
+        using iter_tag = detail::rng::iter_tag<Iter>;
 
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
@@ -177,7 +177,7 @@ private:
         using value_type        = char32_t;
         using pointer           = void;
         using reference         = char32_t;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         uaiw_constexpr utf16() = default;
         uaiw_constexpr explicit utf16(utf16_view& p, Iter begin, Sent end)
@@ -238,8 +238,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     utf16<iter_t, sent_t> cached_begin_value;
@@ -272,7 +272,7 @@ public:
 };
 
 template<class Range>
-class reverse_view : public detail::ranges::view_base
+class reverse_view : public detail::rng::view_base
 {
     // There is a problem with std::views::reverse it is implemented using
     // std::reverse_iterator and operator* looks like this { Iterator tmp = current; return *--tmp; }
@@ -285,7 +285,7 @@ private:
     template<class Iter, class Sent>
     class reverse
     {
-        static_assert(detail::ranges::is_iter_bidi_or_better<Iter>::value,
+        static_assert(detail::rng::is_iter_bidi_or_better<Iter>::value,
                       "reverse view requires bidirectional or better range");
 
     private:
@@ -295,10 +295,10 @@ private:
 
     public:
         using iterator_category = std::bidirectional_iterator_tag;
-        using value_type        = detail::ranges::iter_value_t<Iter>;
-        using pointer           = detail::ranges::iter_pointer_t<Iter>;
-        using reference         = detail::ranges::iter_reference_t<Iter>;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using value_type        = detail::rng::iter_value_t<Iter>;
+        using pointer           = detail::rng::iter_pointer_t<Iter>;
+        using reference         = detail::rng::iter_reference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         uaiw_constexpr reverse() = default;
         uaiw_constexpr explicit reverse(reverse_view& p, Iter begin, Sent end)
@@ -362,8 +362,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const reverse& x) { return !x.past_begin; }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     reverse<iter_t, iter_t> cached_begin_value;
@@ -406,7 +406,7 @@ public:
 };
 
 template<class Range, class Pred>
-class filter_view : public detail::ranges::view_base
+class filter_view : public detail::rng::view_base
 {
     // Our filter view is almost the same as std::views::filter
     // so the performance should be the same
@@ -418,7 +418,7 @@ private:
         filter_view* parent = nullptr;
         Iter it_pos;
 
-        using iter_tag = detail::ranges::iter_tag<Iter>;
+        using iter_tag = detail::rng::iter_tag<Iter>;
 
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
@@ -427,10 +427,10 @@ private:
         using iterator_category = std::conditional_t<is_bidirectional_or_better::value,
             std::bidirectional_iterator_tag, std::conditional_t<is_forward_or_better::value,
             std::forward_iterator_tag, std::input_iterator_tag>>;
-        using value_type        = detail::ranges::iter_value_t<Iter>;
-        using pointer           = detail::ranges::iter_pointer_t<Iter>;
-        using reference         = detail::ranges::iter_reference_t<Iter>;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using value_type        = detail::rng::iter_value_t<Iter>;
+        using pointer           = detail::rng::iter_pointer_t<Iter>;
+        using reference         = detail::rng::iter_reference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         uaiw_constexpr filter() = default;
         uaiw_constexpr explicit filter(filter_view& p, Iter begin, Sent end)
@@ -485,8 +485,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const filter& x) { return !friend_compare_sentinel(x); }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     Pred func_filter;
@@ -519,7 +519,7 @@ public:
 };
 
 template<class Range, class Func>
-class transform_view : public detail::ranges::view_base
+class transform_view : public detail::rng::view_base
 {
     // Our transform_view view is always bidirectional or worse so there are no optimizations
     // if Range is random access because we expect utf8_view/utf16_view before this view.
@@ -532,7 +532,7 @@ private:
         transform_view* parent = nullptr;
         Iter it_pos;
 
-        using iter_tag = detail::ranges::iter_tag<Iter>;
+        using iter_tag = detail::rng::iter_tag<Iter>;
 
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
@@ -543,10 +543,10 @@ private:
             std::forward_iterator_tag, std::input_iterator_tag>>;
         //using value_type        = std::remove_cvref_t<std::invoke_result_t<Func&, typename std::iterator_traits<Iter>::reference>>;
         using value_type        = std::remove_cv_t<std::remove_reference_t<
-            std::invoke_result_t<Func&, detail::ranges::iter_reference_t<Iter>>>>;
+            std::invoke_result_t<Func&, detail::rng::iter_reference_t<Iter>>>>;
         using pointer           = void;
         using reference         = value_type;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         uaiw_constexpr transform() = default;
         uaiw_constexpr explicit transform(transform_view& p, Iter begin, Sent)
@@ -595,8 +595,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const transform& x) { return !friend_compare_sentinel(x); }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     Func func_transform;
@@ -620,7 +620,7 @@ public:
 };
 
 template<class Range>
-class take_view : public detail::ranges::view_base
+class take_view : public detail::rng::view_base
 {
     // Our take view is always bidirectional or worse so there are no optimizations
     // if Range is random access because we expect utf8_view/utf16_view before this view.
@@ -635,7 +635,7 @@ private:
         Iter it_pos;
         std::size_t count = 0;
 
-        using iter_tag = detail::ranges::iter_tag<Iter>;
+        using iter_tag = detail::rng::iter_tag<Iter>;
 
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
@@ -644,10 +644,10 @@ private:
         using iterator_category = std::conditional_t<is_bidirectional_or_better::value,
             std::bidirectional_iterator_tag, std::conditional_t<is_forward_or_better::value,
             std::forward_iterator_tag, std::input_iterator_tag>>;
-        using value_type        = detail::ranges::iter_value_t<Iter>;
-        using pointer           = detail::ranges::iter_pointer_t<Iter>;
-        using reference         = detail::ranges::iter_reference_t<Iter>;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using value_type        = detail::rng::iter_value_t<Iter>;
+        using pointer           = detail::rng::iter_pointer_t<Iter>;
+        using reference         = detail::rng::iter_reference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         uaiw_constexpr take() = default;
         uaiw_constexpr explicit take(take_view& p, Iter begin, Sent, std::size_t n)
@@ -704,8 +704,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const take& x) { return !friend_compare_sentinel(x); }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     std::size_t count = 0;
@@ -726,7 +726,7 @@ public:
 };
 
 template<class Range>
-class drop_view : public detail::ranges::view_base
+class drop_view : public detail::rng::view_base
 {
     // Our drop view is always bidirectional or worse so there are no optimizations
     // if Range is random access because we expect utf8_view/utf16_view before this view.
@@ -739,7 +739,7 @@ private:
         drop_view* parent = nullptr;
         Iter it_pos;
 
-        using iter_tag = detail::ranges::iter_tag<Iter>;
+        using iter_tag = detail::rng::iter_tag<Iter>;
 
         using is_bidirectional_or_better = std::is_convertible<iter_tag, std::bidirectional_iterator_tag>;
         using is_forward_or_better       = std::is_convertible<iter_tag, std::forward_iterator_tag>;
@@ -748,10 +748,10 @@ private:
         using iterator_category = std::conditional_t<is_bidirectional_or_better::value,
             std::bidirectional_iterator_tag, std::conditional_t<is_forward_or_better::value,
             std::forward_iterator_tag, std::input_iterator_tag>>;
-        using value_type        = detail::ranges::iter_value_t<Iter>;
-        using pointer           = detail::ranges::iter_pointer_t<Iter>;
-        using reference         = detail::ranges::iter_reference_t<Iter>;
-        using difference_type   = detail::ranges::iter_difference_t<Iter>;
+        using value_type        = detail::rng::iter_value_t<Iter>;
+        using pointer           = detail::rng::iter_pointer_t<Iter>;
+        using reference         = detail::rng::iter_reference_t<Iter>;
+        using difference_type   = detail::rng::iter_difference_t<Iter>;
 
         uaiw_constexpr drop() = default;
         uaiw_constexpr explicit drop(drop_view& p, Iter begin, Sent end, std::size_t cnt = 0)
@@ -806,8 +806,8 @@ private:
         friend uaiw_constexpr bool operator!=(uni::sentinel_t, const drop& x) { return !friend_compare_sentinel(x); }
     };
 
-    using iter_t = detail::ranges::iterator_t<Range>;
-    using sent_t = detail::ranges::sentinel_t<Range>;
+    using iter_t = detail::rng::iterator_t<Range>;
+    using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
     std::size_t count = 0;
@@ -973,7 +973,7 @@ struct adaptor_transform
 
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1206r7.pdf
 
-template<class Result, class Alloc = std::allocator<uni::detail::ranges::range_value_t<Result>>>
+template<class Result, class Alloc = std::allocator<detail::rng::range_value_t<Result>>>
 struct adaptor_closure_to_utf8
 {
     Alloc alloc;
@@ -982,8 +982,8 @@ struct adaptor_closure_to_utf8
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
     {
-        using range_v = uni::detail::ranges::range_value_t<R>;
-        using result_v = uni::detail::ranges::range_value_t<Result>;
+        using range_v = detail::rng::range_value_t<R>;
+        using result_v = detail::rng::range_value_t<Result>;
 
         // Technically we want this static_assert for range_v:
         // static_assert(std::is_same_v<range_v, char32_t>);
@@ -1009,10 +1009,10 @@ struct adaptor_to_utf8
 {
     uaiw_constexpr auto operator()() const
     { return adaptor_closure_to_utf8<Result>{}; }
-    template<class R, class = std::enable_if_t<detail::ranges::has_member_begin<R>::value>>
+    template<class R, class = std::enable_if_t<detail::rng::has_member_begin<R>::value>>
     uaiw_constexpr auto operator()(R&& r) const
     { return adaptor_closure_to_utf8<Result>{}(std::forward<R>(r)); }
-    template<class Alloc, class = std::enable_if_t<detail::ranges::has_member_allocate<Alloc>::value>>
+    template<class Alloc, class = std::enable_if_t<detail::rng::has_member_allocate<Alloc>::value>>
     uaiw_constexpr auto operator()(const Alloc& a) const
     { return adaptor_closure_to_utf8<Result, Alloc>{a}; }
     template<class R, class Alloc>
@@ -1022,7 +1022,7 @@ struct adaptor_to_utf8
 
 /* TO_UTF16 */
 
-template<class Result, class Alloc = std::allocator<uni::detail::ranges::range_value_t<Result>>>
+template<class Result, class Alloc = std::allocator<detail::rng::range_value_t<Result>>>
 struct adaptor_closure_to_utf16
 {
     Alloc alloc;
@@ -1031,8 +1031,8 @@ struct adaptor_closure_to_utf16
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
     {
-        using range_v = uni::detail::ranges::range_value_t<R>;
-        using result_v = uni::detail::ranges::range_value_t<Result>;
+        using range_v = detail::rng::range_value_t<R>;
+        using result_v = detail::rng::range_value_t<Result>;
 
         // See comments in to_utf8 adaptor above
         // static_assert(std::is_same_v<range_v, char32_t>);
@@ -1056,10 +1056,10 @@ struct adaptor_to_utf16
 {
     uaiw_constexpr auto operator()() const
     { return adaptor_closure_to_utf16<Result>{}; }
-    template<class R, class = std::enable_if_t<detail::ranges::has_member_begin<R>::value>>
+    template<class R, class = std::enable_if_t<detail::rng::has_member_begin<R>::value>>
     uaiw_constexpr auto operator()(R&& r) const
     { return adaptor_closure_to_utf16<Result>{}(std::forward<R>(r)); }
-    template<class Alloc, class = std::enable_if_t<detail::ranges::has_member_allocate<Alloc>::value>>
+    template<class Alloc, class = std::enable_if_t<detail::rng::has_member_allocate<Alloc>::value>>
     uaiw_constexpr auto operator()(const Alloc& a) const
     { return adaptor_closure_to_utf16<Result, Alloc>{a}; }
     template<class R, class Alloc>
@@ -1069,7 +1069,7 @@ struct adaptor_to_utf16
 
 /* TO_UTF8_RESERVE */
 
-template<class Result, class Alloc = std::allocator<uni::detail::ranges::range_value_t<Result>>>
+template<class Result, class Alloc = std::allocator<detail::rng::range_value_t<Result>>>
 struct adaptor_closure_to_utf8_reserve
 {
     std::size_t size = 0;
@@ -1079,8 +1079,8 @@ struct adaptor_closure_to_utf8_reserve
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
     {
-        using range_v = uni::detail::ranges::range_value_t<R>;
-        using result_v = uni::detail::ranges::range_value_t<Result>;
+        using range_v = detail::rng::range_value_t<R>;
+        using result_v = detail::rng::range_value_t<Result>;
 
         static_assert(std::is_integral_v<range_v> && sizeof(range_v) >= sizeof(char32_t),
                       "to_utf8_reserve range requires char32_t range");
@@ -1116,7 +1116,7 @@ struct adaptor_to_utf8_reserve
 
 /* TO_UTF16_RESERVE */
 
-template<class Result, class Alloc = std::allocator<uni::detail::ranges::range_value_t<Result>>>
+template<class Result, class Alloc = std::allocator<detail::rng::range_value_t<Result>>>
 struct adaptor_closure_to_utf16_reserve
 {
     std::size_t size = 0;
@@ -1126,8 +1126,8 @@ struct adaptor_closure_to_utf16_reserve
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
     {
-        using range_v = uni::detail::ranges::range_value_t<R>;
-        using result_v = uni::detail::ranges::range_value_t<Result>;
+        using range_v = detail::rng::range_value_t<R>;
+        using result_v = detail::rng::range_value_t<Result>;
 
         static_assert(std::is_integral_v<range_v> && sizeof(range_v) >= sizeof(char32_t),
                       "to_utf16_reserve range requires char32_t range");
