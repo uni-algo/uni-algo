@@ -329,7 +329,7 @@ utf16_view(Range&&) -> utf16_view<views::all_t<Range>>;
 
 } // namespace ranges::grapheme
 
-namespace detail {
+namespace detail::rng {
 
 /* GRAPHEME_UTF8_VIEW */
 
@@ -353,12 +353,12 @@ struct adaptor_grapheme_utf16
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_grapheme_utf16& a) { return a(std::forward<R>(r)); }
 
-} // namespace detail
+} // namespace detail::rng
 
 namespace ranges::views::grapheme {
 
-inline constexpr detail::adaptor_grapheme_utf8 utf8;
-inline constexpr detail::adaptor_grapheme_utf16 utf16;
+inline constexpr detail::rng::adaptor_grapheme_utf8 utf8;
+inline constexpr detail::rng::adaptor_grapheme_utf16 utf16;
 
 }
 

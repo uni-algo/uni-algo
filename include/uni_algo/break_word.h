@@ -716,7 +716,7 @@ utf16_view(Range&&) -> utf16_view<views::all_t<Range>>;
 
 } // namespace ranges
 
-namespace detail {
+namespace detail::rng {
 
 /* WORD_UTF8_VIEW */
 
@@ -762,17 +762,17 @@ struct adaptor_word_only_utf16
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_word_only_utf16& a) { return a(std::forward<R>(r)); }
 
-} // namespace detail
+} // namespace detail::rng
 
 namespace ranges::views {
 
 namespace word {
-inline constexpr detail::adaptor_word_utf8 utf8;
-inline constexpr detail::adaptor_word_utf16 utf16;
+inline constexpr detail::rng::adaptor_word_utf8 utf8;
+inline constexpr detail::rng::adaptor_word_utf16 utf16;
 }
 namespace word_only {
-inline constexpr detail::adaptor_word_only_utf8 utf8;
-inline constexpr detail::adaptor_word_only_utf16 utf16;
+inline constexpr detail::rng::adaptor_word_only_utf8 utf8;
+inline constexpr detail::rng::adaptor_word_only_utf16 utf16;
 }
 
 } // namespace ranges::views

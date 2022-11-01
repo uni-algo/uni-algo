@@ -957,7 +957,7 @@ nfkd_view(Range&&) -> nfkd_view<views::all_t<Range>>;
 
 } // namespace ranges::norm
 
-namespace detail {
+namespace detail::rng {
 
 /* NFC_VIEW */
 
@@ -1007,15 +1007,15 @@ uaiw_constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forw
 
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-} // namespace detail
+} // namespace detail::rng
 
 namespace ranges::views::norm {
 
-inline constexpr detail::adaptor_nfc nfc;
-inline constexpr detail::adaptor_nfd nfd;
+inline constexpr detail::rng::adaptor_nfc nfc;
+inline constexpr detail::rng::adaptor_nfd nfd;
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline constexpr detail::adaptor_nfkc nfkc;
-inline constexpr detail::adaptor_nfkd nfkd;
+inline constexpr detail::rng::adaptor_nfkc nfkc;
+inline constexpr detail::rng::adaptor_nfkd nfkd;
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 } // namespace ranges::views::norm

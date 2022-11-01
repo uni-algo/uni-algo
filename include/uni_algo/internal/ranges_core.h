@@ -210,7 +210,7 @@ using owning_view = std::ranges::owning_view<R>;
 
 } // namespace ranges
 
-namespace detail {
+namespace detail::rng {
 
 // For C++17 we implement very simply view adaptors that support operator|
 // The design is based on this article:
@@ -268,14 +268,14 @@ template <class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_all& a) { return a(std::forward<R>(r)); }
 #endif
 
-} // namespase detail
+} // namespase detail::rng
 
 namespace ranges::views {
 
 // In C++17 use our simple all view that uses our simple ref_view/owning_view
 // In C++20 use facilities provided by the standard library
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
-inline constexpr detail::adaptor_all all;
+inline constexpr detail::rng::adaptor_all all;
 template<class Range>
 using all_t = decltype(all(std::declval<Range>()));
 #else

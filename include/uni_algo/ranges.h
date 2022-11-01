@@ -840,7 +840,7 @@ public:
 
 } // namespace ranges
 
-namespace detail {
+namespace detail::rng {
 
 /* UTF8_VIEW */
 
@@ -1161,17 +1161,17 @@ struct adaptor_to_utf16_reserve
     { return adaptor_closure_to_utf16_reserve<Result, Alloc>{n, a}(std::forward<R>(r)); }
 };
 
-} // namespace detail
+} // namespace detail::rng
 
 namespace ranges::views {
 
-inline constexpr detail::adaptor_utf8 utf8;
-inline constexpr detail::adaptor_utf16 utf16;
-inline constexpr detail::adaptor_reverse reverse;
-inline constexpr detail::adaptor_filter filter;
-inline constexpr detail::adaptor_transform transform;
-inline constexpr detail::adaptor_take take;
-inline constexpr detail::adaptor_drop drop;
+inline constexpr detail::rng::adaptor_utf8 utf8;
+inline constexpr detail::rng::adaptor_utf16 utf16;
+inline constexpr detail::rng::adaptor_reverse reverse;
+inline constexpr detail::rng::adaptor_filter filter;
+inline constexpr detail::rng::adaptor_transform transform;
+inline constexpr detail::rng::adaptor_take take;
+inline constexpr detail::rng::adaptor_drop drop;
 
 } // namespace views
 
@@ -1214,13 +1214,13 @@ namespace ranges {
 // It should not interfere with anything.
 
 template<class Result>
-inline constexpr detail::adaptor_to_utf8<Result> to_utf8{};
+inline constexpr detail::rng::adaptor_to_utf8<Result> to_utf8{};
 template<class Result>
-inline constexpr detail::adaptor_to_utf16<Result> to_utf16{};
+inline constexpr detail::rng::adaptor_to_utf16<Result> to_utf16{};
 template<class Result>
-inline constexpr detail::adaptor_to_utf8_reserve<Result> to_utf8_reserve{};
+inline constexpr detail::rng::adaptor_to_utf8_reserve<Result> to_utf8_reserve{};
 template<class Result>
-inline constexpr detail::adaptor_to_utf16_reserve<Result> to_utf16_reserve{};
+inline constexpr detail::rng::adaptor_to_utf16_reserve<Result> to_utf16_reserve{};
 
 } // namespace ranges
 
