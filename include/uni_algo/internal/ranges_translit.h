@@ -337,7 +337,7 @@ public:
 };
 
 template<class Range, class Func>
-translit_view(Range&&, Func, std::size_t) -> translit_view<uni::views::all_t<Range>, Func>;
+translit_view(Range&&, Func, std::size_t) -> translit_view<views::all_t<Range>, Func>;
 
 } // namespace detail::rng
 

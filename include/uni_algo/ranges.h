@@ -848,7 +848,7 @@ struct adaptor_utf8
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::utf8_view{std::forward<R>(r)}; }
+    { return ranges::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_utf8& a) { return a(std::forward<R>(r)); }
@@ -859,7 +859,7 @@ struct adaptor_utf16
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::utf16_view{std::forward<R>(r)}; }
+    { return ranges::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_utf16& a) { return a(std::forward<R>(r)); }
@@ -873,7 +873,7 @@ struct adaptor_closure_filter
     uaiw_constexpr explicit adaptor_closure_filter(Pred pred) : p{pred} {}
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::filter_view{std::forward<R>(r), p}; }
+    { return ranges::filter_view{std::forward<R>(r), p}; }
 };
 template<class R, class Pred>
 uaiw_constexpr auto operator|(R&& r, const adaptor_closure_filter<Pred>& a) { return a(std::forward<R>(r)); }
@@ -882,7 +882,7 @@ struct adaptor_filter
 {
     template<class R, class Pred>
     uaiw_constexpr auto operator()(R&& r, Pred pred) const
-    { return uni::ranges::filter_view{std::forward<R>(r), std::move(pred)}; }
+    { return ranges::filter_view{std::forward<R>(r), std::move(pred)}; }
     template<class Pred>
     uaiw_constexpr auto operator()(Pred pred) const
     { return adaptor_closure_filter<Pred>{std::move(pred)}; }
@@ -894,7 +894,7 @@ struct adaptor_reverse
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::reverse_view{std::forward<R>(r)}; }
+    { return ranges::reverse_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_reverse& a) { return a(std::forward<R>(r)); }
@@ -908,7 +908,7 @@ struct adaptor_closure_drop
 
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::drop_view{std::forward<R>(r), count}; }
+    { return ranges::drop_view{std::forward<R>(r), count}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, adaptor_closure_drop const &a) { return a(std::forward<R>(r)); }
@@ -917,7 +917,7 @@ struct adaptor_drop
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r, std::size_t count) const
-    { return uni::ranges::drop_view{std::forward<R>(r), count}; }
+    { return ranges::drop_view{std::forward<R>(r), count}; }
     uaiw_constexpr auto operator()(std::size_t count) const
     { return adaptor_closure_drop{count}; }
 };
@@ -931,7 +931,7 @@ struct adaptor_closure_take
 
     template <class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::take_view{std::forward<R>(r), count}; }
+    { return ranges::take_view{std::forward<R>(r), count}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, adaptor_closure_take const &a) { return a(std::forward<R>(r)); }
@@ -940,7 +940,7 @@ struct adaptor_take
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r, std::size_t count) const
-    { return uni::ranges::take_view{std::forward<R>(r), count}; }
+    { return ranges::take_view{std::forward<R>(r), count}; }
     uaiw_constexpr auto operator()(std::size_t count) const
     { return adaptor_closure_take{count}; }
 };
@@ -954,7 +954,7 @@ struct adaptor_closure_transform
     uaiw_constexpr explicit adaptor_closure_transform(Func func) : f{func} {}
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::transform_view{std::forward<R>(r), f}; }
+    { return ranges::transform_view{std::forward<R>(r), f}; }
 };
 template<class R, class Func>
 uaiw_constexpr auto operator|(R&& r, const adaptor_closure_transform<Func>& a) { return a(std::forward<R>(r)); }
@@ -963,7 +963,7 @@ struct adaptor_transform
 {
     template<class R, class Func>
     uaiw_constexpr auto operator()(R&& r, Func f) const
-    { return uni::ranges::transform_view{std::forward<R>(r), std::move(f)}; }
+    { return ranges::transform_view{std::forward<R>(r), std::move(f)}; }
     template<class Func>
     uaiw_constexpr auto operator()(Func f) const
     { return adaptor_closure_transform<Func>{std::move(f)}; }
@@ -1184,25 +1184,25 @@ namespace ranges {
 // It is handled by test/test_ranges.h -> test_ranges_ctad()
 
 template<class Range>
-utf8_view(Range&&) -> utf8_view<uni::views::all_t<Range>>;
+utf8_view(Range&&) -> utf8_view<views::all_t<Range>>;
 
 template<class Range>
-utf16_view(Range&&) -> utf16_view<uni::views::all_t<Range>>;
+utf16_view(Range&&) -> utf16_view<views::all_t<Range>>;
 
 template<class Range, class Pred>
-filter_view(Range&&, Pred) -> filter_view<uni::views::all_t<Range>, Pred>;
+filter_view(Range&&, Pred) -> filter_view<views::all_t<Range>, Pred>;
 
 template<class Range>
-reverse_view(Range&&) -> reverse_view<uni::views::all_t<Range>>;
+reverse_view(Range&&) -> reverse_view<views::all_t<Range>>;
 
 template<class Range>
-drop_view(Range&&, std::size_t) -> drop_view<uni::views::all_t<Range>>;
+drop_view(Range&&, std::size_t) -> drop_view<views::all_t<Range>>;
 
 template<class Range, class Func>
-transform_view(Range&&, Func) -> transform_view<uni::views::all_t<Range>, Func>;
+transform_view(Range&&, Func) -> transform_view<views::all_t<Range>, Func>;
 
 template<class Range>
-take_view(Range&&, std::size_t) -> take_view<uni::views::all_t<Range>>;
+take_view(Range&&, std::size_t) -> take_view<views::all_t<Range>>;
 
 } // namespace ranges
 

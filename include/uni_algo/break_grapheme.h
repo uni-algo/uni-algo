@@ -49,7 +49,7 @@ private:
             while (it_next != std::end(parent->range))
             {
                 it_pos = it_next;
-                uni::detail::type_codept codepoint = 0;
+                detail::type_codept codepoint = 0;
                 it_next = detail::inline_iter_utf8(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_break_grapheme(&state, codepoint))
                     return;
@@ -66,7 +66,7 @@ private:
             while (it_begin != std::begin(parent->range))
             {
                 it_next = it_begin;
-                uni::detail::type_codept codepoint = 0;
+                detail::type_codept codepoint = 0;
                 it_begin = detail::inline_iter_rev_utf8(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_break_grapheme_rev_utf8(&state, codepoint, std::begin(parent->range), it_begin))
                 {
@@ -199,7 +199,7 @@ private:
             while (it_next != std::end(parent->range))
             {
                 it_pos = it_next;
-                uni::detail::type_codept codepoint = 0;
+                detail::type_codept codepoint = 0;
                 it_next = detail::inline_iter_utf16(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_break_grapheme(&state, codepoint))
                     return;
@@ -216,7 +216,7 @@ private:
             while (it_begin != std::begin(parent->range))
             {
                 it_next = it_begin;
-                uni::detail::type_codept codepoint = 0;
+                detail::type_codept codepoint = 0;
                 it_begin = detail::inline_iter_rev_utf16(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_break_grapheme_rev_utf16(&state, codepoint, std::begin(parent->range), it_begin))
                 {
@@ -323,9 +323,9 @@ public:
 };
 
 template<class Range>
-utf8_view(Range&&) -> utf8_view<uni::views::all_t<Range>>;
+utf8_view(Range&&) -> utf8_view<views::all_t<Range>>;
 template<class Range>
-utf16_view(Range&&) -> utf16_view<uni::views::all_t<Range>>;
+utf16_view(Range&&) -> utf16_view<views::all_t<Range>>;
 
 } // namespace ranges::grapheme
 
@@ -337,7 +337,7 @@ struct adaptor_grapheme_utf8
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::grapheme::utf8_view{std::forward<R>(r)}; }
+    { return ranges::grapheme::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_grapheme_utf8& a) { return a(std::forward<R>(r)); }
@@ -348,7 +348,7 @@ struct adaptor_grapheme_utf16
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::grapheme::utf16_view{std::forward<R>(r)}; }
+    { return ranges::grapheme::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_grapheme_utf16& a) { return a(std::forward<R>(r)); }

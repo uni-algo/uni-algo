@@ -945,14 +945,14 @@ public:
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 template<class Range>
-nfc_view(Range&&) -> nfc_view<uni::views::all_t<Range>>;
+nfc_view(Range&&) -> nfc_view<views::all_t<Range>>;
 template<class Range>
-nfd_view(Range&&) -> nfd_view<uni::views::all_t<Range>>;
+nfd_view(Range&&) -> nfd_view<views::all_t<Range>>;
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<class Range>
-nfkc_view(Range&&) -> nfkc_view<uni::views::all_t<Range>>;
+nfkc_view(Range&&) -> nfkc_view<views::all_t<Range>>;
 template<class Range>
-nfkd_view(Range&&) -> nfkd_view<uni::views::all_t<Range>>;
+nfkd_view(Range&&) -> nfkd_view<views::all_t<Range>>;
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 } // namespace ranges::norm
@@ -965,7 +965,7 @@ struct adaptor_nfc
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::norm::nfc_view{std::forward<R>(r)}; }
+    { return ranges::norm::nfc_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_nfc& a) { return a(std::forward<R>(r)); }
@@ -976,7 +976,7 @@ struct adaptor_nfd
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::norm::nfd_view{std::forward<R>(r)}; }
+    { return ranges::norm::nfd_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_nfd& a) { return a(std::forward<R>(r)); }
@@ -989,7 +989,7 @@ struct adaptor_nfkc
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::norm::nfkc_view{std::forward<R>(r)}; }
+    { return ranges::norm::nfkc_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_nfkc& a) { return a(std::forward<R>(r)); }
@@ -1000,7 +1000,7 @@ struct adaptor_nfkd
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::norm::nfkd_view{std::forward<R>(r)}; }
+    { return ranges::norm::nfkd_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_nfkd& a) { return a(std::forward<R>(r)); }
@@ -1068,13 +1068,13 @@ public:
 
 inline char32_t to_compose(char32_t c1, char32_t c2) noexcept
 {
-    return uni::detail::impl_norm_to_compose(c1, c2);
+    return detail::impl_norm_to_compose(c1, c2);
 }
 
 inline std::u32string to_decompose_u32(char32_t c)
 {
     std::u32string dst;
-    dst.resize(uni::detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
+    dst.resize(detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     dst.resize(detail::impl_norm_to_decompose(c, dst.data()));
 #else
@@ -1087,7 +1087,7 @@ inline std::u32string to_decompose_u32(char32_t c)
 inline std::u32string to_decompose_compat_u32(char32_t c)
 {
     std::u32string dst;
-    dst.resize(uni::detail::impl_x_norm_to_nfkd_utf16); // TODO: Better value
+    dst.resize(detail::impl_x_norm_to_nfkd_utf16); // TODO: Better value
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     dst.resize(detail::impl_norm_to_decompose_compat(c, dst.data()));
 #else
@@ -1100,7 +1100,7 @@ inline std::u32string to_decompose_compat_u32(char32_t c)
 inline std::u32string to_decompose_hangul_u32(char32_t c)
 {
     std::u32string dst;
-    dst.resize(uni::detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
+    dst.resize(detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
 #ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
     dst.resize(detail::impl_norm_to_decompose_hangul(c, dst.data()));
 #else

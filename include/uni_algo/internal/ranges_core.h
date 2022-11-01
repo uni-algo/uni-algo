@@ -255,9 +255,9 @@ struct adaptor_all
                 std::is_same_v<std::basic_string_view<range_v>, std::decay_t<R>>)
             return std::forward<R>(r);
         else if constexpr (std::is_lvalue_reference_v<R>)
-            return uni::ranges::ref_view{std::forward<R>(r)};
+            return ranges::ref_view{std::forward<R>(r)};
         else
-            return uni::ranges::owning_view{std::forward<R>(r)};
+            return ranges::owning_view{std::forward<R>(r)};
 
         // view_interface check is needed because std::ranges::view_interface in not derived from std::view_base anymore
         // https://cplusplus.github.io/LWG/issue3549

@@ -75,7 +75,7 @@ private:
             {
                 it_next = it_begin;
                 word_prop = next_word_prop;
-                uni::detail::type_codept codepoint = 0;
+                detail::type_codept codepoint = 0;
                 it_begin = detail::inline_iter_rev_utf8(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_break_word_rev_utf8(&state, codepoint, &next_word_prop, std::begin(parent->range), it_begin))
                 {
@@ -241,7 +241,7 @@ private:
             {
                 it_next = it_begin;
                 word_prop = next_word_prop;
-                uni::detail::type_codept codepoint = 0;
+                detail::type_codept codepoint = 0;
                 it_begin = detail::inline_iter_rev_utf16(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_break_word_rev_utf16(&state, codepoint, &next_word_prop, std::begin(parent->range), it_begin))
                 {
@@ -419,7 +419,7 @@ private:
             {
                 it_next = it_begin;
                 word_prop = next_word_prop;
-                uni::detail::type_codept codepoint = 0;
+                detail::type_codept codepoint = 0;
                 it_begin = detail::inline_iter_rev_utf8(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_break_word_rev_utf8(&state, codepoint, &next_word_prop, std::begin(parent->range), it_begin))
                 {
@@ -589,7 +589,7 @@ private:
             {
                 it_next = it_begin;
                 word_prop = next_word_prop;
-                uni::detail::type_codept codepoint = 0;
+                detail::type_codept codepoint = 0;
                 it_begin = detail::inline_iter_rev_utf16(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
                 if (detail::inline_break_word_rev_utf16(&state, codepoint, &next_word_prop, std::begin(parent->range), it_begin))
                 {
@@ -703,15 +703,15 @@ public:
 
 namespace word {
 template<class Range>
-utf8_view(Range&&) -> utf8_view<uni::views::all_t<Range>>;
+utf8_view(Range&&) -> utf8_view<views::all_t<Range>>;
 template<class Range>
-utf16_view(Range&&) -> utf16_view<uni::views::all_t<Range>>;
+utf16_view(Range&&) -> utf16_view<views::all_t<Range>>;
 }
 namespace word_only {
 template<class Range>
-utf8_view(Range&&) -> utf8_view<uni::views::all_t<Range>>;
+utf8_view(Range&&) -> utf8_view<views::all_t<Range>>;
 template<class Range>
-utf16_view(Range&&) -> utf16_view<uni::views::all_t<Range>>;
+utf16_view(Range&&) -> utf16_view<views::all_t<Range>>;
 }
 
 } // namespace ranges
@@ -724,7 +724,7 @@ struct adaptor_word_utf8
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::word::utf8_view{std::forward<R>(r)}; }
+    { return ranges::word::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_word_utf8& a) { return a(std::forward<R>(r)); }
@@ -735,7 +735,7 @@ struct adaptor_word_utf16
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::word::utf16_view{std::forward<R>(r)}; }
+    { return ranges::word::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_word_utf16& a) { return a(std::forward<R>(r)); }
@@ -746,7 +746,7 @@ struct adaptor_word_only_utf8
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::word_only::utf8_view{std::forward<R>(r)}; }
+    { return ranges::word_only::utf8_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_word_only_utf8& a) { return a(std::forward<R>(r)); }
@@ -757,7 +757,7 @@ struct adaptor_word_only_utf16
 {
     template<class R>
     uaiw_constexpr auto operator()(R&& r) const
-    { return uni::ranges::word_only::utf16_view{std::forward<R>(r)}; }
+    { return ranges::word_only::utf16_view{std::forward<R>(r)}; }
 };
 template<class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_word_only_utf16& a) { return a(std::forward<R>(r)); }
