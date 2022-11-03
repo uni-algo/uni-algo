@@ -28,7 +28,7 @@
 #include <chrono>
 #include <vector>
 #include <stdexcept>
-#include "../include/uni_algo/convert.h"
+#include "../include/uni_algo/conv.h"
 #include "../test/test_kewb.h"
 
 #ifdef ENABLE_WINAPI_TEST

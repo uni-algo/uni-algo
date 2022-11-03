@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_CONVERT_H_UAIH
-#define UNI_ALGO_CONVERT_H_UAIH
+#ifndef UNI_ALGO_CONV_H_UAIH
+#define UNI_ALGO_CONV_H_UAIH
 
 #include <type_traits>
 #include <string>
@@ -23,7 +23,7 @@ namespace detail {
 // Implementation details
 // There were 2 possible ways to implement the conversion: using resize or using back_inserter,
 // back_inserter was always 10-30% slower in tests even with reserve so it uses resize approach.
-// Also it doesn't use 2-pass approach: calculate converted string size and then the actual convertion.
+// Also it doesn't use 2-pass approach: calculate converted string size and then the actual conversion.
 // This is obviously at least 50% slower, so it uses 1-pass with shrink_to_fit after.
 
 //#define UNI_ALGO_DISABLE_CPP_ITERATORS
@@ -602,7 +602,7 @@ inline std::u8string utf32to8u(std::wstring_view source, uni::error& error)
 
 } // namespace uni
 
-#endif // UNI_ALGO_CONVERT_H_UAIH
+#endif // UNI_ALGO_CONV_H_UAIH
 
 /* Public Domain License
  *

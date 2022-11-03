@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#include "../include/uni_algo/convert.h"
+#include "../include/uni_algo/conv.h"
 #include "../include/uni_algo/case.h"
 #include "../include/uni_algo/norm.h"
 #include "../include/uni_algo/prop.h"

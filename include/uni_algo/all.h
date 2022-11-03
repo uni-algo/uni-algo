@@ -7,7 +7,7 @@
 #ifndef UNI_ALGO_ALL_H_UAIH
 #define UNI_ALGO_ALL_H_UAIH
 
-#include "convert.h"
+#include "conv.h"
 #include "ranges.h"
 
 #ifndef UNI_ALGO_DISABLE_CASE
