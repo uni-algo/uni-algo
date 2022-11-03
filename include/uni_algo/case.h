@@ -23,8 +23,6 @@
 #include "impl/impl_case_locale.h"
 #endif
 
-// For info about defines see uni_cpp_convert.h
-
 namespace uni {
 
 class search

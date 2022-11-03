@@ -12,7 +12,7 @@
 - [Design](#design)
 - [Usage](#usage)
 - [Examples](#examples)
-  - [Convert Functions](#convert-functions)
+  - [Conversion Functions](#conversion-functions)
   - [Case Functions](#case-functions)
   - [Normalization Functions](#normalization-functions)
   - [Code Point Properties](#code-point-properties)
@@ -205,10 +205,10 @@ https://stackoverflow.com/questions/27331819/whats-the-difference-between-a-char
 Note that the files are called modules because the word is too good in this case.
 It has nothing to do with C++20 modules.
 
-## Convert Functions
+## Conversion Functions
 ```cpp
 // This module doesn't require Unicode data so it can be used as header-only
-#include "uni_algo/convert.h"
+#include "uni_algo/conv.h"
 
 // Lenient conversion (cannot fail) "\xD800" is unpaired high surrogate in UTF-16
 std::string str8 = uni::utf16to8(u"Te\xD800st"); // std::u8string is supported too
@@ -452,7 +452,7 @@ assert(std::string_view{"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ"}
         | uni::views::reverse | uni::ranges::to_utf8<std::string>()
         == "ⅢⅣⅤⅥⅦ");
 
-// A simple convert function using ranges looks like this:
+// A simple conversion function using ranges looks like this:
 std::u16string utf8to16(std::string_view view)
 {
     return view | uni::views::utf8 | uni::ranges::to_utf16<std::u16string>();
@@ -547,7 +547,7 @@ for (std::string_view word : uni::views::word_only::utf8(str8))
 
 // For example you need to append or insert a code point or grapheme to a string
 
-// For append a code point to an UTF-8 string all you need is Convert module
+// For append a code point to an UTF-8 string all you need is Conversion module
 std::string str8 = "🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧🧙‍♀️"; // These emojis use multiple code points
 str8 += uni::utf32to8(std::u32string{U'😺'}); // This emoji use 1 code point
 
@@ -558,7 +558,7 @@ auto pos = std::next(view.begin(), 2).begin() - str8.begin();
 str8.insert(pos, uni::utf32to8(std::u32string{U'😼'})); // This emoji use 1 code point
 
 // The same way a grapheme can be appended or inserted and of course you don't even need
-// Convert module if your grapheme or a code point is already in UTF-8 encoding.
+// Conversion module if your grapheme or a code point is already in UTF-8 encoding.
 
 // Output: 🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧😼🧙‍♀️😺
 ```

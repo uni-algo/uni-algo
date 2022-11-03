@@ -32,7 +32,7 @@ See comments inside the file for more info.
 
 ---
 
-**`uni_algo/convert.h`** - convertion functions (header-only)
+**`uni_algo/conv.h`** - conversion functions (header-only)
 ```
 uni::utf8to16 - convert a string from UTF-8 to UTF-16
 uni::utf16to8

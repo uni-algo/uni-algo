@@ -20,8 +20,6 @@
 
 #include "impl/impl_norm.h"
 
-// For info about defines see uni_cpp_convert.h
-
 namespace uni {
 
 namespace detail {
