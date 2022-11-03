@@ -7,7 +7,7 @@ void test_overflow()
     // Even though this usage is incorrect all overflows must be consistent
 
     // REMINDER: to make this test fail make all low-level types = unsigned long long
-    // and for example remove "& 0xFFFFFFFF" in impl_utf32to8 or impl_utf32to16 in impl_convert.h
+    // and for example remove "& 0xFFFFFFFF" in impl_utf32to8 or impl_utf32to16 in impl_conv.h
     // or "& 0xFFFF" in impl_utf16to8 or impl_utf16to32 (will fail even without making all unsigned long long)
 
     std::basic_string<unsigned long long> str8(1, 0xFFull + 1 + 0x5A);

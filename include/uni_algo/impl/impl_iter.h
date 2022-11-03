@@ -21,7 +21,7 @@ uaix_static it_in_utf8 iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: input, forward, bidirectional, random access, contiguous
 
-    // See impl_utf8to16 in impl_convert.h for details
+    // See impl_utf8to16 in impl_conv.h for details
 
     it_in_utf8 s = first;
 

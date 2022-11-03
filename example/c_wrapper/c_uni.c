@@ -60,8 +60,8 @@ typedef UNI_CHAR32    type_char32; // Can be 32-bit or more signed/unsigned
 #define UNI_ALGO_DISABLE_BREAK_WORD
 #define UNI_ALGO_DISABLE_PROP
 
-// Include Convert module (doesn't need Unicode data tables)
-#include "impl/impl_convert.h"
+// Include Conversion module (doesn't need Unicode data tables)
+#include "impl/impl_conv.h"
 
 // Do not define it if you include Unicode data (impl/impl_data.h file) in a different .c file
 #define UNI_ALGO_STATIC_DATA
@@ -243,7 +243,7 @@ type_char16* uni_utf32to16(const type_char32* str)
 
 const size_t uni_npos = impl_npos;
 
-// Case mapping functions can be implemented the same way as Unicode convertion functions
+// Case mapping functions can be implemented the same way as Unicode conversion functions
 
 static type_char8* internal_case_map_utf8(const type_char8* str, int mode)
 {
@@ -433,7 +433,7 @@ size_t uni_caseless_search_utf16(const type_char16* str1, const type_char16* str
 
 #ifndef UNI_ALGO_DISABLE_NORM
 
-// Normalization functions can be implemented the same way as Unicode convertion functions
+// Normalization functions can be implemented the same way as Unicode conversion functions
 
 type_char8* uni_norm_to_nfc_utf8(const type_char8* str)
 {

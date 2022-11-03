@@ -15,7 +15,7 @@
 
 // Case and/or Normalization modules can be disabled if needed.
 // This excludes from compilation a part of Unicode data tables that are not needed.
-// If both are disabled only converter functions will be available
+// If both are disabled only conversion functions will be available
 // and all Unicode data tables will be excluded from compilation.
 //#define UNI_ALGO_DISABLE_CASE
 //#define UNI_ALGO_DISABLE_NORM

@@ -214,7 +214,7 @@ void amalgam()
 
     // The order for implementation files are important
     output << amalgam_part("uni_algo/impl/impl_iter.h"); // Must be first
-    output << amalgam_part("uni_algo/impl/impl_convert.h");
+    output << amalgam_part("uni_algo/impl/impl_conv.h");
     output << amalgam_part("uni_algo/impl/impl_break_grapheme.h");
     output << amalgam_part("uni_algo/impl/impl_break_word.h"); // Must be before case
     output << amalgam_part("uni_algo/impl/impl_case.h");

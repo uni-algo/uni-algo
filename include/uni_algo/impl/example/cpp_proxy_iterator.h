@@ -10,8 +10,8 @@
 // a return parameter and the range is not needed when you use C++ input or output iterators for example.
 // So for a simple proxy iterator you need to overload operator-() that is all.
 
-// For this example we will be using impl_convert.h module
-#include "../impl_convert.h"
+// For this example we will be using impl_conv.h module
+#include "../impl_conv.h"
 
 // Note that we use different namespace for user functions and do not add them to namespace uni.
 // You must do it like this too if you want to extend functionality of the current C++ wrapper.
@@ -35,9 +35,9 @@ public:
 };
 
 // And in most cases you don't need proxy iterator for input iterators (first, last)
-// except converter functions that uses operator-() for error parameter.
+// except conversion functions that uses operator-() for error parameter.
 // In this case, if you don't need error parameter for example you need to use
-// converter functions for lineant conversion, proxy iterator look like this:
+// conversion functions for lineant conversion, proxy iterator look like this:
 #if 1
 template<class Iter>
 class proxy_it_in
@@ -63,7 +63,7 @@ public:
     }
 };
 #endif
-// And if you do need error parameter for example you need to use converter functions
+// And if you do need error parameter for example you need to use conversion functions
 // to convert a file with strict conversion and need to know the exact error location
 // to the start of ill-formed sequence. Then proxy iterator look like this:
 #if 0
@@ -178,7 +178,7 @@ void example_sentinel()
 
 // Also we can create "iterators" that not a proxy to something
 // but can do things on their own to achieve something else
-// especially when used together with converter functions
+// especially when used together with conversion functions
 
 // Let's make no-op "iterator" to be able to just validate something
 
