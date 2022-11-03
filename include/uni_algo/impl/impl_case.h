@@ -5,7 +5,7 @@
 #ifndef UNI_ALGO_IMPL_CASE_H_UAIH
 #define UNI_ALGO_IMPL_CASE_H_UAIH
 
-#include "impl_iterator.h"
+#include "impl_iter.h"
 // Note that title case has cross dependency with break word module
 // and if it's disabled all title case functions must be disabled too
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD

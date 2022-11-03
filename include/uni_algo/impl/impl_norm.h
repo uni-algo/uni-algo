@@ -5,7 +5,7 @@
 #ifndef UNI_ALGO_IMPL_NORM_H_UAIH
 #define UNI_ALGO_IMPL_NORM_H_UAIH
 
-#include "impl_iterator.h"
+#include "impl_iter.h"
 
 #ifndef UNI_ALGO_DISABLE_PROP
 #include "impl_prop.h"

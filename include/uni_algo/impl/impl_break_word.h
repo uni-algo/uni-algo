@@ -5,7 +5,7 @@
 #ifndef UNI_ALGO_IMPL_BREAK_WORD_H_UAIH
 #define UNI_ALGO_IMPL_BREAK_WORD_H_UAIH
 
-#include "impl_iterator.h"
+#include "impl_iter.h"
 
 #include "internal_defines.h"
 #include "internal_stages.h"

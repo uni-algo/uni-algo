@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - sign whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_IMPL_ITERATOR_H_UAIH
-#define UNI_ALGO_IMPL_ITERATOR_H_UAIH
+#ifndef UNI_ALGO_IMPL_ITER_H_UAIH
+#define UNI_ALGO_IMPL_ITER_H_UAIH
 
 #include "internal_defines.h"
 
@@ -391,7 +391,7 @@ UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"
 
-#endif // UNI_ALGO_IMPL_ITERATOR_H_UAIH
+#endif // UNI_ALGO_IMPL_ITER_H_UAIH
 
 /* Public Domain Contract
  *

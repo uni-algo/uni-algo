@@ -23,7 +23,7 @@ void test_overflow()
 
     // Ranges
 
-    // REMINDER: to make this test fail for example remove "& 0xFFFF" in utf16_iter in impl_iterator.h
+    // REMINDER: to make this test fail for example remove "& 0xFFFF" in utf16_iter in impl_iter.h
 
     TESTX(*uni::ranges::utf8_view{str8}.begin() == 0x5A);
     TESTX(*uni::ranges::utf16_view{str16}.begin() == 0x5A);

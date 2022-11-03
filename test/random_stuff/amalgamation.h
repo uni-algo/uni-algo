@@ -213,7 +213,7 @@ void amalgam()
     output << amalgam_part("uni_algo/impl/internal_stages.h"); // Old full
 
     // The order for implementation files are important
-    output << amalgam_part("uni_algo/impl/impl_iterator.h"); // Must be first
+    output << amalgam_part("uni_algo/impl/impl_iter.h"); // Must be first
     output << amalgam_part("uni_algo/impl/impl_convert.h");
     output << amalgam_part("uni_algo/impl/impl_break_grapheme.h");
     output << amalgam_part("uni_algo/impl/impl_break_word.h"); // Must be before case
