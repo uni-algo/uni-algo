@@ -6,7 +6,7 @@
 // Note that this test doesn't test that the functions produce the correct result
 // because if template functions in other tests work then these functions work too.
 
-void test_short_func_convert()
+void test_short_func_conv()
 {
     std::string str = "123";
     std::u16string u16str = u"123";

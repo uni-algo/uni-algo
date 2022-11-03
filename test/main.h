@@ -59,7 +59,7 @@
 #include "test_strict_iter.h"
 #include "test_strict_iter_rev.h"
 
-#include "test_convert_and_iter.h"
+#include "test_conv_and_iter.h"
 
 #include "test_short_func.h"
 #include "test_alloc_func.h"
@@ -164,7 +164,7 @@ int main7()
     test_overflow();
     test_alter_value();
 
-    std::cout << "DONE: Convert Functions" << '\n';
+    std::cout << "DONE: Conversion Functions" << '\n';
 
     test_lenient_iter_utf8to16();
     test_lenient_iter_utf16to8();
@@ -175,13 +175,13 @@ int main7()
     test_strict_iter_rev_utf8to16();
     test_strict_iter_rev_utf16to8();
 
-    std::cout << "DONE: Convert Ranges" << '\n';
+    std::cout << "DONE: Conversion Ranges" << '\n';
 
-    test_short_func_convert();
+    test_short_func_conv();
     test_short_func_case();
     test_short_func_norm();
 
-    test_alloc_func_convert();
+    test_alloc_func_conv();
     test_alloc_func_case();
     test_alloc_func_norm();
 
@@ -239,12 +239,12 @@ int main7()
 
     std::cout << "DONE: Break Grapheme and Word" << '\n';
 
-    std::cout << "WAIT: Convert and Ranges Extra" << '\n';
+    std::cout << "WAIT: Conversion and Ranges Extra" << '\n';
 
-    test_convert_and_iter_convert();
-    test_convert_and_iter_iter();
+    test_conv_and_iter_conv();
+    test_conv_and_iter_iter();
 
-    std::cout << "DONE: Convert and Ranges Extra" << '\n';
+    std::cout << "DONE: Conversion and Ranges Extra" << '\n';
 
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
     std::cout << "WAIT: Normalization" << '\n';

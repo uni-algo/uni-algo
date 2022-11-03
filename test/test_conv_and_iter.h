@@ -2,9 +2,9 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-// Convert module test
+// Conversion module test
 
-void test_convert_and_iter_convert()
+void test_conv_and_iter_conv()
 {
     // UTF-32 code unit (code point)
     for (char32_t c = 0; c <= 0x110000; ++c)
@@ -101,7 +101,7 @@ void test_convert_and_iter_convert()
 
 // Iterator module test
 
-// Implement all convert functions using ranges
+// Implement all conversion functions using ranges
 
 template<typename UTF8, typename UTF16>
 std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source)
@@ -156,9 +156,9 @@ std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source)
     return source | uni::ranges::to_utf16<std::basic_string<UTF16>>();
 }
 
-// Redo the previous test using these convert functions
+// Redo the previous test using these conversion functions
 
-void test_convert_and_iter_iter()
+void test_conv_and_iter_iter()
 {
     // UTF-32 code unit (code point)
     for (char32_t c = 0; c <= 0x110000; ++c)

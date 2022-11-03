@@ -48,7 +48,7 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
      * Also I tried to implement it a bit different but it seems a compiler can optimize
      * it better when it written like that even though it looks a bit ugly.
      * Note that we don't use iterator functions here and inline everything because
-     * it gives a better performance. See test/test_perf_iter_convert.h
+     * it gives a better performance. See test/test_perf_iter_conv.h
      */
 
     it_in_utf8 s = first;

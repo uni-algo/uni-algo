@@ -53,7 +53,7 @@ class memory_resource_func : public std::pmr::memory_resource
 };
 #endif
 
-void test_alloc_func_convert()
+void test_alloc_func_conv()
 {
     alloc_func<char> alloc;
     alloc_func<char16_t> alloc16;
