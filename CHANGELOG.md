@@ -3,12 +3,14 @@ Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
 ## v0.6.0 (TBD)
-- Added custom allocator support for template functions and output ranges
 - Added uni::is_valid_utf8/16/32 functions for strings
+- Added custom allocator support for template functions
+- Added custom allocator support for output ranges
 - Added header-only support (CMake option UNI_ALGO_HEADER_ONLY=ON)
 - Added shared library support (CMake option BUILD_SHARED_LIBS=ON)
-- Lowered requirements for word/grapheme breaks to bidirectional range
 - Renamed file uni_algo/convert.h to uni_algo/conv.h
+- Lowered requirements for word/grapheme breaks to bidirectional range
+- Extensions now use unx namespace instead of uni
 
 ## [v0.5.0](https://github.com/uni-algo/uni-algo/tree/v0.5.0) (01.10.2022)
 - Updated to Unicode 15.0.0
