@@ -263,12 +263,14 @@ public:
 
 } // namespace uni::detail::translit
 
-namespace uni::translit {
+namespace unx::translit {
 
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
 std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 japanese_kana_to_romaji_hepburn_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
+    using namespace uni; // NOLINT(google-build-using-namespace)
+
     using tr = detail::translit::japanese_kana_to_romaji_hepburn;
 
     bool prev = false;
@@ -286,6 +288,8 @@ template<typename UTF16, typename Alloc = std::allocator<UTF16>>
 std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 japanese_kana_to_romaji_hepburn_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
+    using namespace uni; // NOLINT(google-build-using-namespace)
+
     using tr = detail::translit::japanese_kana_to_romaji_hepburn;
 
     bool prev = false;
