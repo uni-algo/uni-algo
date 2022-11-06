@@ -16,6 +16,9 @@
 
 #include "config.h"
 #include "version.h"
+
+// Clang-Tidy thinks that locale.h form C is included here
+// NOLINTNEXTLINE(modernize-deprecated-headers, hicpp-deprecated-headers)
 #include "locale.h"
 
 #include "impl/impl_case.h"

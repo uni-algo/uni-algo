@@ -686,11 +686,11 @@ uaix_static bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_
         type_codept h = (*src++ & 0xFFFF);
 
         if (h <= 0x7F)
-        {
+        { // NOLINT(bugprone-branch-clone)
             continue;
         }
         else if (h <= 0x7FF)
-        {
+        { // NOLINT(bugprone-branch-clone)
             continue;
         }
         else if (h >= 0xD800 && h <= 0xDFFF) // Surrogate pair
@@ -710,7 +710,7 @@ uaix_static bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_
             }
         }
         else
-        {
+        { // NOLINT(bugprone-branch-clone)
             continue;
         }
 
@@ -739,11 +739,11 @@ uaix_static bool impl_is_valid_utf32(it_in_utf32 first, it_end_utf32 last, size_
         type_codept c = ((type_codept)*src++ & 0xFFFFFFFF);
 
         if (c <= 0x7F)
-        {
+        { // NOLINT(bugprone-branch-clone)
             continue;
         }
         else if (c <= 0x7FF)
-        {
+        { // NOLINT(bugprone-branch-clone)
             continue;
         }
         else if (c <= 0xFFFF)
@@ -754,7 +754,7 @@ uaix_static bool impl_is_valid_utf32(it_in_utf32 first, it_end_utf32 last, size_
             }
         }
         else if (c <= 0x10FFFF)
-        {
+        { // NOLINT(bugprone-branch-clone)
             continue;
         }
 
