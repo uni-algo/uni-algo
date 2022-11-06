@@ -32,6 +32,11 @@ void test_locale()
     // Locale string parser must normalize locale tags always
 
     TESTX((uni::locale{} == uni::locale{{}, {}, {}}));
+    TESTX((uni::locale{} == uni::locale{{}, uni::locale::script{}}));
+    TESTX((uni::locale{} == uni::locale{{}, uni::locale::region{}}));
+    TESTX((uni::locale{} == uni::locale{{}, uni::locale::script{}, uni::locale::region{}}));
+    TESTX((uni::locale{} == uni::locale{uni::locale::language{}, uni::locale::script{}, uni::locale::region{}}));
+    TESTX((uni::locale{} == uni::locale{uni::locale::language{}}));
     TESTX((uni::locale{""} == uni::locale{}));
     TESTX((uni::locale{"e"} == uni::locale{}));
     TESTX((uni::locale{"1"} == uni::locale{}));
@@ -46,6 +51,7 @@ void test_locale()
     TESTX((uni::locale{"en-Latn-US"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
     TESTX((uni::locale{"en-Latn-029"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"029"}}));
     TESTX((uni::locale{"en-029"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"029"}}));
+    TESTX((uni::locale{"en-029"} == uni::locale{uni::locale::language{"en"}, uni::locale::region{"029"}}));
 
     TESTX((uni::locale{"EN"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
     TESTX((uni::locale{"EN-us"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
@@ -53,6 +59,7 @@ void test_locale()
     TESTX((uni::locale{"EN-lATN-us"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
     TESTX((uni::locale{"EN-lATN-029"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"029"}}));
     TESTX((uni::locale{"EN-029"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"029"}}));
+    TESTX((uni::locale{"EN-029"} == uni::locale{uni::locale::language{"en"}, uni::locale::region{"029"}}));
 
     TESTX((uni::locale{"tzm"} == uni::locale{uni::locale::language{"tzm"}, {}, {}}));
     TESTX((uni::locale{"tzm-DZ"} == uni::locale{uni::locale::language{"tzm"}, {}, uni::locale::region{"DZ"}}));
@@ -60,6 +67,7 @@ void test_locale()
     TESTX((uni::locale{"tzm-Latn-DZ"} == uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, uni::locale::region{"DZ"}}));
     TESTX((uni::locale{"tzm-Latn-999"} == uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, uni::locale::region{"999"}}));
     TESTX((uni::locale{"tzm-999"} == uni::locale{uni::locale::language{"tzm"}, {}, uni::locale::region{"999"}}));
+    TESTX((uni::locale{"tzm-999"} == uni::locale{uni::locale::language{"tzm"}, uni::locale::region{"999"}}));
 
     TESTX((uni::locale{"en_US.UTF8"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
     TESTX((uni::locale{"en_Latn_US.UTF8"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
