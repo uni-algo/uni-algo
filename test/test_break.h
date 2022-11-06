@@ -7,10 +7,10 @@ void test_break_grapheme()
     std::ifstream input("GraphemeBreakTest.txt", std::ios::binary);
     TESTX(input.is_open());
     // Latest version:
-    // ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.txt
+    // https://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.txt
     // Other versions:
-    // ftp://ftp.unicode.org/Public/12.0.0/ucd/auxiliary/GraphemeBreakTest.txt
-    // ftp://ftp.unicode.org/Public/12.1.0/ucd/auxiliary/GraphemeBreakTest.txt
+    // https://www.unicode.org/Public/12.0.0/ucd/auxiliary/GraphemeBreakTest.txt
+    // https://www.unicode.org/Public/12.1.0/ucd/auxiliary/GraphemeBreakTest.txt
     // etc.
 
     size_t count_lines = 0;

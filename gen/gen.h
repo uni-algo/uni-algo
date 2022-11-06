@@ -1780,15 +1780,16 @@ static void new_generator()
     // WordBreakProperty.txt
     // emoji-data.txt
     // PropList.txt
+    // Scripts.txt
 
     // Download from:
     // Latest Unicode version:
-    // ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt
-    // ftp://ftp.unicode.org/Public/UCA/latest/allkeys.txt
+    // https://www.unicode.org/Public/UNIDATA/UnicodeData.txt
+    // https://www.unicode.org/Public/UCA/latest/allkeys.txt
     // etc.
     // Other Unicode versions:
-    // ftp://ftp.unicode.org/Public/12.1.0/ucd/UnicodeData.txt
-    // ftp://ftp.unicode.org/Public/UCA/12.1.0/allkeys.txt
+    // https://www.unicode.org/Public/12.1.0/ucd/UnicodeData.txt
+    // https://www.unicode.org/Public/UCA/12.1.0/allkeys.txt
     // etc.
     // The lowest Unicode version the generator can use is 6.0.0
     // For break module the lowest version is Unicode 11.0.0

@@ -19,10 +19,10 @@ size_t test_norm_impl(bool with_part2 = true, size_t with_prefix = 0, size_t wit
     std::ifstream input("NormalizationTest.txt", std::ios::binary);
     TESTX(input.is_open());
     // Latest version:
-    // ftp://ftp.unicode.org/Public/UNIDATA/NormalizationTest.txt
+    // https://www.unicode.org/Public/UNIDATA/NormalizationTest.txt
     // Other versions:
-    // ftp://ftp.unicode.org/Public/12.0.0/ucd/NormalizationTest.txt
-    // ftp://ftp.unicode.org/Public/12.1.0/ucd/NormalizationTest.txt
+    // https://www.unicode.org/Public/12.0.0/ucd/NormalizationTest.txt
+    // https://www.unicode.org/Public/12.1.0/ucd/NormalizationTest.txt
     // etc.
 
     std::u32string source, NFC, NFD, NFKC, NFKD;
