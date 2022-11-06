@@ -80,7 +80,6 @@
 // will be using the library with languages that don't need full case mapping.
 // In other words the define must be avoided at all cost.
 // The define affects only Case module.
-// The define is used for some internal tests.
 
 //#define UNI_ALGO_STATIC_DATA
 // Note that with CMake use UNI_ALGO_HEADER_ONLY=ON option instead.
