@@ -1,4 +1,19 @@
-**DRAFT**
+## API Reference
+
+The uni-algo library API consists of the following parts:
+- [**src/data.cpp**](#anchor-data)
+- [**uni_algo/all.h**](#anchor-all)
+- [**uni_algo/version.h**](#anchor-version) - version
+- [**uni_algo/config.h**](#anchor-config) - configuration
+- [**uni_algo/conv.h**](#anchor-conv) - conversion functions
+- [**uni_algo/case.h**](#anchor-case) - case functions
+- [**uni_algo/locale.h**](#anchor-locale) - locale class
+- [**uni_algo/ranges.h**](#anchor-ranges) - UTF and basic ranges
+- [**uni_algo/norm.h**](#anchor-norm) - normalization functions and ranges
+- [**uni_algo/break_grapheme.h**](#anchor-grapheme) - grapheme ranges
+- [**uni_algo/break_word.h**](#anchor-word) - word ranges
+- [**uni_algo/prop.h**](#anchor-prop) - code point properties
+- [**other classes**](#anchor-other)
 
 Things that are not listed in this file:
 - Functions and ranges that work with UTF end with `utf8` and `utf16` only UTF-8 functions and ranges are listed
@@ -6,19 +21,23 @@ Things that are not listed in this file:
 
 ---
 
+<a id="anchor-data"></a>
 **`src/data.cpp`**
 
 The only file that you need to compile.<br>
 Contains Unicode data tables.<br>
+If you are using CMake ignore this file.
 
 ---
 
+<a id="anchor-all"></a>
 **`uni_algo/all.h`**
 
 Includes all enabled modules.
 
 ---
 
+<a id="anchor-version"></a>
 **`uni_algo/version.h`** - version (header-only)
 
 Provides information about the library version and Unicode version.<br>
@@ -26,12 +45,14 @@ Other files always include this file.
 
 ---
 
+<a id="anchor-config"></a>
 **`uni_algo/config.h`** - configuration
 
 See comments inside the file for more info.
 
 ---
 
+<a id="anchor-conv"></a>
 **`uni_algo/conv.h`** - conversion functions (header-only)
 ```
 uni::utf8to16 - convert a string from UTF-8 to UTF-16
@@ -57,6 +78,7 @@ can be used to find out the position where an error occured.
 
 ---
 
+<a id="anchor-case"></a>
 **`uni_algo/case.h`** - case functions (requeries src/data.cpp)
 ```
 uni::cases::to_lowercase_utf8 - convert a string to lower case
@@ -78,7 +100,8 @@ others are based on Default Case Matching and always locale-independent too.
 
 ---
 
-**`uni_algo/locale.h`** - locale (requeries src/data.cpp)
+<a id="anchor-locale"></a>
+**`uni_algo/locale.h`** - locale class (requeries src/data.cpp)
 ```
 uni::locale::system - get system locale (static function)
 
@@ -103,6 +126,7 @@ where enum classes can be used for example in switch case.
 
 ---
 
+<a id="anchor-ranges"></a>
 **`uni_algo/ranges.h`** - UTF and basic ranges (header-only)
 ```
 uni::views::utf8 - requires integral UTF-8 range produces char32_t range
@@ -117,6 +141,7 @@ uni::views::take      - similar to std::views::take
 ```
 ---
 
+<a id="anchor-norm"></a>
 **`uni_algo/norm.h`** - normalization functions and ranges (requeries src/data.cpp)
 ```
 uni::norm::to_nfc_utf8 - normalize a string to NFC normalization form
@@ -136,6 +161,7 @@ uni::views::norm::nfkd
 ```
 ---
 
+<a id="anchor-grapheme"></a>
 **`uni_algo/break_grapheme.h`** - grapheme ranges (requeries src/data.cpp)
 ```
 uni::views::grapheme::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges
@@ -144,6 +170,7 @@ Uses UAX #29: Unicode Text Segmentation -> Grapheme Cluster Boundary Rules
 
 ---
 
+<a id="anchor-word"></a>
 **`uni_algo/break_word.h`** - word ranges (requeries src/data.cpp)
 ```
 uni::views::word::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges
@@ -166,6 +193,7 @@ Uses UAX #29: Unicode Text Segmentation -> Word Boundary Rules<br>
 
 ---
 
+<a id="anchor-prop"></a>
 **`uni_algo/prop.h`** - code point properties (requeries src/data.cpp)
 
 The documentation contains links to:<br>
@@ -231,6 +259,7 @@ class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.
 
 ---
 
+<a id="anchor-other"></a>
 **`other classes`**
 ```
 class uni::error    - used by validation functions
