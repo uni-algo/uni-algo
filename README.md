@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Version-0.5.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.5.0)
+[![Version](https://img.shields.io/badge/Version-0.6.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.6.0)
 [![Unicode](https://img.shields.io/badge/Unicode-15.0.0-blue)](https://www.unicode.org/versions/Unicode15.0.0/)
 [![Language](https://img.shields.io/badge/C%2B%2B-17/20/23-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
 [![License](https://img.shields.io/badge/License-Unlicense/MIT-darkorchid.svg)](https://opensource.org/licenses/MIT)
@@ -150,12 +150,12 @@ Add to your CMakeLists.txt
 include(FetchContent)
 
 FetchContent_Declare(uni-algo
-  URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.5.0.tar.gz)
+  URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.6.0.tar.gz)
 
 # Or if you have Git installed
 # FetchContent_Declare(uni-algo
 #   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
-#   GIT_TAG v0.5.0) # The version you want to download
+#   GIT_TAG v0.6.0) # The version you want to download
 
 FetchContent_MakeAvailable(uni-algo)
 
