@@ -10,6 +10,8 @@
 #include "../include/uni_algo/break_word.h"
 #include "../include/uni_algo/ranges.h"
 #include "../include/uni_algo/locale.h"
+// Extensions
+#include "../include/uni_algo/ext/ascii.h"
 // Transliterators
 #include "../include/uni_algo/ext/translit/macedonian_to_latin_docs.h"
 #include "../include/uni_algo/ext/translit/japanese_kana_to_romaji_hepburn.h"
@@ -22,6 +24,8 @@
 #include <list>
 #include <iostream>
 #include <fstream>
+#include <chrono>
+#include <random>
 
 //#define TEST_MODE_GENERATE_VISUAL_FILES
 //#define TEST_MODE_WITHOUT_UNICODE_TEST_FILES
@@ -73,6 +77,7 @@
 #include "test_break.h"
 #include "test_prop.h"
 
+#include "test_ascii.h"
 #include "test_translit.h"
 #include "test_translit_buffer.h"
 
@@ -220,6 +225,10 @@ int main7()
     test_translit_japanese_kana_to_romaji_hepburn();
 
     std::cout << "DONE: Transliterators" << '\n';
+
+    test_ascii_collate();
+
+    std::cout << "DONE: ASCII Extension" << '\n';
 
     test_prop();
     test_prop_case();
