@@ -50,36 +50,38 @@ namespace unx {
 
 namespace cases {
 
-template<typename T>
-inline constexpr std::basic_string<T> to_lowercase_ascii(std::basic_string_view<T> source)
+template<typename T, typename Alloc = std::allocator<T>>
+std::basic_string<T, std::char_traits<T>, Alloc>
+inline constexpr to_lowercase_ascii(std::basic_string_view<T> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<T>);
 
-    std::basic_string<T> dest{source};
+    std::basic_string<T, std::char_traits<T>, Alloc> dst{source, alloc};
 
-    for (T& c : dest)
+    for (T& c : dst)
     {
         if (c >= 'A' && c <= 'Z')
             c ^= 32;
     }
 
-    return dest;
+    return dst;
 }
 
-template<typename T>
-inline constexpr std::basic_string<T> to_uppercase_ascii(std::basic_string_view<T> source)
+template<typename T, typename Alloc = std::allocator<T>>
+std::basic_string<T, std::char_traits<T>, Alloc>
+inline constexpr to_uppercase_ascii(std::basic_string_view<T> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<T>);
 
-    std::basic_string<T> dest{source};
+    std::basic_string<T, std::char_traits<T>, Alloc> dst{source, alloc};
 
-    for (T& c : dest)
+    for (T& c : dst)
     {
         if (c >= 'a' && c <= 'z')
             c ^= 32;
     }
 
-    return dest;
+    return dst;
 }
 
 inline std::string to_lowercase_ascii(std::string_view source)
