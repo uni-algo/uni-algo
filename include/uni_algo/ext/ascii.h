@@ -57,7 +57,7 @@ inline constexpr std::basic_string<T> to_lowercase_ascii(std::basic_string_view<
 
     std::basic_string<T> dest{source};
 
-    for (T c: dest)
+    for (T& c : dest)
     {
         if (c >= 'A' && c <= 'Z')
             c ^= 32;
@@ -73,7 +73,7 @@ inline constexpr std::basic_string<T> to_uppercase_ascii(std::basic_string_view<
 
     std::basic_string<T> dest{source};
 
-    for (T c: dest)
+    for (T& c : dest)
     {
         if (c >= 'a' && c <= 'z')
             c ^= 32;
