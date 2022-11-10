@@ -300,6 +300,25 @@ inline uni::search search_ascii(std::string_view string1, std::string_view strin
 
 } // namespace caseless
 
+template<typename T>
+inline constexpr bool is_valid_ascii(std::basic_string_view<T> view)
+{
+    static_assert(std::is_integral_v<T>);
+
+    for (T c : view)
+    {
+        if (static_cast<char32_t>(c) > 0x7F)
+            return false;
+    }
+
+    return true;
+}
+
+inline constexpr bool is_valid_ascii(std::string_view view)
+{
+    return is_valid_ascii<char>(view);
+}
+
 } // namespace unx
 
 #endif // UNI_ALGO_EXT_ASCII_H_UAIH
