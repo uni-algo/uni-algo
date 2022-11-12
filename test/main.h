@@ -226,6 +226,8 @@ int main7()
 
     std::cout << "DONE: Transliterators" << '\n';
 
+    test_ascii_upper_lower();
+    test_ascii_search();
     test_ascii_collate();
 
     std::cout << "DONE: ASCII Extension" << '\n';

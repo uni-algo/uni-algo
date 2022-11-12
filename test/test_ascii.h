@@ -2,6 +2,36 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
+void test_ascii_upper_lower()
+{
+    TESTX(unx::cases::to_uppercase_ascii("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+                                      == "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    TESTX(unx::cases::to_lowercase_ascii("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+                                      == "0123456789abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz");
+}
+
+void test_ascii_search()
+{
+    uni::search s;
+
+    TESTX((s = unx::caseless::search_ascii("bbbbbbbbbkbb", "BBK")) && s.pos() == 7 && s.end_pos() == 10);
+    TESTX((s = unx::caseless::search_ascii("bbk", "BBK")) && s.pos() == 0 && s.end_pos() == 3);
+    TESTX(!unx::caseless::search_ascii("b", "BBK"));
+
+    TESTX((s = unx::casesens::search_ascii("bbbbbbbbbkbb", "bbk")) && s.pos() == 7 && s.end_pos() == 10);
+    TESTX((s = unx::casesens::search_ascii("bbk", "bbk")) && s.pos() == 0 && s.end_pos() == 3);
+    TESTX(!unx::casesens::search_ascii("b", "bbk"));
+
+    // Empty strings
+
+    TESTX((s = unx::casesens::search_ascii("bbk", "")) && s.pos() == 0 && s.end_pos() == 0);
+    TESTX((s = unx::caseless::search_ascii("bbk", "")) && s.pos() == 0 && s.end_pos() == 0);
+    TESTX((s = unx::casesens::search_ascii("", "")) && s.pos() == 0 && s.end_pos() == 0);
+    TESTX((s = unx::caseless::search_ascii("", "")) && s.pos() == 0 && s.end_pos() == 0);
+    TESTX(!unx::casesens::search_ascii("", "bbk"));
+    TESTX(!unx::caseless::search_ascii("", "bbk"));
+}
+
 void test_ascii_collate()
 {
     std::string str_ascii;
