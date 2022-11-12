@@ -117,7 +117,7 @@ inline constexpr uni::search search_ascii(std::basic_string_view<T> string1, std
     auto pos = string1.find(string2);
 
     if (pos == std::string::npos)
-        return uni::search{false, 0, 0};
+        return uni::search{};
 
     return uni::search{true, pos, pos + string2.size()};
 }
@@ -221,6 +221,9 @@ inline constexpr uni::search search_ascii(std::basic_string_view<T> string1, std
     auto m = string2.size();
     auto n = string1.size();
 
+    if (m > n)
+        return uni::search{};
+
     for (decltype(m) i = 0; i <= n - m; ++i)
     {
         decltype(m) j = 0;
@@ -241,10 +244,10 @@ inline constexpr uni::search search_ascii(std::basic_string_view<T> string1, std
         }
 
         if (j == m)
-            return uni::search{true, i, i + string2.size()};
+            return uni::search{true, i, i + m};
     }
 
-    return uni::search{false, 0, 0};
+    return uni::search{};
 }
 
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
