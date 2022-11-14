@@ -12,6 +12,7 @@
 
 #include "../config.h"
 #include "../version.h"
+#include "../internal/search.h"
 
 namespace uni::detail::ascii {
 

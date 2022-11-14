@@ -16,6 +16,7 @@
 
 #include "config.h"
 #include "version.h"
+#include "internal/search.h"
 
 // Clang-Tidy thinks that locale.h form C is included here
 // NOLINTNEXTLINE(modernize-deprecated-headers, hicpp-deprecated-headers)
@@ -27,22 +28,6 @@
 #endif
 
 namespace uni {
-
-class search
-{
-public:
-    search() noexcept = default;
-    explicit search(bool f, std::size_t p, std::size_t e) noexcept
-        : found(f), position(p), end_position(e) {}
-    explicit operator bool() const noexcept { return found; }
-    void reset() { found = false; position = detail::impl_npos; end_position = detail::impl_npos; }
-    std::size_t pos() const noexcept { assert(found); return position; }
-    std::size_t end_pos() const noexcept { assert(found); return end_position; }
-private:
-    bool found = false;
-    std::size_t position = detail::impl_npos;
-    std::size_t end_position = detail::impl_npos;
-};
 
 namespace detail {
 
