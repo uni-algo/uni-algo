@@ -115,7 +115,7 @@ inline constexpr uni::search search_ascii(std::basic_string_view<T> string1, std
 
     // The same as binary find
 
-    auto pos = string1.find(string2);
+    std::size_t pos = string1.find(string2);
 
     if (pos == std::string::npos)
         return uni::search{};
@@ -142,7 +142,7 @@ inline constexpr int collate_ascii(std::basic_string_view<T> string1, std::basic
     if (string1.size() < string2.size())
         return -1;
 
-    for (decltype(string1.size()) i = 0, size = string1.size(); i < size; ++i)
+    for (std::size_t i = 0, size = string1.size(); i < size; ++i)
     {
         char32_t c1 = string1[i] & 0xFF;
         char32_t c2 = string2[i] & 0xFF;
@@ -193,7 +193,7 @@ inline constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic
     if (string1.size() > string2.size())
         return 1;
 
-    for (decltype(string1.size()) i = 0, size = string1.size(); i < size; ++i)
+    for (std::size_t i = 0, size = string1.size(); i < size; ++i)
     {
         T c1 = string1[i];
         T c2 = string2[i];
@@ -219,15 +219,15 @@ inline constexpr uni::search search_ascii(std::basic_string_view<T> string1, std
     // TODO: Maybe move to low-level
     // See comment in casesens::collate_ascii above
 
-    auto m = string2.size();
-    auto n = string1.size();
+    std::size_t m = string2.size();
+    std::size_t n = string1.size();
 
     if (m > n)
         return uni::search{};
 
-    for (decltype(m) i = 0; i <= n - m; ++i)
+    for (std::size_t i = 0; i <= n - m; ++i)
     {
-        decltype(m) j = 0;
+        std::size_t j = 0;
 
         for (j = 0; j < m; ++j)
         {
@@ -267,7 +267,7 @@ inline constexpr int collate_ascii(std::basic_string_view<T> string1, std::basic
     if (string1.size() > string2.size())
         return 1;
 
-    for (decltype(string1.size()) i = 0, size = string1.size(); i < size; ++i)
+    for (std::size_t i = 0, size = string1.size(); i < size; ++i)
     {
         char32_t c1 = string1[i] & 0xFF;
         char32_t c2 = string2[i] & 0xFF;
