@@ -16,6 +16,11 @@
 
 namespace uni::detail::ascii {
 
+template<typename T>
+inline constexpr std::array<T, 6> data_trim = {{' ','\t','\r','\n','\f','\v'}};
+template<typename T>
+inline constexpr std::basic_string_view<T> data_trim_view{data_trim<T>.data(), data_trim<T>.size()};
+
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
 
 // Generator in test/test_ascii.h
@@ -321,6 +326,63 @@ inline constexpr bool is_valid_ascii(std::basic_string_view<T> view)
 inline constexpr bool is_valid_ascii(std::string_view view)
 {
     return is_valid_ascii<char>(view);
+}
+
+template<typename T>
+inline constexpr std::basic_string_view<T> trim_ascii(std::basic_string_view<T> view)
+{
+    using namespace uni; // NOLINT(google-build-using-namespace)
+
+    static_assert(std::is_integral_v<T>);
+
+    std::size_t pos = view.find_first_not_of(detail::ascii::data_trim_view<T>);
+    std::size_t end = view.find_last_not_of(detail::ascii::data_trim_view<T>);
+
+    view.remove_prefix(pos == std::string::npos ? 0 : pos);
+    view.remove_suffix(end == std::string::npos ? 0 : view.size() + pos - end - 1);
+
+    return view;
+}
+
+template<typename T>
+inline constexpr std::basic_string_view<T> trim_start_ascii(std::basic_string_view<T> view)
+{
+    using namespace uni; // NOLINT(google-build-using-namespace)
+
+    static_assert(std::is_integral_v<T>);
+
+    std::size_t pos = view.find_first_not_of(detail::ascii::data_trim_view<T>);
+
+    view.remove_prefix(pos == std::string::npos ? 0 : pos);
+
+    return view;
+}
+
+template<typename T>
+inline constexpr std::basic_string_view<T> trim_end_ascii(std::basic_string_view<T> view)
+{
+    using namespace uni; // NOLINT(google-build-using-namespace)
+
+    static_assert(std::is_integral_v<T>);
+
+    std::size_t end = view.find_last_not_of(detail::ascii::data_trim_view<T>);
+
+    view.remove_suffix(end == std::string::npos ? 0 : view.size() - end - 1);
+
+    return view;
+}
+
+inline constexpr std::string_view trim_ascii(std::string_view view)
+{
+    return trim_ascii<char>(view);
+}
+inline constexpr std::string_view trim_start_ascii(std::string_view view)
+{
+    return trim_start_ascii<char>(view);
+}
+inline constexpr std::string_view trim_end_ascii(std::string_view view)
+{
+    return trim_end_ascii<char>(view);
 }
 
 } // namespace unx
