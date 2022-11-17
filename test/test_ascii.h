@@ -61,6 +61,25 @@ void test_ascii_trim()
     TESTX(unx::trim_end_ascii<char16_t>(u"") == u"");
 }
 
+void test_ascii_valid()
+{
+    TESTX(unx::is_valid_ascii(""));
+    TESTX(unx::is_valid_ascii("123"));
+    TESTX(unx::is_valid_ascii("ABC"));
+    TESTX(!unx::is_valid_ascii("\x80"));
+    TESTX(!unx::is_valid_ascii("123 \x80"));
+    TESTX(!unx::is_valid_ascii("\x80 123"));
+
+    // std::u16string_view
+
+    TESTX(unx::is_valid_ascii<char16_t>(u""));
+    TESTX(unx::is_valid_ascii<char16_t>(u"123"));
+    TESTX(unx::is_valid_ascii<char16_t>(u"ABC"));
+    TESTX(!unx::is_valid_ascii<char16_t>(u"\x80"));
+    TESTX(!unx::is_valid_ascii<char16_t>(u"123 \x80"));
+    TESTX(!unx::is_valid_ascii<char16_t>(u"\x80 123"));
+}
+
 void test_ascii_collate()
 {
     std::string str_ascii;
