@@ -32,6 +32,35 @@ void test_ascii_search()
     TESTX(!unx::caseless::search_ascii("", "bbk"));
 }
 
+void test_ascii_trim()
+{
+    TESTX(unx::trim_ascii("   123   ") == "123");
+    TESTX(unx::trim_start_ascii("   123   ") == "123   ");
+    TESTX(unx::trim_end_ascii("   123   ") == "   123");
+
+    TESTX(unx::trim_ascii("\t\r\n\f\v 123 \t\r\n\f\v") == "123");
+    TESTX(unx::trim_start_ascii("\t\r\n\f\v 123 \t\r\n\f\v") == "123 \t\r\n\f\v");
+    TESTX(unx::trim_end_ascii("\t\r\n\f\v 123 \t\r\n\f\v") == "\t\r\n\f\v 123");
+
+    TESTX(unx::trim_ascii("") == "");
+    TESTX(unx::trim_start_ascii("") == "");
+    TESTX(unx::trim_end_ascii("") == "");
+
+    // std::u16string_view
+
+    TESTX(unx::trim_ascii<char16_t>(u"   123   ") == u"123");
+    TESTX(unx::trim_start_ascii<char16_t>(u"   123   ") == u"123   ");
+    TESTX(unx::trim_end_ascii<char16_t>(u"   123   ") == u"   123");
+
+    TESTX(unx::trim_ascii<char16_t>(u"\t\r\n\f\v 123 \t\r\n\f\v") == u"123");
+    TESTX(unx::trim_start_ascii<char16_t>(u"\t\r\n\f\v 123 \t\r\n\f\v") == u"123 \t\r\n\f\v");
+    TESTX(unx::trim_end_ascii<char16_t>(u"\t\r\n\f\v 123 \t\r\n\f\v") == u"\t\r\n\f\v 123");
+
+    TESTX(unx::trim_ascii<char16_t>(u"") == u"");
+    TESTX(unx::trim_start_ascii<char16_t>(u"") == u"");
+    TESTX(unx::trim_end_ascii<char16_t>(u"") == u"");
+}
+
 void test_ascii_collate()
 {
     std::string str_ascii;
