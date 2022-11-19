@@ -122,7 +122,7 @@ inline constexpr uni::search search_ascii(std::basic_string_view<T> string1, std
 
     std::size_t pos = string1.find(string2);
 
-    if (pos == std::string::npos)
+    if (pos == std::string_view::npos)
         return uni::search{};
 
     return uni::search{true, pos, pos + string2.size()};
@@ -338,8 +338,8 @@ inline constexpr std::basic_string_view<T> trim_ascii(std::basic_string_view<T> 
     std::size_t pos = view.find_first_not_of(detail::ascii::data_trim_view<T>);
     std::size_t end = view.find_last_not_of(detail::ascii::data_trim_view<T>);
 
-    view.remove_prefix(pos == std::string::npos ? 0 : pos);
-    view.remove_suffix(end == std::string::npos ? 0 : view.size() + pos - end - 1);
+    view.remove_prefix(pos == std::string_view::npos ? 0 : pos);
+    view.remove_suffix(end == std::string_view::npos ? 0 : view.size() + pos - end - 1);
 
     return view;
 }
@@ -353,7 +353,7 @@ inline constexpr std::basic_string_view<T> trim_start_ascii(std::basic_string_vi
 
     std::size_t pos = view.find_first_not_of(detail::ascii::data_trim_view<T>);
 
-    view.remove_prefix(pos == std::string::npos ? 0 : pos);
+    view.remove_prefix(pos == std::string_view::npos ? 0 : pos);
 
     return view;
 }
@@ -367,7 +367,7 @@ inline constexpr std::basic_string_view<T> trim_end_ascii(std::basic_string_view
 
     std::size_t end = view.find_last_not_of(detail::ascii::data_trim_view<T>);
 
-    view.remove_suffix(end == std::string::npos ? 0 : view.size() - end - 1);
+    view.remove_suffix(end == std::string_view::npos ? 0 : view.size() - end - 1);
 
     return view;
 }
