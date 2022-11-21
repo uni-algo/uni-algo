@@ -54,6 +54,35 @@ inline constexpr const std::array<unsigned char, 128> data_collate_nocase = {{
 
 namespace unx {
 
+namespace codepoint {
+
+inline constexpr bool is_ascii(char32_t c)
+{
+    return (c <= 0x7F) ? true : false;
+}
+
+inline constexpr bool is_ascii_uppercase(char32_t c)
+{
+    return (c >= U'A' && c <= U'Z') ? true : false;
+}
+
+inline constexpr bool is_ascii_lowercase(char32_t c)
+{
+    return (c >= U'a' && c <= U'z') ? true : false;
+}
+
+inline constexpr char32_t to_ascii_uppercase(char32_t c)
+{
+    return is_ascii_lowercase(c) ? c ^ 32 : c;
+}
+
+inline constexpr char32_t to_ascii_lowercase(char32_t c)
+{
+    return is_ascii_uppercase(c) ? c ^ 32 : c;
+}
+
+} // namespace codepoint
+
 namespace cases {
 
 template<typename T, typename Alloc = std::allocator<T>>
