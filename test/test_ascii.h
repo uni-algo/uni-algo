@@ -2,6 +2,55 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
+void test_ascii_prop()
+{
+    TESTX(unx::codepoint::is_ascii(U'w'));
+    TESTX(!unx::codepoint::is_ascii(0x80));
+
+    TESTX(unx::codepoint::is_ascii(0));
+    TESTX(unx::codepoint::is_ascii(0));
+    TESTX(!unx::codepoint::is_ascii(0xFFFD));
+    TESTX(!unx::codepoint::is_ascii(0xFFFD));
+    TESTX(!unx::codepoint::is_ascii(0x10FFFF));
+    TESTX(!unx::codepoint::is_ascii(0x10FFFF));
+    TESTX(!unx::codepoint::is_ascii(0x110000));
+    TESTX(!unx::codepoint::is_ascii(0x110000));
+    TESTX(!unx::codepoint::is_ascii(0xFFFFFFFF));
+    TESTX(!unx::codepoint::is_ascii(0xFFFFFFFF));
+
+    TESTX(unx::codepoint::is_ascii_lowercase(U'w'));
+    TESTX(!unx::codepoint::is_ascii_lowercase(U'W'));
+    TESTX(unx::codepoint::is_ascii_uppercase(U'W'));
+    TESTX(!unx::codepoint::is_ascii_uppercase(U'w'));
+
+    TESTX(!unx::codepoint::is_ascii_lowercase(0));
+    TESTX(!unx::codepoint::is_ascii_uppercase(0));
+    TESTX(!unx::codepoint::is_ascii_lowercase(0xFFFD));
+    TESTX(!unx::codepoint::is_ascii_uppercase(0xFFFD));
+    TESTX(!unx::codepoint::is_ascii_lowercase(0x10FFFF));
+    TESTX(!unx::codepoint::is_ascii_uppercase(0x10FFFF));
+    TESTX(!unx::codepoint::is_ascii_lowercase(0x110000));
+    TESTX(!unx::codepoint::is_ascii_uppercase(0x110000));
+    TESTX(!unx::codepoint::is_ascii_lowercase(0xFFFFFFFF));
+    TESTX(!unx::codepoint::is_ascii_uppercase(0xFFFFFFFF));
+
+    TESTX(unx::codepoint::to_ascii_lowercase(U'W') == U'w');
+    TESTX(unx::codepoint::to_ascii_uppercase(U'w') == U'W');
+    TESTX(unx::codepoint::to_ascii_lowercase(U':') == U':');
+    TESTX(unx::codepoint::to_ascii_uppercase(U':') == U':');
+
+    TESTX(unx::codepoint::to_ascii_lowercase(0) == 0);
+    TESTX(unx::codepoint::to_ascii_uppercase(0) == 0);
+    TESTX(unx::codepoint::to_ascii_lowercase(0xFFFD) == 0xFFFD);
+    TESTX(unx::codepoint::to_ascii_uppercase(0xFFFD) == 0xFFFD);
+    TESTX(unx::codepoint::to_ascii_lowercase(0x10FFFF) == 0x10FFFF);
+    TESTX(unx::codepoint::to_ascii_uppercase(0x10FFFF) == 0x10FFFF);
+    TESTX(unx::codepoint::to_ascii_lowercase(0x110000) == 0x110000);
+    TESTX(unx::codepoint::to_ascii_uppercase(0x110000) == 0x110000);
+    TESTX(unx::codepoint::to_ascii_lowercase(0xFFFFFFFF) == 0xFFFFFFFF);
+    TESTX(unx::codepoint::to_ascii_uppercase(0xFFFFFFFF) == 0xFFFFFFFF);
+}
+
 void test_ascii_upper_lower()
 {
     TESTX(unx::cases::to_uppercase_ascii("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
