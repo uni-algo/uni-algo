@@ -4,6 +4,12 @@
 
 void test_ascii_prop()
 {
+    // NOTE:
+    // ASCII functions know nothing about Unicode so they are not consistent with Unicode functions
+    // for example ASCII: unx::codepoint::to_ascii_lowercase(0x110000) == 0x110000
+    // but Unicode: uni::codepoint::to_simple_lowercase(0x110000) == 0xFFFD
+    // this means Unicode function always forced to return valid code point but ASCII don't follow this rule.
+
     TESTX(unx::codepoint::is_ascii(U'w'));
     TESTX(!unx::codepoint::is_ascii(0x80));
 
