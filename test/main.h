@@ -232,6 +232,7 @@ int main7()
     test_ascii_trim();
     test_ascii_valid();
     test_ascii_collate();
+    test_ascii_short_func();
 
     std::cout << "DONE: ASCII Extension" << '\n';
 

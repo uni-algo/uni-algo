@@ -135,6 +135,27 @@ void test_ascii_valid()
     TESTX(!unx::is_valid_ascii<char16_t>(u"\x80 123"));
 }
 
+void test_ascii_short_func()
+{
+    std::string str = "123";
+
+    TESTX(unx::is_valid_ascii(str));
+
+    TESTX(unx::cases::to_lowercase_ascii(str) == str);
+    TESTX(unx::cases::to_uppercase_ascii(str) == str);
+
+    TESTX(unx::casesens::compare_ascii(str, str) == 0);
+    TESTX(unx::caseless::compare_ascii(str, str) == 0);
+    TESTX(unx::casesens::collate_ascii(str, str) == 0);
+    TESTX(unx::caseless::collate_ascii(str, str) == 0);
+    TESTX(unx::casesens::search_ascii(str, str));
+    TESTX(unx::caseless::search_ascii(str, str));
+
+    TESTX(unx::trim_ascii(str) == str);
+    TESTX(unx::trim_start_ascii(str) == str);
+    TESTX(unx::trim_end_ascii(str) == str);
+}
+
 void test_ascii_collate()
 {
     std::string str_ascii;
