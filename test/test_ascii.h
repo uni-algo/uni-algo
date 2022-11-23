@@ -156,6 +156,39 @@ void test_ascii_short_func()
     TESTX(unx::trim_end_ascii(str) == str);
 }
 
+// Custom allocator for the following tests
+template<class T>
+class alloc_ascii
+{
+public:
+    using value_type = T;
+
+    alloc_ascii() = default;
+    T* allocate(std::size_t n)
+    {
+        T* p = static_cast<T*>(std::malloc(n * sizeof(T)));
+        //std::cout << "Alloc  : " << n << " bytes at " << static_cast<void*>(p) << '\n';
+        return p;
+    }
+    void deallocate(T* p, std::size_t n)
+    {
+        (void)n;
+        //std::cout << "Dealloc: " << n << " bytes at " << static_cast<void*>(p) << '\n';
+        std::free(static_cast<void*>(p));
+    }
+};
+
+
+void test_ascii_alloc_func()
+{
+    alloc_ascii<char> alloc;
+
+    std::basic_string<char, std::char_traits<char>, decltype(alloc)> str = "123";
+
+    TESTX((unx::cases::to_lowercase_ascii<char>(str, alloc) == str));
+    TESTX((unx::cases::to_uppercase_ascii<char>(str, alloc) == str));
+}
+
 void test_ascii_collate()
 {
     std::string str_ascii;

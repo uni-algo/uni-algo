@@ -233,6 +233,7 @@ int main7()
     test_ascii_valid();
     test_ascii_collate();
     test_ascii_short_func();
+    test_ascii_alloc_func();
 
     std::cout << "DONE: ASCII Extension" << '\n';
 
