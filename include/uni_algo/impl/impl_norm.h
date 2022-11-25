@@ -5,6 +5,9 @@
 #ifndef UNI_ALGO_IMPL_NORM_H_UAIH
 #define UNI_ALGO_IMPL_NORM_H_UAIH
 
+// TODO: Use for tests. Clean later.
+//#include <array>
+
 #include "impl_iter.h"
 
 #ifndef UNI_ALGO_DISABLE_PROP
@@ -66,6 +69,10 @@ struct norm_buffer
 {
     type_codept cps[norm_buffer_size];
     unsigned char ccc[norm_buffer_size];
+
+    // TODO: Use for tests. Clean later.
+    //std::array<type_codept, norm_buffer_size> cps;
+    //std::array<unsigned char, norm_buffer_size> ccc;
 };
 
 // TODO: Better name
