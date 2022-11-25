@@ -62,6 +62,20 @@ uaix_const size_t impl_x_norm_to_unaccent_utf8 = 3;
 uaix_const size_t impl_x_norm_to_unaccent_utf16 = 3;
 #endif
 
+struct norm_buffer
+{
+    type_codept cps[norm_buffer_size];
+    unsigned char ccc[norm_buffer_size];
+};
+
+// TODO: Better name
+struct norm_meow
+{
+    size_t size;
+    size_t last_qc;
+    size_t count_ns;
+};
+
 /* TODO: from yesterdays me to tomorrows me.
  * Refactoring merge:
  * stages_decomp_nfd + stages_decomp_nfkd -> stages_decomp[_offset?] (use bool in if, inlined anyway)
@@ -397,7 +411,7 @@ uaix_static bool stages_qc_yes_is_nfkd(type_codept c, unsigned char* last_ccc)
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static void norm_order(type_codept buffer[], unsigned char buffer_ccc[], size_t size)
+uaix_static void norm_order(norm_buffer *buffer, size_t size)
 {
     if (size > 0)
     {
@@ -414,18 +428,18 @@ uaix_static void norm_order(type_codept buffer[], unsigned char buffer_ccc[], si
                 size_t next = curr + 1;
                 size_t next_ccc = curr_ccc + 1;
 
-                if (buffer_ccc[next_ccc] > 0 && buffer_ccc[next_ccc] < buffer_ccc[curr_ccc])
+                if (buffer->ccc[next_ccc] > 0 && buffer->ccc[next_ccc] < buffer->ccc[curr_ccc])
                 {
                     // Swap
 
-                    type_codept   temp     = buffer[curr];
-                    unsigned char temp_ccc = buffer_ccc[curr_ccc];
+                    type_codept   temp     = buffer->cps[curr];
+                    unsigned char temp_ccc = buffer->ccc[curr_ccc];
 
-                    buffer[curr] = buffer[next];
-                    buffer[next] = temp;
+                    buffer->cps[curr] = buffer->cps[next];
+                    buffer->cps[next] = temp;
 
-                    buffer_ccc[curr_ccc] = buffer_ccc[next_ccc];
-                    buffer_ccc[next_ccc] = temp_ccc;
+                    buffer->ccc[curr_ccc] = buffer->ccc[next_ccc];
+                    buffer->ccc[next_ccc] = temp_ccc;
 
                     new_last = curr;
                 }
@@ -436,7 +450,7 @@ uaix_static void norm_order(type_codept buffer[], unsigned char buffer_ccc[], si
 }
 
 uaix_always_inline
-uaix_static size_t norm_decomp_hangul(type_codept c, size_t i, type_codept buffer[], unsigned char buffer_ccc[])
+uaix_static size_t norm_decomp_hangul(type_codept c, size_t i, norm_buffer *buffer)
 {
     const type_codept SBase = 0xAC00;
     const type_codept LBase = 0x1100;
@@ -453,16 +467,16 @@ uaix_static size_t norm_decomp_hangul(type_codept c, size_t i, type_codept buffe
         type_codept VPart = VBase + (SIndex % NCount) / TCount;
         type_codept TPart = TBase + SIndex % TCount;
 
-        buffer[i] = LPart;
-        buffer_ccc[i] = 0;
+        buffer->cps[i] = LPart;
+        buffer->ccc[i] = 0;
 
-        buffer[i + 1] = VPart;
-        buffer_ccc[i + 1] = 0;
+        buffer->cps[i + 1] = VPart;
+        buffer->ccc[i + 1] = 0;
 
         if (TPart != TBase)
         {
-            buffer[i + 2] = TPart;
-            buffer_ccc[i + 2] = 0;
+            buffer->cps[i + 2] = TPart;
+            buffer->ccc[i + 2] = 0;
 
             return 3;
         }
@@ -474,7 +488,7 @@ uaix_static size_t norm_decomp_hangul(type_codept c, size_t i, type_codept buffe
 }
 
 uaix_always_inline
-uaix_static size_t norm_comp_hangul(size_t i, type_codept buffer[], unsigned char buffer_ccc[], size_t size)
+uaix_static size_t norm_comp_hangul(size_t i, norm_buffer *buffer, size_t size)
 {
     // Note: CCC=255 is used to mark composed code points
 
@@ -487,30 +501,30 @@ uaix_static size_t norm_comp_hangul(size_t i, type_codept buffer[], unsigned cha
     const type_codept TCount = 28;
     const type_codept SCount = 11172;
 
-    type_codept c1 = buffer[i];
+    type_codept c1 = buffer->cps[i];
 
     if (c1 >= LBase && c1 < LBase + LCount) // L+V+T
     {
         if (i + 1 < size)
         {
-            type_codept c2 = buffer[i + 1];
+            type_codept c2 = buffer->cps[i + 1];
 
             if (c2 >= VBase && c2 < VBase + VCount)
             {
                 type_codept LIndex = c1 - LBase;
                 type_codept VIndex = c2 - VBase;
 
-                buffer[i] = SBase + (LIndex * VCount + VIndex) * TCount;
-                buffer_ccc[i + 1] = 255;
+                buffer->cps[i] = SBase + (LIndex * VCount + VIndex) * TCount;
+                buffer->ccc[i + 1] = 255;
 
                 if (i + 2 < size)
                 {
-                    type_codept c3 = buffer[i + 2];
+                    type_codept c3 = buffer->cps[i + 2];
 
                     if (c3 > TBase && c3 < TBase + TCount)
                     {
-                        buffer[i] += c3 - TBase;
-                        buffer_ccc[i + 2] = 255;
+                        buffer->cps[i] += c3 - TBase;
+                        buffer->ccc[i + 2] = 255;
 
                         return 2;
                     }
@@ -524,12 +538,12 @@ uaix_static size_t norm_comp_hangul(size_t i, type_codept buffer[], unsigned cha
     {
         if (i + 1 < size)
         {
-            type_codept c2 = buffer[i + 1];
+            type_codept c2 = buffer->cps[i + 1];
 
             if (c2 > TBase && c2 < TBase + TCount)
             {
-                buffer[i] += c2 - TBase;
-                buffer_ccc[i + 1] = 255;
+                buffer->cps[i] += c2 - TBase;
+                buffer->ccc[i + 1] = 255;
 
                 return 1;
             }
@@ -541,7 +555,7 @@ uaix_static size_t norm_comp_hangul(size_t i, type_codept buffer[], unsigned cha
 }
 
 uaix_always_inline
-uaix_static void norm_comp(type_codept buffer[], unsigned char buffer_ccc[], size_t size)
+uaix_static void norm_comp(norm_buffer *buffer, size_t size)
 {
     // Note: CCC=255 is used to mark composed code points
 
@@ -550,24 +564,24 @@ uaix_static void norm_comp(type_codept buffer[], unsigned char buffer_ccc[], siz
         size_t starter = 0;
         for (size_t i = 0; i < size - 1; ++i)
         {
-            size_t hangul = norm_comp_hangul(i, buffer, buffer_ccc, size);
+            size_t hangul = norm_comp_hangul(i, buffer, size);
             if (hangul)
             {
                 i += hangul;
                 continue;
             }
 
-            if (buffer_ccc[i] == 0)
+            if (buffer->ccc[i] == 0)
                 starter = i;
 
             // If there is a starter and non-blocked non-starter
-            if (starter == i || !(buffer_ccc[i] != 255 && buffer_ccc[i] >= buffer_ccc[i + 1]))
+            if (starter == i || !(buffer->ccc[i] != 255 && buffer->ccc[i] >= buffer->ccc[i + 1]))
             {
-                type_codept c = stages_comp(buffer[starter], buffer[i + 1]);
+                type_codept c = stages_comp(buffer->cps[starter], buffer->cps[i + 1]);
                 if (c != 0)
                 {
-                    buffer[starter] = c;
-                    buffer_ccc[i + 1] = 255;
+                    buffer->cps[starter] = c;
+                    buffer->ccc[i + 1] = 255;
                 }
             }
         }
@@ -575,30 +589,32 @@ uaix_static void norm_comp(type_codept buffer[], unsigned char buffer_ccc[], siz
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_return(unsigned char buffer_ccc[], size_t* size, size_t* last_qc)
+uaix_static bool norm_decomp_return(norm_buffer *buffer, norm_meow *m)
 {
+    // UNUSED: buffer->cps, m->count_ns
+
     // Flush the buffer by Quick_Check=Yes boundary.
-    if (*last_qc > 0)
+    if (m->last_qc > 0)
         return true;
 
     // More than 4 starters cannot compose together so flush the buffer.
     // In other words flush the buffer by CCC=0 boundary at this point.
     // Note 1: actually 3 starters (Hanguls L+V+T and 0CCB) but use 4 (max composition) just in case.
     // Note 2: this check only matters for NFC/NFKC because in NFD/NFKD such cases are not possible.
-    if (*size > 4 && buffer_ccc[*size - 1] == 0)
+    if (m->size > 4 && buffer->ccc[m->size - 1] == 0)
     {
-        *last_qc = *size - 1;
+        m->last_qc = m->size - 1;
         return true;
     }
 
     // This must never happen so flush the buffer and stop to make it noticeable in tests.
     // 18 is max decomposition so the next turn can exhaust the buffer.
-    if (*size + norm_max_decomposition > norm_buffer_size)
+    if (m->size + norm_max_decomposition > norm_buffer_size)
     {
 #ifdef UNI_ALGO_TEST_ASSERT
         uaix_assert(false);
 #endif
-        *last_qc = *size;
+        m->last_qc = m->size;
         return true;
     }
 
@@ -606,42 +622,40 @@ uaix_static bool norm_decomp_return(unsigned char buffer_ccc[], size_t* size, si
 }
 
 uaix_always_inline
-uaix_static void norm_decomp_count_ns(type_codept buffer[], unsigned char buffer_ccc[],
-                                      size_t* size, size_t* last_qc, size_t* count_ns)
+uaix_static void norm_decomp_count_ns(norm_buffer *buffer, norm_meow *m)
 {
     // Insert U+034F COMBINING GRAPHEME JOINER (CGJ) if there is more than 30 non-starters
 
-    if (*count_ns > norm_buffer_max_non_starters)
+    if (m->count_ns > norm_buffer_max_non_starters)
     {
-        *count_ns -= norm_buffer_max_non_starters;
-        buffer[*size] = 0x034F;
-        buffer_ccc[*size] = 0;
-        *last_qc = *size;
-        *size += 1;
+        m->count_ns -= norm_buffer_max_non_starters;
+        buffer->cps[m->size] = 0x034F;
+        buffer->ccc[m->size] = 0;
+        m->last_qc = m->size;
+        m->size += 1;
     }
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfc(type_codept c, type_codept buffer[], unsigned char buffer_ccc[],
-                                 size_t* size, size_t* last_qc, size_t* count_ns)
+uaix_static bool norm_decomp_nfc(type_codept c, norm_buffer *buffer, norm_meow *m)
 {
-    norm_decomp_count_ns(buffer, buffer_ccc, size, last_qc, count_ns);
+    norm_decomp_count_ns(buffer, m);
 
     // Need to decompose the first code point when NFC/NFKC,
     // it can be still composed if we drop here from fast loop
-    if (*size == 1)
+    if (m->size == 1)
     {
-        size_t offset = stages_decomp_nfd(buffer[0]);
+        size_t offset = stages_decomp_nfd(buffer->cps[0]);
         if (offset)
         {
-            *size = 0;
+            m->size = 0;
             size_t number = stages_decomp_nfd_number(offset);
-            for (size_t i = 0; i < number; ++i, *size += 1)
+            for (size_t i = 0; i < number; ++i, m->size += 1)
             {
-                buffer[*size] = stages_decomp_nfd_cp(offset, i);
-                buffer_ccc[*size] = stages_ccc(buffer[*size]);
-                if (stages_qc_yes_nfc(buffer[*size]))
-                    *last_qc = *size;
+                buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
+                buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
+                if (stages_qc_yes_nfc(buffer->cps[m->size]))
+                    m->last_qc = m->size;
             }
         }
     }
@@ -654,179 +668,176 @@ uaix_static bool norm_decomp_nfc(type_codept c, type_codept buffer[], unsigned c
     // Test string: "\x005A\x0301\x0179\x0179\x0179\x0179\x0179"
     if (stages_qc_yes_nfc(c))
     {
-        buffer[*size] = c;
-        buffer_ccc[*size] = stages_ccc(c);
-        *last_qc = *size;
-        *size += 1;
+        buffer->cps[m->size] = c;
+        buffer->ccc[m->size] = stages_ccc(c);
+        m->last_qc = m->size;
+        m->size += 1;
     }
     else
     {
         size_t offset = stages_decomp_nfd(c);
         if (offset == 0)
         {
-            buffer[*size] = c;
-            buffer_ccc[*size] = stages_ccc(c);
+            buffer->cps[m->size] = c;
+            buffer->ccc[m->size] = stages_ccc(c);
             if (stages_qc_yes_nfc(c))
-                *last_qc = *size;
-            *size += 1;
+                m->last_qc = m->size;
+            m->size += 1;
         }
         else
         {
             size_t number = stages_decomp_nfd_number(offset);
-            for (size_t i = 0; i < number; ++i, *size += 1)
+            for (size_t i = 0; i < number; ++i, m->size += 1)
             {
-                buffer[*size] = stages_decomp_nfd_cp(offset, i);
-                buffer_ccc[*size] = stages_ccc(buffer[*size]);
-                if (stages_qc_yes_nfc(buffer[*size]))
-                    *last_qc = *size;
+                buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
+                buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
+                if (stages_qc_yes_nfc(buffer->cps[m->size]))
+                    m->last_qc = m->size;
             }
         }
     }
 
-    return norm_decomp_return(buffer_ccc, size, last_qc);
+    return norm_decomp_return(buffer, m);
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfd(type_codept c, type_codept buffer[], unsigned char buffer_ccc[],
-                                 size_t* size, size_t* last_qc, size_t* count_ns)
+uaix_static bool norm_decomp_nfd(type_codept c, norm_buffer *buffer, norm_meow *m)
 {
     // Almost the same as norm_decomp_nfc but decompose everything
 
-    norm_decomp_count_ns(buffer, buffer_ccc, size, last_qc, count_ns);
+    norm_decomp_count_ns(buffer, m);
 
-    size_t hangul = norm_decomp_hangul(c, *size, buffer, buffer_ccc);
+    size_t hangul = norm_decomp_hangul(c, m->size, buffer);
     if (hangul)
     {
-        *last_qc = *size;
-        *size += hangul;
+        m->last_qc = m->size;
+        m->size += hangul;
     }
     else
     {
         size_t offset = stages_decomp_nfd(c);
         if (offset == 0)
         {
-            buffer[*size] = c;
-            buffer_ccc[*size] = stages_ccc(c);
+            buffer->cps[m->size] = c;
+            buffer->ccc[m->size] = stages_ccc(c);
             if (stages_qc_yes_nfd(c))
-                *last_qc = *size;
-            *size += 1;
+                m->last_qc = m->size;
+            m->size += 1;
         }
         else
         {
             size_t number = stages_decomp_nfd_number(offset);
-            for (size_t i = 0; i < number; ++i, *size += 1)
+            for (size_t i = 0; i < number; ++i, m->size += 1)
             {
-                buffer[*size] = stages_decomp_nfd_cp(offset, i);
-                buffer_ccc[*size] = stages_ccc(buffer[*size]);
-                if (stages_qc_yes_nfd(buffer[*size]))
-                    *last_qc = *size;
+                buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
+                buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
+                if (stages_qc_yes_nfd(buffer->cps[m->size]))
+                    m->last_qc = m->size;
             }
         }
     }
 
-    return norm_decomp_return(buffer_ccc, size, last_qc);
+    return norm_decomp_return(buffer, m);
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfkc(type_codept c, type_codept buffer[], unsigned char buffer_ccc[],
-                                  size_t* size, size_t* last_qc, size_t* count_ns)
+uaix_static bool norm_decomp_nfkc(type_codept c, norm_buffer *buffer, norm_meow *m)
 {
     // The same as norm_decomp_nfc but uses NFKC data
 
-    norm_decomp_count_ns(buffer, buffer_ccc, size, last_qc, count_ns);
+    norm_decomp_count_ns(buffer, m);
 
-    if (*size == 1)
+    if (m->size == 1)
     {
-        size_t offset = stages_decomp_nfkd(buffer[0]);
+        size_t offset = stages_decomp_nfkd(buffer->cps[0]);
         if (offset)
         {
-            *size = 0;
+            m->size = 0;
             size_t number = stages_decomp_nfkd_number(offset);
-            for (size_t i = 0; i < number; ++i, *size += 1)
+            for (size_t i = 0; i < number; ++i, m->size += 1)
             {
-                buffer[*size] = stages_decomp_nfkd_cp(offset, i);
-                buffer_ccc[*size] = stages_ccc(buffer[*size]);
-                if (stages_qc_yes_nfkc(buffer[*size]))
-                    *last_qc = *size;
+                buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
+                buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
+                if (stages_qc_yes_nfkc(buffer->cps[m->size]))
+                    m->last_qc = m->size;
             }
         }
     }
 
     if (stages_qc_yes_nfkc(c))
     {
-        buffer[*size] = c;
-        buffer_ccc[*size] = stages_ccc(c);
-        *last_qc = *size;
-        *size += 1;
+        buffer->cps[m->size] = c;
+        buffer->ccc[m->size] = stages_ccc(c);
+        m->last_qc = m->size;
+        m->size += 1;
     }
     else
     {
         size_t offset = stages_decomp_nfkd(c);
         if (offset == 0)
         {
-            buffer[*size] = c;
-            buffer_ccc[*size] = stages_ccc(c);
+            buffer->cps[m->size] = c;
+            buffer->ccc[m->size] = stages_ccc(c);
             if (stages_qc_yes_nfkc(c))
-                *last_qc = *size;
-            *size += 1;
+                m->last_qc = m->size;
+            m->size += 1;
         }
         else
         {
             size_t number = stages_decomp_nfkd_number(offset);
-            for (size_t i = 0; i < number; ++i, *size += 1)
+            for (size_t i = 0; i < number; ++i, m->size += 1)
             {
-                buffer[*size] = stages_decomp_nfkd_cp(offset, i);
-                buffer_ccc[*size] = stages_ccc(buffer[*size]);
-                if (stages_qc_yes_nfkc(buffer[*size]))
-                    *last_qc = *size;
+                buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
+                buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
+                if (stages_qc_yes_nfkc(buffer->cps[m->size]))
+                    m->last_qc = m->size;
             }
         }
     }
 
-    return norm_decomp_return(buffer_ccc, size, last_qc);
+    return norm_decomp_return(buffer, m);
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfkd(type_codept c, type_codept buffer[], unsigned char buffer_ccc[],
-                                  size_t* size, size_t* last_qc, size_t* count_ns)
+uaix_static bool norm_decomp_nfkd(type_codept c, norm_buffer *buffer, norm_meow *m)
 {
     // The same as norm_decomp_nfd but uses NFKD data
 
-    norm_decomp_count_ns(buffer, buffer_ccc, size, last_qc, count_ns);
+    norm_decomp_count_ns(buffer, m);
 
-    size_t hangul = norm_decomp_hangul(c, *size, buffer, buffer_ccc);
+    size_t hangul = norm_decomp_hangul(c, m->size, buffer);
     if (hangul)
     {
-        *last_qc = *size;
-        *size += hangul;
+        m->last_qc = m->size;
+        m->size += hangul;
     }
     else
     {
         size_t offset = stages_decomp_nfkd(c);
         if (offset == 0)
         {
-            buffer[*size] = c;
-            buffer_ccc[*size] = stages_ccc(c);
+            buffer->cps[m->size] = c;
+            buffer->ccc[m->size] = stages_ccc(c);
             if (stages_qc_yes_nfkd(c))
-                *last_qc = *size;
-            *size += 1;
+                m->last_qc = m->size;
+            m->size += 1;
         }
         else
         {
             size_t number = stages_decomp_nfkd_number(offset);
-            for (size_t i = 0; i < number; ++i, *size += 1)
+            for (size_t i = 0; i < number; ++i, m->size += 1)
             {
-                buffer[*size] = stages_decomp_nfkd_cp(offset, i);
-                buffer_ccc[*size] = stages_ccc(buffer[*size]);
-                if (stages_qc_yes_nfkd(buffer[*size]))
-                    *last_qc = *size;
+                buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
+                buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
+                if (stages_qc_yes_nfkd(buffer->cps[m->size]))
+                    m->last_qc = m->size;
             }
         }
     }
 
-    return norm_decomp_return(buffer_ccc, size, last_qc);
+    return norm_decomp_return(buffer, m);
 }
 
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
@@ -834,24 +845,23 @@ uaix_static bool norm_decomp_nfkd(type_codept c, type_codept buffer[], unsigned 
 #ifndef UNI_ALGO_DISABLE_PROP
 
 uaix_always_inline
-uaix_static bool norm_decomp_unaccent(type_codept c, type_codept buffer[], unsigned char buffer_ccc[],
-                                      size_t* size, size_t* last_qc, size_t* count_ns)
+uaix_static bool norm_decomp_unaccent(type_codept c, norm_buffer *buffer, norm_meow *m)
 {
     // Ignore Hanguls, decompose to NFD, skip Nonspacing Mark
     // The full algorithm is: NFD -> remove Nonspacing Mark -> NFC
 
-    norm_decomp_count_ns(buffer, buffer_ccc, size, last_qc, count_ns);
+    norm_decomp_count_ns(buffer, m);
 
     size_t offset = stages_decomp_nfd(c);
     if (offset == 0)
     {
         if (impl_prop_get_gc_prop(impl_prop_get_prop(c)) != impl_General_Category_Mn)
         {
-            buffer[*size] = c;
-            buffer_ccc[*size] = stages_ccc(c);
+            buffer->cps[m->size] = c;
+            buffer->ccc[m->size] = stages_ccc(c);
             if (stages_qc_yes_nfd(c))
-                *last_qc = *size;
-            *size += 1;
+                m->last_qc = m->size;
+            m->size += 1;
         }
     }
     else
@@ -862,33 +872,35 @@ uaix_static bool norm_decomp_unaccent(type_codept c, type_codept buffer[], unsig
             type_codept cp = stages_decomp_nfd_cp(offset, i);
             if (impl_prop_get_gc_prop(impl_prop_get_prop(cp)) != impl_General_Category_Mn)
             {
-                buffer[*size] = cp;
-                buffer_ccc[*size] = stages_ccc(cp);
+                buffer->cps[m->size] = cp;
+                buffer->ccc[m->size] = stages_ccc(cp);
                 if (stages_qc_yes_nfd(cp))
-                    *last_qc = *size;
-                *size += 1;
+                    m->last_qc = m->size;
+                m->size += 1;
             }
         }
     }
 
-    return norm_decomp_return(buffer_ccc, size, last_qc);
+    return norm_decomp_return(buffer, m);
 }
 
 #endif // UNI_ALGO_DISABLE_PROP
 
 uaix_always_inline
-uaix_static void norm_buffer(type_codept buffer[], unsigned char buffer_ccc[], size_t* size, size_t* last_qc)
+uaix_static void norm_proc_buffer(norm_buffer *buffer, norm_meow *m)
 {
+    // UNUSED: m->count_ns
+
     // Move the last decomposed code point that between last_qc and size to the start
     // last_qc is last Quick_Check=Yes mark
 
-    for (size_t i = 0, j = *last_qc; j < *size; ++i, ++j)
+    for (size_t i = 0, j = m->last_qc; j < m->size; ++i, ++j)
     {
-        buffer[i] = buffer[j];
-        buffer_ccc[i] = buffer_ccc[j];
+        buffer->cps[i] = buffer->cps[j];
+        buffer->ccc[i] = buffer->ccc[j];
     }
-    *size = *size - *last_qc;
-    *last_qc = 0;
+    m->size = m->size - m->last_qc;
+    m->last_qc = 0;
 }
 
 #ifdef __cplusplus
@@ -899,10 +911,9 @@ uaix_static size_t impl_norm_to_nfc_utf8(it_in_utf8 first, it_end_utf8 last, it_
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_buffer buffer = {{0}, {0}};
+    norm_meow m = {0, 0, 0};
 
-    size_t size = 0, last_qc = 0, count_ns = 0;
     type_codept c = 0;
 
     /* while (src != last) is the fast loop, any slow down there reduces the performance drastically,
@@ -921,40 +932,40 @@ uaix_static size_t impl_norm_to_nfc_utf8(it_in_utf8 first, it_end_utf8 last, it_
         while (src != last)
         {
             src = iter_utf8(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfc(c, &count_ns)))
+            if (uaix_likely(stages_qc_yes_ns_nfc(c, &m.count_ns)))
             {
-                if (uaix_likely(size == 1))
+                if (uaix_likely(m.size == 1))
                 {
-                    dst = codepoint_to_utf8(buffer[0], dst);
-                    size = 0;
+                    dst = codepoint_to_utf8(buffer.cps[0], dst);
+                    m.size = 0;
                 }
-                if (uaix_likely(size == 0))
+                if (uaix_likely(m.size == 0))
                 {
-                    buffer[0] = c;
-                    buffer_ccc[0] = 0;
-                    size = 1;
+                    buffer.cps[0] = c;
+                    buffer.ccc[0] = 0;
+                    m.size = 1;
                     continue; // Fast loop ends here
                 }
             }
-            if (norm_decomp_nfc(c, buffer, buffer_ccc, &size, &last_qc, &count_ns))
+            if (norm_decomp_nfc(c, &buffer, &m))
                 break;
         }
 
-        if (last_qc == 0) // The end of the data if we are here without last_qc
-            last_qc = size;
+        if (m.last_qc == 0) // The end of the data if we are here without last_qc
+            m.last_qc = m.size;
 
-        norm_order(buffer, buffer_ccc, last_qc);
-        norm_comp(buffer, buffer_ccc, last_qc);
+        norm_order(&buffer, m.last_qc);
+        norm_comp(&buffer, m.last_qc);
 
-        for (size_t i = 0; i < last_qc; ++i)
+        for (size_t i = 0; i < m.last_qc; ++i)
         {
-            if (buffer_ccc[i] != 255)
-                dst = codepoint_to_utf8(buffer[i], dst);
+            if (buffer.ccc[i] != 255)
+                dst = codepoint_to_utf8(buffer.cps[i], dst);
         }
 
-        norm_buffer(buffer, buffer_ccc, &size, &last_qc);
+        norm_proc_buffer(&buffer, &m);
     }
-    while (size > 0);
+    while (m.size > 0);
 
     return (size_t)(dst - result);
 }
@@ -969,10 +980,9 @@ uaix_static size_t impl_norm_to_nfd_utf8(it_in_utf8 first, it_end_utf8 last, it_
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_buffer buffer = {{0}, {0}};
+    norm_meow m = {0, 0, 0};
 
-    size_t size = 0, last_qc = 0, count_ns = 0;
     type_codept c = 0;
 
     do
@@ -980,36 +990,36 @@ uaix_static size_t impl_norm_to_nfd_utf8(it_in_utf8 first, it_end_utf8 last, it_
         while (src != last)
         {
             src = iter_utf8(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfd(c, &count_ns)))
+            if (uaix_likely(stages_qc_yes_ns_nfd(c, &m.count_ns)))
             {
-                if (uaix_likely(size == 1))
+                if (uaix_likely(m.size == 1))
                 {
-                    dst = codepoint_to_utf8(buffer[0], dst);
-                    size = 0;
+                    dst = codepoint_to_utf8(buffer.cps[0], dst);
+                    m.size = 0;
                 }
-                if (uaix_likely(size == 0))
+                if (uaix_likely(m.size == 0))
                 {
-                    buffer[0] = c;
-                    buffer_ccc[0] = 0;
-                    size = 1;
+                    buffer.cps[0] = c;
+                    buffer.ccc[0] = 0;
+                    m.size = 1;
                     continue;
                 }
             }
-            if (norm_decomp_nfd(c, buffer, buffer_ccc, &size, &last_qc, &count_ns))
+            if (norm_decomp_nfd(c, &buffer, &m))
                 break;
         }
 
-        if (last_qc == 0)
-            last_qc = size;
+        if (m.last_qc == 0)
+            m.last_qc = m.size;
 
-        norm_order(buffer, buffer_ccc, last_qc);
+        norm_order(&buffer, m.last_qc);
 
-        for (size_t i = 0; i < last_qc; ++i)
-            dst = codepoint_to_utf8(buffer[i], dst);
+        for (size_t i = 0; i < m.last_qc; ++i)
+            dst = codepoint_to_utf8(buffer.cps[i], dst);
 
-        norm_buffer(buffer, buffer_ccc, &size, &last_qc);
+        norm_proc_buffer(&buffer, &m);
     }
-    while (size > 0);
+    while (m.size > 0);
 
     return (size_t)(dst - result);
 }
@@ -1026,10 +1036,9 @@ uaix_static size_t impl_norm_to_nfkc_utf8(it_in_utf8 first, it_end_utf8 last, it
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_buffer buffer = {{0}, {0}};
+    norm_meow m = {0, 0, 0};
 
-    size_t size = 0, last_qc = 0, count_ns = 0;
     type_codept c = 0;
 
     do
@@ -1037,40 +1046,40 @@ uaix_static size_t impl_norm_to_nfkc_utf8(it_in_utf8 first, it_end_utf8 last, it
         while (src != last)
         {
             src = iter_utf8(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfkc(c, &count_ns)))
+            if (uaix_likely(stages_qc_yes_ns_nfkc(c, &m.count_ns)))
             {
-                if (uaix_likely(size == 1))
+                if (uaix_likely(m.size == 1))
                 {
-                    dst = codepoint_to_utf8(buffer[0], dst);
-                    size = 0;
+                    dst = codepoint_to_utf8(buffer.cps[0], dst);
+                    m.size = 0;
                 }
-                if (uaix_likely(size == 0))
+                if (uaix_likely(m.size == 0))
                 {
-                    buffer[0] = c;
-                    buffer_ccc[0] = 0;
-                    size = 1;
+                    buffer.cps[0] = c;
+                    buffer.ccc[0] = 0;
+                    m.size = 1;
                     continue;
                 }
             }
-            if (norm_decomp_nfkc(c, buffer, buffer_ccc, &size, &last_qc, &count_ns))
+            if (norm_decomp_nfkc(c, &buffer, &m))
                 break;
         }
 
-        if (last_qc == 0)
-            last_qc = size;
+        if (m.last_qc == 0)
+            m.last_qc = m.size;
 
-        norm_order(buffer, buffer_ccc, last_qc);
-        norm_comp(buffer, buffer_ccc, last_qc);
+        norm_order(&buffer, m.last_qc);
+        norm_comp(&buffer, m.last_qc);
 
-        for (size_t i = 0; i < last_qc; ++i)
+        for (size_t i = 0; i < m.last_qc; ++i)
         {
-            if (buffer_ccc[i] != 255)
-                dst = codepoint_to_utf8(buffer[i], dst);
+            if (buffer.ccc[i] != 255)
+                dst = codepoint_to_utf8(buffer.cps[i], dst);
         }
 
-        norm_buffer(buffer, buffer_ccc, &size, &last_qc);
+        norm_proc_buffer(&buffer, &m);
     }
-    while (size > 0);
+    while (m.size > 0);
 
     return (size_t)(dst - result);
 }
@@ -1085,10 +1094,9 @@ uaix_static size_t impl_norm_to_nfkd_utf8(it_in_utf8 first, it_end_utf8 last, it
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_buffer buffer = {{0}, {0}};
+    norm_meow m = {0, 0, 0};
 
-    size_t size = 0, last_qc = 0, count_ns = 0;
     type_codept c = 0;
 
     do
@@ -1096,36 +1104,36 @@ uaix_static size_t impl_norm_to_nfkd_utf8(it_in_utf8 first, it_end_utf8 last, it
         while (src != last)
         {
             src = iter_utf8(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfkd(c, &count_ns)))
+            if (uaix_likely(stages_qc_yes_ns_nfkd(c, &m.count_ns)))
             {
-                if (uaix_likely(size == 1))
+                if (uaix_likely(m.size == 1))
                 {
-                    dst = codepoint_to_utf8(buffer[0], dst);
-                    size = 0;
+                    dst = codepoint_to_utf8(buffer.cps[0], dst);
+                    m.size = 0;
                 }
-                if (uaix_likely(size == 0))
+                if (uaix_likely(m.size == 0))
                 {
-                    buffer[0] = c;
-                    buffer_ccc[0] = 0;
-                    size = 1;
+                    buffer.cps[0] = c;
+                    buffer.ccc[0] = 0;
+                    m.size = 1;
                     continue;
                 }
             }
-            if (norm_decomp_nfkd(c, buffer, buffer_ccc, &size, &last_qc, &count_ns))
+            if (norm_decomp_nfkd(c, &buffer, &m))
                 break;
         }
 
-        if (last_qc == 0)
-            last_qc = size;
+        if (m.last_qc == 0)
+            m.last_qc = m.size;
 
-        norm_order(buffer, buffer_ccc, last_qc);
+        norm_order(&buffer, m.last_qc);
 
-        for (size_t i = 0; i < last_qc; ++i)
-            dst = codepoint_to_utf8(buffer[i], dst);
+        for (size_t i = 0; i < m.last_qc; ++i)
+            dst = codepoint_to_utf8(buffer.cps[i], dst);
 
-        norm_buffer(buffer, buffer_ccc, &size, &last_qc);
+        norm_proc_buffer(&buffer, &m);
     }
-    while (size > 0);
+    while (m.size > 0);
 
     return (size_t)(dst - result);
 }
@@ -1142,10 +1150,9 @@ uaix_static size_t impl_norm_to_unaccent_utf8(it_in_utf8 first, it_end_utf8 last
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_buffer buffer = {{0}, {0}};
+    norm_meow m = {0, 0, 0};
 
-    size_t size = 0, last_qc = 0, count_ns = 0;
     type_codept c = 0;
 
     // Algorithm: NFD -> remove Nonspacing Mark -> NFC
@@ -1155,40 +1162,40 @@ uaix_static size_t impl_norm_to_unaccent_utf8(it_in_utf8 first, it_end_utf8 last
         while (src != last)
         {
             src = iter_utf8(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfd(c, &count_ns)))
+            if (uaix_likely(stages_qc_yes_ns_nfd(c, &m.count_ns)))
             {
-                if (uaix_likely(size == 1))
+                if (uaix_likely(m.size == 1))
                 {
-                    dst = codepoint_to_utf8(buffer[0], dst);
-                    size = 0;
+                    dst = codepoint_to_utf8(buffer.cps[0], dst);
+                    m.size = 0;
                 }
-                if (uaix_likely(size == 0))
+                if (uaix_likely(m.size == 0))
                 {
-                    buffer[0] = c;
-                    buffer_ccc[0] = 0;
-                    size = 1;
+                    buffer.cps[0] = c;
+                    buffer.ccc[0] = 0;
+                    m.size = 1;
                     continue;
                 }
             }
-            if (norm_decomp_unaccent(c, buffer, buffer_ccc, &size, &last_qc, &count_ns))
+            if (norm_decomp_unaccent(c, &buffer, &m))
                 break;
         }
 
-        if (last_qc == 0)
-            last_qc = size;
+        if (m.last_qc == 0)
+            m.last_qc = m.size;
 
-        norm_order(buffer, buffer_ccc, last_qc);
-        norm_comp(buffer, buffer_ccc, last_qc);
+        norm_order(&buffer, m.last_qc);
+        norm_comp(&buffer, m.last_qc);
 
-        for (size_t i = 0; i < last_qc; ++i)
+        for (size_t i = 0; i < m.last_qc; ++i)
         {
-            if (buffer_ccc[i] != 255)
-                dst = codepoint_to_utf8(buffer[i], dst);
+            if (buffer.ccc[i] != 255)
+                dst = codepoint_to_utf8(buffer.cps[i], dst);
         }
 
-        norm_buffer(buffer, buffer_ccc, &size, &last_qc);
+        norm_proc_buffer(&buffer, &m);
     }
-    while (size > 0);
+    while (m.size > 0);
 
     return (size_t)(dst - result);
 }
@@ -1294,10 +1301,9 @@ uaix_static size_t impl_norm_to_nfc_utf16(it_in_utf16 first, it_end_utf16 last, 
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_buffer buffer = {{0}, {0}};
+    norm_meow m = {0, 0, 0};
 
-    size_t size = 0, last_qc = 0, count_ns = 0;
     type_codept c = 0;
 
     do
@@ -1305,40 +1311,40 @@ uaix_static size_t impl_norm_to_nfc_utf16(it_in_utf16 first, it_end_utf16 last, 
         while (uaix_likely(src != last))
         {
             src = iter_utf16(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfc(c, &count_ns)))
+            if (uaix_likely(stages_qc_yes_ns_nfc(c, &m.count_ns)))
             {
-                if (uaix_likely(size == 1))
+                if (uaix_likely(m.size == 1))
                 {
-                    dst = codepoint_to_utf16(buffer[0], dst);
-                    size = 0;
+                    dst = codepoint_to_utf16(buffer.cps[0], dst);
+                    m.size = 0;
                 }
-                if (uaix_likely(size == 0))
+                if (uaix_likely(m.size == 0))
                 {
-                    buffer[0] = c;
-                    buffer_ccc[0] = 0;
-                    size = 1;
+                    buffer.cps[0] = c;
+                    buffer.ccc[0] = 0;
+                    m.size = 1;
                     continue; // Fast loop ends here
                 }
             }
-            if (norm_decomp_nfc(c, buffer, buffer_ccc, &size, &last_qc, &count_ns))
+            if (norm_decomp_nfc(c, &buffer, &m))
                 break;
         }
 
-        if (last_qc == 0) // The end of the data if we are here without last_qc
-            last_qc = size;
+        if (m.last_qc == 0) // The end of the data if we are here without last_qc
+            m.last_qc = m.size;
 
-        norm_order(buffer, buffer_ccc, last_qc);
-        norm_comp(buffer, buffer_ccc, last_qc);
+        norm_order(&buffer, m.last_qc);
+        norm_comp(&buffer, m.last_qc);
 
-        for (size_t i = 0; i < last_qc; ++i)
+        for (size_t i = 0; i < m.last_qc; ++i)
         {
-            if (buffer_ccc[i] != 255)
-                dst = codepoint_to_utf16(buffer[i], dst);
+            if (buffer.ccc[i] != 255)
+                dst = codepoint_to_utf16(buffer.cps[i], dst);
         }
 
-        norm_buffer(buffer, buffer_ccc, &size, &last_qc);
+        norm_proc_buffer(&buffer, &m);
     }
-    while (size > 0);
+    while (m.size > 0);
 
     return (size_t)(dst - result);
 }
@@ -1351,10 +1357,9 @@ uaix_static size_t impl_norm_to_nfd_utf16(it_in_utf16 first, it_end_utf16 last, 
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_buffer buffer = {{0}, {0}};
+    norm_meow m = {0, 0, 0};
 
-    size_t size = 0, last_qc = 0, count_ns = 0;
     type_codept c = 0;
 
     do
@@ -1362,36 +1367,36 @@ uaix_static size_t impl_norm_to_nfd_utf16(it_in_utf16 first, it_end_utf16 last, 
         while (src != last)
         {
             src = iter_utf16(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfd(c, &count_ns)))
+            if (uaix_likely(stages_qc_yes_ns_nfd(c, &m.count_ns)))
             {
-                if (uaix_likely(size == 1))
+                if (uaix_likely(m.size == 1))
                 {
-                    dst = codepoint_to_utf16(buffer[0], dst);
-                    size = 0;
+                    dst = codepoint_to_utf16(buffer.cps[0], dst);
+                    m.size = 0;
                 }
-                if (uaix_likely(size == 0))
+                if (uaix_likely(m.size == 0))
                 {
-                    buffer[0] = c;
-                    buffer_ccc[0] = 0;
-                    size = 1;
+                    buffer.cps[0] = c;
+                    buffer.ccc[0] = 0;
+                    m.size = 1;
                     continue;
                 }
             }
-            if (norm_decomp_nfd(c, buffer, buffer_ccc, &size, &last_qc, &count_ns))
+            if (norm_decomp_nfd(c, &buffer, &m))
                 break;
         }
 
-        if (last_qc == 0)
-            last_qc = size;
+        if (m.last_qc == 0)
+            m.last_qc = m.size;
 
-        norm_order(buffer, buffer_ccc, last_qc);
+        norm_order(&buffer, m.last_qc);
 
-        for (size_t i = 0; i < last_qc; ++i)
-            dst = codepoint_to_utf16(buffer[i], dst);
+        for (size_t i = 0; i < m.last_qc; ++i)
+            dst = codepoint_to_utf16(buffer.cps[i], dst);
 
-        norm_buffer(buffer, buffer_ccc, &size, &last_qc);
+        norm_proc_buffer(&buffer, &m);
     }
-    while (size > 0);
+    while (m.size > 0);
 
     return (size_t)(dst - result);
 }
@@ -1406,10 +1411,9 @@ uaix_static size_t impl_norm_to_nfkc_utf16(it_in_utf16 first, it_end_utf16 last,
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_buffer buffer = {{0}, {0}};
+    norm_meow m = {0, 0, 0};
 
-    size_t size = 0, last_qc = 0, count_ns = 0;
     type_codept c = 0;
 
     do
@@ -1417,40 +1421,40 @@ uaix_static size_t impl_norm_to_nfkc_utf16(it_in_utf16 first, it_end_utf16 last,
         while (src != last)
         {
             src = iter_utf16(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfkc(c, &count_ns)))
+            if (uaix_likely(stages_qc_yes_ns_nfkc(c, &m.count_ns)))
             {
-                if (uaix_likely(size == 1))
+                if (uaix_likely(m.size == 1))
                 {
-                    dst = codepoint_to_utf16(buffer[0], dst);
-                    size = 0;
+                    dst = codepoint_to_utf16(buffer.cps[0], dst);
+                    m.size = 0;
                 }
-                if (uaix_likely(size == 0))
+                if (uaix_likely(m.size == 0))
                 {
-                    buffer[0] = c;
-                    buffer_ccc[0] = 0;
-                    size = 1;
+                    buffer.cps[0] = c;
+                    buffer.ccc[0] = 0;
+                    m.size = 1;
                     continue;
                 }
             }
-            if (norm_decomp_nfkc(c, buffer, buffer_ccc, &size, &last_qc, &count_ns))
+            if (norm_decomp_nfkc(c, &buffer, &m))
                 break;
         }
 
-        if (last_qc == 0)
-            last_qc = size;
+        if (m.last_qc == 0)
+            m.last_qc = m.size;
 
-        norm_order(buffer, buffer_ccc, last_qc);
-        norm_comp(buffer, buffer_ccc, last_qc);
+        norm_order(&buffer, m.last_qc);
+        norm_comp(&buffer, m.last_qc);
 
-        for (size_t i = 0; i < last_qc; ++i)
+        for (size_t i = 0; i < m.last_qc; ++i)
         {
-            if (buffer_ccc[i] != 255)
-                dst = codepoint_to_utf16(buffer[i], dst);
+            if (buffer.ccc[i] != 255)
+                dst = codepoint_to_utf16(buffer.cps[i], dst);
         }
 
-        norm_buffer(buffer, buffer_ccc, &size, &last_qc);
+        norm_proc_buffer(&buffer, &m);
     }
-    while (size > 0);
+    while (m.size > 0);
 
     return (size_t)(dst - result);
 }
@@ -1463,10 +1467,9 @@ uaix_static size_t impl_norm_to_nfkd_utf16(it_in_utf16 first, it_end_utf16 last,
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_buffer buffer = {{0}, {0}};
+    norm_meow m = {0, 0, 0};
 
-    size_t size = 0, last_qc = 0, count_ns = 0;
     type_codept c = 0;
 
     do
@@ -1474,36 +1477,36 @@ uaix_static size_t impl_norm_to_nfkd_utf16(it_in_utf16 first, it_end_utf16 last,
         while (src != last)
         {
             src = iter_utf16(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfkd(c, &count_ns)))
+            if (uaix_likely(stages_qc_yes_ns_nfkd(c, &m.count_ns)))
             {
-                if (uaix_likely(size == 1))
+                if (uaix_likely(m.size == 1))
                 {
-                    dst = codepoint_to_utf16(buffer[0], dst);
-                    size = 0;
+                    dst = codepoint_to_utf16(buffer.cps[0], dst);
+                    m.size = 0;
                 }
-                if (uaix_likely(size == 0))
+                if (uaix_likely(m.size == 0))
                 {
-                    buffer[0] = c;
-                    buffer_ccc[0] = 0;
-                    size = 1;
+                    buffer.cps[0] = c;
+                    buffer.ccc[0] = 0;
+                    m.size = 1;
                     continue;
                 }
             }
-            if (norm_decomp_nfkd(c, buffer, buffer_ccc, &size, &last_qc, &count_ns))
+            if (norm_decomp_nfkd(c, &buffer, &m))
                 break;
         }
 
-        if (last_qc == 0)
-            last_qc = size;
+        if (m.last_qc == 0)
+            m.last_qc = m.size;
 
-        norm_order(buffer, buffer_ccc, last_qc);
+        norm_order(&buffer, m.last_qc);
 
-        for (size_t i = 0; i < last_qc; ++i)
-            dst = codepoint_to_utf16(buffer[i], dst);
+        for (size_t i = 0; i < m.last_qc; ++i)
+            dst = codepoint_to_utf16(buffer.cps[i], dst);
 
-        norm_buffer(buffer, buffer_ccc, &size, &last_qc);
+        norm_proc_buffer(&buffer, &m);
     }
-    while (size > 0);
+    while (m.size > 0);
 
     return (size_t)(dst - result);
 }
@@ -1520,10 +1523,9 @@ uaix_static size_t impl_norm_to_unaccent_utf16(it_in_utf16 first, it_end_utf16 l
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_buffer buffer = {{0}, {0}};
+    norm_meow m = {0, 0, 0};
 
-    size_t size = 0, last_qc = 0, count_ns = 0;
     type_codept c = 0;
 
     do
@@ -1531,40 +1533,40 @@ uaix_static size_t impl_norm_to_unaccent_utf16(it_in_utf16 first, it_end_utf16 l
         while (src != last)
         {
             src = iter_utf16(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfd(c, &count_ns)))
+            if (uaix_likely(stages_qc_yes_ns_nfd(c, &m.count_ns)))
             {
-                if (uaix_likely(size == 1))
+                if (uaix_likely(m.size == 1))
                 {
-                    dst = codepoint_to_utf16(buffer[0], dst);
-                    size = 0;
+                    dst = codepoint_to_utf16(buffer.cps[0], dst);
+                    m.size = 0;
                 }
-                if (uaix_likely(size == 0))
+                if (uaix_likely(m.size == 0))
                 {
-                    buffer[0] = c;
-                    buffer_ccc[0] = 0;
-                    size = 1;
+                    buffer.cps[0] = c;
+                    buffer.ccc[0] = 0;
+                    m.size = 1;
                     continue;
                 }
             }
-            if (norm_decomp_unaccent(c, buffer, buffer_ccc, &size, &last_qc, &count_ns))
+            if (norm_decomp_unaccent(c, &buffer, &m))
                 break;
         }
 
-        if (last_qc == 0)
-            last_qc = size;
+        if (m.last_qc == 0)
+            m.last_qc = m.size;
 
-        norm_order(buffer, buffer_ccc, last_qc);
-        norm_comp(buffer, buffer_ccc, last_qc);
+        norm_order(&buffer, m.last_qc);
+        norm_comp(&buffer, m.last_qc);
 
-        for (size_t i = 0; i < last_qc; ++i)
+        for (size_t i = 0; i < m.last_qc; ++i)
         {
-            if (buffer_ccc[i] != 255)
-                dst = codepoint_to_utf16(buffer[i], dst);
+            if (buffer.ccc[i] != 255)
+                dst = codepoint_to_utf16(buffer.cps[i], dst);
         }
 
-        norm_buffer(buffer, buffer_ccc, &size, &last_qc);
+        norm_proc_buffer(&buffer, &m);
     }
-    while (size > 0);
+    while (m.size > 0);
 
     return (size_t)(dst - result);
 }
@@ -1666,22 +1668,19 @@ uaix_static int impl_norm_is_nfkd_utf16(it_in_utf16 first, it_end_utf16 last)
 
 struct impl_norm_iter_state
 {
-    size_t size;
-    size_t last_qc;
-    size_t count_ns;
-
     size_t pos; // Iterator position
 
-    type_codept buffer[norm_buffer_size];
-    unsigned char buffer_ccc[norm_buffer_size];
+    norm_meow m;
+    norm_buffer buffer;
 };
 
 uaix_inline void impl_norm_iter_state_reset(struct impl_norm_iter_state* s)
 {
-    s->size = 0;
-    s->last_qc = 0;
-    s->count_ns = 0;
     s->pos = 0;
+
+    s->m.size = 0;
+    s->m.last_qc = 0;
+    s->m.count_ns = 0;
 }
 
 uaix_always_inline
@@ -1703,20 +1702,25 @@ uaix_static type_codept norm_safe_cp(type_codept c)
 uaix_always_inline
 uaix_static bool norm_state_fast_1(struct impl_norm_iter_state* s, type_codept c)
 {
-    s->buffer[1] = c;
-    s->buffer_ccc[1] = 0;
-    s->size = 2;
-    s->last_qc = 1;
     s->pos = 0;
+
+    s->m.size = 2;
+    s->m.last_qc = 1;
+
+    s->buffer.cps[1] = c;
+    s->buffer.ccc[1] = 0;
+
     return true;
 }
 
 uaix_always_inline
 uaix_static bool norm_state_fast_0(struct impl_norm_iter_state* s, type_codept c)
 {
-    s->buffer[0] = c;
-    s->buffer_ccc[0] = 0;
-    s->size = 1;
+    s->m.size = 1;
+
+    s->buffer.cps[0] = c;
+    s->buffer.ccc[0] = 0;
+
     return false;
 }
 
@@ -1731,14 +1735,14 @@ uaix_static bool unstable_norm_iter_nfc(struct impl_norm_iter_state* s, type_cod
     // I hate myself so much sometimes.
 
     c = norm_safe_cp(c);
-    if (stages_qc_yes_ns_nfc(c, &s->count_ns))
+    if (stages_qc_yes_ns_nfc(c, &s->m.count_ns))
     {
-        if (s->size == 1)
+        if (s->m.size == 1)
             return norm_state_fast_1(s, c);
-        if (s->size == 0)
+        if (s->m.size == 0)
             return norm_state_fast_0(s, c);
     }
-    if (!norm_decomp_nfc(c, s->buffer, s->buffer_ccc, &s->size, &s->last_qc, &s->count_ns))
+    if (!norm_decomp_nfc(c, &s->buffer, &s->m))
         return false;
 
     return true;
@@ -1748,14 +1752,14 @@ uaix_always_inline
 uaix_static bool unstable_norm_iter_nfd(struct impl_norm_iter_state* s, type_codept c)
 {
     c = norm_safe_cp(c);
-    if (stages_qc_yes_ns_nfd(c, &s->count_ns))
+    if (stages_qc_yes_ns_nfd(c, &s->m.count_ns))
     {
-        if (s->size == 1)
+        if (s->m.size == 1)
             return norm_state_fast_1(s, c);
-        if (s->size == 0)
+        if (s->m.size == 0)
             return norm_state_fast_0(s, c);
     }
-    if (!norm_decomp_nfd(c, s->buffer, s->buffer_ccc, &s->size, &s->last_qc, &s->count_ns))
+    if (!norm_decomp_nfd(c, &s->buffer, &s->m))
         return false;
 
     return true;
@@ -1767,14 +1771,14 @@ uaix_always_inline
 uaix_static bool unstable_norm_iter_nfkc(struct impl_norm_iter_state* s, type_codept c)
 {
     c = norm_safe_cp(c);
-    if (stages_qc_yes_ns_nfkc(c, &s->count_ns))
+    if (stages_qc_yes_ns_nfkc(c, &s->m.count_ns))
     {
-        if (s->size == 1)
+        if (s->m.size == 1)
             return norm_state_fast_1(s, c);
-        if (s->size == 0)
+        if (s->m.size == 0)
             return norm_state_fast_0(s, c);
     }
-    if (!norm_decomp_nfkc(c, s->buffer, s->buffer_ccc, &s->size, &s->last_qc, &s->count_ns))
+    if (!norm_decomp_nfkc(c, &s->buffer, &s->m))
         return false;
 
     return true;
@@ -1784,14 +1788,14 @@ uaix_always_inline
 uaix_static bool unstable_norm_iter_nfkd(struct impl_norm_iter_state* s, type_codept c)
 {
     c = norm_safe_cp(c);
-    if (stages_qc_yes_ns_nfkd(c, &s->count_ns))
+    if (stages_qc_yes_ns_nfkd(c, &s->m.count_ns))
     {
-        if (s->size == 1)
+        if (s->m.size == 1)
             return norm_state_fast_1(s, c);
-        if (s->size == 0)
+        if (s->m.size == 0)
             return norm_state_fast_0(s, c);
     }
-    if (!norm_decomp_nfkd(c, s->buffer, s->buffer_ccc, &s->size, &s->last_qc, &s->count_ns))
+    if (!norm_decomp_nfkd(c, &s->buffer, &s->m))
         return false;
 
     return true;
@@ -1809,35 +1813,35 @@ uaix_static bool unstable_norm_iter_next_comp(struct impl_norm_iter_state* s, ty
     // norm_iter_comp_nfc_nfkc: impl_norm_iter_comp_nfc, impl_norm_iter_comp_nfkc + impl_norm_iter_decomp_nfc etc.
     // norm_iter_next_nfc_nfkc: impl_norm_iter_next_nfc, impl_norm_iter_next_nfkc + impl_norm_iter_nfc etc. (prob this is the best)
 
-    if (s->size == 0) // The end of the data
+    if (s->m.size == 0) // The end of the data
         return false;
 
-    if (s->last_qc == 0) // This is the last buffer
-        s->last_qc = s->size;
+    if (s->m.last_qc == 0) // This is the last buffer
+        s->m.last_qc = s->m.size;
 
     // Reorder and compose the buffer if this is the first iteration on this buffer
     if (s->pos == 0)
     {
-        norm_order(s->buffer, s->buffer_ccc, s->last_qc);
-        norm_comp(s->buffer, s->buffer_ccc, s->last_qc);
+        norm_order(&s->buffer, s->m.last_qc);
+        norm_comp(&s->buffer, s->m.last_qc);
     }
 
     // Skip all CCC=255 and get the next code point
     bool found = false;
-    for (; s->pos < s->last_qc; ++s->pos)
+    for (; s->pos < s->m.last_qc; ++s->pos)
     {
-        if (s->buffer_ccc[s->pos] != 255)
+        if (s->buffer.ccc[s->pos] != 255)
         {
             if (found) break;
-            *codepoint = s->buffer[s->pos];
+            *codepoint = s->buffer.cps[s->pos];
             found = true;
         }
     }
 
     // This is the last iteration on this buffer, request more data
-    if (s->pos == s->last_qc)
+    if (s->pos == s->m.last_qc)
     {
-        norm_buffer(s->buffer, s->buffer_ccc, &s->size, &s->last_qc);
+        norm_proc_buffer(&s->buffer, &s->m);
         s->pos = 0;
     }
 
@@ -1850,27 +1854,27 @@ uaix_static bool unstable_norm_iter_next_decomp(struct impl_norm_iter_state* s, 
     // The function must be used together with unstable_norm_iter_nfd or unstable_norm_iter_nfkd
     // The function must be used together with impl_state_norm_nfd or impl_state_norm_nfkd (OLD)
 
-    if (s->size == 0) // The end of the data
+    if (s->m.size == 0) // The end of the data
         return false;
 
-    if (s->last_qc == 0) // This is the last buffer
-        s->last_qc = s->size;
+    if (s->m.last_qc == 0) // This is the last buffer
+        s->m.last_qc = s->m.size;
 
     // Reorder the buffer if this is the first iteration on this buffer
     if (s->pos == 0)
-        norm_order(s->buffer, s->buffer_ccc, s->last_qc);
+        norm_order(&s->buffer, s->m.last_qc);
 
     // Get the next code point
-    if (s->pos < s->last_qc)
+    if (s->pos < s->m.last_qc)
     {
-        *codepoint = s->buffer[s->pos];
+        *codepoint = s->buffer.cps[s->pos];
         ++s->pos;
     }
 
     // This is the last iteration on this buffer, request more data
-    if (s->pos == s->last_qc)
+    if (s->pos == s->m.last_qc)
     {
-        norm_buffer(s->buffer, s->buffer_ccc, &s->size, &s->last_qc);
+        norm_proc_buffer(&s->buffer, &s->m);
         s->pos = 0;
     }
 
