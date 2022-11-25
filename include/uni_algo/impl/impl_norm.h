@@ -632,7 +632,7 @@ uaix_static void norm_decomp_count_ns(norm_buffer *buffer, norm_meow *m)
         buffer->cps[m->size] = 0x034F;
         buffer->ccc[m->size] = 0;
         m->last_qc = m->size;
-        m->size += 1;
+        ++m->size;
     }
 }
 
@@ -650,7 +650,7 @@ uaix_static bool norm_decomp_nfc(type_codept c, norm_buffer *buffer, norm_meow *
         {
             m->size = 0;
             size_t number = stages_decomp_nfd_number(offset);
-            for (size_t i = 0; i < number; ++i, m->size += 1)
+            for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
@@ -671,7 +671,7 @@ uaix_static bool norm_decomp_nfc(type_codept c, norm_buffer *buffer, norm_meow *
         buffer->cps[m->size] = c;
         buffer->ccc[m->size] = stages_ccc(c);
         m->last_qc = m->size;
-        m->size += 1;
+        ++m->size;
     }
     else
     {
@@ -682,12 +682,12 @@ uaix_static bool norm_decomp_nfc(type_codept c, norm_buffer *buffer, norm_meow *
             buffer->ccc[m->size] = stages_ccc(c);
             if (stages_qc_yes_nfc(c))
                 m->last_qc = m->size;
-            m->size += 1;
+            ++m->size;
         }
         else
         {
             size_t number = stages_decomp_nfd_number(offset);
-            for (size_t i = 0; i < number; ++i, m->size += 1)
+            for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
@@ -722,12 +722,12 @@ uaix_static bool norm_decomp_nfd(type_codept c, norm_buffer *buffer, norm_meow *
             buffer->ccc[m->size] = stages_ccc(c);
             if (stages_qc_yes_nfd(c))
                 m->last_qc = m->size;
-            m->size += 1;
+            ++m->size;
         }
         else
         {
             size_t number = stages_decomp_nfd_number(offset);
-            for (size_t i = 0; i < number; ++i, m->size += 1)
+            for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
@@ -756,7 +756,7 @@ uaix_static bool norm_decomp_nfkc(type_codept c, norm_buffer *buffer, norm_meow 
         {
             m->size = 0;
             size_t number = stages_decomp_nfkd_number(offset);
-            for (size_t i = 0; i < number; ++i, m->size += 1)
+            for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
@@ -771,7 +771,7 @@ uaix_static bool norm_decomp_nfkc(type_codept c, norm_buffer *buffer, norm_meow 
         buffer->cps[m->size] = c;
         buffer->ccc[m->size] = stages_ccc(c);
         m->last_qc = m->size;
-        m->size += 1;
+        ++m->size;
     }
     else
     {
@@ -782,12 +782,12 @@ uaix_static bool norm_decomp_nfkc(type_codept c, norm_buffer *buffer, norm_meow 
             buffer->ccc[m->size] = stages_ccc(c);
             if (stages_qc_yes_nfkc(c))
                 m->last_qc = m->size;
-            m->size += 1;
+            ++m->size;
         }
         else
         {
             size_t number = stages_decomp_nfkd_number(offset);
-            for (size_t i = 0; i < number; ++i, m->size += 1)
+            for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
@@ -822,12 +822,12 @@ uaix_static bool norm_decomp_nfkd(type_codept c, norm_buffer *buffer, norm_meow 
             buffer->ccc[m->size] = stages_ccc(c);
             if (stages_qc_yes_nfkd(c))
                 m->last_qc = m->size;
-            m->size += 1;
+            ++m->size;
         }
         else
         {
             size_t number = stages_decomp_nfkd_number(offset);
-            for (size_t i = 0; i < number; ++i, m->size += 1)
+            for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
@@ -861,7 +861,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, norm_buffer *buffer, norm_m
             buffer->ccc[m->size] = stages_ccc(c);
             if (stages_qc_yes_nfd(c))
                 m->last_qc = m->size;
-            m->size += 1;
+            ++m->size;
         }
     }
     else
@@ -876,7 +876,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, norm_buffer *buffer, norm_m
                 buffer->ccc[m->size] = stages_ccc(cp);
                 if (stages_qc_yes_nfd(cp))
                     m->last_qc = m->size;
-                m->size += 1;
+                ++m->size;
             }
         }
     }
