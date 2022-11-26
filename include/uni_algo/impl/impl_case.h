@@ -338,13 +338,11 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
             {
                 case_special_buffer special = {{0}};
                 size_t size = stages_special_upper(c, &special);
-                if (size)
-                {
-                    for (size_t i = 0; i < size; ++i)
-                        dst = codepoint_to_utf8(special.data[i], dst);
 
-                    continue;
-                }
+                for (size_t i = 0; i < size; ++i)
+                    dst = codepoint_to_utf8(special.data[i], dst);
+
+                continue;
             }
 #endif
             c = stages_upper(c);
@@ -363,13 +361,11 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
             {
                 case_special_buffer special = {{0}};
                 size_t size = stages_special_fold(c, &special);
-                if (size)
-                {
-                    for (size_t i = 0; i < size; ++i)
-                        dst = codepoint_to_utf8(special.data[i], dst);
 
-                    continue;
-                }
+                for (size_t i = 0; i < size; ++i)
+                    dst = codepoint_to_utf8(special.data[i], dst);
+
+                continue;
             }
 #endif
             c = stages_fold(c);
@@ -439,13 +435,11 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
             {
                 case_special_buffer special = {{0}};
                 size_t size = stages_special_upper(c, &special);
-                if (size)
-                {
-                    for (size_t i = 0; i < size; ++i)
-                        dst = codepoint_to_utf16(special.data[i], dst);
 
-                    continue;
-                }
+                for (size_t i = 0; i < size; ++i)
+                    dst = codepoint_to_utf16(special.data[i], dst);
+
+                continue;
             }
 #endif
             c = stages_upper(c);
@@ -464,13 +458,11 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
             {
                 case_special_buffer special = {{0}};
                 size_t size = stages_special_fold(c, &special);
-                if (size)
-                {
-                    for (size_t i = 0; i < size; ++i)
-                        dst = codepoint_to_utf16(special.data[i], dst);
 
-                    continue;
-                }
+                for (size_t i = 0; i < size; ++i)
+                    dst = codepoint_to_utf16(special.data[i], dst);
+
+                continue;
             }
 #endif
             c = stages_fold(c);
@@ -1276,13 +1268,11 @@ uaix_static size_t case_title_utf8(it_in_utf8 first, it_end_utf8 last, it_out_ut
                 {
                     case_special_buffer special = {{0}};
                     size_t size = stages_special_title(c, &special);
-                    if (size)
-                    {
-                        for (size_t i = 0; i < size; ++i)
-                            dst = codepoint_to_utf8(special.data[i], dst);
 
-                        continue;
-                    }
+                    for (size_t i = 0; i < size; ++i)
+                        dst = codepoint_to_utf8(special.data[i], dst);
+
+                    continue;
                 }
 #endif
                 c = stages_title(c);
@@ -1376,13 +1366,11 @@ uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out
                 {
                     case_special_buffer special = {{0}};
                     size_t size = stages_special_title(c, &special);
-                    if (size)
-                    {
-                        for (size_t i = 0; i < size; ++i)
-                            dst = codepoint_to_utf16(special.data[i], dst);
 
-                        continue;
-                    }
+                    for (size_t i = 0; i < size; ++i)
+                        dst = codepoint_to_utf16(special.data[i], dst);
+
+                    continue;
                 }
 #endif
                 c = stages_title(c);
