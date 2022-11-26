@@ -5,6 +5,9 @@
 #ifndef UNI_ALGO_IMPL_CASE_H_UAIH
 #define UNI_ALGO_IMPL_CASE_H_UAIH
 
+// TODO: Use for tests. Clean later.
+//#include <array>
+
 #include "impl_iter.h"
 // Note that title case has cross dependency with break word module
 // and if it's disabled all title case functions must be disabled too
@@ -51,6 +54,9 @@ uaix_const type_codept prop_CCC_230          = 1 << 6; // impl_case_locale.h
 struct case_special_buffer
 {
     type_codept data[3];
+
+    // TODO: Use for tests. Clean later.
+    //std::array<type_codept, 3> data;
 };
 
 struct case_special_pair
