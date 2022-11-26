@@ -48,6 +48,17 @@ uaix_const type_codept prop_Soft_Dotted      = 1 << 4; // impl_case_locale.h
 uaix_const type_codept prop_CCC_NOT_0        = 1 << 5; // impl_case_locale.h
 uaix_const type_codept prop_CCC_230          = 1 << 6; // impl_case_locale.h
 
+struct case_special_buffer
+{
+    type_codept data[3];
+};
+
+struct case_special_pair
+{
+    size_t size;
+    size_t count;
+};
+
 uaix_always_inline
 uaix_static type_codept stages_lower(type_codept c)
 {
@@ -102,14 +113,14 @@ uaix_static type_codept stages_case_prop(type_codept c)
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
 uaix_always_inline
-uaix_static size_t stages_special_fold(type_codept c, type_codept special[3])
+uaix_static size_t stages_special_fold(type_codept c, case_special_buffer* special)
 {
     if (c <= 0xFFFF)
     {
         size_t n = stages(c, stage1_special_fold, stage2_special_fold);
-        special[0] = stage3_special_fold[n][1];
-        special[1] = stage3_special_fold[n][2];
-        special[2] = stage3_special_fold[n][3];
+        special->data[0] = stage3_special_fold[n][1];
+        special->data[1] = stage3_special_fold[n][2];
+        special->data[2] = stage3_special_fold[n][3];
         return stage3_special_fold[n][0];
     }
     return 0;
@@ -129,14 +140,14 @@ uaix_static bool stages_special_fold_check(type_codept c)
 }
 
 uaix_always_inline
-uaix_static size_t stages_special_upper(type_codept c, type_codept special[3])
+uaix_static size_t stages_special_upper(type_codept c, case_special_buffer* special)
 {
     if (c <= 0xFFFF)
     {
         size_t n = stages(c, stage1_special_upper, stage2_special_upper);
-        special[0] = stage3_special_upper[n][1];
-        special[1] = stage3_special_upper[n][2];
-        special[2] = stage3_special_upper[n][3];
+        special->data[0] = stage3_special_upper[n][1];
+        special->data[1] = stage3_special_upper[n][2];
+        special->data[2] = stage3_special_upper[n][3];
         return stage3_special_upper[n][0];
     }
     return 0;
@@ -158,14 +169,14 @@ uaix_static bool stages_special_upper_check(type_codept c)
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 
 uaix_always_inline
-uaix_static size_t stages_special_title(type_codept c, type_codept special[3])
+uaix_static size_t stages_special_title(type_codept c, case_special_buffer* special)
 {
     if (c <= 0xFFFF)
     {
         size_t n = stages(c, stage1_special_title, stage2_special_title);
-        special[0] = stage3_special_title[n][1];
-        special[1] = stage3_special_title[n][2];
-        special[2] = stage3_special_title[n][3];
+        special->data[0] = stage3_special_title[n][1];
+        special->data[1] = stage3_special_title[n][2];
+        special->data[2] = stage3_special_title[n][3];
         return stage3_special_title[n][0];
     }
     return 0;
@@ -319,12 +330,12 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_upper_check(c))
             {
-                type_codept special[3];
-                size_t number = stages_special_upper(c, special);
-                if (number)
+                case_special_buffer special = {{0}};
+                size_t size = stages_special_upper(c, &special);
+                if (size)
                 {
-                    for (size_t i = 0; i < number; ++i)
-                        dst = codepoint_to_utf8(special[i], dst);
+                    for (size_t i = 0; i < size; ++i)
+                        dst = codepoint_to_utf8(special.data[i], dst);
 
                     continue;
                 }
@@ -344,12 +355,12 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_fold_check(c))
             {
-                type_codept special[3];
-                size_t number = stages_special_fold(c, special);
-                if (number)
+                case_special_buffer special = {{0}};
+                size_t size = stages_special_fold(c, &special);
+                if (size)
                 {
-                    for (size_t i = 0; i < number; ++i)
-                        dst = codepoint_to_utf8(special[i], dst);
+                    for (size_t i = 0; i < size; ++i)
+                        dst = codepoint_to_utf8(special.data[i], dst);
 
                     continue;
                 }
@@ -420,12 +431,12 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_upper_check(c))
             {
-                type_codept special[3];
-                size_t number = stages_special_upper(c, special);
-                if (number)
+                case_special_buffer special = {{0}};
+                size_t size = stages_special_upper(c, &special);
+                if (size)
                 {
-                    for (size_t i = 0; i < number; ++i)
-                        dst = codepoint_to_utf16(special[i], dst);
+                    for (size_t i = 0; i < size; ++i)
+                        dst = codepoint_to_utf16(special.data[i], dst);
 
                     continue;
                 }
@@ -445,12 +456,12 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_fold_check(c))
             {
-                type_codept special[3];
-                size_t number = stages_special_fold(c, special);
-                if (number)
+                case_special_buffer special = {{0}};
+                size_t size = stages_special_fold(c, &special);
+                if (size)
                 {
-                    for (size_t i = 0; i < number; ++i)
-                        dst = codepoint_to_utf16(special[i], dst);
+                    for (size_t i = 0; i < size; ++i)
+                        dst = codepoint_to_utf16(special.data[i], dst);
 
                     continue;
                 }
@@ -476,22 +487,22 @@ template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
 uaix_static it_in_utf8 iter_fold_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint,
-                                      size_t* count, size_t* number, type_codept special[3])
+                                      case_special_pair* pair, case_special_buffer* special)
 {
     it_in_utf8 src = first;
 
-    if (*count == 0)
+    if (pair->count == 0)
     {
         src = iter_utf8(first, last, codepoint, iter_replacement);
 
         if (stages_special_fold_check(*codepoint))
         {
-            *number = stages_special_fold(*codepoint, special);
-            *count = *number;
+            pair->size = stages_special_fold(*codepoint, special);
+            pair->count = pair->size;
         }
     }
-    if (*count != 0)
-        *codepoint = special[*number - (*count)--];
+    if (pair->count != 0)
+        *codepoint = special->data[pair->size - pair->count--];
 
     return src;
 }
@@ -501,22 +512,22 @@ template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
 uaix_static it_in_utf16 iter_fold_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint,
-                                        size_t* count, size_t* number, type_codept special[3])
+                                        case_special_pair* pair, case_special_buffer* special)
 {
     it_in_utf16 src = first;
 
-    if (*count == 0)
+    if (pair->count == 0)
     {
         src = iter_utf16(first, last, codepoint, iter_replacement);
 
         if (stages_special_fold_check(*codepoint))
         {
-            *number = stages_special_fold(*codepoint, special);
-            *count = *number;
+            pair->size = stages_special_fold(*codepoint, special);
+            pair->count = pair->size;
         }
     }
-    if (*count != 0)
-        *codepoint = special[*number - (*count)--];
+    if (pair->count != 0)
+        *codepoint = special->data[pair->size - pair->count--];
 
     return src;
 }
@@ -537,10 +548,10 @@ uaix_static int impl_case_compare_utf8(it_in_utf8 first1, it_end_utf8 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    type_codept special1[3];
-    type_codept special2[3];
-    size_t count1 = 0, number1 = 0;
-    size_t count2 = 0, number2 = 0;
+    case_special_buffer special1 = {{0}};
+    case_special_buffer special2 = {{0}};
+    case_special_pair pair1 = {0, 0};
+    case_special_pair pair2 = {0, 0};
 #endif
 
     // Optimization for long mostly equal strings
@@ -573,10 +584,10 @@ uaix_static int impl_case_compare_utf8(it_in_utf8 first1, it_end_utf8 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    while ((src1 != last1 || count1) && (src2 != last2 || count2))
+    while ((src1 != last1 || pair1.count) && (src2 != last2 || pair2.count))
     {
-        src1 = iter_fold_utf8(src1, last1, &c1, &count1, &number1, special1);
-        src2 = iter_fold_utf8(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf8(src1, last1, &c1, &pair1, &special1);
+        src2 = iter_fold_utf8(src2, last2, &c2, &pair2, &special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
@@ -594,7 +605,7 @@ uaix_static int impl_case_compare_utf8(it_in_utf8 first1, it_end_utf8 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    return (src2 == last2 && count2 == 0) - (src1 == last1 && count1 == 0);
+    return (src2 == last2 && pair2.count == 0) - (src1 == last1 && pair1.count == 0);
 #else
     return (src2 == last2) - (src1 == last1);
 #endif
@@ -614,10 +625,10 @@ uaix_static int impl_case_compare_utf16(it_in_utf16 first1, it_end_utf16 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    type_codept special1[3];
-    type_codept special2[3];
-    size_t count1 = 0, number1 = 0;
-    size_t count2 = 0, number2 = 0;
+    case_special_buffer special1 = {{0}};
+    case_special_buffer special2 = {{0}};
+    case_special_pair pair1 = {0, 0};
+    case_special_pair pair2 = {0, 0};
 #endif
 
     // Optimization for long mostly equal strings
@@ -650,10 +661,10 @@ uaix_static int impl_case_compare_utf16(it_in_utf16 first1, it_end_utf16 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    while ((src1 != last1 || count1) && (src2 != last2 || count2))
+    while ((src1 != last1 || pair1.count) && (src2 != last2 || pair2.count))
     {
-        src1 = iter_fold_utf16(src1, last1, &c1, &count1, &number1, special1);
-        src2 = iter_fold_utf16(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf16(src1, last1, &c1, &pair1, &special1);
+        src2 = iter_fold_utf16(src2, last2, &c2, &pair2, &special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
@@ -671,7 +682,7 @@ uaix_static int impl_case_compare_utf16(it_in_utf16 first1, it_end_utf16 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    return (src2 == last2 && count2 == 0) - (src1 == last1 && count1 == 0);
+    return (src2 == last2 && pair2.count == 0) - (src1 == last1 && pair1.count == 0);
 #else
     return (src2 == last2) - (src1 == last1);
 #endif
@@ -693,10 +704,10 @@ uaix_static int impl_case_collate_utf8(it_in_utf8 first1, it_end_utf8 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    type_codept special1[3];
-    type_codept special2[3];
-    size_t count1 = 0, number1 = 0;
-    size_t count2 = 0, number2 = 0;
+    case_special_buffer special1 = {{0}};
+    case_special_buffer special2 = {{0}};
+    case_special_pair pair1 = {0, 0};
+    case_special_pair pair2 = {0, 0};
 #endif
 
     // Optimization for long mostly equal strings
@@ -735,10 +746,10 @@ uaix_static int impl_case_collate_utf8(it_in_utf8 first1, it_end_utf8 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    while ((src1 != last1 || count1) && (src2 != last2 || count2))
+    while ((src1 != last1 || pair1.count) && (src2 != last2 || pair2.count))
     {
-        src1 = iter_fold_utf8(src1, last1, &c1, &count1, &number1, special1);
-        src2 = iter_fold_utf8(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf8(src1, last1, &c1, &pair1, &special1);
+        src2 = iter_fold_utf8(src2, last2, &c2, &pair2, &special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
@@ -759,7 +770,7 @@ uaix_static int impl_case_collate_utf8(it_in_utf8 first1, it_end_utf8 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    return (src2 == last2 && count2 == 0) - (src1 == last1 && count1 == 0);
+    return (src2 == last2 && pair2.count == 0) - (src1 == last1 && pair1.count == 0);
 #else
     return (src2 == last2) - (src1 == last1);
 #endif
@@ -779,10 +790,10 @@ uaix_static int impl_case_collate_utf16(it_in_utf16 first1, it_end_utf16 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    type_codept special1[3];
-    type_codept special2[3];
-    size_t count1 = 0, number1 = 0;
-    size_t count2 = 0, number2 = 0;
+    case_special_buffer special1 = {{0}};
+    case_special_buffer special2 = {{0}};
+    case_special_pair pair1 = {0, 0};
+    case_special_pair pair2 = {0, 0};
 #endif
 
     // Optimization for long mostly equal strings
@@ -821,10 +832,10 @@ uaix_static int impl_case_collate_utf16(it_in_utf16 first1, it_end_utf16 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    while ((src1 != last1 || count1) && (src2 != last2 || count2))
+    while ((src1 != last1 || pair1.count) && (src2 != last2 || pair2.count))
     {
-        src1 = iter_fold_utf16(src1, last1, &c1, &count1, &number1, special1);
-        src2 = iter_fold_utf16(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf16(src1, last1, &c1, &pair1, &special1);
+        src2 = iter_fold_utf16(src2, last2, &c2, &pair2, &special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
@@ -845,7 +856,7 @@ uaix_static int impl_case_collate_utf16(it_in_utf16 first1, it_end_utf16 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    return (src2 == last2 && count2 == 0) - (src1 == last1 && count1 == 0);
+    return (src2 == last2 && pair2.count == 0) - (src1 == last1 && pair1.count == 0);
 #else
     return (src2 == last2) - (src1 == last1);
 #endif
@@ -870,10 +881,10 @@ uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    type_codept special1[3];
-    type_codept special2[3];
-    size_t count1 = 0, number1 = 0;
-    size_t count2 = 0, number2 = 0;
+    case_special_buffer special1 = {{0}};
+    case_special_buffer special2 = {{0}};
+    case_special_pair pair1 = {0, 0};
+    case_special_pair pair2 = {0, 0};
 #endif
 
     if (!caseless)
@@ -906,10 +917,10 @@ uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    while ((src1 != last1 || count1) && (src2 != last2 || count2))
+    while ((src1 != last1 || pair1.count) && (src2 != last2 || pair2.count))
     {
-        src1 = iter_fold_utf8(src1, last1, &c1, &count1, &number1, special1);
-        src2 = iter_fold_utf8(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf8(src1, last1, &c1, &pair1, &special1);
+        src2 = iter_fold_utf8(src2, last2, &c2, &pair2, &special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
@@ -926,10 +937,10 @@ uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
         c2 = stages_fold(c2);
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-        if (c1 != c2 || (src2 == last2 && !count2 && count1)) // Restart
+        if (c1 != c2 || (src2 == last2 && !pair2.count && pair1.count)) // Restart
         {
-            count2 = 0;
-            count1 = 0;
+            pair2.count = 0;
+            pair1.count = 0;
 #else
         if (c1 != c2) // Restart
         {
@@ -942,7 +953,7 @@ uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    if (src2 == last2 && count2 == 0)
+    if (src2 == last2 && pair2.count == 0)
 #else
     if (src2 == last2)
 #endif
@@ -972,10 +983,10 @@ uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    type_codept special1[3];
-    type_codept special2[3];
-    size_t count1 = 0, number1 = 0;
-    size_t count2 = 0, number2 = 0;
+    case_special_buffer special1 = {{0}};
+    case_special_buffer special2 = {{0}};
+    case_special_pair pair1 = {0, 0};
+    case_special_pair pair2 = {0, 0};
 #endif
 
     if (!caseless)
@@ -1008,10 +1019,10 @@ uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    while ((src1 != last1 || count1) && (src2 != last2 || count2))
+    while ((src1 != last1 || pair1.count) && (src2 != last2 || pair2.count))
     {
-        src1 = iter_fold_utf16(src1, last1, &c1, &count1, &number1, special1);
-        src2 = iter_fold_utf16(src2, last2, &c2, &count2, &number2, special2);
+        src1 = iter_fold_utf16(src1, last1, &c1, &pair1, &special1);
+        src2 = iter_fold_utf16(src2, last2, &c2, &pair2, &special2);
 #else
     while (src1 != last1 && src2 != last2)
     {
@@ -1028,10 +1039,10 @@ uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
         c2 = stages_fold(c2);
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-        if (c1 != c2 || (src2 == last2 && !count2 && count1)) // Restart
+        if (c1 != c2 || (src2 == last2 && !pair2.count && pair1.count)) // Restart
         {
-            count2 = 0;
-            count1 = 0;
+            pair2.count = 0;
+            pair1.count = 0;
 #else
         if (c1 != c2) // Restart
         {
@@ -1044,7 +1055,7 @@ uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    if (src2 == last2 && count2 == 0)
+    if (src2 == last2 && pair2.count == 0)
 #else
     if (src2 == last2)
 #endif
@@ -1075,10 +1086,10 @@ uaix_static bool impl_case_like_utf8(it_in_utf8 first1, it_end_utf8 last1,
     bool multi = false;
     bool prev_escape = false;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    type_codept special1[3];
-    type_codept special2[3];
-    size_t count1 = 0, number1 = 0;
-    size_t count2 = 0, number2 = 0;
+    case_special_buffer special1 = {{0}};
+    case_special_buffer special2 = {{0}};
+    case_special_pair pair1 = {0, 0};
+    case_special_pair pair2 = {0, 0};
 #endif
 
     // Only ASCII is supported for all and one in a pattern
@@ -1096,13 +1107,13 @@ uaix_static bool impl_case_like_utf8(it_in_utf8 first1, it_end_utf8 last1,
         return false;
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    while ((src1 != last1 || count1 || skip1) && (src2 != last2 || count2))
+    while ((src1 != last1 || pair1.count || skip1) && (src2 != last2 || pair2.count))
     {
         if (skip1)
             skip1 = false;
         else
-            src1 = iter_fold_utf8(src1, last1, &c1, &count1, &number1, special1);
-        src2 = iter_fold_utf8(src2, last2, &c2, &count2, &number2, special2);
+            src1 = iter_fold_utf8(src1, last1, &c1, &pair1, &special1);
+        src2 = iter_fold_utf8(src2, last2, &c2, &pair2, &special2);
 #else
     while ((src1 != last1 || skip1) && src2 != last2)
     {
@@ -1148,10 +1159,10 @@ uaix_static bool impl_case_like_utf8(it_in_utf8 first1, it_end_utf8 last1,
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
         if (c1 != c2
             || (src2 != last2 && ((type_codept)*src2 == all || (type_codept)*src2 == one)
-            && !count2 && count1)) // Restart
+            && !pair2.count && pair1.count)) // Restart
         {
-            count2 = 0;
-            count1 = 0;
+            pair2.count = 0;
+            pair1.count = 0;
 #else
         if (c1 != c2) // Restart
         {
@@ -1174,8 +1185,8 @@ uaix_static bool impl_case_like_utf8(it_in_utf8 first1, it_end_utf8 last1,
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     // Test: "abc123xyz789" "%abc%xyz%"
-    //if ((src1 == last1 && count1 == 0) || (first2 == last2 || c2 == all)) // second empty = not match
-    if ((src1 == last1 && count1 == 0) || (first2 != last2 && c2 == all)) // second empty = match
+    //if ((src1 == last1 && pair1.count == 0) || (first2 == last2 || c2 == all)) // second empty = not match
+    if ((src1 == last1 && pair1.count == 0) || (first2 != last2 && c2 == all)) // second empty = match
     {
 #else
     //if (src1 == last1 || (first2 == last2 || c2 == all)) // second empty = not match
@@ -1257,12 +1268,12 @@ uaix_static size_t case_title_utf8(it_in_utf8 first, it_end_utf8 last, it_out_ut
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
                 if (stages_special_title_check(c))
                 {
-                    type_codept special[3];
-                    size_t number = stages_special_title(c, special);
-                    if (number)
+                    case_special_buffer special = {{0}};
+                    size_t size = stages_special_title(c, &special);
+                    if (size)
                     {
-                        for (size_t i = 0; i < number; ++i)
-                            dst = codepoint_to_utf8(special[i], dst);
+                        for (size_t i = 0; i < size; ++i)
+                            dst = codepoint_to_utf8(special.data[i], dst);
 
                         continue;
                     }
@@ -1357,12 +1368,12 @@ uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
                 if (stages_special_title_check(c))
                 {
-                    type_codept special[3];
-                    size_t number = stages_special_title(c, special);
-                    if (number)
+                    case_special_buffer special = {{0}};
+                    size_t size = stages_special_title(c, &special);
+                    if (size)
                     {
-                        for (size_t i = 0; i < number; ++i)
-                            dst = codepoint_to_utf16(special[i], dst);
+                        for (size_t i = 0; i < size; ++i)
+                            dst = codepoint_to_utf16(special.data[i], dst);
 
                         continue;
                     }
@@ -1443,8 +1454,8 @@ uaix_static size_t impl_case_sortkey_utf8(it_in_utf8 first, it_end_utf8 last, it
     it_out_utf8 dst = result;
     type_codept c = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    type_codept special[3];
-    size_t count = 0, number = 0;
+    case_special_buffer special = {{0}};
+    case_special_pair pair = {0, 0};
 #endif
 
     // The algorithm must be consistent with impl_utf8collate
@@ -1464,9 +1475,9 @@ uaix_static size_t impl_case_sortkey_utf8(it_in_utf8 first, it_end_utf8 last, it
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    while (src != last || count)
+    while (src != last || pair.count)
     {
-        src = iter_fold_utf8(src, last, &c, &count, &number, special);
+        src = iter_fold_utf8(src, last, &c, &pair, &special);
 #else
     while (src != last)
     {
@@ -1492,8 +1503,8 @@ uaix_static size_t impl_case_sortkey_utf16(it_in_utf16 first, it_end_utf16 last,
     it_out_utf8 dst = result;
     type_codept c = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    type_codept special[3];
-    size_t count = 0, number = 0;
+    case_special_buffer special = {{0}};
+    case_special_pair pair = {0, 0};
 #endif
 
     // The algorithm must be consistent with impl_utf8collate
@@ -1513,9 +1524,9 @@ uaix_static size_t impl_case_sortkey_utf16(it_in_utf16 first, it_end_utf16 last,
     }
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    while (src != last || count)
+    while (src != last || pair.count)
     {
-        src = iter_fold_utf16(src, last, &c, &count, &number, special);
+        src = iter_fold_utf16(src, last, &c, &pair, &special);
 #else
     while (src != last)
     {
