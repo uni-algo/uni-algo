@@ -100,10 +100,14 @@
 // so we need to suppress the warning about suppressing warnings.
 // Note that even though these warnings are supressed it doesn't mean stupid things with
 // casts are allowed that means the low-level must use casts only to suppress warnings.
+// -Wmissing-braces is just broken in GCC but works fine in Clang.
 #ifdef __cplusplus
 #  if defined(__GNUC__) || defined(__clang__)
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wsign-conversion"
 #    pragma GCC diagnostic ignored "-Wold-style-cast"
+#    if defined(__GNUC__) && !defined(__clang__)
+#      pragma GCC diagnostic ignored "-Wmissing-braces"
+#    endif
 #  endif
 #endif
