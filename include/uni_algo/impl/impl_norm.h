@@ -1691,7 +1691,7 @@ uaix_inline void impl_norm_iter_state_reset(struct impl_norm_iter_state* s)
 }
 
 uaix_always_inline
-uaix_static bool unstable_norm_iter_ready(struct impl_norm_iter_state* s)
+uaix_static bool inline_norm_iter_ready(struct impl_norm_iter_state* s)
 {
     return s->pos == 0 ? false : true;
 }
@@ -1732,7 +1732,7 @@ uaix_static bool norm_state_fast_0(struct impl_norm_iter_state* s, type_codept c
 }
 
 uaix_always_inline
-uaix_static bool unstable_norm_iter_nfc(struct impl_norm_iter_state* s, type_codept c)
+uaix_static bool inline_norm_iter_nfc(struct impl_norm_iter_state* s, type_codept c)
 {
     // Note that we cannot implement a fast loop inside the normalization iterators
     // but we can use the same idea to make them a bit faster.
@@ -1756,7 +1756,7 @@ uaix_static bool unstable_norm_iter_nfc(struct impl_norm_iter_state* s, type_cod
 }
 
 uaix_always_inline
-uaix_static bool unstable_norm_iter_nfd(struct impl_norm_iter_state* s, type_codept c)
+uaix_static bool inline_norm_iter_nfd(struct impl_norm_iter_state* s, type_codept c)
 {
     c = norm_safe_cp(c);
     if (stages_qc_yes_ns_nfd(c, &s->m.count_ns))
@@ -1775,7 +1775,7 @@ uaix_static bool unstable_norm_iter_nfd(struct impl_norm_iter_state* s, type_cod
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool unstable_norm_iter_nfkc(struct impl_norm_iter_state* s, type_codept c)
+uaix_static bool inline_norm_iter_nfkc(struct impl_norm_iter_state* s, type_codept c)
 {
     c = norm_safe_cp(c);
     if (stages_qc_yes_ns_nfkc(c, &s->m.count_ns))
@@ -1792,7 +1792,7 @@ uaix_static bool unstable_norm_iter_nfkc(struct impl_norm_iter_state* s, type_co
 }
 
 uaix_always_inline
-uaix_static bool unstable_norm_iter_nfkd(struct impl_norm_iter_state* s, type_codept c)
+uaix_static bool inline_norm_iter_nfkd(struct impl_norm_iter_state* s, type_codept c)
 {
     c = norm_safe_cp(c);
     if (stages_qc_yes_ns_nfkd(c, &s->m.count_ns))
@@ -1811,14 +1811,9 @@ uaix_static bool unstable_norm_iter_nfkd(struct impl_norm_iter_state* s, type_co
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool unstable_norm_iter_next_comp(struct impl_norm_iter_state* s, type_codept* codepoint)
+uaix_static bool inline_norm_iter_next_comp(struct impl_norm_iter_state* s, type_codept* codepoint)
 {
-    // The function must be used together with unstable_norm_iter_nfc or unstable_norm_iter_nfc
-    // The function must be used together with impl_state_norm_nfc or impl_state_norm_nfkc (OLD)
-    // TODO: names:
-    // norm_iter_comp_nfc_nfkc: impl_norm_iter_comp_nfc, impl_norm_iter_comp_nfkc + impl_norm_iter_nfc etc.
-    // norm_iter_comp_nfc_nfkc: impl_norm_iter_comp_nfc, impl_norm_iter_comp_nfkc + impl_norm_iter_decomp_nfc etc.
-    // norm_iter_next_nfc_nfkc: impl_norm_iter_next_nfc, impl_norm_iter_next_nfkc + impl_norm_iter_nfc etc. (prob this is the best)
+    // The function must be used together with inline_norm_iter_nfc or inline_norm_iter_nfkc
 
     if (s->m.size == 0) // The end of the data
         return false;
@@ -1856,10 +1851,9 @@ uaix_static bool unstable_norm_iter_next_comp(struct impl_norm_iter_state* s, ty
 }
 
 uaix_always_inline
-uaix_static bool unstable_norm_iter_next_decomp(struct impl_norm_iter_state* s, type_codept* codepoint)
+uaix_static bool inline_norm_iter_next_decomp(struct impl_norm_iter_state* s, type_codept* codepoint)
 {
-    // The function must be used together with unstable_norm_iter_nfd or unstable_norm_iter_nfkd
-    // The function must be used together with impl_state_norm_nfd or impl_state_norm_nfkd (OLD)
+    // The function must be used together with inline_norm_iter_nfd or inline_norm_iter_nfkd
 
     if (s->m.size == 0) // The end of the data
         return false;
