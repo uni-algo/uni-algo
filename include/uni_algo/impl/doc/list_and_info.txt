@@ -237,7 +237,7 @@ const int impl_norm_is_yes
 const int impl_norm_is_ill_formed
 
 struct impl_norm_iter_state
-void inline_norm_iter_state_reset(struct impl_norm_iter_state* s)
+void impl_norm_iter_state_reset(struct impl_norm_iter_state* s)
 bool inline_norm_iter_ready(struct impl_norm_iter_state* s)
 
 bool inline_norm_iter_nfc(struct impl_norm_iter_state* s, type_codept c)
@@ -245,10 +245,8 @@ bool inline_norm_iter_nfd(struct impl_norm_iter_state* s, type_codept c)
 bool inline_norm_iter_nfkc(struct impl_norm_iter_state* s, type_codept c)
 bool inline_norm_iter_nfkd(struct impl_norm_iter_state* s, type_codept c)
 
-bool inline_norm_iter_next_nfc(struct impl_norm_iter_state* s, type_codept* codepoint)
-bool inline_norm_iter_next_nfd(struct impl_norm_iter_state* s, type_codept* codepoint)
-bool inline_norm_iter_next_nfkc(struct impl_norm_iter_state* s, type_codept* codepoint)
-bool inline_norm_iter_next_nfkd(struct impl_norm_iter_state* s, type_codept* codepoint)
+bool inline_norm_iter_next_comp(struct impl_norm_iter_state* s, type_codept* codepoint)
+bool inline_norm_iter_next_decomp(struct impl_norm_iter_state* s, type_codept* codepoint)
 
 // properties
 type_codept impl_norm_get_prop(type_codept c)
