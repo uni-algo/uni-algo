@@ -125,6 +125,10 @@ static void new_generator_output(const std::string& file1, const std::string& fi
         }
     }
 
+    // Output sizes first
+    output1 << vec1.size() << '\n';
+    output2 << vec2.size() * block_size << '\n';
+
     for (size_t i = 0; i < vec1.size(); ++i)
     {
         if (i != 0 && i % 8 == 0)
@@ -317,6 +321,9 @@ static void new_generator_output1(const std::string& file, const std::vector<uin
     std::ofstream output(file);
     ASSERTX(output.is_open());
 
+    output << vec.size() / 4 << '\n';
+    output << 4 << '\n';
+
     for (std::size_t i = 0; i < vec.size(); ++i)
     {
         if (i == 0)
@@ -455,9 +462,9 @@ static void new_generator_special_casing(const std::string& file1, const std::st
         }
     }
 
-    // In the current version of Unicode (3.2.0 - 13.0.0) there is only 1 special case for lower and we handle it in place
-    // if it changes in the future we have this assert and then we probably should handle lower the same way as upper
-    // but it probably never changes.
+    // In the current version of Unicode (3.2.0 - 15.0.0) there is only 1 special case for lower and we handle it in place
+    // if it will change in the future we have this assert and then we probably should handle lower the same way as upper
+    // but probably it will never change.
     ASSERTX(!(column == 1 && (vec.size() / 4 - 1) != 1));
 
     new_generator_output(file1, file2, 8, 8, true, map, 0xFFFF);
@@ -468,6 +475,8 @@ static void new_generator_output2(const std::string& file, const std::vector<uin
 {
     std::ofstream output(file);
     ASSERTX(output.is_open());
+
+    output << vec.size() << '\n';
 
     for (std::size_t i = 0; i < vec.size(); ++i)
     {
@@ -852,6 +861,9 @@ static void new_generator_output3(const std::string& file, const std::vector<std
     std::ofstream output(file);
     ASSERTX(output.is_open());
 
+    output << vec.size() << '\n';
+    output << vec[0].size() << '\n';
+
     for (std::size_t i = 0; i < vec.size(); ++i)
     {
         output << "{";
@@ -1043,9 +1055,6 @@ static void new_generator_unicodedata_compose(const std::string& file1, const st
             }
         }
     }
-
-    // If asserts the number must be changed here and in stage3_comp[][SECOND_DIMENSION_SIZE]
-    ASSERTX(vec.size() > 0 && vec[0].size() == 64);
 
     new_generator_output(file1, file2, 8, 16, true, map1, 0x10FFFF);
     new_generator_output(file3, file4, 8, 16, true, map2, 0x10FFFF);
@@ -1810,146 +1819,188 @@ static void new_generator()
     new_generator_case_locale("new_stage1_case_prop.txt", "new_stage2_case_prop.txt");
     new_generator_prop("new_stage1_prop.txt", "new_stage2_prop.txt");
 
-    new_generator_unicodedata_compose("new_stage1_comp_cp1.txt", "new_stage2_comp_cp1.txt", "new_stage1_comp_cp2.txt", "new_stage2_comp_cp2.txt", "new_stage3_comp.txt");
+    new_generator_unicodedata_compose("new_stage1_comp_cp1.txt", "new_stage2_comp_cp1.txt",
+                                      "new_stage1_comp_cp2.txt", "new_stage2_comp_cp2.txt", "new_stage3_comp.txt");
     new_generator_unicodedata_decompose_ccc_qc("new_stage1_decomp_nfd.txt", "new_stage2_decomp_nfd.txt", "new_stage3_decomp_nfd.txt", false);
-    new_generator_unicodedata_decompose_ccc_qc("new_stage1_decomp_nfkd.txt", "new_stage2_decomp_nfkd.txt", "new_stage3_decomp_nfkd.txt", true, "new_stage1_ccc_qc.txt", "new_stage2_ccc_qc.txt");
+    new_generator_unicodedata_decompose_ccc_qc("new_stage1_decomp_nfkd.txt", "new_stage2_decomp_nfkd.txt", "new_stage3_decomp_nfkd.txt", true,
+                                               "new_stage1_ccc_qc.txt", "new_stage2_ccc_qc.txt");
 
     new_generator_break_grapheme("new_stage1_break_grapheme.txt", "new_stage2_break_grapheme.txt");
     new_generator_break_word("new_stage1_break_word.txt", "new_stage2_break_word.txt");
 }
 
-static void new_merger_replace_string(std::string& data, const std::string& file)
+static void new_merger_replace_string_impl(std::string& data, const std::string& from, const std::string& to)
+{
+    std::size_t index = data.find(from);
+    ASSERTX(index != std::string::npos);
+    if (index != std::string::npos)
+        data.replace(index, from.size(), to);
+}
+
+static void new_merger_replace_number_impl(std::string& data1, std::string& data2, std::ifstream& input, const std::string& from)
+{
+    std::string size_str;
+    std::getline(input, size_str);
+
+    std::size_t size = (std::size_t)atoi(size_str.c_str());
+    ASSERTX(size != 0);
+
+    new_merger_replace_string_impl(data1, from, std::to_string(size));
+    new_merger_replace_string_impl(data2, from, std::to_string(size));
+}
+
+static void new_merger_replace_string(std::string& data1, std::string& data2, const std::string& file, int dimensions = 1)
 {
     std::ifstream input(file);
     ASSERTX(input.is_open());
 
-    std::string old_str = file;
-    std::string new_str;
-    new_str.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
+    ASSERTX(dimensions == 1 || dimensions == 2);
 
-    std::size_t found = new_str.find_last_not_of(" ,\n");
+    ASSERTX(file.substr(file.size() - 4) == ".txt");
+    std::string num_file = file.substr(0, file.size() - 4);
+
+    new_merger_replace_number_impl(data1, data2, input, num_file + ".111");
+    if (dimensions == 2)
+        new_merger_replace_number_impl(data1, data2, input, num_file + ".222");
+
+    std::string new_str = std::string(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
+
+    std::size_t found = new_str.find_last_not_of(" ,\r\n");
     if (found != std::string::npos)
         new_str.erase(found + 1);
 
-    std::size_t index = data.find(old_str);
-    if (index != std::string::npos)
-        data.replace(index, old_str.size(), new_str);
+    new_merger_replace_string_impl(data1, file, new_str);
 }
 
 static void new_merger()
 {
-    std::ifstream input("data_case.h_blank");
-    ASSERTX(input.is_open());
+    std::ifstream input1("data_case.h_blank");
+    std::ifstream input2("extern_case.h_blank");
+    ASSERTX(input1.is_open() && input2.is_open());
 
-    std::string data;
-    data.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
+    std::string data1 = std::string(std::istreambuf_iterator<char>(input1), std::istreambuf_iterator<char>());
+    std::string data2 = std::string(std::istreambuf_iterator<char>(input2), std::istreambuf_iterator<char>());
 
-    new_merger_replace_string(data, "new_stage1_lower.txt");
-    new_merger_replace_string(data, "new_stage2_lower.txt");
-    new_merger_replace_string(data, "new_stage1_upper.txt");
-    new_merger_replace_string(data, "new_stage2_upper.txt");
-    new_merger_replace_string(data, "new_stage1_fold.txt");
-    new_merger_replace_string(data, "new_stage2_fold.txt");
-    new_merger_replace_string(data, "new_stage1_title.txt");
-    new_merger_replace_string(data, "new_stage2_title.txt");
-    new_merger_replace_string(data, "new_stage1_order.txt");
-    new_merger_replace_string(data, "new_stage2_order.txt");
-    new_merger_replace_string(data, "new_stage1_case_prop.txt");
-    new_merger_replace_string(data, "new_stage2_case_prop.txt");
-    new_merger_replace_string(data, "new_stage1_special_upper.txt");
-    new_merger_replace_string(data, "new_stage2_special_upper.txt");
-    new_merger_replace_string(data, "new_stage3_special_upper.txt");
-    new_merger_replace_string(data, "new_stage1_special_fold.txt");
-    new_merger_replace_string(data, "new_stage2_special_fold.txt");
-    new_merger_replace_string(data, "new_stage3_special_fold.txt");
-    new_merger_replace_string(data, "new_stage1_special_lower.txt");
-    new_merger_replace_string(data, "new_stage2_special_lower.txt");
-    new_merger_replace_string(data, "new_stage3_special_lower.txt");
-    new_merger_replace_string(data, "new_stage1_special_title.txt");
-    new_merger_replace_string(data, "new_stage2_special_title.txt");
-    new_merger_replace_string(data, "new_stage3_special_title.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_lower.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_lower.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_upper.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_upper.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_fold.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_fold.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_title.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_title.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_order.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_order.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_case_prop.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_case_prop.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_special_upper.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_special_upper.txt");
+    new_merger_replace_string(data1, data2, "new_stage3_special_upper.txt", 2);
+    new_merger_replace_string(data1, data2, "new_stage1_special_fold.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_special_fold.txt");
+    new_merger_replace_string(data1, data2, "new_stage3_special_fold.txt", 2);
+    new_merger_replace_string(data1, data2, "new_stage1_special_lower.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_special_lower.txt");
+    new_merger_replace_string(data1, data2, "new_stage3_special_lower.txt", 2);
+    new_merger_replace_string(data1, data2, "new_stage1_special_title.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_special_title.txt");
+    new_merger_replace_string(data1, data2, "new_stage3_special_title.txt", 2);
 
-    std::ofstream output("data_case.h");
-    ASSERTX(output.is_open());
-    output << data;
+    std::ofstream output1("data_case.h");
+    std::ofstream output2("extern_case.h");
+    ASSERTX(output1.is_open() && output2.is_open());
+    output1 << data1;
+    output2 << data2;
 
-    input.close();
-    output.close();
+    input1.close(); output1.close();
+    input2.close(); output2.close();
 
-    input.open("data_norm.h_blank");
-    ASSERTX(input.is_open());
+    input1.open("data_norm.h_blank");
+    input2.open("extern_norm.h_blank");
+    ASSERTX(input1.is_open() && input2.is_open());
 
-    data.clear();
-    data.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
+    data1 = std::string(std::istreambuf_iterator<char>(input1), std::istreambuf_iterator<char>());
+    data2 = std::string(std::istreambuf_iterator<char>(input2), std::istreambuf_iterator<char>());
 
-    new_merger_replace_string(data, "new_stage1_ccc_qc.txt");
-    new_merger_replace_string(data, "new_stage2_ccc_qc.txt");
-    new_merger_replace_string(data, "new_stage1_decomp_nfd.txt");
-    new_merger_replace_string(data, "new_stage2_decomp_nfd.txt");
-    new_merger_replace_string(data, "new_stage3_decomp_nfd.txt");
-    new_merger_replace_string(data, "new_stage1_decomp_nfkd.txt");
-    new_merger_replace_string(data, "new_stage2_decomp_nfkd.txt");
-    new_merger_replace_string(data, "new_stage3_decomp_nfkd.txt");
-    new_merger_replace_string(data, "new_stage1_comp_cp1.txt");
-    new_merger_replace_string(data, "new_stage2_comp_cp1.txt");
-    new_merger_replace_string(data, "new_stage1_comp_cp2.txt");
-    new_merger_replace_string(data, "new_stage2_comp_cp2.txt");
-    new_merger_replace_string(data, "new_stage3_comp.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_ccc_qc.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_ccc_qc.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_decomp_nfd.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_decomp_nfd.txt");
+    new_merger_replace_string(data1, data2, "new_stage3_decomp_nfd.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_decomp_nfkd.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_decomp_nfkd.txt");
+    new_merger_replace_string(data1, data2, "new_stage3_decomp_nfkd.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_comp_cp1.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_comp_cp1.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_comp_cp2.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_comp_cp2.txt");
+    new_merger_replace_string(data1, data2, "new_stage3_comp.txt", 2);
 
-    output.open("data_norm.h");
-    ASSERTX(output.is_open());
-    output << data;
+    output1.open("data_norm.h");
+    output2.open("extern_norm.h");
+    ASSERTX(output1.is_open() && output2.is_open());
+    output1 << data1;
+    output2 << data2;
 
-    input.close();
-    output.close();
+    input1.close(); output1.close();
+    input2.close(); output2.close();
 
-    input.open("data_break_grapheme.h_blank");
-    ASSERTX(input.is_open());
+    input1.open("data_break_grapheme.h_blank");
+    input2.open("extern_break_grapheme.h_blank");
+    ASSERTX(input1.is_open() && input2.is_open());
 
-    data.clear();
-    data.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
+    data1 = std::string(std::istreambuf_iterator<char>(input1), std::istreambuf_iterator<char>());
+    data2 = std::string(std::istreambuf_iterator<char>(input2), std::istreambuf_iterator<char>());
 
-    new_merger_replace_string(data, "new_stage1_break_grapheme.txt");
-    new_merger_replace_string(data, "new_stage2_break_grapheme.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_break_grapheme.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_break_grapheme.txt");
 
-    output.open("data_break_grapheme.h");
-    ASSERTX(output.is_open());
-    output << data;
+    output1.open("data_break_grapheme.h");
+    output2.open("extern_break_grapheme.h");
+    ASSERTX(output1.is_open() && output2.is_open());
+    output1 << data1;
+    output2 << data2;
 
-    input.close();
-    output.close();
+    input1.close(); output1.close();
+    input2.close(); output2.close();
 
-    input.open("data_break_word.h_blank");
-    ASSERTX(input.is_open());
+    input1.open("data_break_word.h_blank");
+    input2.open("extern_break_word.h_blank");
+    ASSERTX(input1.is_open() && input2.is_open());
 
-    data.clear();
-    data.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
+    data1 = std::string(std::istreambuf_iterator<char>(input1), std::istreambuf_iterator<char>());
+    data2 = std::string(std::istreambuf_iterator<char>(input2), std::istreambuf_iterator<char>());
 
-    new_merger_replace_string(data, "new_stage1_break_word.txt");
-    new_merger_replace_string(data, "new_stage2_break_word.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_break_word.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_break_word.txt");
 
-    output.open("data_break_word.h");
-    ASSERTX(output.is_open());
-    output << data;
+    output1.open("data_break_word.h");
+    output2.open("extern_break_word.h");
+    ASSERTX(output1.is_open() && output2.is_open());
+    output1 << data1;
+    output2 << data2;
 
-    input.close();
-    output.close();
+    input1.close(); output1.close();
+    input2.close(); output2.close();
 
-    input.open("data_prop.h_blank");
-    ASSERTX(input.is_open());
+    input1.open("data_prop.h_blank");
+    input2.open("extern_prop.h_blank");
+    ASSERTX(input1.is_open() && input2.is_open());
 
-    data.clear();
-    data.assign(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
+    data1 = std::string(std::istreambuf_iterator<char>(input1), std::istreambuf_iterator<char>());
+    data2 = std::string(std::istreambuf_iterator<char>(input2), std::istreambuf_iterator<char>());
 
-    new_merger_replace_string(data, "new_stage1_prop.txt");
-    new_merger_replace_string(data, "new_stage2_prop.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_prop.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_prop.txt");
 
-    output.open("data_prop.h");
-    ASSERTX(output.is_open());
-    output << data;
+    output1.open("data_prop.h");
+    output2.open("extern_prop.h");
+    ASSERTX(output1.is_open() && output2.is_open());
+    output1 << data1;
+    output2 << data2;
 
-    input.close();
-    output.close();
+    input1.close(); output1.close();
+    input2.close(); output2.close();
 }
 
 int main3()
