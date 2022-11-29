@@ -2,7 +2,7 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-uaix_const_data unsigned char stage1_lower[] = {
+uaix_const_data unsigned char stage1_lower[8704] = {
 0,1,2,3,4,5,6,7,
 8,9,10,5,5,5,5,5,
 5,5,5,5,5,5,5,5,
@@ -1092,7 +1092,7 @@ uaix_const_data unsigned char stage1_lower[] = {
 5,5,5,5,5,5,5,5,
 5,5,5,5,5,5,5,5};
 
-uaix_const_data type_codept stage2_lower[] = {
+uaix_const_data type_codept stage2_lower[4608] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -1706,7 +1706,7 @@ uaix_const_data type_codept stage2_lower[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage1_upper[] = {
+uaix_const_data unsigned char stage1_upper[8704] = {
 0,1,2,3,4,5,6,7,
 8,9,10,11,12,12,12,12,
 12,12,12,12,12,12,12,12,
@@ -2796,7 +2796,7 @@ uaix_const_data unsigned char stage1_upper[] = {
 12,12,12,12,12,12,12,12,
 12,12,12,12,12,12,12,12};
 
-uaix_const_data type_codept stage2_upper[] = {
+uaix_const_data type_codept stage2_upper[5376] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -3512,7 +3512,7 @@ uaix_const_data type_codept stage2_upper[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage1_fold[] = {
+uaix_const_data unsigned char stage1_fold[8704] = {
 0,1,2,3,4,5,6,7,
 8,9,10,5,5,5,5,5,
 5,5,5,5,5,5,5,5,
@@ -4602,7 +4602,7 @@ uaix_const_data unsigned char stage1_fold[] = {
 5,5,5,5,5,5,5,5,
 5,5,5,5,5,5,5,5};
 
-uaix_const_data type_codept stage2_fold[] = {
+uaix_const_data type_codept stage2_fold[4864] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -5252,7 +5252,7 @@ uaix_const_data type_codept stage2_fold[] = {
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 
-uaix_const_data unsigned char stage1_title[] = {
+uaix_const_data unsigned char stage1_title[8704] = {
 0,1,2,3,4,5,6,7,
 8,9,10,11,12,12,12,12,
 12,12,12,12,12,12,12,12,
@@ -6342,7 +6342,7 @@ uaix_const_data unsigned char stage1_title[] = {
 12,12,12,12,12,12,12,12,
 12,12,12,12,12,12,12,12};
 
-uaix_const_data type_codept stage2_title[] = {
+uaix_const_data type_codept stage2_title[5248] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -7045,7 +7045,7 @@ uaix_const_data type_codept stage2_title[] = {
 
 #ifndef UNI_ALGO_DISABLE_COLLATE
 
-uaix_const_data unsigned short stage1_order[] = {
+uaix_const_data unsigned short stage1_order[8704] = {
 0,1,2,3,4,5,6,7,
 8,9,10,11,12,13,14,15,
 16,17,18,19,20,21,22,23,
@@ -8135,7 +8135,7 @@ uaix_const_data unsigned short stage1_order[] = {
 104,104,104,104,104,104,104,104,
 104,104,104,104,104,104,104,104};
 
-uaix_const_data unsigned short stage2_order[] = {
+uaix_const_data unsigned short stage2_order[40320] = {
 /* Block: 0 */
 1,2,3,4,5,6,7,8,
 9,473,474,475,476,477,10,11,
@@ -13494,7 +13494,7 @@ uaix_const_data unsigned short stage2_order[] = {
 
 #endif // UNI_ALGO_DISABLE_COLLATE
 
-uaix_const_data unsigned char stage1_case_prop[] = {
+uaix_const_data unsigned char stage1_case_prop[8704] = {
 0,1,2,3,4,5,6,7,
 8,9,10,11,12,13,14,15,
 16,17,18,19,20,21,22,23,
@@ -14584,7 +14584,7 @@ uaix_const_data unsigned char stage1_case_prop[] = {
 34,34,34,34,34,34,34,34,
 34,34,34,34,34,34,34,34};
 
-uaix_const_data unsigned char stage2_case_prop[] = {
+uaix_const_data unsigned char stage2_case_prop[20736] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17342,7 +17342,7 @@ uaix_const_data unsigned char stage2_case_prop[] = {
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
-uaix_const_data unsigned char stage1_special_upper[] = {
+uaix_const_data unsigned char stage1_special_upper[512] = {
 0,1,2,3,0,0,0,4,
 0,0,0,5,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17408,7 +17408,7 @@ uaix_const_data unsigned char stage1_special_upper[] = {
 0,0,0,0,0,0,9,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage2_special_upper[] = {
+uaix_const_data unsigned char stage2_special_upper[1280] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17580,7 +17580,7 @@ uaix_const_data unsigned char stage2_special_upper[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage3_special_upper[][4] = {
+uaix_const_data unsigned short stage3_special_upper[103][4] = {
 {0,0,0,0},
 {2,83,83,0},
 {2,70,70,0},
@@ -17685,7 +17685,7 @@ uaix_const_data unsigned short stage3_special_upper[][4] = {
 {3,919,834,921},
 {3,937,834,921}};
 
-uaix_const_data unsigned char stage1_special_fold[] = {
+uaix_const_data unsigned char stage1_special_fold[512] = {
 0,1,2,3,0,0,0,4,
 0,0,0,5,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17751,7 +17751,7 @@ uaix_const_data unsigned char stage1_special_fold[] = {
 0,0,0,0,0,0,9,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage2_special_fold[] = {
+uaix_const_data unsigned char stage2_special_fold[1280] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17923,7 +17923,7 @@ uaix_const_data unsigned char stage2_special_fold[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage3_special_fold[][4] = {
+uaix_const_data unsigned short stage3_special_fold[105][4] = {
 {0,0,0,0},
 {2,115,115,0},
 {2,105,775,0},
@@ -18032,7 +18032,7 @@ uaix_const_data unsigned short stage3_special_fold[][4] = {
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 
-uaix_const_data unsigned char stage1_special_title[] = {
+uaix_const_data unsigned char stage1_special_title[512] = {
 0,1,2,3,0,0,0,4,
 0,0,0,5,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -18098,7 +18098,7 @@ uaix_const_data unsigned char stage1_special_title[] = {
 0,0,0,0,0,0,9,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage2_special_title[] = {
+uaix_const_data unsigned char stage2_special_title[1280] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -18270,7 +18270,7 @@ uaix_const_data unsigned char stage2_special_title[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage3_special_title[][4] = {
+uaix_const_data unsigned short stage3_special_title[49][4] = {
 {0,0,0,0},
 {2,83,115,0},
 {2,70,102,0},
@@ -18326,7 +18326,7 @@ uaix_const_data unsigned short stage3_special_title[][4] = {
 // This is handled in place
 #if 0
 
-uaix_const_data unsigned char stage1_special_lower[] = {
+uaix_const_data unsigned char stage1_special_lower[512] = {
 0,0,1,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -18392,7 +18392,7 @@ uaix_const_data unsigned char stage1_special_lower[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage2_special_lower[] = {
+uaix_const_data unsigned char stage2_special_lower[256] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -18428,7 +18428,7 @@ uaix_const_data unsigned char stage2_special_lower[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage3_special_lower[][4] = {
+uaix_const_data unsigned short stage3_special_lower[2][4] = {
 {0,0,0,0},
 {2,105,775,0}};
 

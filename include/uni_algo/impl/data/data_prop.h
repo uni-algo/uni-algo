@@ -2,7 +2,7 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-uaix_const_data unsigned char stage1_prop[] = {
+uaix_const_data unsigned char stage1_prop[8704] = {
 0,1,2,3,4,5,6,7,
 8,9,10,11,12,13,14,15,
 16,17,18,19,20,21,22,23,
@@ -1092,7 +1092,7 @@ uaix_const_data unsigned char stage1_prop[] = {
 107,107,107,107,107,107,107,107,
 107,107,107,107,107,107,107,254};
 
-uaix_const_data unsigned char stage2_prop[] = {
+uaix_const_data unsigned char stage2_prop[32640] = {
 /* Block: 0 */
 26,26,26,26,26,26,26,26,
 26,90,90,90,90,90,26,26,

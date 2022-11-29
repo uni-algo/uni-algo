@@ -2,7 +2,7 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-uaix_const_data unsigned char stage1_ccc_qc[] = {
+uaix_const_data unsigned char stage1_ccc_qc[8704] = {
 0,1,2,3,4,5,6,7,
 8,9,0,10,11,12,13,14,
 15,16,17,18,19,20,21,22,
@@ -1092,7 +1092,7 @@ uaix_const_data unsigned char stage1_ccc_qc[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage2_ccc_qc[] = {
+uaix_const_data unsigned short stage2_ccc_qc[20224] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -3780,7 +3780,7 @@ uaix_const_data unsigned short stage2_ccc_qc[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage1_decomp_nfd[] = {
+uaix_const_data unsigned char stage1_decomp_nfd[8704] = {
 0,1,2,3,4,0,5,6,
 7,8,0,0,9,10,0,0,
 0,0,11,12,13,0,14,15,
@@ -4870,7 +4870,7 @@ uaix_const_data unsigned char stage1_decomp_nfd[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage2_decomp_nfd[] = {
+uaix_const_data unsigned short stage2_decomp_nfd[7040] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -5807,7 +5807,7 @@ uaix_const_data unsigned short stage2_decomp_nfd[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data type_codept stage3_decomp_nfd[] = {
+uaix_const_data type_codept stage3_decomp_nfd[5468] = {
 0,2,65,768,2,65,769,2,
 65,770,2,65,771,2,65,776,
 2,65,778,2,67,807,2,69,
@@ -6495,7 +6495,7 @@ uaix_const_data type_codept stage3_decomp_nfd[] = {
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
-uaix_const_data unsigned char stage1_decomp_nfkd[] = {
+uaix_const_data unsigned char stage1_decomp_nfkd[8704] = {
 0,1,2,3,4,5,6,7,
 8,9,0,10,11,12,0,0,
 0,0,13,14,15,0,16,17,
@@ -7585,7 +7585,7 @@ uaix_const_data unsigned char stage1_decomp_nfkd[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage2_decomp_nfkd[] = {
+uaix_const_data unsigned short stage2_decomp_nfkd[13568] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -9389,7 +9389,7 @@ uaix_const_data unsigned short stage2_decomp_nfkd[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data type_codept stage3_decomp_nfkd[] = {
+uaix_const_data type_codept stage3_decomp_nfkd[14970] = {
 0,1,32,2,32,776,1,97,
 2,32,772,1,50,1,51,2,
 32,769,1,956,2,32,807,1,
@@ -11265,7 +11265,7 @@ uaix_const_data type_codept stage3_decomp_nfkd[] = {
 
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-uaix_const_data unsigned char stage1_comp_cp1[] = {
+uaix_const_data unsigned char stage1_comp_cp1[8704] = {
 0,1,2,3,4,5,6,7,
 8,9,6,6,10,11,6,6,
 6,6,12,13,6,6,14,15,
@@ -12355,7 +12355,7 @@ uaix_const_data unsigned char stage1_comp_cp1[] = {
 6,6,6,6,6,6,6,6,
 6,6,6,6,6,6,6,6};
 
-uaix_const_data unsigned short stage2_comp_cp1[] = {
+uaix_const_data unsigned short stage2_comp_cp1[4736] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -12986,7 +12986,7 @@ uaix_const_data unsigned short stage2_comp_cp1[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage1_comp_cp2[] = {
+uaix_const_data unsigned char stage1_comp_cp2[8704] = {
 0,0,0,0,0,0,1,0,
 0,0,0,0,2,0,0,0,
 0,0,3,4,0,0,5,6,
@@ -14076,7 +14076,7 @@ uaix_const_data unsigned char stage1_comp_cp2[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage2_comp_cp2[] = {
+uaix_const_data unsigned short stage2_comp_cp2[2560] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -14418,7 +14418,7 @@ uaix_const_data unsigned short stage2_comp_cp2[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data type_codept stage3_comp[][64] = {
+uaix_const_data type_codept stage3_comp[378][64] = {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,192,193,194,195,196,197,0,256,258,260,550,461,0,0,512,514,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7680,7840,0,0,0,0,0,7842,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,262,264,0,0,0,199,0,0,0,266,268,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},

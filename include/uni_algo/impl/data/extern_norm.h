@@ -2,20 +2,20 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-UNI_ALGO_DLL extern const unsigned char  stage1_decomp_nfd[];
-UNI_ALGO_DLL extern const unsigned short stage2_decomp_nfd[];
-UNI_ALGO_DLL extern const type_codept    stage3_decomp_nfd[];
+UNI_ALGO_DLL extern const unsigned char  stage1_decomp_nfd[8704];
+UNI_ALGO_DLL extern const unsigned short stage2_decomp_nfd[7040];
+UNI_ALGO_DLL extern const type_codept    stage3_decomp_nfd[5468];
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-UNI_ALGO_DLL extern const unsigned char  stage1_decomp_nfkd[];
-UNI_ALGO_DLL extern const unsigned short stage2_decomp_nfkd[];
-UNI_ALGO_DLL extern const type_codept    stage3_decomp_nfkd[];
+UNI_ALGO_DLL extern const unsigned char  stage1_decomp_nfkd[8704];
+UNI_ALGO_DLL extern const unsigned short stage2_decomp_nfkd[13568];
+UNI_ALGO_DLL extern const type_codept    stage3_decomp_nfkd[14970];
 #endif
-UNI_ALGO_DLL extern const unsigned char  stage1_comp_cp1[];
-UNI_ALGO_DLL extern const unsigned short stage2_comp_cp1[];
-UNI_ALGO_DLL extern const unsigned char  stage1_comp_cp2[];
-UNI_ALGO_DLL extern const unsigned short stage2_comp_cp2[];
-UNI_ALGO_DLL extern const type_codept    stage3_comp[][64];
-UNI_ALGO_DLL extern const unsigned char  stage1_ccc_qc[];
-UNI_ALGO_DLL extern const unsigned short stage2_ccc_qc[];
+UNI_ALGO_DLL extern const unsigned char  stage1_comp_cp1[8704];
+UNI_ALGO_DLL extern const unsigned short stage2_comp_cp1[4736];
+UNI_ALGO_DLL extern const unsigned char  stage1_comp_cp2[8704];
+UNI_ALGO_DLL extern const unsigned short stage2_comp_cp2[2560];
+UNI_ALGO_DLL extern const type_codept    stage3_comp[378][64];
+UNI_ALGO_DLL extern const unsigned char  stage1_ccc_qc[8704];
+UNI_ALGO_DLL extern const unsigned short stage2_ccc_qc[20224];
 
 UNI_ALGO_IMPL_NAMESPACE_END
