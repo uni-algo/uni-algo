@@ -2,11 +2,10 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-uaix_const_data unsigned char stage1_break_grapheme[] = {
+uaix_const_data unsigned char stage1_break_grapheme[new_stage1_break_grapheme.111] = {
 new_stage1_break_grapheme.txt};
 
-uaix_const_data unsigned char stage2_break_grapheme[] = {
+uaix_const_data unsigned char stage2_break_grapheme[new_stage2_break_grapheme.111] = {
 new_stage2_break_grapheme.txt};
 
 UNI_ALGO_IMPL_NAMESPACE_END
-
