@@ -257,7 +257,7 @@ uaix_static it_out_utf8 case_locale_upper_lt_utf8(type_codept c, it_out_utf8 dst
     if (c == 0x0307 && case_after_soft_dotted_utf8(first, prev))
         return dst;
 
-    // The next part is the same as in impl_utf8_casemap
+    // The next part is the same as in impl_case_map_utf8
 
     if (stages_special_upper_check(c))
     {
@@ -337,7 +337,7 @@ uaix_static it_out_utf8 case_locale_lower_lt_utf8(type_codept c, it_out_utf8 dst
         return dst;
     }
 
-    // The next part is the same as in impl_utf8_casemap
+    // The next part is the same as in impl_case_map_utf8
 
     if (c == 0x0130) // Handled in place (checked in generator)
     {
@@ -379,7 +379,7 @@ uaix_static it_out_utf8 case_locale_upper_tr_az_utf8(type_codept c, it_out_utf8 
         return dst;
     }
 
-    // The next part is the same as in impl_utf8_casemap
+    // The next part is the same as in impl_case_map_utf8
 
     if (stages_special_upper_check(c))
     {
@@ -425,7 +425,7 @@ uaix_static it_out_utf8 case_locale_lower_tr_az_utf8(type_codept c, it_out_utf8 
         return dst;
     }
 
-    // The next part is the same as in impl_utf8_casemap
+    // The next part is the same as in impl_case_map_utf8
 
     if (c == 0x0130) // Handled in place (checked in generator)
     {
@@ -464,7 +464,7 @@ uaix_static it_out_utf16 case_locale_upper_lt_utf16(type_codept c, it_out_utf16 
     if (c == 0x0307 && case_after_soft_dotted_utf16(first, prev))
         return dst;
 
-    // The next part is the same as in impl_utf16_casemap
+    // The next part is the same as in impl_case_map_utf16
 
     if (stages_special_upper_check(c))
     {
@@ -534,7 +534,7 @@ uaix_static it_out_utf16 case_locale_lower_lt_utf16(type_codept c, it_out_utf16 
         return dst;
     }
 
-    // The next part is the same as in impl_utf16_casemap
+    // The next part is the same as in impl_case_map_utf16
 
     if (c == 0x0130) // Handled in place (checked in generator)
     {
@@ -573,7 +573,7 @@ uaix_static it_out_utf16 case_locale_upper_tr_az_utf16(type_codept c, it_out_utf
         return dst;
     }
 
-    // The next part is the same as in impl_utf16_casemap
+    // The next part is the same as in impl_case_map_utf16
 
     if (stages_special_upper_check(c))
     {
@@ -618,7 +618,7 @@ uaix_static it_out_utf16 case_locale_lower_tr_az_utf16(type_codept c, it_out_utf
         return dst;
     }
 
-    // The next part is the same as in impl_utf16_casemap
+    // The next part is the same as in impl_case_map_utf16
 
     if (c == 0x0130) // Handled in place (checked in generator)
     {
@@ -1230,7 +1230,7 @@ template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
 uaix_static size_t case_title_locale_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, type_codept language)
 {
-    // The function is the same as utf8_title except LOCALE BEGIN - LOCALE END parts
+    // The function is the same as case_title_utf8 except LOCALE BEGIN - LOCALE END parts
 
     it_in_utf8 src = first;
     it_in_utf8 brk = first;
@@ -1373,7 +1373,7 @@ template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
 uaix_static size_t case_title_locale_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, type_codept language)
 {
-    // The function is the same as utf16_title except LOCALE BEGIN - LOCALE END parts
+    // The function is the same as case_title_utf16 except LOCALE BEGIN - LOCALE END parts
 
     it_in_utf16 src = first;
     it_in_utf16 brk = first;
