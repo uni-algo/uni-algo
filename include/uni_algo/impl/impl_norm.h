@@ -67,8 +67,11 @@ uaix_const size_t impl_x_norm_to_unaccent_utf16 = 3;
 
 struct norm_buffer
 {
-    type_codept cps[norm_buffer_size];
-    unsigned char ccc[norm_buffer_size];
+    uaix_array(type_codept, cps, norm_buffer_size);
+    uaix_array(unsigned char, ccc, norm_buffer_size);
+
+    //type_codept cps[norm_buffer_size];
+    //unsigned char ccc[norm_buffer_size];
 
     // TODO: Use for tests. Clean later.
     //std::array<type_codept, norm_buffer_size> cps;

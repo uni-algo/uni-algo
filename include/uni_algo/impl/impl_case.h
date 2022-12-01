@@ -53,7 +53,9 @@ uaix_const type_codept prop_CCC_230          = 1 << 6; // impl_case_locale.h
 
 struct case_special_buffer
 {
-    type_codept data[3];
+    uaix_array(type_codept, data, 3);
+
+    //type_codept data[3];
 
     // TODO: Use for tests. Clean later.
     //std::array<type_codept, 3> data;
