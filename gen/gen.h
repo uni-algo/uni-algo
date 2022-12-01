@@ -1837,7 +1837,7 @@ static void new_merger_replace_string_impl(std::string& data, const std::string&
         data.replace(index, from.size(), to);
 }
 
-static void new_merger_replace_number_impl(std::string& data1, std::string& data2, std::ifstream& input, const std::string& from)
+static void new_merger_replace_number_impl(std::string& data1, std::string& data2, std::ifstream& input, const std::string& from, bool multi = false)
 {
     std::string size_str;
     std::getline(input, size_str);
@@ -1846,6 +1846,10 @@ static void new_merger_replace_number_impl(std::string& data1, std::string& data
     ASSERTX(size != 0);
 
     new_merger_replace_string_impl(data1, from, std::to_string(size));
+    // For multidimensional array replace size one more time for brace ellison helper
+    if (multi)
+        new_merger_replace_string_impl(data1, from, std::to_string(size));
+
     new_merger_replace_string_impl(data2, from, std::to_string(size));
 }
 
@@ -1861,7 +1865,7 @@ static void new_merger_replace_string(std::string& data1, std::string& data2, co
 
     new_merger_replace_number_impl(data1, data2, input, num_file + ".111");
     if (dimensions == 2)
-        new_merger_replace_number_impl(data1, data2, input, num_file + ".222");
+        new_merger_replace_number_impl(data1, data2, input, num_file + ".222", true);
 
     std::string new_str = std::string(std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>());
 
