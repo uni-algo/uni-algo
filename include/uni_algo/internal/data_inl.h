@@ -8,6 +8,7 @@
 #include <type_traits>
 
 #include "../config.h"
+#include "../internal/safe_layer.h"
 
 #ifdef UNI_ALGO_STATIC_DATA
 #error "data.cpp file must not be compiled when header-only is enabled"

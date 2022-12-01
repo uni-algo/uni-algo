@@ -14,6 +14,7 @@
 
 #include "config.h"
 #include "version.h"
+#include "internal/safe_layer.h"
 #include "internal/ranges_core.h"
 
 #include "impl/impl_iter.h"
