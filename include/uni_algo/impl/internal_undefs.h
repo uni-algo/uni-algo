@@ -14,6 +14,11 @@
 #undef uaix_inline
 #undef uaix_const
 #undef uaix_const_data
+#undef uaix_array
+#undef uaix_array2
+#undef uaix_array_brace_ellison
+#undef uaix_data_array
+#undef uaix_data_array2
 
 #ifdef __cplusplus
 #  if defined(__GNUC__) || defined(__clang__)

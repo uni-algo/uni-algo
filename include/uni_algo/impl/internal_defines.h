@@ -91,6 +91,19 @@
 #  define uaix_const_data const
 #endif
 
+#if defined(__cplusplus) && !defined(UNI_ALGO_FORCE_C_ARRAYS)
+#define uaix_array(type, var, size) type_array<type, size> var
+#define uaix_array2(type, var, size1, size2) type_array<type_array<type, size2>, size1> var
+// This helper is needed to trigger brace ellison for multidimensional array: https://stackoverflow.com/a/53308148
+#define uaix_array_brace_ellison(type, size) type_array<type, size>
+#else
+#define uaix_array(type, var, size) type var[size]
+#define uaix_array2(type, var, size1, size2) type var[size1][size2]
+#define uaix_array_brace_ellison(type, size)
+#endif
+#define uaix_data_array uaix_array
+#define uaix_data_array2 uaix_array2
+
 // -Wsign-conversion is the only warning that cannot be suppressed in C++ by using other tools
 // because it's almost impossible to suppress it inside templates.
 // Note that because of this the warning isn't even enabled in GCC
