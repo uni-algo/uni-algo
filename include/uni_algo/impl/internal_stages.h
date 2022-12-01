@@ -16,7 +16,7 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 #ifdef __cplusplus
 template<typename T1, typename T2>
 uaix_always_inline_tmpl
-uaix_static type_codept stages(type_codept c, T1 stage1, T2 stage2)
+uaix_static type_codept stages(type_codept c, const T1& stage1, const T2& stage2)
 {
     // If c > 0x10FFFF the behaviour is undefined
     // For stage1/2_special_* tables if c > 0xFFFF the behaviour is undefined
