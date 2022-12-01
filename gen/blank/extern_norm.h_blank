@@ -2,20 +2,20 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-UNI_ALGO_DLL extern const unsigned char  stage1_decomp_nfd[new_stage1_decomp_nfd.111];
-UNI_ALGO_DLL extern const unsigned short stage2_decomp_nfd[new_stage2_decomp_nfd.111];
-UNI_ALGO_DLL extern const type_codept    stage3_decomp_nfd[new_stage3_decomp_nfd.111];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,  stage1_decomp_nfd, new_stage1_decomp_nfd.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned short, stage2_decomp_nfd, new_stage2_decomp_nfd.111);
+UNI_ALGO_DLL extern const uaix_data_array(type_codept,    stage3_decomp_nfd, new_stage3_decomp_nfd.111);
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-UNI_ALGO_DLL extern const unsigned char  stage1_decomp_nfkd[new_stage1_decomp_nfkd.111];
-UNI_ALGO_DLL extern const unsigned short stage2_decomp_nfkd[new_stage2_decomp_nfkd.111];
-UNI_ALGO_DLL extern const type_codept    stage3_decomp_nfkd[new_stage3_decomp_nfkd.111];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,  stage1_decomp_nfkd, new_stage1_decomp_nfkd.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned short, stage2_decomp_nfkd, new_stage2_decomp_nfkd.111);
+UNI_ALGO_DLL extern const uaix_data_array(type_codept,    stage3_decomp_nfkd, new_stage3_decomp_nfkd.111);
 #endif
-UNI_ALGO_DLL extern const unsigned char  stage1_comp_cp1[new_stage1_comp_cp1.111];
-UNI_ALGO_DLL extern const unsigned short stage2_comp_cp1[new_stage2_comp_cp1.111];
-UNI_ALGO_DLL extern const unsigned char  stage1_comp_cp2[new_stage1_comp_cp2.111];
-UNI_ALGO_DLL extern const unsigned short stage2_comp_cp2[new_stage2_comp_cp2.111];
-UNI_ALGO_DLL extern const type_codept    stage3_comp[new_stage3_comp.111][new_stage3_comp.222];
-UNI_ALGO_DLL extern const unsigned char  stage1_ccc_qc[new_stage1_ccc_qc.111];
-UNI_ALGO_DLL extern const unsigned short stage2_ccc_qc[new_stage2_ccc_qc.111];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,  stage1_comp_cp1, new_stage1_comp_cp1.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned short, stage2_comp_cp1, new_stage2_comp_cp1.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,  stage1_comp_cp2, new_stage1_comp_cp2.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned short, stage2_comp_cp2, new_stage2_comp_cp2.111);
+UNI_ALGO_DLL extern const uaix_data_array2(type_codept,   stage3_comp, new_stage3_comp.111, new_stage3_comp.222);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,  stage1_ccc_qc, new_stage1_ccc_qc.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned short, stage2_ccc_qc, new_stage2_ccc_qc.111);
 
 UNI_ALGO_IMPL_NAMESPACE_END

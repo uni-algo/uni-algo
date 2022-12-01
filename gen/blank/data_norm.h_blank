@@ -2,47 +2,48 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-uaix_const_data unsigned char stage1_ccc_qc[new_stage1_ccc_qc.111] = {
+uaix_const_data uaix_data_array(unsigned char, stage1_ccc_qc, new_stage1_ccc_qc.111) = {
 new_stage1_ccc_qc.txt};
 
-uaix_const_data unsigned short stage2_ccc_qc[new_stage2_ccc_qc.111] = {
+uaix_const_data uaix_data_array(unsigned short, stage2_ccc_qc, new_stage2_ccc_qc.111) = {
 new_stage2_ccc_qc.txt};
 
-uaix_const_data unsigned char stage1_decomp_nfd[new_stage1_decomp_nfd.111] = {
+uaix_const_data uaix_data_array(unsigned char, stage1_decomp_nfd, new_stage1_decomp_nfd.111) = {
 new_stage1_decomp_nfd.txt};
 
-uaix_const_data unsigned short stage2_decomp_nfd[new_stage2_decomp_nfd.111] = {
+uaix_const_data uaix_data_array(unsigned short, stage2_decomp_nfd, new_stage2_decomp_nfd.111) = {
 new_stage2_decomp_nfd.txt};
 
-uaix_const_data type_codept stage3_decomp_nfd[new_stage3_decomp_nfd.111] = {
+uaix_const_data uaix_data_array(type_codept, stage3_decomp_nfd, new_stage3_decomp_nfd.111) = {
 new_stage3_decomp_nfd.txt};
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
-uaix_const_data unsigned char stage1_decomp_nfkd[new_stage1_decomp_nfkd.111] = {
+uaix_const_data uaix_data_array(unsigned char, stage1_decomp_nfkd, new_stage1_decomp_nfkd.111) = {
 new_stage1_decomp_nfkd.txt};
 
-uaix_const_data unsigned short stage2_decomp_nfkd[new_stage2_decomp_nfkd.111] = {
+uaix_const_data uaix_data_array(unsigned short, stage2_decomp_nfkd, new_stage2_decomp_nfkd.111) = {
 new_stage2_decomp_nfkd.txt};
 
-uaix_const_data type_codept stage3_decomp_nfkd[new_stage3_decomp_nfkd.111] = {
+uaix_const_data uaix_data_array(type_codept, stage3_decomp_nfkd, new_stage3_decomp_nfkd.111) = {
 new_stage3_decomp_nfkd.txt};
 
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-uaix_const_data unsigned char stage1_comp_cp1[new_stage1_comp_cp1.111] = {
+uaix_const_data uaix_data_array(unsigned char, stage1_comp_cp1, new_stage1_comp_cp1.111) = {
 new_stage1_comp_cp1.txt};
 
-uaix_const_data unsigned short stage2_comp_cp1[new_stage2_comp_cp1.111] = {
+uaix_const_data uaix_data_array(unsigned short, stage2_comp_cp1, new_stage2_comp_cp1.111) = {
 new_stage2_comp_cp1.txt};
 
-uaix_const_data unsigned char stage1_comp_cp2[new_stage1_comp_cp2.111] = {
+uaix_const_data uaix_data_array(unsigned char, stage1_comp_cp2, new_stage1_comp_cp2.111) = {
 new_stage1_comp_cp2.txt};
 
-uaix_const_data unsigned short stage2_comp_cp2[new_stage2_comp_cp2.111] = {
+uaix_const_data uaix_data_array(unsigned short, stage2_comp_cp2, new_stage2_comp_cp2.111) = {
 new_stage2_comp_cp2.txt};
 
-uaix_const_data type_codept stage3_comp[new_stage3_comp.111][new_stage3_comp.222] = {
+uaix_const_data uaix_data_array2(type_codept, stage3_comp, new_stage3_comp.111, new_stage3_comp.222) = {
+uaix_array_brace_ellison(type_codept, new_stage3_comp.222)
 new_stage3_comp.txt};
 
 UNI_ALGO_IMPL_NAMESPACE_END

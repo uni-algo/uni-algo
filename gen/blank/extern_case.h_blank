@@ -2,37 +2,37 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-UNI_ALGO_DLL extern const unsigned char  stage1_lower[new_stage1_lower.111];
-UNI_ALGO_DLL extern const type_codept    stage2_lower[new_stage2_lower.111];
-UNI_ALGO_DLL extern const unsigned char  stage1_upper[new_stage1_upper.111];
-UNI_ALGO_DLL extern const type_codept    stage2_upper[new_stage2_upper.111];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_lower, new_stage1_lower.111);
+UNI_ALGO_DLL extern const uaix_data_array(type_codept,     stage2_lower, new_stage2_lower.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_upper, new_stage1_upper.111);
+UNI_ALGO_DLL extern const uaix_data_array(type_codept,     stage2_upper, new_stage2_upper.111);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-UNI_ALGO_DLL extern const unsigned char  stage1_title[new_stage1_title.111];
-UNI_ALGO_DLL extern const type_codept    stage2_title[new_stage2_title.111];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_title, new_stage1_title.111);
+UNI_ALGO_DLL extern const uaix_data_array(type_codept,     stage2_title, new_stage2_title.111);
 #endif
-UNI_ALGO_DLL extern const unsigned char  stage1_fold[new_stage1_fold.111];
-UNI_ALGO_DLL extern const type_codept    stage2_fold[new_stage2_fold.111];
-UNI_ALGO_DLL extern const unsigned short stage1_order[new_stage1_order.111];
-UNI_ALGO_DLL extern const unsigned short stage2_order[new_stage2_order.111];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_fold, new_stage1_fold.111);
+UNI_ALGO_DLL extern const uaix_data_array(type_codept,     stage2_fold, new_stage2_fold.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned short,  stage1_order, new_stage1_order.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned short,  stage2_order, new_stage2_order.111);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-UNI_ALGO_DLL extern const unsigned char  stage1_special_upper[new_stage1_special_upper.111];
-UNI_ALGO_DLL extern const unsigned char  stage2_special_upper[new_stage2_special_upper.111];
-UNI_ALGO_DLL extern const unsigned short stage3_special_upper[new_stage3_special_upper.111][new_stage3_special_upper.222];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_special_upper, new_stage1_special_upper.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage2_special_upper, new_stage2_special_upper.111);
+UNI_ALGO_DLL extern const uaix_data_array2(unsigned short, stage3_special_upper, new_stage3_special_upper.111, new_stage3_special_upper.222);
 #if 0
-UNI_ALGO_DLL extern const unsigned char  stage1_special_lower[new_stage1_special_lower.111];
-UNI_ALGO_DLL extern const unsigned char  stage2_special_lower[new_stage2_special_lower.111];
-UNI_ALGO_DLL extern const unsigned short stage3_special_lower[new_stage3_special_lower.111][new_stage3_special_lower.222];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_special_lower, new_stage1_special_lower.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage2_special_lower, new_stage2_special_lower.111);
+UNI_ALGO_DLL extern const uaix_data_array2(unsigned short, stage3_special_lower, new_stage3_special_lower.111, new_stage3_special_lower.222);
 #endif
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-UNI_ALGO_DLL extern const unsigned char  stage1_special_title[new_stage1_special_title.111];
-UNI_ALGO_DLL extern const unsigned char  stage2_special_title[new_stage2_special_title.111];
-UNI_ALGO_DLL extern const unsigned short stage3_special_title[new_stage3_special_title.111][new_stage3_special_title.222];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_special_title, new_stage1_special_title.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage2_special_title, new_stage2_special_title.111);
+UNI_ALGO_DLL extern const uaix_data_array2(unsigned short, stage3_special_title, new_stage3_special_title.111, new_stage3_special_title.222);
 #endif
-UNI_ALGO_DLL extern const unsigned char  stage1_special_fold[new_stage1_special_fold.111];
-UNI_ALGO_DLL extern const unsigned char  stage2_special_fold[new_stage2_special_fold.111];
-UNI_ALGO_DLL extern const unsigned short stage3_special_fold[new_stage3_special_fold.111][new_stage3_special_fold.222];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_special_fold, new_stage1_special_fold.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage2_special_fold, new_stage2_special_fold.111);
+UNI_ALGO_DLL extern const uaix_data_array2(unsigned short, stage3_special_fold, new_stage3_special_fold.111, new_stage3_special_fold.222);
 #endif
-UNI_ALGO_DLL extern const unsigned char  stage1_case_prop[new_stage1_case_prop.111];
-UNI_ALGO_DLL extern const unsigned char  stage2_case_prop[new_stage2_case_prop.111];
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_case_prop, new_stage1_case_prop.111);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage2_case_prop, new_stage2_case_prop.111);
 
 UNI_ALGO_IMPL_NAMESPACE_END

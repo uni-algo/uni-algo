@@ -2,10 +2,10 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-uaix_const_data unsigned char stage1_break_word[new_stage1_break_word.111] = {
+uaix_const_data uaix_data_array(unsigned char, stage1_break_word, new_stage1_break_word.111) = {
 new_stage1_break_word.txt};
 
-uaix_const_data unsigned char stage2_break_word[new_stage2_break_word.111] = {
+uaix_const_data uaix_data_array(unsigned char, stage2_break_word, new_stage2_break_word.111) = {
 new_stage2_break_word.txt};
 
 UNI_ALGO_IMPL_NAMESPACE_END
