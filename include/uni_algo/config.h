@@ -147,7 +147,7 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 
 //#define UNI_ALGO_EXPERIMENTAL // Enable experimental stuff for tests
 //#define UNI_ALGO_LOG_CPP_ITER // Enable logging for UTF-8/16 iterators
-#define UNI_ALGO_FORCE_C_ARRAYS // Force to use C arrays on the low-level
+//#define UNI_ALGO_FORCE_C_ARRAYS // Force to use C arrays on the low-level
 
 // Can be enabled for testing and debugging aid and should be disabled in stable releases.
 // Never ever rely on asserts! Use the define together with -D_GLIBCXX_DEBUG but do not rely on this either.
