@@ -14,9 +14,14 @@ namespace safe {
 
 inline void kms()
 {
+    // Everything is lost, nothing can be done, kmsing is the only option.
+    // If we are inside this function then there is a critical bug exists in the library.
+    // If we will continue then we try to read or write to a memory that is not belong to us.
     std::abort();
 }
 
+// Safe array - similar to std::array but with bound checks and more strict
+// so the compilation will break if the low-level won't follow the rules.
 template<typename T, std::size_t N>
 struct array
 {
