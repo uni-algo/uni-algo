@@ -1,0 +1,17 @@
+All arrays on the low-level except Unicode data arrays must be isolated.
+
+The arrays must be isolated using struct like this:
+struct name { uaix_array(unsigned char, array, 3); }
+
+This allows to use C arrays in C mode and C++ std::array and such in C++ mode
+and pass this "array inside struct" to helper functions by pointer.
+
+For example the previous array expands to:
+in C mode  : struct name { unsigned char array[3]; }
+in C++ mode: struct name { std::array<unsigned char, 3> array; }
+so this struct name can be passed to helper functions by pointer.
+
+Unicode data arrays are never isolated because they must not be passed to functions
+they are "global" and must be used inplace via special functions like:
+value = stages(c, stage1_array, stage2_array) and such when working with those arrays
+or access to them directly if needed: value = stage3_array[index];
