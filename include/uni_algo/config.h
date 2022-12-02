@@ -124,6 +124,15 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 #define UNI_ALGO_IMPL_NAMESPACE_BEGIN namespace uni::detail {
 #define UNI_ALGO_IMPL_NAMESPACE_END }
 
+//define UNI_ALGO_ENABLE_SAFE_LAYER // Force to enable safe layer in release
+
+// Enable safe layer if it is forced with this define and in debug
+#ifndef UNI_ALGO_ENABLE_SAFE_LAYER
+#ifndef NDEBUG
+#define UNI_ALGO_ENABLE_SAFE_LAYER
+#endif
+#endif
+
 // Define dllexport/dllimport for shared library
 #if defined(UNI_ALGO_DLL_EXPORT) && !defined(UNI_ALGO_STATIC_DATA)
 #  if defined(_WIN32)

@@ -6,7 +6,9 @@
 #define UNI_ALGO_INTERNAL_SAFE_LAYER_H_UAIH
 
 #include <cstdlib>
+#ifndef UNI_ALGO_ENABLE_SAFE_LAYER
 #include <array>
+#endif
 
 namespace uni::detail {
 
@@ -70,7 +72,7 @@ static_assert(std::is_aggregate_v<array<char, 1>>, "safe::array must be aggregat
 
 } // namespace safe
 
-#if 0
+#ifdef UNI_ALGO_ENABLE_SAFE_LAYER
 template<typename T, std::size_t N>
 using type_array = safe::array<T, N>;
 #else
