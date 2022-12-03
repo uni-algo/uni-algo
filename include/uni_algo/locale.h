@@ -56,7 +56,7 @@ public:
         constexpr char32_t get_value() const { return value; }
     public:
         constexpr language() = default;
-        template <std::size_t N>
+        template <std::size_t N> // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
         constexpr explicit language(const char (&s)[N]) : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
         uaiw_constexpr explicit language(std::string_view s) : value{detail::impl_locate_from_tag(s, s.size())} {}
 
@@ -91,7 +91,7 @@ public:
         constexpr char32_t get_value() const { return value; }
     public:
         constexpr region() = default;
-        template <std::size_t N>
+        template <std::size_t N> // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
         constexpr explicit region(const char (&s)[N]) : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
         uaiw_constexpr explicit region(std::string_view s) : value{detail::impl_locate_from_tag(s, s.size())} {}
         // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
@@ -123,7 +123,7 @@ public:
         constexpr char32_t get_value() const { return value; }
     public:
         constexpr script() = default;
-        template <std::size_t N>
+        template <std::size_t N> // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
         constexpr explicit script(const char (&s)[N]) : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
         uaiw_constexpr explicit script(std::string_view s) : value{detail::impl_locate_from_tag(s, s.size())} {}
         // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)

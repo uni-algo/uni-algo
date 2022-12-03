@@ -46,6 +46,7 @@ struct array
     using iterator        = value_type*;
     using const_iterator  = const value_type*;
 
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
     T internal_array[N];
 
     constexpr reference operator[](size_type pos) noexcept
