@@ -654,7 +654,7 @@ type_codept case_greek_upper(type_codept c, bool* prev_vowel_with_accent, bool* 
     const type_codept has_accent = 0x4000;
     const type_codept has_dialytika = 0x8000;
 
-    static const type_codept map_0370_03FF[144] =
+    static const uaix_array(type_codept, map_0370_03FF, 144) =
     {
         // U+0370..03FF
         0x0370,
@@ -803,7 +803,7 @@ type_codept case_greek_upper(type_codept c, bool* prev_vowel_with_accent, bool* 
         0x03FF,
     };
 
-    static const type_codept map_1F00_1FFF[256] =
+    static const uaix_array(type_codept, map_1F00_1FFF, 256) =
     {
         // U+1F00..1FFF
         0x0391 | 0x1000,
