@@ -12,6 +12,7 @@
 
 #include "config.h"
 #include "version.h"
+#include "internal/safe_layer.h"
 #include "internal/error.h"
 
 #include "impl/impl_conv.h"
@@ -39,8 +40,10 @@ namespace detail {
 // Performance impact of shrink_to_fit call is 2-20% slower depends on the length of the string.
 
 template<typename Dst, typename Alloc, typename Src, size_t SizeX,
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
     size_t(*FnUTF)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer, size_t*)>
+#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
+    size_t(*FnUTF)(safe::in<typename Src::const_pointer>, safe::in<typename Src::const_pointer>, safe::out<typename Dst::pointer>, size_t*)>
 #else
     size_t(*FnUTF)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator, size_t*)>
 #endif
@@ -62,11 +65,14 @@ Dst t_utf(const Alloc& alloc, const Src& src)
         }
 
         dst.resize(length * SizeX);
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
         dst.resize(FnUTF(src.data(), src.data() + src.size(), dst.data(), nullptr));
+#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
+        dst.resize(FnUTF(safe::in{src.data(), src.size()}, safe::in{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, nullptr));
 #else
         dst.resize(FnUTF(src.cbegin(), src.cend(), dst.begin(), nullptr));
 #endif
+
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
@@ -76,8 +82,10 @@ Dst t_utf(const Alloc& alloc, const Src& src)
 }
 
 template<typename Dst, typename Alloc, typename Src, size_t SizeX,
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
     size_t(*FnUTF)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer, size_t*)>
+#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
+    size_t(*FnUTF)(safe::in<typename Src::const_pointer>, safe::in<typename Src::const_pointer>, safe::out<typename Dst::pointer>, size_t*)>
 #else
     size_t(*FnUTF)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator, size_t*)>
 #endif
@@ -102,8 +110,10 @@ Dst t_utf(const Alloc& alloc, const Src& src, uni::error& error)
 
         dst.resize(length * SizeX);
         std::size_t err = impl_npos;
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
         std::size_t size = FnUTF(src.data(), src.data() + src.size(), dst.data(), &err);
+#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
+        std::size_t size = FnUTF(safe::in{src.data(), src.size()}, safe::in{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, &err);
 #else
         std::size_t size = FnUTF(src.cbegin(), src.cend(), dst.begin(), &err);
 #endif
@@ -114,6 +124,7 @@ Dst t_utf(const Alloc& alloc, const Src& src, uni::error& error)
             dst.clear();
             error = uni::error{true, err};
         }
+
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
