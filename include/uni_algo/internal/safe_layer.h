@@ -72,6 +72,17 @@ struct array
 static_assert(std::is_aggregate_v<array<char, 1>>, "safe::array must be aggregate");
 
 template<class Iter>
+class end
+{
+    // REMINDER: friend
+    //template<typename T> friend class in;
+public:
+    Iter it;
+public:
+    uaiw_constexpr explicit end(Iter iter) : it{iter} {}
+};
+
+template<class Iter>
 class in
 {
 private:
@@ -108,6 +119,11 @@ public:
     friend uaiw_constexpr std::ptrdiff_t operator-(const in& x, const in& y) { return x.it - y.it; }
     friend uaiw_constexpr bool operator!=(const in& x, const in& y) { return x.it != y.it; }
     friend uaiw_constexpr bool operator==(const in& x, const in& y) { return x.it == y.it; }
+    friend uaiw_constexpr bool operator!=(const in& x, const safe::end<Iter>& y) { return x.it != y.it; }
+    friend uaiw_constexpr bool operator==(const in& x, const safe::end<Iter>& y) { return x.it == y.it; }
+    // REMINDER: friend
+    //uaiw_constexpr bool operator!=(const safe::end<Iter>& x) const { return it != x.it; }
+    //uaiw_constexpr bool operator==(const safe::end<Iter>& x) const { return it == x.it; }
 };
 
 template<class Iter>
