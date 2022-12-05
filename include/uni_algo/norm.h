@@ -26,8 +26,10 @@ namespace uni {
 namespace detail {
 
 template<typename Dst, typename Alloc, typename Src, size_t SizeX,
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
     size_t(*FnNorm)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer)>
+#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
+    size_t(*FnNorm)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>)>
 #else
     size_t(*FnNorm)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator)>
 #endif
@@ -49,11 +51,14 @@ Dst t_norm(const Alloc& alloc, Src src)
         }
 
         dst.resize(length * SizeX);
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
         dst.resize(FnNorm(src.data(), src.data() + src.size(), dst.data()));
+#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
+        dst.resize(FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}));
 #else
         dst.resize(FnNorm(src.cbegin(), src.cend(), dst.begin()));
 #endif
+
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
@@ -90,8 +95,10 @@ public:
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 template<typename Dst, typename Alloc, typename Src,
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
     size_t(*FnNorm)(typename Src::const_pointer, typename Src::const_pointer, proxy_it_out<std::back_insert_iterator<Dst>>)>
+#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
+    size_t(*FnNorm)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, proxy_it_out<std::back_insert_iterator<Dst>>)>
 #else
     size_t(*FnNorm)(typename Src::const_iterator, typename Src::const_iterator, proxy_it_out<std::back_insert_iterator<Dst>>)>
 #endif
@@ -116,11 +123,14 @@ Dst t_norm2(const Alloc& alloc, Src src)
 
         proxy_it_out<std::back_insert_iterator<Dst>> it_out{std::back_inserter(dst)};
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
         FnNorm(src.data(), src.data() + src.size(), it_out);
+#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
+        FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, it_out);
 #else
         FnNorm(src.cbegin(), src.cend(), it_out);
 #endif
+
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
