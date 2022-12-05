@@ -71,6 +71,64 @@ struct array
 };
 static_assert(std::is_aggregate_v<array<char, 1>>, "safe::array must be aggregate");
 
+template<class Iter>
+class in
+{
+private:
+    Iter it;
+    Iter begin;
+    Iter end;
+public:
+    uaiw_constexpr explicit in(Iter iter) : it{iter}, begin{it}, end{it} {}
+    uaiw_constexpr explicit in(Iter iter, std::size_t size)
+        : it{iter}, begin{it}, end{it + static_cast<std::ptrdiff_t>(size)} {}
+    uaiw_constexpr decltype(*it) operator*() const { if (it < begin || it >= end) kms(); return *it; }
+    uaiw_constexpr in& operator++()
+    {
+        ++it;
+        return *this;
+    }
+    uaiw_constexpr in operator++(int)
+    {
+        in tmp = *this;
+        ++it;
+        return tmp;
+    }
+    uaiw_constexpr in& operator--()
+    {
+        --it;
+        return *this;
+    }
+    uaiw_constexpr in operator--(int)
+    {
+        in tmp = *this;
+        --it;
+        return tmp;
+    }
+    friend uaiw_constexpr std::ptrdiff_t operator-(const in& x, const in& y) { return x.it - y.it; }
+    friend uaiw_constexpr bool operator!=(const in& x, const in& y) { return x.it != y.it; }
+    friend uaiw_constexpr bool operator==(const in& x, const in& y) { return x.it == y.it; }
+};
+
+template<class Iter>
+class out
+{
+private:
+    Iter it;
+    Iter end;
+public:
+    uaiw_constexpr explicit out(Iter iter, std::size_t size)
+        : it{iter}, end{it + static_cast<std::ptrdiff_t>(size)} {}
+    uaiw_constexpr decltype(*it) operator*() const { if (it >= end) kms(); return *it; }
+    uaiw_constexpr out operator++(int)
+    {
+        out tmp = *this;
+        ++it;
+        return tmp;
+    }
+    friend uaiw_constexpr std::ptrdiff_t operator-(const out& x, const out& y) { return x.it - y.it; }
+};
+
 } // namespace safe
 
 #ifdef UNI_ALGO_ENABLE_SAFE_LAYER
