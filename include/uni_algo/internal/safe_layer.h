@@ -116,9 +116,32 @@ public:
         --it;
         return tmp;
     }
+    uaiw_constexpr in& operator+=(int n)
+    {
+        it += n;
+        return *this;
+    }
+    uaiw_constexpr in operator+(int n) const
+    {
+        in tmp = *this;
+        tmp += n;
+        return tmp;
+    }
+    uaiw_constexpr in& operator-=(int n)
+    {
+        it -= n;
+        return *this;
+    }
+    uaiw_constexpr in operator-(int n) const
+    {
+        in tmp = *this;
+        tmp -= n;
+        return tmp;
+    }
     friend uaiw_constexpr std::ptrdiff_t operator-(const in& x, const in& y) { return x.it - y.it; }
     friend uaiw_constexpr bool operator!=(const in& x, const in& y) { return x.it != y.it; }
     friend uaiw_constexpr bool operator==(const in& x, const in& y) { return x.it == y.it; }
+    friend uaiw_constexpr bool operator>(const in& x, const in& y) { return x.it > y.it; }
     friend uaiw_constexpr bool operator!=(const in& x, const safe::end<Iter>& y) { return x.it != y.it; }
     friend uaiw_constexpr bool operator==(const in& x, const safe::end<Iter>& y) { return x.it == y.it; }
     // REMINDER: friend
