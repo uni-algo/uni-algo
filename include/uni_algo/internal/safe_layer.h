@@ -87,6 +87,7 @@ class in
 {
 private:
     Iter it;
+#ifdef UNI_ALGO_ENABLE_SAFE_LAYER
     Iter begin;
     Iter end;
 public:
@@ -94,6 +95,11 @@ public:
     uaiw_constexpr explicit in(Iter iter, std::size_t size)
         : it{iter}, begin{it}, end{it + static_cast<std::ptrdiff_t>(size)} {}
     uaiw_constexpr decltype(*it) operator*() const { if (it < begin || it >= end) kms(); return *it; }
+#else
+public:
+    uaiw_constexpr explicit in(Iter iter, std::size_t) : it{iter} {}
+    uaiw_constexpr decltype(*it) operator*() const { return *it; }
+#endif
     uaiw_constexpr in& operator++()
     {
         ++it;
@@ -154,11 +160,17 @@ class out
 {
 private:
     Iter it;
+#ifdef UNI_ALGO_ENABLE_SAFE_LAYER
     Iter end;
 public:
     uaiw_constexpr explicit out(Iter iter, std::size_t size)
         : it{iter}, end{it + static_cast<std::ptrdiff_t>(size)} {}
     uaiw_constexpr decltype(*it) operator*() const { if (it >= end) kms(); return *it; }
+#else
+public:
+    uaiw_constexpr explicit out(Iter iter, std::size_t) : it{iter} {}
+    uaiw_constexpr decltype(*it) operator*() const { return *it; }
+#endif
     uaiw_constexpr out operator++(int)
     {
         out tmp = *this;
