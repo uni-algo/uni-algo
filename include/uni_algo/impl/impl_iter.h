@@ -179,10 +179,10 @@ uaix_static it_in_utf16 iter_utf16(it_in_utf16 first, it_end_utf16 last, type_co
 }
 
 #ifdef __cplusplus
-template<typename it_in_utf8>
+template<typename it_end_utf8, typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf8 iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf8 iter_rev_utf8(it_end_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
 {
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: bidirectional, random access, contiguous
@@ -206,10 +206,10 @@ uaix_static it_in_utf8 iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_cod
 }
 
 #ifdef __cplusplus
-template<typename it_in_utf16>
+template<typename it_end_utf16, typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf16 iter_rev_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf16 iter_rev_utf16(it_end_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
 {
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: bidirectional, random access, contiguous
