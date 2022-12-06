@@ -33,8 +33,10 @@ namespace uni {
 namespace detail {
 
 template<typename Dst, typename Alloc, typename Src, size_t SizeX,
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
     size_t(*FnMap)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer, int, char32_t)>
+#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
+    size_t(*FnMap)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>, int, char32_t)>
 #else
     size_t(*FnMap)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator, int, char32_t)>
 #endif
@@ -56,11 +58,14 @@ Dst t_map(const Alloc& alloc, Src src, int mode, char32_t loc = 0)
         }
 
         dst.resize(length * SizeX);
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
+#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
         dst.resize(FnMap(src.data(), src.data() + src.size(), dst.data(), mode, loc));
+#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
+        dst.resize(FnMap(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, mode, loc));
 #else
         dst.resize(FnMap(src.cbegin(), src.cend(), dst.begin(), mode, loc));
 #endif
+
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
