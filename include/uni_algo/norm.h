@@ -26,12 +26,12 @@ namespace uni {
 namespace detail {
 
 template<typename Dst, typename Alloc, typename Src, size_t SizeX,
-#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
-    size_t(*FnNorm)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer)>
-#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
-    size_t(*FnNorm)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>)>
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     size_t(*FnNorm)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator)>
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    size_t(*FnNorm)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer)>
+#else // Safe layer
+    size_t(*FnNorm)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>)>
 #endif
 Dst t_norm(const Alloc& alloc, Src src)
 {
@@ -51,12 +51,12 @@ Dst t_norm(const Alloc& alloc, Src src)
         }
 
         dst.resize(length * SizeX);
-#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
-        dst.resize(FnNorm(src.data(), src.data() + src.size(), dst.data()));
-#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
-        dst.resize(FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}));
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
         dst.resize(FnNorm(src.cbegin(), src.cend(), dst.begin()));
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+        dst.resize(FnNorm(src.data(), src.data() + src.size(), dst.data()));
+#else // Safe layer
+        dst.resize(FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}));
 #endif
 
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
@@ -95,12 +95,12 @@ public:
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 template<typename Dst, typename Alloc, typename Src,
-#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
-    size_t(*FnNorm)(typename Src::const_pointer, typename Src::const_pointer, proxy_it_out<std::back_insert_iterator<Dst>>)>
-#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
-    size_t(*FnNorm)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, proxy_it_out<std::back_insert_iterator<Dst>>)>
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     size_t(*FnNorm)(typename Src::const_iterator, typename Src::const_iterator, proxy_it_out<std::back_insert_iterator<Dst>>)>
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    size_t(*FnNorm)(typename Src::const_pointer, typename Src::const_pointer, proxy_it_out<std::back_insert_iterator<Dst>>)>
+#else // Safe layer
+    size_t(*FnNorm)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, proxy_it_out<std::back_insert_iterator<Dst>>)>
 #endif
 Dst t_norm2(const Alloc& alloc, Src src)
 {
@@ -123,12 +123,12 @@ Dst t_norm2(const Alloc& alloc, Src src)
 
         proxy_it_out<std::back_insert_iterator<Dst>> it_out{std::back_inserter(dst)};
 
-#if defined(UNI_ALGO_DISABLE_CPP_ITERATORS)
-        FnNorm(src.data(), src.data() + src.size(), it_out);
-#elif defined(UNI_ALGO_ENABLE_SAFE_LAYER)
-        FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, it_out);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
         FnNorm(src.cbegin(), src.cend(), it_out);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+        FnNorm(src.data(), src.data() + src.size(), it_out);
+#else // Safe layer
+        FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, it_out);
 #endif
 
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
