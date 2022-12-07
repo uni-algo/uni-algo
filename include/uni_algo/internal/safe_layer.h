@@ -69,13 +69,11 @@ struct array
     //constexpr type_array& operator=(const type_array&) = delete;
     // Low-level must never try to compare arrays so no comparison operators
 };
-static_assert(std::is_aggregate_v<array<char, 1>>, "safe::array must be aggregate");
+static_assert(std::is_aggregate_v<safe::array<char, 1>>, "safe::array must be aggregate");
 
 template<class Iter>
 class end
 {
-    // REMINDER: friend
-    //template<typename T> friend class in;
 public:
     Iter it;
 public:
@@ -91,7 +89,6 @@ private:
     Iter begin;
     Iter end;
 public:
-    uaiw_constexpr explicit in(Iter iter) : it{iter}, begin{it}, end{it} {}
     uaiw_constexpr explicit in(Iter iter, std::size_t size)
         : it{iter}, begin{it}, end{it + static_cast<std::ptrdiff_t>(size)} {}
     uaiw_constexpr decltype(*it) operator*() const { if (it < begin || it >= end) kms(); return *it; }
@@ -150,9 +147,6 @@ public:
     friend uaiw_constexpr bool operator>(const in& x, const in& y) { return x.it > y.it; }
     friend uaiw_constexpr bool operator!=(const in& x, const safe::end<Iter>& y) { return x.it != y.it; }
     friend uaiw_constexpr bool operator==(const in& x, const safe::end<Iter>& y) { return x.it == y.it; }
-    // REMINDER: friend
-    //uaiw_constexpr bool operator!=(const safe::end<Iter>& x) const { return it != x.it; }
-    //uaiw_constexpr bool operator==(const safe::end<Iter>& x) const { return it == x.it; }
 };
 
 template<class Iter>
