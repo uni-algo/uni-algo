@@ -913,10 +913,12 @@ inline std::u32string to_lowercase_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(3); // TODO: Magic number
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    dst.resize(detail::impl_case_to_lowercase(c, dst.data()));
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_case_to_lowercase(c, dst.begin()));
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    dst.resize(detail::impl_case_to_lowercase(c, dst.data()));
+#else // Safe layer
+    dst.resize(detail::impl_case_to_lowercase(c, detail::safe::out{dst.data(), dst.size()}));
 #endif
     return dst;
 }
@@ -925,10 +927,12 @@ inline std::u32string to_uppercase_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(3); // TODO: Magic number
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    dst.resize(detail::impl_case_to_uppercase(c, dst.data()));
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_case_to_uppercase(c, dst.begin()));
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    dst.resize(detail::impl_case_to_uppercase(c, dst.data()));
+#else // Safe layer
+    dst.resize(detail::impl_case_to_uppercase(c, detail::safe::out{dst.data(), dst.size()}));
 #endif
     return dst;
 }
@@ -937,10 +941,12 @@ inline std::u32string to_casefold_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(3); // TODO: Magic number
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    dst.resize(detail::impl_case_to_casefold(c, dst.data()));
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_case_to_casefold(c, dst.begin()));
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    dst.resize(detail::impl_case_to_casefold(c, dst.data()));
+#else // Safe layer
+    dst.resize(detail::impl_case_to_casefold(c, detail::safe::out{dst.data(), dst.size()}));
 #endif
     return dst;
 }
@@ -950,10 +956,12 @@ inline std::u32string to_titlecase_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(3); // TODO: Magic number
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    dst.resize(detail::impl_case_to_titlecase(c, dst.data()));
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_case_to_titlecase(c, dst.begin()));
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    dst.resize(detail::impl_case_to_titlecase(c, dst.data()));
+#else // Safe layer
+    dst.resize(detail::impl_case_to_titlecase(c, detail::safe::out{dst.data(), dst.size()}));
 #endif
     return dst;
 }

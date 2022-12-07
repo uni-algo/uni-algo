@@ -1108,10 +1108,12 @@ inline std::u32string to_decompose_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    dst.resize(detail::impl_norm_to_decompose(c, dst.data()));
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_norm_to_decompose(c, dst.begin()));
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    dst.resize(detail::impl_norm_to_decompose(c, dst.data()));
+#else // Safe layer
+    dst.resize(detail::impl_norm_to_decompose(c, detail::safe::out{dst.data(), dst.size()}));
 #endif
     return dst;
 }
@@ -1121,10 +1123,12 @@ inline std::u32string to_decompose_compat_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(detail::impl_x_norm_to_nfkd_utf16); // TODO: Better value
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    dst.resize(detail::impl_norm_to_decompose_compat(c, dst.data()));
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_norm_to_decompose_compat(c, dst.begin()));
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    dst.resize(detail::impl_norm_to_decompose_compat(c, dst.data()));
+#else // Safe layer
+    dst.resize(detail::impl_norm_to_decompose_compat(c, detail::safe::out{dst.data(), dst.size()}));
 #endif
     return dst;
 }
@@ -1134,10 +1138,12 @@ inline std::u32string to_decompose_hangul_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    dst.resize(detail::impl_norm_to_decompose_hangul(c, dst.data()));
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_norm_to_decompose_hangul(c, dst.begin()));
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    dst.resize(detail::impl_norm_to_decompose_hangul(c, dst.data()));
+#else // Safe layer
+    dst.resize(detail::impl_norm_to_decompose_hangul(c, detail::safe::out{dst.data(), dst.size()}));
 #endif
     return dst;
 }
