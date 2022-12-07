@@ -22,8 +22,13 @@ inline void kms()
     std::abort();
 }
 
-// Safe array - similar to std::array but with bound checks and more strict
+// ----------
+// SAFE ARRAY
+// ----------
+
+// Safe array is similar to std::array but with bound checks and more strict
 // so the compilation will break if the low-level won't follow the rules.
+
 template<typename T, std::size_t N>
 struct array
 {
@@ -70,6 +75,13 @@ struct array
     // Low-level must never try to compare arrays so no comparison operators
 };
 static_assert(std::is_aggregate_v<safe::array<char, 1>>, "safe::array must be aggregate");
+
+// --------------
+// SAFE ITERATORS
+// --------------
+
+// Safe iterators only implement operators that the low-level uses
+// safe end iterator is only used as sentinel so no operators there.
 
 template<class Iter>
 class end
