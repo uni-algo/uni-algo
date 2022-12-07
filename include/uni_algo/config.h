@@ -63,13 +63,6 @@
 // but if you use a custom allocator or want to maximize the performance
 // it might be better to disable it and do the call manually only when needed.
 
-//#define UNI_ALGO_DISABLE_CPP_ITERATORS
-// With this define pointers will be used instead of C++ iterators internally.
-// The only reason to use the define is to maximize performance in debug builds,
-// for example MSVC debug iterators are very slow.
-// Note that the define only affects some functions.
-// The define does not affect behaviour.
-
 //#define UNI_ALGO_DISABLE_FULL_CASE
 // Note that this define can be deprecated in the future.
 // Disable full case mapping and use simple case mapping instead.
@@ -133,6 +126,11 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 #endif
 #endif
 
+// Using any of the followings defines will disable a part of safe layer
+//#define UNI_ALGO_FORCE_CPP_ITERATORS // Force to use C++ iterators in low-level
+//#define UNI_ALGO_FORCE_C_POINTERS // Force to use C pointers in low-level
+//#define UNI_ALGO_FORCE_C_ARRAYS // Force to use C arrays in low-level
+
 // Define dllexport/dllimport for shared library
 #if defined(UNI_ALGO_DLL_EXPORT) && !defined(UNI_ALGO_STATIC_DATA)
 #  if defined(_WIN32)
@@ -156,7 +154,6 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 
 //#define UNI_ALGO_EXPERIMENTAL // Enable experimental stuff for tests
 //#define UNI_ALGO_LOG_CPP_ITER // Enable logging for UTF-8/16 iterators
-//#define UNI_ALGO_FORCE_C_ARRAYS // Force to use C arrays on the low-level
 
 // Can be enabled for testing and debugging aid and should be disabled in stable releases.
 // Never ever rely on asserts! Use the define together with -D_GLIBCXX_DEBUG but do not rely on this either.
