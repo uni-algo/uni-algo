@@ -396,10 +396,13 @@ bool is_valid_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_is_valid_utf8(source.data(), source.data() + source.size(), nullptr);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_is_valid_utf8(source.cbegin(), source.cend(), nullptr);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_is_valid_utf8(source.data(), source.data() + source.size(), nullptr);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_is_valid_utf8(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, nullptr);
 #endif
 }
 
@@ -408,10 +411,13 @@ bool is_valid_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_is_valid_utf16(source.data(), source.data() + source.size(), nullptr);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_is_valid_utf16(source.cbegin(), source.cend(), nullptr);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_is_valid_utf16(source.data(), source.data() + source.size(), nullptr);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_is_valid_utf16(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, nullptr);
 #endif
 }
 
@@ -420,10 +426,13 @@ bool is_valid_utf32(std::basic_string_view<UTF32> source)
 {
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_is_valid_utf32(source.data(), source.data() + source.size(), nullptr);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_is_valid_utf32(source.cbegin(), source.cend(), nullptr);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_is_valid_utf32(source.data(), source.data() + source.size(), nullptr);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_is_valid_utf32(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, nullptr);
 #endif
 }
 
@@ -433,10 +442,13 @@ bool is_valid_utf8(std::basic_string_view<UTF8> source, uni::error& error)
     static_assert(std::is_integral_v<UTF8>);
 
     size_t err = detail::impl_npos;
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_is_valid_utf8(source.data(), source.data() + source.size(), &err);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     bool ret = detail::impl_is_valid_utf8(source.cbegin(), source.cend(), &err);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    bool ret = detail::impl_is_valid_utf8(source.data(), source.data() + source.size(), &err);
+#else // Safe layer
+    namespace safe = detail::safe;
+    bool ret = detail::impl_is_valid_utf8(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
 #endif
     error = uni::error{!ret, err};
 
@@ -449,10 +461,13 @@ bool is_valid_utf16(std::basic_string_view<UTF16> source, uni::error& error)
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     size_t err = detail::impl_npos;
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_is_valid_utf16(source.data(), source.data() + source.size(), &err);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     bool ret = detail::impl_is_valid_utf16(source.cbegin(), source.cend(), &err);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    bool ret = detail::impl_is_valid_utf16(source.data(), source.data() + source.size(), &err);
+#else // Safe layer
+    namespace safe = detail::safe;
+    bool ret = detail::impl_is_valid_utf16(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
 #endif
     error = uni::error{!ret, err};
 
@@ -465,10 +480,13 @@ bool is_valid_utf32(std::basic_string_view<UTF32> source, uni::error& error)
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
     size_t err = detail::impl_npos;
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_is_valid_utf32(source.data(), source.data() + source.size(), &err);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     bool ret = detail::impl_is_valid_utf32(source.cbegin(), source.cend(), &err);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    bool ret = detail::impl_is_valid_utf32(source.data(), source.data() + source.size(), &err);
+#else // Safe layer
+    namespace safe = detail::safe;
+    bool ret = detail::impl_is_valid_utf32(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
 #endif
     error = uni::error{!ret, err};
 
