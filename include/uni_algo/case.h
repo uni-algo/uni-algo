@@ -329,12 +329,16 @@ int compare_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UT
 {
     static_assert(std::is_integral_v<UTF8>);
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_case_compare_utf8(string1.data(), string1.data() + string1.size(),
-                                          string2.data(), string2.data() + string2.size(), false);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_case_compare_utf8(string1.cbegin(), string1.cend(),
                                           string2.cbegin(), string2.cend(), false);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_case_compare_utf8(string1.data(), string1.data() + string1.size(),
+                                          string2.data(), string2.data() + string2.size(), false);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_case_compare_utf8(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                          safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, false);
 #endif
 }
 
@@ -343,12 +347,16 @@ int compare_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_case_compare_utf16(string1.data(), string1.data() + string1.size(),
-                                           string2.data(), string2.data() + string2.size(), false);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_case_compare_utf16(string1.cbegin(), string1.cend(),
                                            string2.cbegin(), string2.cend(), false);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_case_compare_utf16(string1.data(), string1.data() + string1.size(),
+                                           string2.data(), string2.data() + string2.size(), false);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_case_compare_utf16(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                           safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, false);
 #endif
 }
 
@@ -358,12 +366,16 @@ int collate_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UT
 {
     static_assert(std::is_integral_v<UTF8>);
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_case_collate_utf8(string1.data(), string1.data() + string1.size(),
-                                          string2.data(), string2.data() + string2.size(), false);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_case_collate_utf8(string1.cbegin(), string1.cend(),
                                           string2.cbegin(), string2.cend(), false);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_case_collate_utf8(string1.data(), string1.data() + string1.size(),
+                                          string2.data(), string2.data() + string2.size(), false);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_case_collate_utf8(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                          safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, false);
 #endif
 }
 
@@ -372,12 +384,16 @@ int collate_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_case_collate_utf16(string1.data(), string1.data() + string1.size(),
-                                           string2.data(), string2.data() + string2.size(), false);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_case_collate_utf16(string1.cbegin(), string1.cend(),
                                            string2.cbegin(), string2.cend(), false);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_case_collate_utf16(string1.data(), string1.data() + string1.size(),
+                                           string2.data(), string2.data() + string2.size(), false);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_case_collate_utf16(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                           safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, false);
 #endif
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
@@ -388,12 +404,16 @@ uni::search search_utf8(std::basic_string_view<UTF8> string1, std::basic_string_
     static_assert(std::is_integral_v<UTF8>);
 
     size_t pos = detail::impl_npos, end = detail::impl_npos;
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_case_search_utf8(string1.data(), string1.data() + string1.size(),
-                                             string2.data(), string2.data() + string2.size(), false, &pos, &end);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     bool ret = detail::impl_case_search_utf8(string1.cbegin(), string1.cend(),
                                              string2.cbegin(), string2.cend(), false, &pos, &end);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    bool ret = detail::impl_case_search_utf8(string1.data(), string1.data() + string1.size(),
+                                             string2.data(), string2.data() + string2.size(), false, &pos, &end);
+#else // Safe layer
+    namespace safe = detail::safe;
+    bool ret = detail::impl_case_search_utf8(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                             safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, false, &pos, &end);
 #endif
 
     return uni::search{ret, pos, end};
@@ -405,12 +425,16 @@ uni::search search_utf16(std::basic_string_view<UTF16> string1, std::basic_strin
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     size_t pos = detail::impl_npos, end = detail::impl_npos;
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_case_search_utf16(string1.data(), string1.data() + string1.size(),
-                                              string2.data(), string2.data() + string2.size(), false, &pos, &end);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     bool ret = detail::impl_case_search_utf16(string1.cbegin(), string1.cend(),
                                               string2.cbegin(), string2.cend(), false, &pos, &end);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    bool ret = detail::impl_case_search_utf16(string1.data(), string1.data() + string1.size(),
+                                              string2.data(), string2.data() + string2.size(), false, &pos, &end);
+#else // Safe layer
+    namespace safe = detail::safe;
+    bool ret = detail::impl_case_search_utf16(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                              safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, false, &pos, &end);
 #endif
 
     return uni::search{ret, pos, end};
@@ -505,12 +529,16 @@ int compare_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UT
 {
     static_assert(std::is_integral_v<UTF8>);
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_case_compare_utf8(string1.data(), string1.data() + string1.size(),
-                                          string2.data(), string2.data() + string2.size(), true);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_case_compare_utf8(string1.cbegin(), string1.cend(),
                                           string2.cbegin(), string2.cend(), true);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_case_compare_utf8(string1.data(), string1.data() + string1.size(),
+                                          string2.data(), string2.data() + string2.size(), true);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_case_compare_utf8(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                          safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true);
 #endif
 }
 
@@ -519,12 +547,16 @@ int compare_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_case_compare_utf16(string1.data(), string1.data() + string1.size(),
-                                           string2.data(), string2.data() + string2.size(), true);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_case_compare_utf16(string1.cbegin(), string1.cend(),
                                            string2.cbegin(), string2.cend(), true);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_case_compare_utf16(string1.data(), string1.data() + string1.size(),
+                                           string2.data(), string2.data() + string2.size(), true);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_case_compare_utf16(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                           safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true);
 #endif
 }
 
@@ -534,12 +566,16 @@ int collate_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UT
 {
     static_assert(std::is_integral_v<UTF8>);
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_case_collate_utf8(string1.data(), string1.data() + string1.size(),
-                                          string2.data(), string2.data() + string2.size(), true);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_case_collate_utf8(string1.cbegin(), string1.cend(),
                                           string2.cbegin(), string2.cend(), true);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_case_collate_utf8(string1.data(), string1.data() + string1.size(),
+                                          string2.data(), string2.data() + string2.size(), true);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_case_collate_utf8(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                          safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true);
 #endif
 }
 
@@ -548,12 +584,16 @@ int collate_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_case_collate_utf16(string1.data(), string1.data() + string1.size(),
-                                           string2.data(), string2.data() + string2.size(), true);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_case_collate_utf16(string1.cbegin(), string1.cend(),
                                            string2.cbegin(), string2.cend(), true);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_case_collate_utf16(string1.data(), string1.data() + string1.size(),
+                                           string2.data(), string2.data() + string2.size(), true);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_case_collate_utf16(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                           safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true);
 #endif
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
@@ -564,12 +604,16 @@ uni::search search_utf8(std::basic_string_view<UTF8> string1, std::basic_string_
     static_assert(std::is_integral_v<UTF8>);
 
     size_t pos = detail::impl_npos, end = detail::impl_npos;
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_case_search_utf8(string1.data(), string1.data() + string1.size(),
-                                             string2.data(), string2.data() + string2.size(), true, &pos, &end);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     bool ret = detail::impl_case_search_utf8(string1.cbegin(), string1.cend(),
                                              string2.cbegin(), string2.cend(), true, &pos, &end);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    bool ret = detail::impl_case_search_utf8(string1.data(), string1.data() + string1.size(),
+                                             string2.data(), string2.data() + string2.size(), true, &pos, &end);
+#else // Safe layer
+    namespace safe = detail::safe;
+    bool ret = detail::impl_case_search_utf8(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                             safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true, &pos, &end);
 #endif
 
     return uni::search{ret, pos, end};
@@ -581,12 +625,16 @@ uni::search search_utf16(std::basic_string_view<UTF16> string1, std::basic_strin
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
     size_t pos = detail::impl_npos, end = detail::impl_npos;
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    bool ret = detail::impl_case_search_utf16(string1.data(), string1.data() + string1.size(),
-                                              string2.data(), string2.data() + string2.size(), true, &pos, &end);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     bool ret = detail::impl_case_search_utf16(string1.cbegin(), string1.cend(),
                                               string2.cbegin(), string2.cend(), true, &pos, &end);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    bool ret = detail::impl_case_search_utf16(string1.data(), string1.data() + string1.size(),
+                                              string2.data(), string2.data() + string2.size(), true, &pos, &end);
+#else // Safe layer
+    namespace safe = detail::safe;
+    bool ret = detail::impl_case_search_utf16(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                              safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true, &pos, &end);
 #endif
 
     return uni::search{ret, pos, end};
@@ -675,12 +723,16 @@ inline std::string sortkey_utf16(std::wstring_view source)
 template<typename UTF8>
 bool like_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2, char32_t escape = 0)
 {
-#ifdef UNI_ALGO_DISABLE_CPP_ITERATORS
-    return detail::impl_case_like_utf8(string1.data(), string1.data() + string1.size(),
-                                       string2.data(), string2.data() + string2.size(), true, '%', '_', escape);
-#else
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     return detail::impl_case_like_utf8(string1.cbegin(), string1.cend(),
                                        string2.cbegin(), string2.cend(), true, '%', '_', escape);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return detail::impl_case_like_utf8(string1.data(), string1.data() + string1.size(),
+                                       string2.data(), string2.data() + string2.size(), true, '%', '_', escape);
+#else // Safe layer
+    namespace safe = detail::safe;
+    return detail::impl_case_like_utf8(safe::in{string1.data(), string1.size()}, safe::end{string1.data() + string1.size()},
+                                       safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true, '%', '_', escape);
 #endif
 }
 inline bool like_utf8(std::string_view string1, std::string_view string2, char32_t escape = 0)
