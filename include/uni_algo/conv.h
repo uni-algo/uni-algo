@@ -27,18 +27,6 @@ namespace detail {
 // Also it doesn't use 2-pass approach: calculate converted string size and then the actual conversion.
 // This is obviously at least 50% slower, so it uses 1-pass with shrink_to_fit after.
 
-//#define UNI_ALGO_DISABLE_CPP_ITERATORS
-// With this define pointers will be used instead of iterators.
-// The only reason to use the define is to maximize performance in debug builds,
-// for example MSVC debug iterators are very slow.
-// Performance difference of pointers vs iterators in release builds
-// is about 1-2% slower/faster in different compilers and must be considered irrelevant.
-// The behaviour of pointers and iterators versions always absolutely the same.
-
-//#define UNI_ALGO_DISABLE_SHRINK_TO_FIT
-// With this define shrink_to_fit call will be omitted.
-// Performance impact of shrink_to_fit call is 2-20% slower depends on the length of the string.
-
 template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     size_t(*FnUTF)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator, size_t*)>
