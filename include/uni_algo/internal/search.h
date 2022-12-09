@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#ifndef UNI_ALGO_INTERNAL_SEARCH_UAIH
-#define UNI_ALGO_INTERNAL_SEARCH_UAIH
+#ifndef UNI_ALGO_INTERNAL_SEARCH_H_UAIH
+#define UNI_ALGO_INTERNAL_SEARCH_H_UAIH
 
 #include <type_traits>
 #include <cassert>
@@ -30,4 +30,4 @@ private:
 
 } // namespace uni
 
-#endif // UNI_ALGO_INTERNAL_SEARCH_UAIH
+#endif // UNI_ALGO_INTERNAL_SEARCH_H_UAIH
