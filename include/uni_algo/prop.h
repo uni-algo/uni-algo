@@ -51,6 +51,9 @@ public:
     // and make data unsigned char
     // And No, I don't want to change low-level for this I want low-level always to return
     // property data in type_codept because everything related to code point uses it there.
+    // --- Added later ---
+    // Actually it might be better to redesign the low-level for this, there are some parts
+    // of the low-level where it will make structs smaller too for example breaks.
 
     // https://www.unicode.org/reports/tr44/#General_Category_Values
 
