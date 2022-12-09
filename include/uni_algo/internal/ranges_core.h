@@ -6,6 +6,7 @@
 #define UNI_ALGO_INTERNAL_RANGES_CORE_H_UAIH
 
 // In Clang std::ranges implementation is still partial and doesn't work properly
+// but it defines __cpp_lib_ranges in some versions for some strange reason
 // so always force our own implementation of ranges in Clang.
 // TODO: maybe move the define to config later so it will be easier to test in other compilers too
 #ifdef __clang__
@@ -37,8 +38,8 @@ inline constexpr sentinel_t sentinel;
 
 namespace detail::rng {
 
-// We need to use public std::ranges::view_base for compatibility with std::ranges
-// when a std::view on the right side of operator|
+// Inheritance from std::ranges::view_base must be used for compatibility
+// with std::ranges  when a std::view on the right side of operator|
 // https://tristanbrindle.com/posts/rvalue-ranges-and-views
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 struct view_base {};
@@ -78,6 +79,8 @@ using range_value_t = iter_value_t<iterator_t<Range>>; // std::ranges::range_val
 template<class Iter>
 using iter_tag = typename std::iterator_traits<Iter>::iterator_category;
 #else
+// Bidirectional as highest should be good enough for all use cases in Unicode
+// Commented code below is an example of random access as highest
 template<class Iter>
 using iter_tag = typename std::conditional_t<std::bidirectional_iterator<Iter>,
     std::bidirectional_iterator_tag, std::conditional_t<std::forward_iterator<Iter>,
@@ -108,6 +111,7 @@ template <typename T>
 struct has_member_data<T, std::void_t<decltype(std::data(std::declval<T&>()))>> : std::true_type {};
 
 // "is" helpers
+
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class Iter>
 using is_iter_bidi_or_better = std::conditional_t<
@@ -124,6 +128,7 @@ using is_range_contiguous = std::conditional_t<std::ranges::contiguous_range<Ran
 
 // In C++17 std::string_view doesn't have iterators pair constructor
 // so we use this a bit ugly approach to make it work. It is only used in break ranges.
+// This helper function requeries contiguous range, but no checks here must be checked where used.
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class StringViewResult, class Range, class Iter>
 StringViewResult to_string_view(const Range& range, Iter it_begin, Iter it_pos)
