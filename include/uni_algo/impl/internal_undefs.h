@@ -4,7 +4,7 @@
 
 // Warning! This file must never be used by a wrapper.
 
-// Internal undefs, must be used together with impl_defines.h
+// Internal undefs, must be used together with internal_defines.h
 
 #undef uaix_always_inline
 #undef uaix_always_inline_tmpl

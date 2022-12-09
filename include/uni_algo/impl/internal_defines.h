@@ -4,7 +4,7 @@
 
 // Warning! This file must never be used by a wrapper.
 
-// Internal defines, must be used together with impl_undefs.h
+// Internal defines, must be used together with internal_undefs.h
 
 // The internal defines are lowercased because they make too much noise in the code if uppercased.
 
