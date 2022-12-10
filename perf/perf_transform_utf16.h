@@ -25,6 +25,7 @@
 #include <chrono>
 #include <vector>
 #include <stdexcept>
+#include "../include/uni_algo/conv.h"
 #include "../include/uni_algo/ranges.h"
 #include "../include/uni_algo/norm.h"
 
