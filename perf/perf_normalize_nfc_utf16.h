@@ -67,6 +67,8 @@ std::u16string norm_ICU(std::u16string_view str)
 #endif
 
 const size_t number_of_passes = 50000; // Text/File
+//const size_t number_of_passes = 1000000; // Generator (100000 for long string)
+const size_t string_length = 50; // Generator (500 for long strings)
 std::vector<std::u16string> strs;
 
 void fill_1()
@@ -124,6 +126,30 @@ void fill_2()
 
     for (size_t i = 0; i < number_of_passes; i++)
         strs.emplace_back(uni::utf8to16<char, char16_t>(str));
+}
+
+void fill_3()
+{
+    if (number_of_passes * string_length > 1000000 * 50)
+        throw std::runtime_error("RAM! RAM! RAM!");
+
+    // Generate random UTF16 strings, rand() is good enough for this
+    srand((unsigned int)time(nullptr));
+    for (size_t i = 0; i < number_of_passes; i++)
+    {
+        std::u32string str;
+        str.resize(string_length + rand() % 10);
+        for (size_t j = 0; j < str.size(); j++)
+        {
+            // +1 because I don't know how other implementations handle null char so it's better to avoid it
+
+            //str[j] = rand() % 100 + 1; // 1-byte sequence (ASCII)
+            str[j] = rand() % 200 + 1; // 2-byte sequence (with mix of ASCII but it's even better makes it closer to a real text)
+            //str[j] = rand() % 10000 + 1; // 3-byte sequence
+            //str[j] = rand() % 0x10FFF0 + 1; // 4-byte sequence
+        }
+        strs.emplace_back(uni::utf32to16<char32_t, char16_t>(str));
+    }
 }
 
 void test_performance();
