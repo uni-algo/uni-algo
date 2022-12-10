@@ -28,6 +28,7 @@
 #include "../include/uni_algo/conv.h"
 #include "../include/uni_algo/ranges.h"
 #include "../include/uni_algo/norm.h"
+#include "../include/uni_algo/prop.h"
 
 // Use the attribute in GCC/CLang to force inline ranges for perf tests
 //__attribute__((flatten))
@@ -37,6 +38,7 @@ std::u16string trans_uni(std::u16string_view str)
          | uni::views::utf16
          | uni::views::norm::nfd
          | uni::views::filter([](char32_t c) { return c != 0x0300 && c != 0x0301; })
+         //| uni::views::filter([](char32_t c) { return !uni::codepoint::prop{c}.General_Category_Mn(); }) // Unaccent
          | uni::views::norm::nfc
          | uni::ranges::to_utf16<std::u16string>();
 }
