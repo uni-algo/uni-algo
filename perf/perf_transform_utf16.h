@@ -60,7 +60,7 @@ std::u16string trans_ICU(std::u16string_view str)
 }
 #endif
 
-const size_t number_of_passes = 50000; // Text/File
+const size_t number_of_passes = 50000; // Text/File (fill_1/fill_2)
 std::vector<std::u16string> strs;
 
 void fill_1()

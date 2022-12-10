@@ -66,9 +66,9 @@ std::u16string norm_ICU(std::u16string_view str)
 }
 #endif
 
-const size_t number_of_passes = 50000; // Text/File
-//const size_t number_of_passes = 1000000; // Generator (100000 for long string)
-const size_t string_length = 50; // Generator (500 for long strings)
+const size_t number_of_passes = 50000; // Text/File (fill_1/fill_2)
+//const size_t number_of_passes = 1000000; // Generator (fill_3) (100000 for long string)
+const size_t string_length = 50; // Generator (fill_3) (500 for long strings)
 std::vector<std::u16string> strs;
 
 void fill_1()
