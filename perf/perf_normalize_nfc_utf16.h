@@ -131,10 +131,10 @@ void generate_table();
 
 int main5()
 {
-    fill_2();
+    fill_1();
 
-    //test_performance();
-    generate_table();
+    test_performance();
+    //generate_table();
 
     return 0;
 }

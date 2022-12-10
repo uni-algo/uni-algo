@@ -172,8 +172,8 @@ int main5()
 {
     fill_1();
 
-    //test_performance();
-    generate_table();
+    test_performance();
+    //generate_table();
 
     return 0;
 }
