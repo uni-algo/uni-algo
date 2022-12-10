@@ -29,6 +29,8 @@
 #include "../include/uni_algo/ranges.h"
 #include "../include/uni_algo/norm.h"
 
+// Use the attribute in GCC/CLang to force inline ranges for perf tests
+//__attribute__((flatten))
 std::u16string trans_uni(std::u16string_view str)
 {
     return str

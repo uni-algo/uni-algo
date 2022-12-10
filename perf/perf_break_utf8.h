@@ -19,6 +19,8 @@
 #include "../include/uni_algo/break_grapheme.h"
 #include "../include/uni_algo/break_word.h"
 
+// Use the attribute in GCC/CLang to force inline ranges for perf tests
+//__attribute__((flatten))
 int break_uni(std::string_view str)
 {
     auto view = uni::ranges::grapheme::utf8_view(str);
