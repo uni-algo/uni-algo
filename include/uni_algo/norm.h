@@ -50,13 +50,21 @@ Dst t_norm(const Alloc& alloc, Src src)
 #endif
         }
 
-        dst.resize(length * SizeX);
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
+        dst.resize(length * SizeX);
         dst.resize(FnNorm(src.cbegin(), src.cend(), dst.begin()));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
+        dst.resize(length * SizeX);
         dst.resize(FnNorm(src.data(), src.data() + src.size(), dst.data()));
 #else // Safe layer
+#  if !defined(__cpp_lib_string_resize_and_overwrite)
+        dst.resize(length * SizeX);
         dst.resize(FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}));
+#  else
+        dst.resize_and_overwrite(length * SizeX, [src](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+            return FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n});
+        });
+#  endif
 #endif
 
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT

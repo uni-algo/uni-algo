@@ -52,13 +52,21 @@ Dst t_utf(const Alloc& alloc, const Src& src)
 #endif
         }
 
-        dst.resize(length * SizeX);
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
+        dst.resize(length * SizeX);
         dst.resize(FnUTF(src.cbegin(), src.cend(), dst.begin(), nullptr));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
+        dst.resize(length * SizeX);
         dst.resize(FnUTF(src.data(), src.data() + src.size(), dst.data(), nullptr));
 #else // Safe layer
+#  if !defined(__cpp_lib_string_resize_and_overwrite)
+        dst.resize(length * SizeX);
         dst.resize(FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, nullptr));
+#  else
+        dst.resize_and_overwrite(length * SizeX, [&src](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+            return FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n}, nullptr);
+        });
+#  endif
 #endif
 
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
@@ -96,14 +104,25 @@ Dst t_utf(const Alloc& alloc, const Src& src, uni::error& error)
 #endif
         }
 
-        dst.resize(length * SizeX);
         std::size_t err = impl_npos;
+
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
+        dst.resize(length * SizeX);
         std::size_t size = FnUTF(src.cbegin(), src.cend(), dst.begin(), &err);
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
+        dst.resize(length * SizeX);
         std::size_t size = FnUTF(src.data(), src.data() + src.size(), dst.data(), &err);
 #else // Safe layer
+#  if !defined(__cpp_lib_string_resize_and_overwrite)
+        dst.resize(length * SizeX);
         std::size_t size = FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, &err);
+#  else
+        std::size_t size = 0;
+        dst.resize_and_overwrite(length * SizeX, [&src, &size, &err](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+            size = FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n}, &err);
+            return size;
+        });
+#  endif
 #endif
         if (err == impl_npos)
             dst.resize(size);

@@ -57,13 +57,21 @@ Dst t_map(const Alloc& alloc, Src src, int mode, char32_t loc = 0)
 #endif
         }
 
-        dst.resize(length * SizeX);
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
+        dst.resize(length * SizeX);
         dst.resize(FnMap(src.cbegin(), src.cend(), dst.begin(), mode, loc));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
+        dst.resize(length * SizeX);
         dst.resize(FnMap(src.data(), src.data() + src.size(), dst.data(), mode, loc));
 #else // Safe layer
+#  if !defined(__cpp_lib_string_resize_and_overwrite)
+        dst.resize(length * SizeX);
         dst.resize(FnMap(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, mode, loc));
+#  else
+        dst.resize_and_overwrite(length * SizeX, [src, mode, loc](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+            return FnMap(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n}, mode, loc);
+        });
+#  endif
 #endif
 
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
