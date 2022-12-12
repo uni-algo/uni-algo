@@ -40,7 +40,7 @@ template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #else // Safe layer
     size_t(*FnMap)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>, int, char32_t)>
 #endif
-Dst t_map(const Alloc& alloc, Src src, int mode, char32_t loc = 0)
+Dst t_map(const Alloc& alloc, const Src& src, int mode, char32_t loc = 0)
 {
     Dst dst{alloc};
 
@@ -68,7 +68,7 @@ Dst t_map(const Alloc& alloc, Src src, int mode, char32_t loc = 0)
         dst.resize(length * SizeX);
         dst.resize(FnMap(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, mode, loc));
 #  else
-        dst.resize_and_overwrite(length * SizeX, [src, mode, loc](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+        dst.resize_and_overwrite(length * SizeX, [&src, mode, loc](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
             return FnMap(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n}, mode, loc);
         });
 #  endif

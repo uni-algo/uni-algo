@@ -33,7 +33,7 @@ template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #else // Safe layer
     size_t(*FnNorm)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>)>
 #endif
-Dst t_norm(const Alloc& alloc, Src src)
+Dst t_norm(const Alloc& alloc, const Src& src)
 {
     Dst dst{alloc};
 
@@ -61,7 +61,7 @@ Dst t_norm(const Alloc& alloc, Src src)
         dst.resize(length * SizeX);
         dst.resize(FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}));
 #  else
-        dst.resize_and_overwrite(length * SizeX, [src](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+        dst.resize_and_overwrite(length * SizeX, [&src](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
             return FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n});
         });
 #  endif
@@ -110,7 +110,7 @@ template<typename Dst, typename Alloc, typename Src,
 #else // Safe layer
     size_t(*FnNorm)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, proxy_it_out<std::back_insert_iterator<Dst>>)>
 #endif
-Dst t_norm2(const Alloc& alloc, Src src)
+Dst t_norm2(const Alloc& alloc, const Src& src)
 {
     Dst dst{alloc};
 
