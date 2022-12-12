@@ -38,11 +38,23 @@ std::u16string norm_WinAPI(std::u16string_view str)
     // This is the fastest possible implementation.
 
     std::u16string utf16;
-    utf16.resize(str.size() * 4);
-    //int len = FoldStringW(MAP_PRECOMPOSED, (LPCWSTR)str.data(), (int)str.size(), (LPWSTR)&utf16[0], (int)utf16.size());
-    int len = NormalizeString(NormalizationC, (LPCWSTR)str.data(), (int)str.size(), (LPWSTR)&utf16[0], (int)utf16.size());
+
+    std::size_t size = str.size() * 4;
+
+#if !defined(__cpp_lib_string_resize_and_overwrite)
+    utf16.resize(size);
+    //int len = FoldStringW(MAP_PRECOMPOSED, (LPCWSTR)str.data(), (int)str.size(), (LPWSTR)&utf16[0], (int)size);
+    int len = NormalizeString(NormalizationC, (LPCWSTR)str.data(), (int)str.size(), (LPWSTR)&utf16[0], (int)size);
     utf16.resize(len);
+#else
+    utf16.resize_and_overwrite(size, [str](char16_t *p, std::size_t n) noexcept -> std::size_t {
+        //return FoldStringW(MAP_PRECOMPOSED, (LPCWSTR)str.data(), (int)str.size(), (LPWSTR)p, (int)n);
+        return NormalizeString(NormalizationC, (LPCWSTR)str.data(), (int)str.size(), (LPWSTR)p, (int)n);
+    });
+#endif
+
     utf16.shrink_to_fit();
+
     return utf16;
 }
 #endif

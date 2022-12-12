@@ -38,10 +38,21 @@ std::u16string utf8to16_WinAPI(std::string_view str)
     // This is the fastest possible implementation.
 
     std::u16string utf16;
-    utf16.resize(str.size());
-    int len = MultiByteToWideChar(CP_UTF8, 0, str.data(), (int)str.size(), (LPWSTR)&utf16[0], (int)utf16.size());
+
+    std::size_t size = str.size();
+
+#if !defined(__cpp_lib_string_resize_and_overwrite)
+    utf16.resize(size);
+    int len = MultiByteToWideChar(CP_UTF8, 0, str.data(), (int)str.size(), (LPWSTR)&utf16[0], (int)size);
     utf16.resize(len);
+#else
+    utf16.resize_and_overwrite(size, [str](char16_t *p, std::size_t n) noexcept -> std::size_t {
+        return MultiByteToWideChar(CP_UTF8, 0, str.data(), (int)str.size(), (LPWSTR)p, (int)n);
+    });
+#endif
+
     utf16.shrink_to_fit();
+
     return utf16;
 }
 #endif
@@ -72,11 +83,19 @@ std::u16string utf8to16_KEWB(std::string_view str)
 {
     std::u16string utf16;
 
-    std::size_t length = str.size();
+    std::size_t size = str.size();
 
-    utf16.resize(length);
-    //utf16.resize(uni::internal::kewb_utf8to16(str.data(), str.data() + str.size(), &utf16[0], nullptr));
+#if !defined(__cpp_lib_string_resize_and_overwrite)
+    utf16.resize(size);
+    //utf16.resize(uni::detail::kewb_utf8to16(str.data(), str.data() + str.size(), &utf16[0], nullptr));
     utf16.resize(uni::detail::kewb_utf8to16(str.cbegin(), str.cend(), utf16.begin(), nullptr));
+#else
+    utf16.resize_and_overwrite(size, [str](char16_t *p, std::size_t) noexcept -> std::size_t {
+        //return uni::detail::kewb_utf8to16(str.data(), str.data() + str.size(), p, nullptr);
+        return uni::detail::kewb_utf8to16(str.cbegin(), str.cend(), p, nullptr);
+    });
+#endif
+
     utf16.shrink_to_fit();
 
     return utf16;
