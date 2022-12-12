@@ -98,7 +98,7 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
                 continue;
             }
         }
-        else if (c == 0xE0)
+        else if (uaix_likely(c == 0xE0))
         {
             if (++s != last && ((c2 = (*s & 0xFF)) >= 0xA0 && c2 <= 0xBF) &&
                 ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))
@@ -320,7 +320,7 @@ uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf3
                 continue;
             }
         }
-        else if (c == 0xE0)
+        else if (uaix_likely(c == 0xE0))
         {
             if (++s != last && ((c2 = (*s & 0xFF)) >= 0xA0 && c2 <= 0xBF) &&
                 ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))

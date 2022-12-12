@@ -61,7 +61,7 @@ uaix_static it_in_utf8 iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept
             return ++s;
         }
     }
-    else if (c == 0xE0)
+    else if (uaix_likely(c == 0xE0))
     {
         if (++s != last && ((c2 = (*s & 0xFF)) >= 0xA0 && c2 <= 0xBF) &&
             ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))
