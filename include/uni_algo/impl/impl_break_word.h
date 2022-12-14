@@ -84,7 +84,7 @@ struct impl_break_word_state
 };
 
 uaix_always_inline
-uaix_static void impl_break_word_state_reset(struct impl_break_word_state* state)
+uaix_static void impl_break_word_state_reset(struct impl_break_word_state* const state)
 {
     state->prev_cp = 0;
     state->prev_cp_prop = 0;
@@ -209,7 +209,7 @@ uaix_static type_codept break_word_skip_utf8(it_in_utf8 first, it_end_utf8 last)
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_word_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                  it_in_utf8 first, it_end_utf8 last)
 {
     // word_prop property must be used only with impl_break_is_word* functions
@@ -339,7 +339,7 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* state, type_codep
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool impl_break_word_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool impl_break_word_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                       it_in_utf8 first, it_end_utf8 last)
 {
     return break_word_utf8(state, c, word_prop, first, last);
@@ -349,7 +349,7 @@ uaix_static bool impl_break_word_utf8(struct impl_break_word_state* state, type_
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_word_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool inline_break_word_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                         it_in_utf8 first, it_end_utf8 last)
 {
     return break_word_utf8(state, c, word_prop, first, last);
@@ -385,7 +385,7 @@ uaix_static type_codept break_word_skip_rev_utf8(it_in_utf8 first, it_in_utf8 la
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf8 break_word_skip_rev2_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* new_prop)
+uaix_static it_in_utf8 break_word_skip_rev2_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* const new_prop)
 {
     it_in_utf8 src = last;
     type_codept c = 0;
@@ -435,7 +435,7 @@ uaix_static bool break_word_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_word_rev_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                      it_in_utf8 first, it_in_utf8 last)
 {
     // word_prop property must be used only with impl_break_is_word* functions
@@ -557,7 +557,7 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* state, type_c
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool impl_break_word_rev_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool impl_break_word_rev_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                           it_in_utf8 first, it_in_utf8 last)
 {
     return break_word_rev_utf8(state, c, word_prop, first, last);
@@ -567,7 +567,7 @@ uaix_static bool impl_break_word_rev_utf8(struct impl_break_word_state* state, t
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_word_rev_utf8(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool inline_break_word_rev_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                             it_in_utf8 first, it_in_utf8 last)
 {
     return break_word_rev_utf8(state, c, word_prop, first, last);
@@ -602,7 +602,7 @@ uaix_static type_codept break_word_skip_utf16(it_in_utf16 first, it_end_utf16 la
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_word_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool break_word_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                   it_in_utf16 first, it_end_utf16 last)
 {
     // word_prop property must be used only with impl_break_is_word* functions
@@ -726,7 +726,7 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* state, type_code
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static bool impl_break_word_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool impl_break_word_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                        it_in_utf16 first, it_end_utf16 last)
 {
     return break_word_utf16(state, c, word_prop, first, last);
@@ -736,7 +736,7 @@ uaix_static bool impl_break_word_utf16(struct impl_break_word_state* state, type
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_word_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool inline_break_word_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                          it_in_utf16 first, it_end_utf16 last)
 {
     return break_word_utf16(state, c, word_prop, first, last);
@@ -768,7 +768,7 @@ uaix_static type_codept break_word_skip_rev_utf16(it_in_utf16 first, it_in_utf16
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf16 break_word_skip_rev2_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* new_prop)
+uaix_static it_in_utf16 break_word_skip_rev2_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* const new_prop)
 {
     it_in_utf16 src = last;
     type_codept c = 0;
@@ -818,7 +818,7 @@ uaix_static bool break_word_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_word_rev_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                       it_in_utf16 first, it_in_utf16 last)
 {
     // word_prop property must be used only with impl_break_is_word* functions
@@ -936,7 +936,7 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* state, type_
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool impl_break_word_rev_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool impl_break_word_rev_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                            it_in_utf16 first, it_in_utf16 last)
 {
     return break_word_rev_utf16(state, c, word_prop, first, last);
@@ -946,7 +946,7 @@ uaix_static bool impl_break_word_rev_utf16(struct impl_break_word_state* state, 
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_word_rev_utf16(struct impl_break_word_state* state, type_codept c, type_codept* word_prop,
+uaix_static bool inline_break_word_rev_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
                                              it_in_utf16 first, it_in_utf16 last)
 {
     return break_word_rev_utf16(state, c, word_prop, first, last);

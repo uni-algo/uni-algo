@@ -113,7 +113,7 @@ uaix_static type_codept stages_case_prop(type_codept c)
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
 uaix_always_inline
-uaix_static size_t stages_special_fold(type_codept c, struct case_special_buffer* special)
+uaix_static size_t stages_special_fold(type_codept c, struct case_special_buffer* const special)
 {
     if (c <= 0xFFFF)
     {
@@ -140,7 +140,7 @@ uaix_static bool stages_special_fold_check(type_codept c)
 }
 
 uaix_always_inline
-uaix_static size_t stages_special_upper(type_codept c, struct case_special_buffer* special)
+uaix_static size_t stages_special_upper(type_codept c, struct case_special_buffer* const special)
 {
     if (c <= 0xFFFF)
     {
@@ -169,7 +169,7 @@ uaix_static bool stages_special_upper_check(type_codept c)
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 
 uaix_always_inline
-uaix_static size_t stages_special_title(type_codept c, struct case_special_buffer* special)
+uaix_static size_t stages_special_title(type_codept c, struct case_special_buffer* const special)
 {
     if (c <= 0xFFFF)
     {
@@ -517,8 +517,8 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf8 iter_fold_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint,
-                                      struct case_special_pair* pair, struct case_special_buffer* special)
+uaix_static it_in_utf8 iter_fold_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* const codepoint,
+                                      struct case_special_pair* const pair, struct case_special_buffer* const special)
 {
     it_in_utf8 src = first;
 
@@ -542,8 +542,8 @@ uaix_static it_in_utf8 iter_fold_utf8(it_in_utf8 first, it_end_utf8 last, type_c
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf16 iter_fold_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint,
-                                        struct case_special_pair* pair, struct case_special_buffer* special)
+uaix_static it_in_utf16 iter_fold_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* const codepoint,
+                                        struct case_special_pair* const pair, struct case_special_buffer* const special)
 {
     it_in_utf16 src = first;
 
@@ -903,7 +903,7 @@ template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
                                        it_in_utf8 first2, it_end_utf8 last2, bool caseless,
-                                       size_t* pos, size_t* end)
+                                       size_t* const pos, size_t* const end)
 {
     it_in_utf8 src1 = first1;
     it_in_utf8 src2 = first2;
@@ -1005,7 +1005,7 @@ template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
                                         it_in_utf16 first2, it_end_utf16 last2, bool caseless,
-                                        size_t* pos, size_t* end)
+                                        size_t* const pos, size_t* const end)
 {
     it_in_utf16 src1 = first1;
     it_in_utf16 src2 = first2;

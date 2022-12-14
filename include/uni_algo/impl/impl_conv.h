@@ -21,7 +21,7 @@ uaix_const size_t impl_x_utf32to16 = 2;
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf16 result, size_t* error)
+uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf16 result, size_t* const error)
 {
     // If first > last the behaviour is undefined
     // If error is used and wasn't initialized with impl_npos the behaviour is undefined
@@ -196,7 +196,7 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, size_t* error)
+uaix_static size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, size_t* const error)
 {
     it_in_utf16 src = first;
     it_out_utf8 dst = result;
@@ -271,7 +271,7 @@ uaix_static size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_ut
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf32>
 #endif
-uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf32 result, size_t* error)
+uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf32 result, size_t* const error)
 {
     it_in_utf8 s = first;
     it_in_utf8 prev = s;
@@ -402,7 +402,7 @@ uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf3
 #ifdef __cplusplus
 template<typename it_in_utf32, typename it_end_utf32, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf32to8(it_in_utf32 first, it_end_utf32 last, it_out_utf8 result, size_t* error)
+uaix_static size_t impl_utf32to8(it_in_utf32 first, it_end_utf32 last, it_out_utf8 result, size_t* const error)
 {
     it_in_utf32 src = first;
     it_out_utf8 dst = result;
@@ -466,7 +466,7 @@ uaix_static size_t impl_utf32to8(it_in_utf32 first, it_end_utf32 last, it_out_ut
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf32>
 #endif
-uaix_static size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_utf32 result, size_t* error)
+uaix_static size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_utf32 result, size_t* const error)
 {
     it_in_utf16 src = first;
     it_out_utf32 dst = result;
@@ -520,7 +520,7 @@ uaix_static size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_u
 #ifdef __cplusplus
 template<typename it_in_utf32, typename it_end_utf32, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_utf16 result, size_t* error)
+uaix_static size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_utf16 result, size_t* const error)
 {
     it_in_utf32 src = first;
     it_out_utf16 dst = result;
@@ -564,7 +564,7 @@ uaix_static size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_u
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool impl_is_valid_utf8(it_in_utf8 first, it_end_utf8 last, size_t* error)
+uaix_static bool impl_is_valid_utf8(it_in_utf8 first, it_end_utf8 last, size_t* const error)
 {
     // Based on impl_utf8to16 function
 
@@ -675,7 +675,7 @@ uaix_static bool impl_is_valid_utf8(it_in_utf8 first, it_end_utf8 last, size_t* 
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_t* error)
+uaix_static bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_t* const error)
 {
     // Based on impl_utf16to8 function
 
@@ -728,7 +728,7 @@ uaix_static bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_
 #ifdef __cplusplus
 template<typename it_in_utf32, typename it_end_utf32>
 #endif
-uaix_static bool impl_is_valid_utf32(it_in_utf32 first, it_end_utf32 last, size_t* error)
+uaix_static bool impl_is_valid_utf32(it_in_utf32 first, it_end_utf32 last, size_t* const error)
 {
     // Based on impl_utf32to8 function
 

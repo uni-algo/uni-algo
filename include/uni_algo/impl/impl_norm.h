@@ -211,7 +211,7 @@ uaix_static bool stages_qc_yes_is_impl(type_codept ccc_qc, type_codept bit)
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_ns_impl(type_codept ccc_qc, size_t* count_ns)
+uaix_static bool stages_qc_yes_ns_impl(type_codept ccc_qc, size_t* const count_ns)
 {
     // https://unicode.org/reports/tr15/#Stream_Safe_Text_Format
 
@@ -229,7 +229,7 @@ uaix_static bool stages_qc_yes_ns_impl(type_codept ccc_qc, size_t* count_ns)
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_ns_nfc(type_codept c, size_t* count_ns)
+uaix_static bool stages_qc_yes_ns_nfc(type_codept c, size_t* const count_ns)
 {
     /* Note that we always use NFKD lower bound in these
      * functions because we need to count initial/trailing
@@ -255,7 +255,7 @@ uaix_static bool stages_qc_yes_ns_nfc(type_codept c, size_t* count_ns)
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_ns_nfd(type_codept c, size_t* count_ns)
+uaix_static bool stages_qc_yes_ns_nfd(type_codept c, size_t* const count_ns)
 {
     if (c >= 0x00A0) // NFKD lower bound
     {
@@ -271,7 +271,7 @@ uaix_static bool stages_qc_yes_ns_nfd(type_codept c, size_t* count_ns)
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_ns_nfkc(type_codept c, size_t* count_ns)
+uaix_static bool stages_qc_yes_ns_nfkc(type_codept c, size_t* const count_ns)
 {
     if (c >= 0x00A0) // NFKD lower bound
     {
@@ -285,7 +285,7 @@ uaix_static bool stages_qc_yes_ns_nfkc(type_codept c, size_t* count_ns)
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_ns_nfkd(type_codept c, size_t* count_ns)
+uaix_static bool stages_qc_yes_ns_nfkd(type_codept c, size_t* const count_ns)
 {
     if (c >= 0x00A0) // NFKD lower bound
     {
@@ -333,7 +333,7 @@ uaix_static bool stages_qc_yes_nfkd(type_codept c)
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_is_ccc_impl(type_codept ccc_qc, unsigned char* last_ccc)
+uaix_static bool stages_qc_yes_is_ccc_impl(type_codept ccc_qc, unsigned char* const last_ccc)
 {
     // https://unicode.org/reports/tr15/#Detecting_Normalization_Forms
     // Note: "if (Character.isSupplementaryCodePoint(ch)) ++i;"
@@ -351,7 +351,7 @@ uaix_static bool stages_qc_yes_is_ccc_impl(type_codept ccc_qc, unsigned char* la
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_is_nfc(type_codept c, unsigned char* last_ccc)
+uaix_static bool stages_qc_yes_is_nfc(type_codept c, unsigned char* const last_ccc)
 {
     if (c >= 0x0300) // NFC lower bound
     {
@@ -365,7 +365,7 @@ uaix_static bool stages_qc_yes_is_nfc(type_codept c, unsigned char* last_ccc)
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_is_nfd(type_codept c, unsigned char* last_ccc)
+uaix_static bool stages_qc_yes_is_nfd(type_codept c, unsigned char* const last_ccc)
 {
     if (c >= 0x00C0) // NFD lower bound
     {
@@ -381,7 +381,7 @@ uaix_static bool stages_qc_yes_is_nfd(type_codept c, unsigned char* last_ccc)
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_is_nfkc(type_codept c, unsigned char* last_ccc)
+uaix_static bool stages_qc_yes_is_nfkc(type_codept c, unsigned char* const last_ccc)
 {
     if (c >= 0x00A0) // NFKC lower bound
     {
@@ -395,7 +395,7 @@ uaix_static bool stages_qc_yes_is_nfkc(type_codept c, unsigned char* last_ccc)
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_is_nfkd(type_codept c, unsigned char* last_ccc)
+uaix_static bool stages_qc_yes_is_nfkd(type_codept c, unsigned char* const last_ccc)
 {
     if (c >= 0x00A0) // NFKD lower bound
     {
@@ -411,7 +411,7 @@ uaix_static bool stages_qc_yes_is_nfkd(type_codept c, unsigned char* last_ccc)
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static void norm_order(struct norm_buffer* buffer, size_t size)
+uaix_static void norm_order(struct norm_buffer* const buffer, size_t size)
 {
     if (size > 0)
     {
@@ -450,7 +450,7 @@ uaix_static void norm_order(struct norm_buffer* buffer, size_t size)
 }
 
 uaix_always_inline
-uaix_static size_t norm_decomp_hangul(type_codept c, size_t i, struct norm_buffer* buffer)
+uaix_static size_t norm_decomp_hangul(type_codept c, size_t i, struct norm_buffer* const buffer)
 {
     const type_codept SBase = 0xAC00;
     const type_codept LBase = 0x1100;
@@ -488,7 +488,7 @@ uaix_static size_t norm_decomp_hangul(type_codept c, size_t i, struct norm_buffe
 }
 
 uaix_always_inline
-uaix_static size_t norm_comp_hangul(size_t i, struct norm_buffer* buffer, size_t size)
+uaix_static size_t norm_comp_hangul(size_t i, struct norm_buffer* const buffer, size_t size)
 {
     // Note: CCC=255 is used to mark composed code points
 
@@ -555,7 +555,7 @@ uaix_static size_t norm_comp_hangul(size_t i, struct norm_buffer* buffer, size_t
 }
 
 uaix_always_inline
-uaix_static void norm_comp(struct norm_buffer* buffer, size_t size)
+uaix_static void norm_comp(struct norm_buffer* const buffer, size_t size)
 {
     // Note: CCC=255 is used to mark composed code points
 
@@ -589,7 +589,7 @@ uaix_static void norm_comp(struct norm_buffer* buffer, size_t size)
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_return(struct norm_buffer* buffer, struct norm_meow* m)
+uaix_static bool norm_decomp_return(struct norm_buffer* const buffer, struct norm_meow* const m)
 {
     // UNUSED: buffer->cps, m->count_ns
 
@@ -622,7 +622,7 @@ uaix_static bool norm_decomp_return(struct norm_buffer* buffer, struct norm_meow
 }
 
 uaix_always_inline
-uaix_static void norm_decomp_count_ns(struct norm_buffer* buffer, struct norm_meow* m)
+uaix_static void norm_decomp_count_ns(struct norm_buffer* const buffer, struct norm_meow* const m)
 {
     // Insert U+034F COMBINING GRAPHEME JOINER (CGJ) if there is more than 30 non-starters
 
@@ -637,7 +637,7 @@ uaix_static void norm_decomp_count_ns(struct norm_buffer* buffer, struct norm_me
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* buffer, struct norm_meow* m)
+uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer, struct norm_meow* const m)
 {
     norm_decomp_count_ns(buffer, m);
 
@@ -701,7 +701,7 @@ uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* buffer, stru
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* buffer, struct norm_meow* m)
+uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* const buffer, struct norm_meow* const m)
 {
     // Almost the same as norm_decomp_nfc but decompose everything
 
@@ -743,7 +743,7 @@ uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* buffer, stru
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* buffer, struct norm_meow* m)
+uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* const buffer, struct norm_meow* const m)
 {
     // The same as norm_decomp_nfc but uses NFKC data
 
@@ -801,7 +801,7 @@ uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* buffer, str
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* buffer, struct norm_meow* m)
+uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* const buffer, struct norm_meow* const m)
 {
     // The same as norm_decomp_nfd but uses NFKD data
 
@@ -845,7 +845,7 @@ uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* buffer, str
 #ifndef UNI_ALGO_DISABLE_PROP
 
 uaix_always_inline
-uaix_static bool norm_decomp_unaccent(type_codept c, struct norm_buffer* buffer, struct norm_meow* m)
+uaix_static bool norm_decomp_unaccent(type_codept c, struct norm_buffer* const buffer, struct norm_meow* const m)
 {
     // Ignore Hanguls, decompose to NFD, skip Nonspacing Mark
     // The full algorithm is: NFD -> remove Nonspacing Mark -> NFC
@@ -887,7 +887,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, struct norm_buffer* buffer,
 #endif // UNI_ALGO_DISABLE_PROP
 
 uaix_always_inline
-uaix_static void norm_proc_buffer(struct norm_buffer* buffer, struct norm_meow* m)
+uaix_static void norm_proc_buffer(struct norm_buffer* const buffer, struct norm_meow* const m)
 {
     // UNUSED: m->count_ns
 
@@ -1674,7 +1674,7 @@ struct impl_norm_iter_state
     struct norm_buffer buffer;
 };
 
-uaix_inline void impl_norm_iter_state_reset(struct impl_norm_iter_state* s)
+uaix_inline void impl_norm_iter_state_reset(struct impl_norm_iter_state* const s)
 {
     s->pos = 0;
 
@@ -1684,7 +1684,7 @@ uaix_inline void impl_norm_iter_state_reset(struct impl_norm_iter_state* s)
 }
 
 uaix_always_inline
-uaix_static bool inline_norm_iter_ready(struct impl_norm_iter_state* s)
+uaix_static bool inline_norm_iter_ready(struct impl_norm_iter_state* const s)
 {
     return s->pos == 0 ? false : true;
 }
@@ -1700,7 +1700,7 @@ uaix_static type_codept norm_safe_cp(type_codept c)
 }
 
 uaix_always_inline
-uaix_static bool norm_state_fast_1(struct impl_norm_iter_state* s, type_codept c)
+uaix_static bool norm_state_fast_1(struct impl_norm_iter_state* const s, type_codept c)
 {
     s->pos = 0;
 
@@ -1714,7 +1714,7 @@ uaix_static bool norm_state_fast_1(struct impl_norm_iter_state* s, type_codept c
 }
 
 uaix_always_inline
-uaix_static bool norm_state_fast_0(struct impl_norm_iter_state* s, type_codept c)
+uaix_static bool norm_state_fast_0(struct impl_norm_iter_state* const s, type_codept c)
 {
     s->m.size = 1;
 
@@ -1725,7 +1725,7 @@ uaix_static bool norm_state_fast_0(struct impl_norm_iter_state* s, type_codept c
 }
 
 uaix_always_inline
-uaix_static bool inline_norm_iter_nfc(struct impl_norm_iter_state* s, type_codept c)
+uaix_static bool inline_norm_iter_nfc(struct impl_norm_iter_state* const s, type_codept c)
 {
     // Note that we cannot implement a fast loop inside the normalization iterators
     // but we can use the same idea to make them a bit faster.
@@ -1749,7 +1749,7 @@ uaix_static bool inline_norm_iter_nfc(struct impl_norm_iter_state* s, type_codep
 }
 
 uaix_always_inline
-uaix_static bool inline_norm_iter_nfd(struct impl_norm_iter_state* s, type_codept c)
+uaix_static bool inline_norm_iter_nfd(struct impl_norm_iter_state* const s, type_codept c)
 {
     c = norm_safe_cp(c);
     if (stages_qc_yes_ns_nfd(c, &s->m.count_ns))
@@ -1768,7 +1768,7 @@ uaix_static bool inline_norm_iter_nfd(struct impl_norm_iter_state* s, type_codep
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool inline_norm_iter_nfkc(struct impl_norm_iter_state* s, type_codept c)
+uaix_static bool inline_norm_iter_nfkc(struct impl_norm_iter_state* const s, type_codept c)
 {
     c = norm_safe_cp(c);
     if (stages_qc_yes_ns_nfkc(c, &s->m.count_ns))
@@ -1785,7 +1785,7 @@ uaix_static bool inline_norm_iter_nfkc(struct impl_norm_iter_state* s, type_code
 }
 
 uaix_always_inline
-uaix_static bool inline_norm_iter_nfkd(struct impl_norm_iter_state* s, type_codept c)
+uaix_static bool inline_norm_iter_nfkd(struct impl_norm_iter_state* const s, type_codept c)
 {
     c = norm_safe_cp(c);
     if (stages_qc_yes_ns_nfkd(c, &s->m.count_ns))
@@ -1804,7 +1804,7 @@ uaix_static bool inline_norm_iter_nfkd(struct impl_norm_iter_state* s, type_code
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool inline_norm_iter_next_comp(struct impl_norm_iter_state* s, type_codept* codepoint)
+uaix_static bool inline_norm_iter_next_comp(struct impl_norm_iter_state* const s, type_codept* const codepoint)
 {
     // The function must be used together with inline_norm_iter_nfc or inline_norm_iter_nfkc
 
@@ -1844,7 +1844,7 @@ uaix_static bool inline_norm_iter_next_comp(struct impl_norm_iter_state* s, type
 }
 
 uaix_always_inline
-uaix_static bool inline_norm_iter_next_decomp(struct impl_norm_iter_state* s, type_codept* codepoint)
+uaix_static bool inline_norm_iter_next_decomp(struct impl_norm_iter_state* const s, type_codept* const codepoint)
 {
     // The function must be used together with inline_norm_iter_nfd or inline_norm_iter_nfkd
 

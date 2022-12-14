@@ -57,7 +57,7 @@ struct impl_break_grapheme_state
 };
 
 uaix_always_inline
-uaix_static void impl_break_grapheme_state_reset(struct impl_break_grapheme_state* state)
+uaix_static void impl_break_grapheme_state_reset(struct impl_break_grapheme_state* const state)
 {
     state->prev_cp = 0;
     state->prev_cp_prop = 0;
@@ -89,7 +89,7 @@ uaix_static const bool break_table_grapheme[15][15] =
 };
 */
 uaix_always_inline
-uaix_static bool break_grapheme(struct impl_break_grapheme_state* state, type_codept c)
+uaix_static bool break_grapheme(struct impl_break_grapheme_state* const state, type_codept c)
 {
     // TODO: https://unicode.org/reports/tr29/#State_Machines
     // ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.html
@@ -158,13 +158,13 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* state, type_co
 #ifdef __cplusplus
 template<typename = void> // TODO: What is this? Why uaix_inline is not used here instead of this crap?
 #endif
-uaix_static bool impl_break_grapheme(struct impl_break_grapheme_state* state, type_codept c)
+uaix_static bool impl_break_grapheme(struct impl_break_grapheme_state* const state, type_codept c)
 {
     return break_grapheme(state, c);
 }
 
 uaix_always_inline
-uaix_static bool inline_break_grapheme(struct impl_break_grapheme_state* state, type_codept c)
+uaix_static bool inline_break_grapheme(struct impl_break_grapheme_state* const state, type_codept c)
 {
     return break_grapheme(state, c);
 }
@@ -224,7 +224,7 @@ uaix_static bool break_grapheme_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_grapheme_rev_utf8(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool break_grapheme_rev_utf8(struct impl_break_grapheme_state* const state, type_codept c,
                                          it_in_utf8 first, it_in_utf8 last)
 {
     type_codept c_prop = stages_break_grapheme_prop(c);
@@ -271,7 +271,7 @@ uaix_static bool break_grapheme_rev_utf8(struct impl_break_grapheme_state* state
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool impl_break_grapheme_rev_utf8(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool impl_break_grapheme_rev_utf8(struct impl_break_grapheme_state* const state, type_codept c,
                                               it_in_utf8 first, it_in_utf8 last)
 {
     return break_grapheme_rev_utf8(state, c, first, last);
@@ -281,7 +281,7 @@ uaix_static bool impl_break_grapheme_rev_utf8(struct impl_break_grapheme_state* 
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_grapheme_rev_utf8(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool inline_break_grapheme_rev_utf8(struct impl_break_grapheme_state* const state, type_codept c,
                                                 it_in_utf8 first, it_in_utf8 last)
 {
     return break_grapheme_rev_utf8(state, c, first, last);
@@ -341,7 +341,7 @@ uaix_static bool break_grapheme_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_grapheme_rev_utf16(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool break_grapheme_rev_utf16(struct impl_break_grapheme_state* const state, type_codept c,
                                           it_in_utf16 first, it_in_utf16 last)
 {
     type_codept c_prop = stages_break_grapheme_prop(c);
@@ -388,7 +388,7 @@ uaix_static bool break_grapheme_rev_utf16(struct impl_break_grapheme_state* stat
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool impl_break_grapheme_rev_utf16(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool impl_break_grapheme_rev_utf16(struct impl_break_grapheme_state* const state, type_codept c,
                                                it_in_utf16 first, it_in_utf16 last)
 {
     return break_grapheme_rev_utf16(state, c, first, last);
@@ -398,7 +398,7 @@ uaix_static bool impl_break_grapheme_rev_utf16(struct impl_break_grapheme_state*
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_grapheme_rev_utf16(struct impl_break_grapheme_state* state, type_codept c,
+uaix_static bool inline_break_grapheme_rev_utf16(struct impl_break_grapheme_state* const state, type_codept c,
                                                  it_in_utf16 first, it_in_utf16 last)
 {
     return break_grapheme_rev_utf16(state, c, first, last);

@@ -16,7 +16,7 @@ uaix_const type_codept iter_error = 0xFFFFFFFF; // Any number outside Unicode ra
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf8 iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf8 iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* const codepoint, type_codept error)
 {
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: input, forward, bidirectional, random access, contiguous
@@ -135,7 +135,7 @@ uaix_static it_in_utf8 iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf16 iter_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf16 iter_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* const codepoint, type_codept error)
 {
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: input, forward, bidirectional, random access, contiguous
@@ -182,7 +182,7 @@ uaix_static it_in_utf16 iter_utf16(it_in_utf16 first, it_end_utf16 last, type_co
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf8 iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf8 iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* const codepoint, type_codept error)
 {
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: bidirectional, random access, contiguous
@@ -209,7 +209,7 @@ uaix_static it_in_utf8 iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_cod
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf16 iter_rev_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf16 iter_rev_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* const codepoint, type_codept error)
 {
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: bidirectional, random access, contiguous
@@ -294,7 +294,7 @@ uaix_const type_codept impl_iter_error = 0xFFFFFFFF; // iter_error
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static it_in_utf8 impl_iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf8 impl_iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* const codepoint, type_codept error)
 {
     return iter_utf8(first, last, codepoint, error);
 }
@@ -302,7 +302,7 @@ uaix_static it_in_utf8 impl_iter_utf8(it_in_utf8 first, it_end_utf8 last, type_c
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static it_in_utf16 impl_iter_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf16 impl_iter_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* const codepoint, type_codept error)
 {
     return iter_utf16(first, last, codepoint, error);
 }
@@ -310,7 +310,7 @@ uaix_static it_in_utf16 impl_iter_utf16(it_in_utf16 first, it_end_utf16 last, ty
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static it_in_utf8 impl_iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf8 impl_iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* const codepoint, type_codept error)
 {
     return iter_rev_utf8(first, last, codepoint, error);
 }
@@ -318,7 +318,7 @@ uaix_static it_in_utf8 impl_iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, typ
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static it_in_utf16 impl_iter_rev_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf16 impl_iter_rev_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* const codepoint, type_codept error)
 {
     return iter_rev_utf16(first, last, codepoint, error);
 }
@@ -329,7 +329,7 @@ uaix_static it_in_utf16 impl_iter_rev_utf16(it_in_utf16 first, it_in_utf16 last,
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf8 inline_iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf8 inline_iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* const codepoint, type_codept error)
 {
     return iter_utf8(first, last, codepoint, error);
 }
@@ -338,7 +338,7 @@ uaix_static it_in_utf8 inline_iter_utf8(it_in_utf8 first, it_end_utf8 last, type
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf16 inline_iter_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf16 inline_iter_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* const codepoint, type_codept error)
 {
     return iter_utf16(first, last, codepoint, error);
 }
@@ -347,7 +347,7 @@ uaix_static it_in_utf16 inline_iter_utf16(it_in_utf16 first, it_end_utf16 last, 
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf8 inline_iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf8 inline_iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* const codepoint, type_codept error)
 {
     return iter_rev_utf8(first, last, codepoint, error);
 }
@@ -356,7 +356,7 @@ uaix_static it_in_utf8 inline_iter_rev_utf8(it_in_utf8 first, it_in_utf8 last, t
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf16 inline_iter_rev_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
+uaix_static it_in_utf16 inline_iter_rev_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* const codepoint, type_codept error)
 {
     return iter_rev_utf16(first, last, codepoint, error);
 }

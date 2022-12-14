@@ -645,7 +645,7 @@ uaix_static it_out_utf16 case_locale_lower_tr_az_utf16(type_codept c, it_out_utf
 
 uaix_always_inline
 // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
-type_codept case_greek_upper(type_codept c, bool* prev_vowel_with_accent, bool* maybe_eta_with_tonos)
+type_codept case_greek_upper(type_codept c, bool* const prev_vowel_with_accent, bool* const maybe_eta_with_tonos)
 {
     // The data and the algorithm is based on: http://site.icu-project.org/design/case/greek-upper
 
