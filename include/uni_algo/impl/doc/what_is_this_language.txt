@@ -8,7 +8,8 @@ The algorithms use C99 syntax rules with optional C++ templates and many restric
 This means:
 1. Any dependencies are not allowed so none of C/C++ functions can be used.
 2. Memory allocations are not allowed.
-3. Pointers can be used only for return parameters.
+3. Pointers can be used only for return parameters and must be const (int* const p).
+This also means declaring pointers inside functions is not allowed at all.
 5. Any pointer casts are not allowed so a violation of strict aliasing is not possible.
 6. Internal type type_codept must be used for all code point calculations,
 Unicode properties etc. anything related to a code point.
