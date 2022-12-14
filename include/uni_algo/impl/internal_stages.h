@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - sign whatever you want.
  * See LICENSE.txt */
 
-// Warning! This file must never be used by a wrapper.
+// IMPORTANT: This file must never be used by a wrapper
 
 // Must be included after impl_defines.h
 
