@@ -261,7 +261,7 @@ uaix_static it_out_utf8 case_locale_upper_lt_utf8(type_codept c, it_out_utf8 dst
 
     if (stages_special_upper_check(c))
     {
-        case_special_buffer special = {{0}};
+        struct case_special_buffer special = {{0}};
         size_t size = stages_special_upper(c, &special);
 
         for (size_t i = 0; i < size; ++i)
@@ -383,7 +383,7 @@ uaix_static it_out_utf8 case_locale_upper_tr_az_utf8(type_codept c, it_out_utf8 
 
     if (stages_special_upper_check(c))
     {
-        case_special_buffer special = {{0}};
+        struct case_special_buffer special = {{0}};
         size_t size = stages_special_upper(c, &special);
 
         for (size_t i = 0; i < size; ++i)
@@ -468,7 +468,7 @@ uaix_static it_out_utf16 case_locale_upper_lt_utf16(type_codept c, it_out_utf16 
 
     if (stages_special_upper_check(c))
     {
-        case_special_buffer special = {{0}};
+        struct case_special_buffer special = {{0}};
         size_t size = stages_special_upper(c, &special);
 
         for (size_t i = 0; i < size; ++i)
@@ -577,7 +577,7 @@ uaix_static it_out_utf16 case_locale_upper_tr_az_utf16(type_codept c, it_out_utf
 
     if (stages_special_upper_check(c))
     {
-        case_special_buffer special = {{0}};
+        struct case_special_buffer special = {{0}};
         size_t size = stages_special_upper(c, &special);
 
         for (size_t i = 0; i < size; ++i)
@@ -1152,7 +1152,7 @@ uaix_static size_t case_upper_el_utf8(it_in_utf8 first, it_end_utf8 last, it_out
         {
             if (stages_special_upper_check(c))
             {
-                case_special_buffer special = {{0}};
+                struct case_special_buffer special = {{0}};
                 size_t size = stages_special_upper(c, &special);
 
                 for (size_t i = 0; i < size; ++i)
@@ -1205,7 +1205,7 @@ uaix_static size_t case_upper_el_utf16(it_in_utf16 first, it_end_utf16 last, it_
         {
             if (stages_special_upper_check(c))
             {
-                case_special_buffer special = {{0}};
+                struct case_special_buffer special = {{0}};
                 size_t size = stages_special_upper(c, &special);
 
                 for (size_t i = 0; i < size; ++i)
@@ -1312,7 +1312,7 @@ uaix_static size_t case_title_locale_utf8(it_in_utf8 first, it_end_utf8 last, it
 
                 if (stages_special_title_check(c))
                 {
-                    case_special_buffer special = {{0}};
+                    struct case_special_buffer special = {{0}};
                     size_t size = stages_special_title(c, &special);
 
                     for (size_t i = 0; i < size; ++i)
@@ -1454,7 +1454,7 @@ uaix_static size_t case_title_locale_utf16(it_in_utf16 first, it_end_utf16 last,
 
                 if (stages_special_title_check(c))
                 {
-                    case_special_buffer special = {{0}};
+                    struct case_special_buffer special = {{0}};
                     size_t size = stages_special_title(c, &special);
 
                     for (size_t i = 0; i < size; ++i)

@@ -113,7 +113,7 @@ uaix_static type_codept stages_case_prop(type_codept c)
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
 uaix_always_inline
-uaix_static size_t stages_special_fold(type_codept c, case_special_buffer* special)
+uaix_static size_t stages_special_fold(type_codept c, struct case_special_buffer* special)
 {
     if (c <= 0xFFFF)
     {
@@ -140,7 +140,7 @@ uaix_static bool stages_special_fold_check(type_codept c)
 }
 
 uaix_always_inline
-uaix_static size_t stages_special_upper(type_codept c, case_special_buffer* special)
+uaix_static size_t stages_special_upper(type_codept c, struct case_special_buffer* special)
 {
     if (c <= 0xFFFF)
     {
@@ -169,7 +169,7 @@ uaix_static bool stages_special_upper_check(type_codept c)
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 
 uaix_always_inline
-uaix_static size_t stages_special_title(type_codept c, case_special_buffer* special)
+uaix_static size_t stages_special_title(type_codept c, struct case_special_buffer* special)
 {
     if (c <= 0xFFFF)
     {
@@ -369,7 +369,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_upper_check(c))
             {
-                case_special_buffer special = {{0}};
+                struct case_special_buffer special = {{0}};
                 size_t size = stages_special_upper(c, &special);
 
                 for (size_t i = 0; i < size; ++i)
@@ -392,7 +392,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_fold_check(c))
             {
-                case_special_buffer special = {{0}};
+                struct case_special_buffer special = {{0}};
                 size_t size = stages_special_fold(c, &special);
 
                 for (size_t i = 0; i < size; ++i)
@@ -466,7 +466,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_upper_check(c))
             {
-                case_special_buffer special = {{0}};
+                struct case_special_buffer special = {{0}};
                 size_t size = stages_special_upper(c, &special);
 
                 for (size_t i = 0; i < size; ++i)
@@ -489,7 +489,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_fold_check(c))
             {
-                case_special_buffer special = {{0}};
+                struct case_special_buffer special = {{0}};
                 size_t size = stages_special_fold(c, &special);
 
                 for (size_t i = 0; i < size; ++i)
@@ -518,7 +518,7 @@ template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
 uaix_static it_in_utf8 iter_fold_utf8(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint,
-                                      case_special_pair* pair, case_special_buffer* special)
+                                      struct case_special_pair* pair, struct case_special_buffer* special)
 {
     it_in_utf8 src = first;
 
@@ -543,7 +543,7 @@ template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
 uaix_static it_in_utf16 iter_fold_utf16(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint,
-                                        case_special_pair* pair, case_special_buffer* special)
+                                        struct case_special_pair* pair, struct case_special_buffer* special)
 {
     it_in_utf16 src = first;
 
@@ -579,10 +579,10 @@ uaix_static int impl_case_compare_utf8(it_in_utf8 first1, it_end_utf8 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    case_special_buffer special1 = {{0}};
-    case_special_buffer special2 = {{0}};
-    case_special_pair pair1 = {0, 0};
-    case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}};
+    struct case_special_buffer special2 = {{0}};
+    struct case_special_pair pair1 = {0, 0};
+    struct case_special_pair pair2 = {0, 0};
 #endif
 
     // Optimization for long mostly equal strings
@@ -656,10 +656,10 @@ uaix_static int impl_case_compare_utf16(it_in_utf16 first1, it_end_utf16 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    case_special_buffer special1 = {{0}};
-    case_special_buffer special2 = {{0}};
-    case_special_pair pair1 = {0, 0};
-    case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}};
+    struct case_special_buffer special2 = {{0}};
+    struct case_special_pair pair1 = {0, 0};
+    struct case_special_pair pair2 = {0, 0};
 #endif
 
     // Optimization for long mostly equal strings
@@ -735,10 +735,10 @@ uaix_static int impl_case_collate_utf8(it_in_utf8 first1, it_end_utf8 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    case_special_buffer special1 = {{0}};
-    case_special_buffer special2 = {{0}};
-    case_special_pair pair1 = {0, 0};
-    case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}};
+    struct case_special_buffer special2 = {{0}};
+    struct case_special_pair pair1 = {0, 0};
+    struct case_special_pair pair2 = {0, 0};
 #endif
 
     // Optimization for long mostly equal strings
@@ -821,10 +821,10 @@ uaix_static int impl_case_collate_utf16(it_in_utf16 first1, it_end_utf16 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    case_special_buffer special1 = {{0}};
-    case_special_buffer special2 = {{0}};
-    case_special_pair pair1 = {0, 0};
-    case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}};
+    struct case_special_buffer special2 = {{0}};
+    struct case_special_pair pair1 = {0, 0};
+    struct case_special_pair pair2 = {0, 0};
 #endif
 
     // Optimization for long mostly equal strings
@@ -912,10 +912,10 @@ uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    case_special_buffer special1 = {{0}};
-    case_special_buffer special2 = {{0}};
-    case_special_pair pair1 = {0, 0};
-    case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}};
+    struct case_special_buffer special2 = {{0}};
+    struct case_special_pair pair1 = {0, 0};
+    struct case_special_pair pair2 = {0, 0};
 #endif
 
     if (!caseless)
@@ -1014,10 +1014,10 @@ uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
     type_codept c1 = 0;
     type_codept c2 = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    case_special_buffer special1 = {{0}};
-    case_special_buffer special2 = {{0}};
-    case_special_pair pair1 = {0, 0};
-    case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}};
+    struct case_special_buffer special2 = {{0}};
+    struct case_special_pair pair1 = {0, 0};
+    struct case_special_pair pair2 = {0, 0};
 #endif
 
     if (!caseless)
@@ -1117,10 +1117,10 @@ uaix_static bool impl_case_like_utf8(it_in_utf8 first1, it_end_utf8 last1,
     bool multi = false;
     bool prev_escape = false;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    case_special_buffer special1 = {{0}};
-    case_special_buffer special2 = {{0}};
-    case_special_pair pair1 = {0, 0};
-    case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}};
+    struct case_special_buffer special2 = {{0}};
+    struct case_special_pair pair1 = {0, 0};
+    struct case_special_pair pair2 = {0, 0};
 #endif
 
     // Only ASCII is supported for all and one in a pattern
@@ -1299,7 +1299,7 @@ uaix_static size_t case_title_utf8(it_in_utf8 first, it_end_utf8 last, it_out_ut
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
                 if (stages_special_title_check(c))
                 {
-                    case_special_buffer special = {{0}};
+                    struct case_special_buffer special = {{0}};
                     size_t size = stages_special_title(c, &special);
 
                     for (size_t i = 0; i < size; ++i)
@@ -1397,7 +1397,7 @@ uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
                 if (stages_special_title_check(c))
                 {
-                    case_special_buffer special = {{0}};
+                    struct case_special_buffer special = {{0}};
                     size_t size = stages_special_title(c, &special);
 
                     for (size_t i = 0; i < size; ++i)
@@ -1481,8 +1481,8 @@ uaix_static size_t impl_case_sortkey_utf8(it_in_utf8 first, it_end_utf8 last, it
     it_out_utf8 dst = result;
     type_codept c = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    case_special_buffer special = {{0}};
-    case_special_pair pair = {0, 0};
+    struct case_special_buffer special = {{0}};
+    struct case_special_pair pair = {0, 0};
 #endif
 
     // The algorithm must be consistent with impl_utf8collate
@@ -1530,8 +1530,8 @@ uaix_static size_t impl_case_sortkey_utf16(it_in_utf16 first, it_end_utf16 last,
     it_out_utf8 dst = result;
     type_codept c = 0;
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    case_special_buffer special = {{0}};
-    case_special_pair pair = {0, 0};
+    struct case_special_buffer special = {{0}};
+    struct case_special_pair pair = {0, 0};
 #endif
 
     // The algorithm must be consistent with impl_utf8collate
