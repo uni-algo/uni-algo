@@ -348,8 +348,8 @@ uaix_static it_out_utf8 case_locale_lower_lt_utf8(type_codept c, it_out_utf8 dst
     }
     if (c == 0x03A3) // Final_Sigma
     {
-        if (!case_final_sigma_utf8(src, last, false) &&
-            case_final_sigma_utf8(prev, first, true))
+        if (!case_final_sigma_fwd_utf8(src, last) &&
+            case_final_sigma_rev_utf8(first, prev))
         {
             *dst++ = (type_char8)(type_codept)0xCF;
             *dst++ = (type_char8)(type_codept)0x82;
@@ -436,8 +436,8 @@ uaix_static it_out_utf8 case_locale_lower_tr_az_utf8(type_codept c, it_out_utf8 
     }
     if (c == 0x03A3) // Final_Sigma
     {
-        if (!case_final_sigma_utf8(src, last, false) &&
-            case_final_sigma_utf8(prev, first, true))
+        if (!case_final_sigma_fwd_utf8(src, last) &&
+            case_final_sigma_rev_utf8(first, prev))
         {
             *dst++ = (type_char8)(type_codept)0xCF;
             *dst++ = (type_char8)(type_codept)0x82;
@@ -544,8 +544,8 @@ uaix_static it_out_utf16 case_locale_lower_lt_utf16(type_codept c, it_out_utf16 
     }
     if (c == 0x03A3) // Final_Sigma
     {
-        if (!case_final_sigma_utf16(src, last, false) &&
-            case_final_sigma_utf16(prev, first, true))
+        if (!case_final_sigma_fwd_utf16(src, last) &&
+            case_final_sigma_rev_utf16(first, prev))
         {
             *dst++ = (type_char16)0x03C2;
             return dst;
@@ -628,8 +628,8 @@ uaix_static it_out_utf16 case_locale_lower_tr_az_utf16(type_codept c, it_out_utf
     }
     if (c == 0x03A3) // Final_Sigma
     {
-        if (!case_final_sigma_utf16(src, last, false) &&
-            case_final_sigma_utf16(prev, first, true))
+        if (!case_final_sigma_fwd_utf16(src, last) &&
+            case_final_sigma_rev_utf16(first, prev))
         {
             *dst++ = (type_char16)0x03C2;
             return dst;
@@ -1138,8 +1138,8 @@ uaix_static size_t case_upper_el_utf8(it_in_utf8 first, it_end_utf8 last, it_out
         {
             // Use Final_Sigma function here because Eta follows the same "word boundary" rules
             if (maybe_eta_with_tonos &&
-                !case_final_sigma_utf8(src, last, false) &&
-                !case_final_sigma_utf8(prev, first, true))
+                !case_final_sigma_fwd_utf8(src, last) &&
+                !case_final_sigma_rev_utf8(first, prev))
             {
                 *dst++ = (type_char8)(type_codept)0xCE;
                 *dst++ = (type_char8)(type_codept)0x89;
@@ -1192,8 +1192,8 @@ uaix_static size_t case_upper_el_utf16(it_in_utf16 first, it_end_utf16 last, it_
         {
             // Use Final_Sigma function here because Eta follows the same "word boundary" rules
             if (maybe_eta_with_tonos &&
-                !case_final_sigma_utf16(src, last, false) &&
-                !case_final_sigma_utf16(prev, first, true))
+                !case_final_sigma_fwd_utf16(src, last) &&
+                !case_final_sigma_rev_utf16(first, prev))
             {
                 *dst++ = (type_char16)0x0389;
                 continue;
@@ -1350,8 +1350,8 @@ uaix_static size_t case_title_locale_utf8(it_in_utf8 first, it_end_utf8 last, it
             }
             if (c == 0x03A3) // Final_Sigma
             {
-                if (!case_final_sigma_utf8(src, last, false) &&
-                    case_final_sigma_utf8(prev, first, true))
+                if (!case_final_sigma_fwd_utf8(src, last) &&
+                    case_final_sigma_rev_utf8(first, prev))
                 {
                     *dst++ = (type_char8)(type_codept)0xCF;
                     *dst++ = (type_char8)(type_codept)0x82;
@@ -1491,8 +1491,8 @@ uaix_static size_t case_title_locale_utf16(it_in_utf16 first, it_end_utf16 last,
             }
             if (c == 0x03A3) // Final_Sigma
             {
-                if (!case_final_sigma_utf16(src, last, false) &&
-                    case_final_sigma_utf16(prev, first, true))
+                if (!case_final_sigma_fwd_utf16(src, last) &&
+                    case_final_sigma_rev_utf16(first, prev))
                 {
                     *dst++ = (type_char16)0x03C2;
                     continue;

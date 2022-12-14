@@ -204,24 +204,44 @@ uaix_static bool stages_special_title_check(type_codept c)
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool case_final_sigma_utf8(it_in_utf8 from, it_end_utf8 to, bool reverse)
+uaix_static bool case_final_sigma_fwd_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     /* Final_Sigma special case from The Unicode Standard:
      * C is preceded by a sequence consisting of a cased letter and then zero or more
      * case-ignorable characters, and C is not followed by a sequence consisting of zero
      * or more case-ignorable characters and then a cased letter.
      * \p{cased}(\p{case-ignorable})* U+03A3 !((\p{case-ignorable})*\p{cased})
+     * The algorithm has two parts: this forward function and reverse function below.
      */
 
-    it_in_utf8 s = from;
+    it_in_utf8 src = first;
     type_codept c = 0;
 
-    while (s != to)
+    while (src != last)
     {
-        if (reverse)
-            s = iter_rev_utf8(to, s, &c, iter_replacement);
-        else
-            s = iter_utf8(s, to, &c, iter_replacement);
+        src = iter_utf8(src, last, &c, iter_replacement);
+
+        type_codept prop = stages_case_prop(c);
+
+        if (prop & prop_Cased_Ignorable)
+            continue;
+        return (prop & prop_Cased) ? true : false;
+    }
+
+    return false;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf8>
+#endif
+uaix_static bool case_final_sigma_rev_utf8(it_in_utf8 first, it_in_utf8 last)
+{
+    it_in_utf8 src = last;
+    type_codept c = 0;
+
+    while (src != first)
+    {
+        src = iter_rev_utf8(first, src, &c, iter_replacement);
 
         type_codept prop = stages_case_prop(c);
 
@@ -236,17 +256,36 @@ uaix_static bool case_final_sigma_utf8(it_in_utf8 from, it_end_utf8 to, bool rev
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static bool case_final_sigma_utf16(it_in_utf16 from, it_end_utf16 to, bool reverse)
+uaix_static bool case_final_sigma_fwd_utf16(it_in_utf16 first, it_end_utf16 last)
 {
-    it_in_utf16 s = from;
+    it_in_utf16 src = first;
     type_codept c = 0;
 
-    while (s != to)
+    while (src != last)
     {
-        if (reverse)
-            s = iter_rev_utf16(to, s, &c, iter_replacement);
-        else
-            s = iter_utf16(s, to, &c, iter_replacement);
+        src = iter_utf16(src, last, &c, iter_replacement);
+
+        type_codept prop = stages_case_prop(c);
+
+        if (prop & prop_Cased_Ignorable)
+            continue;
+        return (prop & prop_Cased) ? true : false;
+    }
+
+    return false;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf16>
+#endif
+uaix_static bool case_final_sigma_rev_utf16(it_in_utf16 first, it_in_utf16 last)
+{
+    it_in_utf16 src = last;
+    type_codept c = 0;
+
+    while (src != first)
+    {
+        src = iter_rev_utf16(first, src, &c, iter_replacement);
 
         type_codept prop = stages_case_prop(c);
 
@@ -307,8 +346,8 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
             }
             if (c == 0x03A3) // Final_Sigma
             {
-                if (!case_final_sigma_utf8(src, last, false) &&
-                    case_final_sigma_utf8(prev, first, true))
+                if (!case_final_sigma_fwd_utf8(src, last) &&
+                    case_final_sigma_rev_utf8(first, prev))
                 {
                     *dst++ = (type_char8)(type_codept)0xCF;
                     *dst++ = (type_char8)(type_codept)0x82;
@@ -405,8 +444,8 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
             }
             if (c == 0x03A3) // Final_Sigma
             {
-                if (!case_final_sigma_utf16(src, last, false) &&
-                    case_final_sigma_utf16(prev, first, true))
+                if (!case_final_sigma_fwd_utf16(src, last) &&
+                    case_final_sigma_rev_utf16(first, prev))
                 {
                     *dst++ = (type_char16)0x03C2;
                     continue;
@@ -1284,8 +1323,8 @@ uaix_static size_t case_title_utf8(it_in_utf8 first, it_end_utf8 last, it_out_ut
             }
             if (c == 0x03A3) // Final_Sigma
             {
-                if (!case_final_sigma_utf8(src, last, false) &&
-                    case_final_sigma_utf8(prev, first, true))
+                if (!case_final_sigma_fwd_utf8(src, last) &&
+                    case_final_sigma_rev_utf8(first, prev))
                 {
                     *dst++ = (type_char8)(type_codept)0xCF;
                     *dst++ = (type_char8)(type_codept)0x82;
@@ -1381,8 +1420,8 @@ uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out
             }
             else if (c == 0x03A3) // Final_Sigma
             {
-                if (!case_final_sigma_utf16(src, last, false) &&
-                    case_final_sigma_utf16(prev, first, true))
+                if (!case_final_sigma_fwd_utf16(src, last) &&
+                    case_final_sigma_rev_utf16(first, prev))
                 {
                     *dst++ = (type_char16)0x03C2;
                     continue;
