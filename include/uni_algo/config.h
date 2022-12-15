@@ -24,44 +24,50 @@
 
 //#define UNI_ALGO_DISABLE_CASE
 // Disable Case module.
-// Reduces the size of the library by ~200 KB.
+// Reduces Unicode data size by ~200 KB.
 
 //#define UNI_ALGO_DISABLE_NORM
 // Disable Normalization module.
-// Reduces the size of the library by ~300 KB.
+// Reduces Unicode data size by ~300 KB.
 
 //#define UNI_ALGO_DISABLE_PROP
 // Disable Code Point Properties module.
-// Reduces the size of the library by ~35 KB.
+// Reduces Unicode data size by ~35 KB.
 // Note that if this module is disabled unaccent functions
 // in Normalization module will be disabled too.
 
 //#define UNI_ALGO_DISABLE_BREAK_GRAPHEME
 // Disable Break Grapheme module.
-// Reduces the size of the library by ~25 KB.
+// Reduces Unicode data size by ~25 KB.
 
 //#define UNI_ALGO_DISABLE_BREAK_WORD
 // Disable Break Word module.
-// Reduces the size of the library by ~35 KB.
+// Reduces Unicode data size by ~35 KB.
 // Note that if Break Word module is disabled title case functions
 // in Case module will be disabled too because it is needed for them.
 
 //#define UNI_ALGO_DISABLE_COLLATE
 // Disable collation functions (part of Case module).
-// Reduces the size of Case module by ~100 KB.
+// Reduces Unicode data size by ~100 KB.
 
 //#define UNI_ALGO_DISABLE_NFKC_NFKD
 // Disable NFKC and NFKD normalization forms (part of Normalization module).
 // These forms are rarely used and can be disabled.
-// Reduces the size of Normalization module by ~100 KB.
+// Reduces Unicode data size by ~100 KB.
+
+// ----------------------- ALL DEFINES BELOW THIS LINE DO NOT CHANGE UNICODE DATA SIZE ----------------------
+
+//#define UNI_ALGO_ENABLE_SAFE_LAYER
+// Force to enable safe layer even in release (enabled in debug by default).
 
 //#define UNI_ALGO_DISABLE_SYSTEM_LOCALE
 // Disable system locale facilities: uni::locale::system() function etc.
 
 //#define UNI_ALGO_DISABLE_SHRINK_TO_FIT
-// Most of functions do shrink_to_fit() call at the of a function by default
-// but if you use a custom allocator or want to maximize the performance
+// Most of functions do shrink_to_fit() call at the end of a function by default
+// but if you use a custom allocator or want to maximize the performance of the library
 // it might be better to disable it and do the call manually only when needed.
+// Note that ranges (uni::ranges::to_utf8/to_utf16 and such) never do shring_to_fit() call.
 
 //#define UNI_ALGO_DISABLE_FULL_CASE
 // Note that this define can be deprecated in the future.
@@ -84,7 +90,7 @@
 // The defines can be used to build shared library
 // export must be defined when building and import when using.
 
-// DO NOT CHANGE ANYTHING BELOW THIS LINE
+// --------------------------------- DO NOT CHANGE ANYTHING BELOW THIS LINE ---------------------------------
 
 #if (__cplusplus < 201703L && !defined(_MSVC_LANG)) || (defined(_MSVC_LANG) && _MSVC_LANG < 201703L)
 #error "C++17 or better is required"
@@ -117,8 +123,6 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 #define UNI_ALGO_IMPL_NAMESPACE_BEGIN namespace uni::detail {
 #define UNI_ALGO_IMPL_NAMESPACE_END }
 
-//define UNI_ALGO_ENABLE_SAFE_LAYER // Force to enable safe layer in release
-
 // Enable safe layer if it is forced with this define and in debug
 #ifndef UNI_ALGO_ENABLE_SAFE_LAYER
 #ifndef NDEBUG
@@ -126,7 +130,8 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 #endif
 #endif
 
-// Using any of the followings defines will disable a part of safe layer
+// Using any of the followings defines will disable a part of safe layer.
+// Use them only for perf testing to make sure safe layer doesn't mess things up.
 //#define UNI_ALGO_FORCE_CPP_ITERATORS // Force to use C++ iterators in low-level
 //#define UNI_ALGO_FORCE_C_POINTERS // Force to use C pointers in low-level
 //#define UNI_ALGO_FORCE_C_ARRAYS // Force to use C arrays in low-level
