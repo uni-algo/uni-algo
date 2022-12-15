@@ -14,7 +14,7 @@ namespace uni::detail {
 
 namespace safe {
 
-inline void kms()
+[[noreturn]] inline void kms() noexcept
 {
     // Everything is lost, nothing can be done, kmsing is the only option.
     // If we are inside this function then there is a critical bug exists in the library.
