@@ -19,6 +19,8 @@ namespace safe {
     // Everything is lost, nothing can be done, kmsing is the only option.
     // If we are inside this function then there is a critical bug exists in the library.
     // If we will continue then we try to read or write to a memory that is not belong to us.
+    // Note that we cannot even throw an exception from here because we can be inside
+    // noexcept function or inside std::string::resize_and_overwrite and throwing from there is UB.
     std::abort();
 }
 
