@@ -62,6 +62,8 @@ this also means all Unicode algorithms are conformant with Unicode Standard.
 - The library never uses dangerous things like pointer casts etc.
 - The library uses two levels: the low-level where very few things are allowed the level is pure algorithms
 and the wrapper-level where template into template into a very easy to use function or a range.
+- The library does not use raw pointers or C arrays and uses safe iterators and arrays with bounds checks through
+safe layer in debug with ability to enable it in release.
 - GCC with -Wall and many extra warnings is used in the development and Clang-Tidy is used as a static analyzer.
 
 Performance means:
