@@ -122,7 +122,7 @@ static void sqlite3_like_utf8(sqlite3_context* context, int argc, sqlite3_value*
     {
         // Note that we support only ASCII for ESCAPE char to simplify the code
         const char *escape_str = (const char*)sqlite3_value_text(argv[2]);
-        escape = escape_str ? escape_str[0] : 0;
+        escape = escape_str ? (type_codept)escape_str[0] : 0;
         if (!escape_str || sqlite3_value_bytes(argv[2]) != 1 ||
             escape == 0 || escape > 0x7F)
         {

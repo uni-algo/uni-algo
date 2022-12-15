@@ -1704,7 +1704,7 @@ uaix_static size_t impl_case_to_lowercase(type_codept c, it_out_utf32 dst)
         *dst++ = 0x0307;
         return 2;
     }
-    *dst = impl_case_to_simple_lowercase(c);
+    *dst = (type_char32)impl_case_to_simple_lowercase(c);
     return 1;
 
 }
@@ -1723,7 +1723,7 @@ uaix_static size_t impl_case_to_uppercase(type_codept c, it_out_utf32 dst)
         *dst++ = stage3_special_upper[n][3];
         return stage3_special_upper[n][0];
     }
-    *dst = impl_case_to_simple_uppercase(c);
+    *dst = (type_char32)impl_case_to_simple_uppercase(c);
     return 1;
 }
 
@@ -1741,7 +1741,7 @@ uaix_static size_t impl_case_to_casefold(type_codept c, it_out_utf32 dst)
         *dst++ = stage3_special_fold[n][3];
         return stage3_special_fold[n][0];
     }
-    *dst = impl_case_to_simple_casefold(c);
+    *dst = (type_char32)impl_case_to_simple_casefold(c);
     return 1;
 }
 

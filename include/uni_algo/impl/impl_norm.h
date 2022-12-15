@@ -2010,12 +2010,12 @@ uaix_static size_t norm_to_decomp_hangul(type_codept c, it_out_utf32 dst)
         type_codept VPart = VBase + (SIndex % NCount) / TCount;
         type_codept TPart = TBase + SIndex % TCount;
 
-        *dst++ = LPart;
-        *dst++ = VPart;
+        *dst++ = (type_char32)LPart;
+        *dst++ = (type_char32)VPart;
 
         if (TPart != TBase)
         {
-            *dst++ = TPart;
+            *dst++ = (type_char32)TPart;
             return 3;
         }
         return 2;
@@ -2035,7 +2035,7 @@ uaix_static size_t impl_norm_to_decompose_hangul(type_codept c, it_out_utf32 dst
         if (hangul)
             return hangul;
 
-        *dst = c;
+        *dst = (type_char32)c;
     }
     else
         *dst = 0xFFFD;
@@ -2060,12 +2060,12 @@ uaix_static size_t impl_norm_to_decompose(type_codept c, it_out_utf32 dst)
         {
             size_t number = stages_decomp_nfd_number(offset);
             for (size_t i = 0; i < number; ++i)
-                *dst++ = stages_decomp_nfd_cp(offset, i);
+                *dst++ = (type_char32)stages_decomp_nfd_cp(offset, i);
 
             return number;
         }
 
-        *dst = c;
+        *dst = (type_char32)c;
     }
     else
         *dst = 0xFFFD;
@@ -2092,12 +2092,12 @@ uaix_static size_t impl_norm_to_decompose_compat(type_codept c, it_out_utf32 dst
         {
             size_t number = stages_decomp_nfkd_number(offset);
             for (size_t i = 0; i < number; ++i)
-                *dst++ = stages_decomp_nfkd_cp(offset, i);
+                *dst++ = (type_char32)stages_decomp_nfkd_cp(offset, i);
 
             return number;
         }
 
-        *dst = c;
+        *dst = (type_char32)c;
     }
     else
         *dst = 0xFFFD;
