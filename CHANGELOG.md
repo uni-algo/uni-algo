@@ -3,6 +3,7 @@ Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
 ## v0.7.0 (TBD)
+- Added safe layer (bounds checks enabled in debug disabled in release)
 - In C++23 std::string::resize_and_overwrite is now used for better performance
 - Added ASCII extension
 
