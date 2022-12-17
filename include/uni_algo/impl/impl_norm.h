@@ -28,38 +28,38 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 // 18 is max decomposition (we use the end of the buffer to store the next decomposed code point)
 // Use 70 just because it means we need 70*4+70=260 bytes on stack for any normalization
 #ifdef __cplusplus
-uaix_const size_t norm_buffer_size = 70;
+uaix_const size_t norm_buffer_size = 70; // tag_unicode_unstable_value
 #else
 #define norm_buffer_size 70
 #endif
-uaix_const size_t norm_buffer_max_non_starters = 30; // This is in The Unicode Standard and must never be changed
-uaix_const size_t norm_max_decomposition = 18; // Checked in generator
+uaix_const size_t norm_buffer_max_non_starters  = 30; // tag_unicode_stable_value
+uaix_const size_t norm_max_decomposition        = 18; // tag_unicode_unstable_value
 
-uaix_const int impl_norm_is_yes = 0;
-uaix_const int impl_norm_is_ill_formed = 8;
-//uaix_const int impl_norm_is_not_stream_safe = 16; // Reserved
-//uaix_const int impl_norm_is_no = 1; // Reserved
-//uaix_const int impl_norm_is_maybe = 2; // Reserved
-uaix_const int norm_is_no_or_maybe = 3; // Can be changed in the future. Must never be used in a wrapper.
+uaix_const int impl_norm_is_yes                 = 0;
+uaix_const int impl_norm_is_ill_formed          = 8;
+//uaix_const int impl_norm_is_not_stream_safe   = 16; // Reserved
+//uaix_const int impl_norm_is_no                = 1;  // Reserved
+//uaix_const int impl_norm_is_maybe             = 2;  // Reserved
+uaix_const int norm_is_no_or_maybe              = 3;  // Can be changed in the future. Must never be used in a wrapper.
 
 // http://www.unicode.org/faq/normalization.html#12
 // The length of a destination (result) string must be premultiplied with one of these
 // Example: destination_length = source_length * impl_x_function_name
-uaix_const size_t impl_x_norm_to_nfc_utf8 = 3;
-uaix_const size_t impl_x_norm_to_nfd_utf8 = 3;
+uaix_const size_t impl_x_norm_to_nfc_utf8       = 3;  // tag_unicode_stable_value
+uaix_const size_t impl_x_norm_to_nfd_utf8       = 3;  // tag_unicode_unstable_value
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-uaix_const size_t impl_x_norm_to_nfkc_utf8 = 11;
-uaix_const size_t impl_x_norm_to_nfkd_utf8 = 11;
+uaix_const size_t impl_x_norm_to_nfkc_utf8      = 11; // tag_unicode_unstable_value
+uaix_const size_t impl_x_norm_to_nfkd_utf8      = 11; // tag_unicode_unstable_value
 #endif
-uaix_const size_t impl_x_norm_to_nfc_utf16 = 3;
-uaix_const size_t impl_x_norm_to_nfd_utf16 = 4;
+uaix_const size_t impl_x_norm_to_nfc_utf16      = 3;  // tag_unicode_stable_value
+uaix_const size_t impl_x_norm_to_nfd_utf16      = 4;  // tag_unicode_unstable_value
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-uaix_const size_t impl_x_norm_to_nfkc_utf16 = 18;
-uaix_const size_t impl_x_norm_to_nfkd_utf16 = 18;
+uaix_const size_t impl_x_norm_to_nfkc_utf16     = 18; // tag_unicode_unstable_value
+uaix_const size_t impl_x_norm_to_nfkd_utf16     = 18; // tag_unicode_unstable_value
 #endif
 #ifndef UNI_ALGO_DISABLE_PROP
-uaix_const size_t impl_x_norm_to_unaccent_utf8 = 3;
-uaix_const size_t impl_x_norm_to_unaccent_utf16 = 3;
+uaix_const size_t impl_x_norm_to_unaccent_utf8  = 3;  // tag_unicode_stable_value
+uaix_const size_t impl_x_norm_to_unaccent_utf16 = 3;  // tag_unicode_stable_value
 #endif
 
 struct norm_buffer

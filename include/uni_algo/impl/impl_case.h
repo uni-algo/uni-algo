@@ -26,11 +26,11 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 // The length of a destination (result) string must be premultiplied with one of these
 // Example: destination_length = source_length * impl_x_function_name
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-uaix_const size_t impl_x_case_map_utf8 = 3;
-uaix_const size_t impl_x_case_map_utf16 = 3;
+uaix_const size_t impl_x_case_map_utf8  = 3; // tag_unicode_unstable_value
+uaix_const size_t impl_x_case_map_utf16 = 3; // tag_unicode_unstable_value
 #else
-uaix_const size_t impl_x_case_map_utf8 = 3;
-uaix_const size_t impl_x_case_map_utf16 = 1;
+uaix_const size_t impl_x_case_map_utf8  = 3; // tag_unicode_unstable_value
+uaix_const size_t impl_x_case_map_utf16 = 1; // tag_unicode_unstable_value
 #endif
 
 // Modes for casemap functions
@@ -1446,11 +1446,11 @@ uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out
 #ifndef UNI_ALGO_DISABLE_COLLATE
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-uaix_const size_t impl_x_case_sortkey_utf8 = 5;
-uaix_const size_t impl_x_case_sortkey_utf16 = 9;
+uaix_const size_t impl_x_case_sortkey_utf8  = 5; // tag_unicode_stable_value
+uaix_const size_t impl_x_case_sortkey_utf16 = 9; // tag_unicode_stable_value
 #else
-uaix_const size_t impl_x_case_sortkey_utf8 = 3;
-uaix_const size_t impl_x_case_sortkey_utf16 = 3;
+uaix_const size_t impl_x_case_sortkey_utf8  = 3; // tag_unicode_stable_value
+uaix_const size_t impl_x_case_sortkey_utf16 = 3; // tag_unicode_stable_value
 #endif
 
 #ifdef __cplusplus
