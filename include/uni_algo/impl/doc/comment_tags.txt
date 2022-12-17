@@ -1,0 +1,36 @@
+Sometimes tags are used in comments in low-level.
+This file describes the meaning of these tags.
+
+tag_can_be_uninitialized
+tag_must_be_initialized
+We usually initialize all variables because we use Clang-Tidy check cppcoreguidelines-init-variables
+Even though this doesn't affect the performance in most cases but zero initialization for arrays
+for example might be impactful so these tags also reminders for future optimizations and such.
+tag_can_be_uninitialized is used when it is guaranteed that initialization of a variable doesn't matter.
+tag_must_be_initialized is used when an algorithm relies for a variable to be initialized with that value.
+
+tag_lowercase_special
+For now there is only one case in Unicode when a code point expands when lowercase
+so we handle it in place every time and this tag is used to mark such places.
+This tag is used only in case module and generator checks that the only one case exists.
+
+tag_unicode_stable_value
+tag_unicode_unstable_value
+First read this: https://www.unicode.org/policies/stability_policy.html#Property_Value
+So these tags are used when it is guaranteed that some value related to Unicode is stable or unstable.
+It is not always used for Unicode stability policy values because many other Unicode values
+are stable and values that are obtained by a calculation of stable values are also stable.
+Of course if an unstable value changes a code must be modified and generator must check for such cases.
+
+tag_synchronize
+This tag is used when a value(s) above and below this tag must me synchronized.
+It's mostly used for C compatibility layer because in C constant expression variables
+must be defined with preprocessor unlike in C++
+so the tag is used inside blocks: #ifdef __cplusplus #else #endif
+and values before and after this tag must be synchronized.
+C constant expression variables is only actually needed for arrays
+so there must be very few places where the tag is used.
+
+tag_stable_value
+tag_unstable_value
+Reserved tags do not use for now.
