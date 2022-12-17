@@ -189,7 +189,7 @@ uaix_static type_codept break_word_skip_utf8(it_in_utf8 first, it_end_utf8 last)
      * Must be 3 words but if we don't go back it will be 2. */
 
     it_in_utf8 src = first;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -229,9 +229,9 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
     type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
     type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
-    type_codept s_prop = 0;
+    type_codept s_prop = 0; // tag_can_be_uninitialized
 
-    bool result = false;
+    bool result = false; // tag_must_be_initialized
 
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
@@ -365,7 +365,7 @@ template<typename it_in_utf8>
 uaix_static type_codept break_word_skip_rev_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != first)
     {
@@ -388,7 +388,7 @@ uaix_always_inline_tmpl
 uaix_static it_in_utf8 break_word_skip_rev2_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* const new_prop)
 {
     it_in_utf8 src = last;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != first)
     {
@@ -411,8 +411,8 @@ template<typename it_in_utf8>
 uaix_static bool break_word_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
-    type_codept c = 0;
-    size_t count_RI = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
+    size_t count_RI = 0; // tag_must_be_initialized
 
     while (src != first)
     {
@@ -449,9 +449,9 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
     type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
     type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
-    type_codept s_prop = 0;
+    type_codept s_prop = 0; // tag_can_be_uninitialized
 
-    bool result = false;
+    bool result = false; // tag_must_be_initialized
 
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
@@ -582,7 +582,7 @@ template<typename it_in_utf16, typename it_end_utf16>
 uaix_static type_codept break_word_skip_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -616,9 +616,9 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
     type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
     type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
-    type_codept s_prop = 0;
+    type_codept s_prop = 0; // tag_can_be_uninitialized
 
-    bool result = false;
+    bool result = false; // tag_must_be_initialized
 
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
@@ -748,7 +748,7 @@ template<typename it_in_utf16>
 uaix_static type_codept break_word_skip_rev_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != first)
     {
@@ -771,7 +771,7 @@ uaix_always_inline_tmpl
 uaix_static it_in_utf16 break_word_skip_rev2_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* const new_prop)
 {
     it_in_utf16 src = last;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != first)
     {
@@ -794,8 +794,8 @@ template<typename it_in_utf16>
 uaix_static bool break_word_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
-    type_codept c = 0;
-    size_t count_RI = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
+    size_t count_RI = 0; // tag_must_be_initialized
 
     while (src != first)
     {
@@ -832,9 +832,9 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
     type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
     type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
-    type_codept s_prop = 0;
+    type_codept s_prop = 0; // tag_can_be_uninitialized
 
-    bool result = false;
+    bool result = false; // tag_must_be_initialized
 
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules

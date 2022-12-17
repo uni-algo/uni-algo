@@ -215,7 +215,7 @@ uaix_static bool case_final_sigma_fwd_utf8(it_in_utf8 first, it_end_utf8 last)
      */
 
     it_in_utf8 src = first;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -237,7 +237,7 @@ template<typename it_in_utf8>
 uaix_static bool case_final_sigma_rev_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != first)
     {
@@ -259,7 +259,7 @@ template<typename it_in_utf16, typename it_end_utf16>
 uaix_static bool case_final_sigma_fwd_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -281,7 +281,7 @@ template<typename it_in_utf16>
 uaix_static bool case_final_sigma_rev_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != first)
     {
@@ -325,7 +325,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
 {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     if (mode == impl_case_map_mode_lowercase)
     {
@@ -369,7 +369,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_upper_check(c))
             {
-                struct case_special_buffer special = {{0}};
+                struct case_special_buffer special = {{0}}; // tag_can_be_uninitialized
                 size_t size = stages_special_upper(c, &special);
 
                 for (size_t i = 0; i < size; ++i)
@@ -392,7 +392,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_fold_check(c))
             {
-                struct case_special_buffer special = {{0}};
+                struct case_special_buffer special = {{0}}; // tag_can_be_uninitialized
                 size_t size = stages_special_fold(c, &special);
 
                 for (size_t i = 0; i < size; ++i)
@@ -424,7 +424,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
 {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     if (mode == impl_case_map_mode_lowercase)
     {
@@ -466,7 +466,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_upper_check(c))
             {
-                struct case_special_buffer special = {{0}};
+                struct case_special_buffer special = {{0}}; // tag_can_be_uninitialized
                 size_t size = stages_special_upper(c, &special);
 
                 for (size_t i = 0; i < size; ++i)
@@ -489,7 +489,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             if (stages_special_fold_check(c))
             {
-                struct case_special_buffer special = {{0}};
+                struct case_special_buffer special = {{0}}; // tag_can_be_uninitialized
                 size_t size = stages_special_fold(c, &special);
 
                 for (size_t i = 0; i < size; ++i)
@@ -576,13 +576,13 @@ uaix_static int impl_case_compare_utf8(it_in_utf8 first1, it_end_utf8 last1,
 {
     it_in_utf8 src1 = first1;
     it_in_utf8 src2 = first2;
-    type_codept c1 = 0;
-    type_codept c2 = 0;
+    type_codept c1 = 0; // tag_can_be_uninitialized
+    type_codept c2 = 0; // tag_can_be_uninitialized
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    struct case_special_buffer special1 = {{0}};
-    struct case_special_buffer special2 = {{0}};
-    struct case_special_pair pair1 = {0, 0};
-    struct case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_buffer special2 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_pair pair1 = {0, 0}; // tag_must_be_initialized
+    struct case_special_pair pair2 = {0, 0}; // tag_must_be_initialized
 #endif
 
     // Optimization for long mostly equal strings
@@ -653,13 +653,13 @@ uaix_static int impl_case_compare_utf16(it_in_utf16 first1, it_end_utf16 last1,
 {
     it_in_utf16 src1 = first1;
     it_in_utf16 src2 = first2;
-    type_codept c1 = 0;
-    type_codept c2 = 0;
+    type_codept c1 = 0; // tag_can_be_uninitialized
+    type_codept c2 = 0; // tag_can_be_uninitialized
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    struct case_special_buffer special1 = {{0}};
-    struct case_special_buffer special2 = {{0}};
-    struct case_special_pair pair1 = {0, 0};
-    struct case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_buffer special2 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_pair pair1 = {0, 0}; // tag_must_be_initialized
+    struct case_special_pair pair2 = {0, 0}; // tag_must_be_initialized
 #endif
 
     // Optimization for long mostly equal strings
@@ -732,13 +732,13 @@ uaix_static int impl_case_collate_utf8(it_in_utf8 first1, it_end_utf8 last1,
 {
     it_in_utf8 src1 = first1;
     it_in_utf8 src2 = first2;
-    type_codept c1 = 0;
-    type_codept c2 = 0;
+    type_codept c1 = 0; // tag_can_be_uninitialized
+    type_codept c2 = 0; // tag_can_be_uninitialized
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    struct case_special_buffer special1 = {{0}};
-    struct case_special_buffer special2 = {{0}};
-    struct case_special_pair pair1 = {0, 0};
-    struct case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_buffer special2 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_pair pair1 = {0, 0}; // tag_must_be_initialized
+    struct case_special_pair pair2 = {0, 0}; // tag_must_be_initialized
 #endif
 
     // Optimization for long mostly equal strings
@@ -818,13 +818,13 @@ uaix_static int impl_case_collate_utf16(it_in_utf16 first1, it_end_utf16 last1,
 {
     it_in_utf16 src1 = first1;
     it_in_utf16 src2 = first2;
-    type_codept c1 = 0;
-    type_codept c2 = 0;
+    type_codept c1 = 0; // tag_can_be_uninitialized
+    type_codept c2 = 0; // tag_can_be_uninitialized
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    struct case_special_buffer special1 = {{0}};
-    struct case_special_buffer special2 = {{0}};
-    struct case_special_pair pair1 = {0, 0};
-    struct case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_buffer special2 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_pair pair1 = {0, 0}; // tag_must_be_initialized
+    struct case_special_pair pair2 = {0, 0}; // tag_must_be_initialized
 #endif
 
     // Optimization for long mostly equal strings
@@ -909,13 +909,13 @@ uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
     it_in_utf8 src2 = first2;
     it_in_utf8 back = src1;
     it_in_utf8 prev = src1;
-    type_codept c1 = 0;
-    type_codept c2 = 0;
+    type_codept c1 = 0; // tag_can_be_uninitialized
+    type_codept c2 = 0; // tag_can_be_uninitialized
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    struct case_special_buffer special1 = {{0}};
-    struct case_special_buffer special2 = {{0}};
-    struct case_special_pair pair1 = {0, 0};
-    struct case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_buffer special2 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_pair pair1 = {0, 0}; // tag_must_be_initialized
+    struct case_special_pair pair2 = {0, 0}; // tag_must_be_initialized
 #endif
 
     if (!caseless)
@@ -1011,13 +1011,13 @@ uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
     it_in_utf16 src2 = first2;
     it_in_utf16 back = src1;
     it_in_utf16 prev = src1;
-    type_codept c1 = 0;
-    type_codept c2 = 0;
+    type_codept c1 = 0; // tag_can_be_uninitialized
+    type_codept c2 = 0; // tag_can_be_uninitialized
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    struct case_special_buffer special1 = {{0}};
-    struct case_special_buffer special2 = {{0}};
-    struct case_special_pair pair1 = {0, 0};
-    struct case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_buffer special2 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_pair pair1 = {0, 0}; // tag_must_be_initialized
+    struct case_special_pair pair2 = {0, 0}; // tag_must_be_initialized
 #endif
 
     if (!caseless)
@@ -1111,16 +1111,16 @@ uaix_static bool impl_case_like_utf8(it_in_utf8 first1, it_end_utf8 last1,
     it_in_utf8 back1 = src1;
     it_in_utf8 prev1 = src1;
     it_in_utf8 back2 = src2;
-    type_codept c1 = 0;
-    type_codept c2 = 0;
-    bool skip1 = false;
-    bool multi = false;
-    bool prev_escape = false;
+    type_codept c1 = 0; // tag_can_be_uninitialized
+    type_codept c2 = 0; // tag_can_be_uninitialized
+    bool skip1 = false; // tag_must_be_initialized
+    bool multi = false; // tag_must_be_initialized
+    bool prev_escape = false; // tag_must_be_initialized
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    struct case_special_buffer special1 = {{0}};
-    struct case_special_buffer special2 = {{0}};
-    struct case_special_pair pair1 = {0, 0};
-    struct case_special_pair pair2 = {0, 0};
+    struct case_special_buffer special1 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_buffer special2 = {{0}}; // tag_can_be_uninitialized
+    struct case_special_pair pair1 = {0, 0}; // tag_must_be_initialized
+    struct case_special_pair pair2 = {0, 0}; // tag_must_be_initialized
 #endif
 
     // Only ASCII is supported for all and one in a pattern
@@ -1252,12 +1252,12 @@ uaix_static size_t case_title_utf8(it_in_utf8 first, it_end_utf8 last, it_out_ut
     it_in_utf8 brk = first;
     it_in_utf8 prev_brk = first;
     it_out_utf8 dst = result;
-    type_codept c = 0;
-    bool found_break = false;
-    bool make_lower = false;
+    type_codept c = 0; // tag_can_be_uninitialized
+    bool found_break = false; // tag_must_be_initialized
+    bool make_lower = false; // tag_must_be_initialized
 
     type_codept word_prop = 0; // Not used here
-    struct impl_break_word_state state = {0,0,0,0,0,0,0};
+    struct impl_break_word_state state = {0,0,0,0,0,0,0}; // tag_can_be_uninitialized
     impl_break_word_state_reset(&state);
 
     while (src != last)
@@ -1350,12 +1350,12 @@ uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out
     it_in_utf16 brk = first;
     it_in_utf16 prev_brk = first;
     it_out_utf16 dst = result;
-    type_codept c = 0;
-    bool found_break = false;
-    bool make_lower = false;
+    type_codept c = 0; // tag_can_be_uninitialized
+    bool found_break = false; // tag_must_be_initialized
+    bool make_lower = false; // tag_must_be_initialized
 
     type_codept word_prop = 0; // Not used here
-    struct impl_break_word_state state = {0,0,0,0,0,0,0};
+    struct impl_break_word_state state = {0,0,0,0,0,0,0}; // tag_can_be_uninitialized
     impl_break_word_state_reset(&state);
 
     while (src != last)
@@ -1479,10 +1479,10 @@ uaix_static size_t impl_case_sortkey_utf8(it_in_utf8 first, it_end_utf8 last, it
 {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    struct case_special_buffer special = {{0}};
-    struct case_special_pair pair = {0, 0};
+    struct case_special_buffer special = {{0}}; // tag_can_be_uninitialized
+    struct case_special_pair pair = {0, 0}; // tag_must_be_initialized
 #endif
 
     // The algorithm must be consistent with impl_utf8collate
@@ -1528,10 +1528,10 @@ uaix_static size_t impl_case_sortkey_utf16(it_in_utf16 first, it_end_utf16 last,
 {
     it_in_utf16 src = first;
     it_out_utf8 dst = result;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    struct case_special_buffer special = {{0}};
-    struct case_special_pair pair = {0, 0};
+    struct case_special_buffer special = {{0}}; // tag_can_be_uninitialized
+    struct case_special_pair pair = {0, 0}; // tag_must_be_initialized
 #endif
 
     // The algorithm must be consistent with impl_utf8collate

@@ -419,9 +419,9 @@ uaix_static void norm_order(struct norm_buffer* const buffer, size_t size)
 
         while (last > 0)
         {
-            size_t curr = 0;
-            size_t curr_ccc = 0;
-            size_t new_last = 0;
+            size_t curr = 0; // tag_must_be_initialized
+            size_t curr_ccc = 0; // tag_must_be_initialized
+            size_t new_last = 0; // tag_must_be_initialized
 
             for (; curr < last; ++curr, ++curr_ccc)
             {
@@ -561,7 +561,8 @@ uaix_static void norm_comp(struct norm_buffer* const buffer, size_t size)
 
     if (size > 0)
     {
-        size_t starter = 0;
+        size_t starter = 0; // tag_must_be_initialized
+
         for (size_t i = 0; i < size - 1; ++i)
         {
             size_t hangul = norm_comp_hangul(i, buffer, size);
@@ -911,10 +912,10 @@ uaix_static size_t impl_norm_to_nfc_utf8(it_in_utf8 first, it_end_utf8 last, it_
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
-    struct norm_buffer buffer = {{0}, {0}};
-    struct norm_meow m = {0, 0, 0};
+    struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
+    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
 
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     /* while (src != last) is the fast loop, any slow down there reduces the performance drastically,
      * so everything moved outside this loop and we drop there if we actually need to do something.
@@ -980,10 +981,10 @@ uaix_static size_t impl_norm_to_nfd_utf8(it_in_utf8 first, it_end_utf8 last, it_
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
-    struct norm_buffer buffer = {{0}, {0}};
-    struct norm_meow m = {0, 0, 0};
+    struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
+    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
 
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1036,10 +1037,10 @@ uaix_static size_t impl_norm_to_nfkc_utf8(it_in_utf8 first, it_end_utf8 last, it
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
-    struct norm_buffer buffer = {{0}, {0}};
-    struct norm_meow m = {0, 0, 0};
+    struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
+    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
 
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1094,10 +1095,10 @@ uaix_static size_t impl_norm_to_nfkd_utf8(it_in_utf8 first, it_end_utf8 last, it
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
-    struct norm_buffer buffer = {{0}, {0}};
-    struct norm_meow m = {0, 0, 0};
+    struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
+    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
 
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1150,10 +1151,10 @@ uaix_static size_t impl_norm_to_unaccent_utf8(it_in_utf8 first, it_end_utf8 last
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
-    struct norm_buffer buffer = {{0}, {0}};
-    struct norm_meow m = {0, 0, 0};
+    struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
+    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
 
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     // Algorithm: NFD -> remove Nonspacing Mark -> NFC
 
@@ -1209,8 +1210,8 @@ uaix_static int impl_norm_is_nfc_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
-    unsigned char last_ccc = 0;
-    type_codept c = 0;
+    unsigned char last_ccc = 0; // tag_must_be_initialized
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -1230,8 +1231,8 @@ uaix_static int impl_norm_is_nfd_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
-    unsigned char last_ccc = 0;
-    type_codept c = 0;
+    unsigned char last_ccc = 0; // tag_must_be_initialized
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -1253,8 +1254,8 @@ uaix_static int impl_norm_is_nfkc_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
-    unsigned char last_ccc = 0;
-    type_codept c = 0;
+    unsigned char last_ccc = 0; // tag_must_be_initialized
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -1274,8 +1275,8 @@ uaix_static int impl_norm_is_nfkd_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
-    unsigned char last_ccc = 0;
-    type_codept c = 0;
+    unsigned char last_ccc = 0; // tag_must_be_initialized
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -1301,10 +1302,10 @@ uaix_static size_t impl_norm_to_nfc_utf16(it_in_utf16 first, it_end_utf16 last, 
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
-    struct norm_buffer buffer = {{0}, {0}};
-    struct norm_meow m = {0, 0, 0};
+    struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
+    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
 
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1357,10 +1358,10 @@ uaix_static size_t impl_norm_to_nfd_utf16(it_in_utf16 first, it_end_utf16 last, 
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
-    struct norm_buffer buffer = {{0}, {0}};
-    struct norm_meow m = {0, 0, 0};
+    struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
+    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
 
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1411,10 +1412,10 @@ uaix_static size_t impl_norm_to_nfkc_utf16(it_in_utf16 first, it_end_utf16 last,
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
-    struct norm_buffer buffer = {{0}, {0}};
-    struct norm_meow m = {0, 0, 0};
+    struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
+    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
 
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1467,10 +1468,10 @@ uaix_static size_t impl_norm_to_nfkd_utf16(it_in_utf16 first, it_end_utf16 last,
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
-    struct norm_buffer buffer = {{0}, {0}};
-    struct norm_meow m = {0, 0, 0};
+    struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
+    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
 
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1523,10 +1524,10 @@ uaix_static size_t impl_norm_to_unaccent_utf16(it_in_utf16 first, it_end_utf16 l
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
-    struct norm_buffer buffer = {{0}, {0}};
-    struct norm_meow m = {0, 0, 0};
+    struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
+    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
 
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1580,8 +1581,8 @@ uaix_static int impl_norm_is_nfc_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
-    unsigned char last_ccc = 0;
-    type_codept c = 0;
+    unsigned char last_ccc = 0; // tag_must_be_initialized
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -1601,8 +1602,8 @@ uaix_static int impl_norm_is_nfd_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
-    unsigned char last_ccc = 0;
-    type_codept c = 0;
+    unsigned char last_ccc = 0; // tag_must_be_initialized
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -1625,7 +1626,7 @@ uaix_static int impl_norm_is_nfkc_utf16(it_in_utf16 first, it_end_utf16 last)
     it_in_utf16 src = first;
 
     unsigned char last_ccc = 0;
-    type_codept c = 0;
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
@@ -1645,8 +1646,8 @@ uaix_static int impl_norm_is_nfkd_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
-    unsigned char last_ccc = 0;
-    type_codept c = 0;
+    unsigned char last_ccc = 0; // tag_must_be_initialized
+    type_codept c = 0; // tag_can_be_uninitialized
 
     while (src != last)
     {
