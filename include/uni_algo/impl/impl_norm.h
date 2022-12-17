@@ -43,13 +43,6 @@ uaix_const size_t norm_max_decomposition        = 18; // tag_unicode_unstable_va
 // but this value is for full decomposition so it is unstable
 // because in theory it may change in Unicode but it is very unlikely.
 
-uaix_const int impl_norm_is_yes                 = 0;
-uaix_const int impl_norm_is_ill_formed          = 8;
-//uaix_const int impl_norm_is_not_stream_safe   = 16; // Reserved
-//uaix_const int impl_norm_is_no                = 1;  // Reserved
-//uaix_const int impl_norm_is_maybe             = 2;  // Reserved
-uaix_const int norm_is_no_or_maybe              = 3;  // Can be changed in the future. Must never be used in a wrapper.
-
 // http://www.unicode.org/faq/normalization.html#12
 // The length of a destination (result) string must be premultiplied with one of these
 // Example: destination_length = source_length * impl_x_function_name
@@ -71,6 +64,14 @@ uaix_const size_t impl_x_norm_to_unaccent_utf16 = 3;  // tag_unicode_stable_valu
 #endif
 // Only Decomposition_Mapping of NFC is Unicode stable value for strings.
 // https://www.unicode.org/policies/stability_policy.html#Property_Value
+
+// Return values for normalization detection functions
+uaix_const int impl_norm_is_yes                 = 0;
+uaix_const int impl_norm_is_ill_formed          = 8;
+//uaix_const int impl_norm_is_not_stream_safe   = 16; // Reserved
+//uaix_const int impl_norm_is_no                = 1;  // Reserved
+//uaix_const int impl_norm_is_maybe             = 2;  // Reserved
+uaix_const int norm_is_no_or_maybe              = 3;  // Can be changed in the future. Must never be used in a wrapper.
 
 struct norm_buffer
 {
@@ -922,10 +923,10 @@ uaix_static size_t impl_norm_to_nfc_utf8(it_in_utf8 first, it_end_utf8 last, it_
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
+    type_codept c = 0; // tag_can_be_uninitialized
+
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
     struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
-
-    type_codept c = 0; // tag_can_be_uninitialized
 
     /* while (src != last) is the fast loop, any slow down there reduces the performance drastically,
      * so everything moved outside this loop and we drop there if we actually need to do something.
@@ -991,10 +992,10 @@ uaix_static size_t impl_norm_to_nfd_utf8(it_in_utf8 first, it_end_utf8 last, it_
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
+    type_codept c = 0; // tag_can_be_uninitialized
+
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
     struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
-
-    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1047,10 +1048,10 @@ uaix_static size_t impl_norm_to_nfkc_utf8(it_in_utf8 first, it_end_utf8 last, it
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
+    type_codept c = 0; // tag_can_be_uninitialized
+
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
     struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
-
-    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1105,10 +1106,10 @@ uaix_static size_t impl_norm_to_nfkd_utf8(it_in_utf8 first, it_end_utf8 last, it
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
+    type_codept c = 0; // tag_can_be_uninitialized
+
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
     struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
-
-    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1161,10 +1162,10 @@ uaix_static size_t impl_norm_to_unaccent_utf8(it_in_utf8 first, it_end_utf8 last
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
 
+    type_codept c = 0; // tag_can_be_uninitialized
+
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
     struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
-
-    type_codept c = 0; // tag_can_be_uninitialized
 
     // Algorithm: NFD -> remove Nonspacing Mark -> NFC
 
@@ -1220,8 +1221,8 @@ uaix_static int impl_norm_is_nfc_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
-    unsigned char last_ccc = 0; // tag_must_be_initialized
     type_codept c = 0; // tag_can_be_uninitialized
+    unsigned char last_ccc = 0; // tag_must_be_initialized
 
     while (src != last)
     {
@@ -1241,8 +1242,8 @@ uaix_static int impl_norm_is_nfd_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
-    unsigned char last_ccc = 0; // tag_must_be_initialized
     type_codept c = 0; // tag_can_be_uninitialized
+    unsigned char last_ccc = 0; // tag_must_be_initialized
 
     while (src != last)
     {
@@ -1264,8 +1265,8 @@ uaix_static int impl_norm_is_nfkc_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
-    unsigned char last_ccc = 0; // tag_must_be_initialized
     type_codept c = 0; // tag_can_be_uninitialized
+    unsigned char last_ccc = 0; // tag_must_be_initialized
 
     while (src != last)
     {
@@ -1285,8 +1286,8 @@ uaix_static int impl_norm_is_nfkd_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     it_in_utf8 src = first;
 
-    unsigned char last_ccc = 0; // tag_must_be_initialized
     type_codept c = 0; // tag_can_be_uninitialized
+    unsigned char last_ccc = 0; // tag_must_be_initialized
 
     while (src != last)
     {
@@ -1312,10 +1313,10 @@ uaix_static size_t impl_norm_to_nfc_utf16(it_in_utf16 first, it_end_utf16 last, 
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
+    type_codept c = 0; // tag_can_be_uninitialized
+
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
     struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
-
-    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1368,10 +1369,10 @@ uaix_static size_t impl_norm_to_nfd_utf16(it_in_utf16 first, it_end_utf16 last, 
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
+    type_codept c = 0; // tag_can_be_uninitialized
+
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
     struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
-
-    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1422,10 +1423,10 @@ uaix_static size_t impl_norm_to_nfkc_utf16(it_in_utf16 first, it_end_utf16 last,
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
+    type_codept c = 0; // tag_can_be_uninitialized
+
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
     struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
-
-    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1478,10 +1479,10 @@ uaix_static size_t impl_norm_to_nfkd_utf16(it_in_utf16 first, it_end_utf16 last,
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
+    type_codept c = 0; // tag_can_be_uninitialized
+
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
     struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
-
-    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1534,10 +1535,10 @@ uaix_static size_t impl_norm_to_unaccent_utf16(it_in_utf16 first, it_end_utf16 l
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
 
+    type_codept c = 0; // tag_can_be_uninitialized
+
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
     struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
-
-    type_codept c = 0; // tag_can_be_uninitialized
 
     do
     {
@@ -1591,8 +1592,8 @@ uaix_static int impl_norm_is_nfc_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
-    unsigned char last_ccc = 0; // tag_must_be_initialized
     type_codept c = 0; // tag_can_be_uninitialized
+    unsigned char last_ccc = 0; // tag_must_be_initialized
 
     while (src != last)
     {
@@ -1612,8 +1613,8 @@ uaix_static int impl_norm_is_nfd_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
-    unsigned char last_ccc = 0; // tag_must_be_initialized
     type_codept c = 0; // tag_can_be_uninitialized
+    unsigned char last_ccc = 0; // tag_must_be_initialized
 
     while (src != last)
     {
@@ -1635,8 +1636,8 @@ uaix_static int impl_norm_is_nfkc_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
-    unsigned char last_ccc = 0;
     type_codept c = 0; // tag_can_be_uninitialized
+    unsigned char last_ccc = 0;
 
     while (src != last)
     {
@@ -1656,8 +1657,8 @@ uaix_static int impl_norm_is_nfkd_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
 
-    unsigned char last_ccc = 0; // tag_must_be_initialized
     type_codept c = 0; // tag_can_be_uninitialized
+    unsigned char last_ccc = 0; // tag_must_be_initialized
 
     while (src != last)
     {
