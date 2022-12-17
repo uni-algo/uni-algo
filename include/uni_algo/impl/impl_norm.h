@@ -29,7 +29,7 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 // Use 70 just because it means we need 70*4+70=260 bytes on stack for any normalization
 #ifdef __cplusplus
 uaix_const size_t norm_buffer_size = 70; // tag_unicode_unstable_value
-#else
+#else // tag_synchronize
 #define norm_buffer_size 70
 #endif
 uaix_const size_t norm_buffer_max_non_starters  = 30; // tag_unicode_stable_value
