@@ -337,7 +337,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
             src = iter_utf8(src, last, &c, iter_replacement);
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-            if (c == 0x0130) // Handled in place (checked in generator)
+            if (c == 0x0130) // tag_lowercase_special
             {
                 *dst++ = (type_char8)(type_codept)0x69;
                 *dst++ = (type_char8)(type_codept)0xCC;
@@ -436,7 +436,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
             src = iter_utf16(src, last, &c, iter_replacement);
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-            if (c == 0x0130) // Handled in place (checked in generator)
+            if (c == 0x0130) // tag_lowercase_special
             {
                 *dst++ = (type_char16)0x0069;
                 *dst++ = (type_char16)0x0307;
@@ -1314,7 +1314,7 @@ uaix_static size_t case_title_utf8(it_in_utf8 first, it_end_utf8 last, it_out_ut
         else
         {
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-            if (c == 0x0130) // Handled in place (checked in generator)
+            if (c == 0x0130) // tag_lowercase_special
             {
                 *dst++ = (type_char8)(type_codept)0x69;
                 *dst++ = (type_char8)(type_codept)0xCC;
@@ -1412,7 +1412,7 @@ uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out
         else
         {
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-            if (c == 0x0130) // Handled in place (checked in generator)
+            if (c == 0x0130) // tag_lowercase_special
             {
                 *dst++ = (type_char16)0x0069;
                 *dst++ = (type_char16)0x0307;
@@ -1698,7 +1698,7 @@ template<typename it_out_utf32>
 uaix_always_inline_tmpl
 uaix_static size_t impl_case_to_lowercase(type_codept c, it_out_utf32 dst)
 {
-    if (c == 0x0130) // Handled in place (checked in generator)
+    if (c == 0x0130) // tag_lowercase_special
     {
         *dst++ = 0x0069;
         *dst++ = 0x0307;
