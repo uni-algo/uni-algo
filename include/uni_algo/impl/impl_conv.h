@@ -57,7 +57,7 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
 
     while (s != last)
     {
-        type_codept c = (*s & 0xFF), c2, c3, c4;
+        type_codept c = (*s & 0xFF), c2 = 0, c3 = 0, c4 = 0;
         prev = s; // Save previous position for error
 
         if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
@@ -279,7 +279,7 @@ uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf3
 
     while (s != last)
     {
-        type_codept c = (*s & 0xFF), c2, c3, c4;
+        type_codept c = (*s & 0xFF), c2 = 0, c3 = 0, c4 = 0;
         prev = s; // Save previous position for error
 
         if (uaix_likely(c <= 0x7F)) // Fast route for ASCII

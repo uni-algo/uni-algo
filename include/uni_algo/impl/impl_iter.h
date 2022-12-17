@@ -25,7 +25,7 @@ uaix_static it_in_utf8 iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept
 
     it_in_utf8 s = first;
 
-    type_codept c = (*s & 0xFF), c2, c3, c4;
+    type_codept c = (*s & 0xFF), c2 = 0, c3 = 0, c4 = 0;
 
     if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
     {
