@@ -32,9 +32,12 @@ uaix_const size_t impl_x_case_map_utf16 = 3; // tag_unicode_unstable_value
 uaix_const size_t impl_x_case_map_utf8  = 3; // tag_unicode_unstable_value
 uaix_const size_t impl_x_case_map_utf16 = 1; // tag_unicode_unstable_value
 #endif
+// All these values are Unicode unstable values even though Case_Folding is stable,
+// but Lowercase_Mapping, Uppercase_Mapping, Titlecase_Mapping are not stable.
+// https://www.unicode.org/policies/stability_policy.html#Property_Value
 
-// Modes for casemap functions
-//uaix_const int impl_casemap_mode_null = 0;
+// Modes for case map functions
+//uaix_const int impl_case_map_mode_null     = 0;
 uaix_const int impl_case_map_mode_casefold   = 1;
 uaix_const int impl_case_map_mode_uppercase  = 2;
 uaix_const int impl_case_map_mode_lowercase  = 3;
@@ -1452,6 +1455,8 @@ uaix_const size_t impl_x_case_sortkey_utf16 = 9; // tag_unicode_stable_value
 uaix_const size_t impl_x_case_sortkey_utf8  = 3; // tag_unicode_stable_value
 uaix_const size_t impl_x_case_sortkey_utf16 = 3; // tag_unicode_stable_value
 #endif
+// All these values are Unicode stable values because Case_Folding is stable,
+// https://www.unicode.org/policies/stability_policy.html#Property_Value
 
 #ifdef __cplusplus
 template<typename it_out_utf8>

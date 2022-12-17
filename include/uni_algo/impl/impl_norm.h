@@ -32,8 +32,16 @@ uaix_const size_t norm_buffer_size = 70; // tag_unicode_unstable_value
 #else // tag_synchronize
 #define norm_buffer_size 70
 #endif
+
 uaix_const size_t norm_buffer_max_non_starters  = 30; // tag_unicode_stable_value
+// Quote "...sequences of non-starters longer than 30 characters in length..." from:
+// https://unicode.org/reports/tr15/#Stream_Safe_Text_Format
+
 uaix_const size_t norm_max_decomposition        = 18; // tag_unicode_unstable_value
+// Qoute "Compatibility mappings are guaranteed to be no longer than 18 characters" from:
+// https://www.unicode.org/reports/tr44/#Character_Decomposition_Mappings
+// but this value is for full decomposition so it is unstable
+// because in theory it may change in Unicode but it is very unlikely.
 
 uaix_const int impl_norm_is_yes                 = 0;
 uaix_const int impl_norm_is_ill_formed          = 8;
@@ -61,6 +69,8 @@ uaix_const size_t impl_x_norm_to_nfkd_utf16     = 18; // tag_unicode_unstable_va
 uaix_const size_t impl_x_norm_to_unaccent_utf8  = 3;  // tag_unicode_stable_value
 uaix_const size_t impl_x_norm_to_unaccent_utf16 = 3;  // tag_unicode_stable_value
 #endif
+// Only Decomposition_Mapping of NFC is Unicode stable value for strings.
+// https://www.unicode.org/policies/stability_policy.html#Property_Value
 
 struct norm_buffer
 {
