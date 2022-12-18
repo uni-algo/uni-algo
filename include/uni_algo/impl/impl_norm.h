@@ -33,15 +33,17 @@ uaix_const size_t norm_buffer_size = 70; // tag_unicode_unstable_value
 #define norm_buffer_size 70
 #endif
 
-uaix_const size_t norm_buffer_max_non_starters  = 30; // tag_unicode_stable_value
+uaix_const size_t impl_max_norm_non_starters    = 30; // tag_unicode_stable_value
 // Quote "...sequences of non-starters longer than 30 characters in length..." from:
 // https://unicode.org/reports/tr15/#Stream_Safe_Text_Format
 
-uaix_const size_t norm_max_decomposition        = 18; // tag_unicode_unstable_value
-// Qoute "Compatibility mappings are guaranteed to be no longer than 18 characters" from:
+uaix_const size_t impl_max_norm_decomp_canon    = 4;  // tag_unicode_unstable_value
+uaix_const size_t impl_max_norm_decomp_compat   = 18; // tag_unicode_unstable_value
+// Quote "A canonical mapping ... pair of characters, but is never longer than two characters"
+// and quote "Compatibility mappings are guaranteed to be no longer than 18 characters" from:
 // https://www.unicode.org/reports/tr44/#Character_Decomposition_Mappings
-// but this value is for full decomposition so it is unstable
-// because in theory it may change in Unicode but it is very unlikely.
+// but these values are for full decomposition so they are unstable
+// because in theory they may change in Unicode but it is very unlikely.
 
 // http://www.unicode.org/faq/normalization.html#12
 // The length of a destination (result) string must be premultiplied with one of these
@@ -229,7 +231,7 @@ uaix_static bool stages_qc_yes_ns_impl(type_codept ccc_qc, size_t* const count_n
     if (ccc_qc >> 14) // Initial non-starters in NFKD
     {
         *count_ns += ccc_qc >> 14;
-        if (*count_ns > norm_buffer_max_non_starters)
+        if (*count_ns > impl_max_norm_non_starters)
             return true;
     }
     else
@@ -611,17 +613,17 @@ uaix_static bool norm_decomp_return(struct norm_buffer* const buffer, struct nor
 
     // More than 4 starters cannot compose together so flush the buffer.
     // In other words flush the buffer by CCC=0 boundary at this point.
-    // Note 1: actually 3 starters (Hanguls L+V+T and 0CCB) but use 4 (max composition) just in case.
+    // Note 1: actually 3 starters (Hanguls L+V+T and 0CCB) but use 4 (max canonical decomposition) just in case.
     // Note 2: this check only matters for NFC/NFKC because in NFD/NFKD such cases are not possible.
-    if (m->size > 4 && buffer->ccc[m->size - 1] == 0)
+    if (m->size > impl_max_norm_decomp_canon && buffer->ccc[m->size - 1] == 0)
     {
         m->last_qc = m->size - 1;
         return true;
     }
 
     // This must never happen so flush the buffer and stop to make it noticeable in tests.
-    // 18 is max decomposition so the next turn can exhaust the buffer.
-    if (m->size + norm_max_decomposition > norm_buffer_size)
+    // 18 is max compatibility decomposition so the next turn can exhaust the buffer.
+    if (m->size + impl_max_norm_decomp_compat > norm_buffer_size)
     {
 #ifdef UNI_ALGO_TEST_ASSERT
         uaix_assert(false);
@@ -638,9 +640,9 @@ uaix_static void norm_decomp_count_ns(struct norm_buffer* const buffer, struct n
 {
     // Insert U+034F COMBINING GRAPHEME JOINER (CGJ) if there is more than 30 non-starters
 
-    if (m->count_ns > norm_buffer_max_non_starters)
+    if (m->count_ns > impl_max_norm_non_starters)
     {
-        m->count_ns -= norm_buffer_max_non_starters;
+        m->count_ns -= impl_max_norm_non_starters;
         buffer->cps[m->size] = 0x034F;
         buffer->ccc[m->size] = 0;
         m->last_qc = m->size;
