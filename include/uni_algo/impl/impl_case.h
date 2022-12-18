@@ -32,6 +32,11 @@ uaix_const size_t impl_x_case_map_utf16 = 3; // tag_unicode_unstable_value
 uaix_const size_t impl_x_case_map_utf8  = 3; // tag_unicode_unstable_value
 uaix_const size_t impl_x_case_map_utf16 = 1; // tag_unicode_unstable_value
 #endif
+#ifdef __cplusplus
+uaix_const size_t impl_max_case_expand  = 3; // tag_unicode_unstable_value
+#else // tag_synchronize
+#define impl_max_case_expand 3
+#endif
 // All these values are Unicode unstable values even though Case_Folding is stable,
 // but Lowercase_Mapping, Uppercase_Mapping, Titlecase_Mapping are not stable.
 // https://www.unicode.org/policies/stability_policy.html#Property_Value
@@ -53,7 +58,7 @@ uaix_const type_codept prop_CCC_230          = 1 << 6; // impl_case_locale.h
 
 struct case_special_buffer
 {
-    uaix_array(type_codept, data, 3);
+    uaix_array(type_codept, data, impl_max_case_expand);
 };
 
 struct case_special_pair
