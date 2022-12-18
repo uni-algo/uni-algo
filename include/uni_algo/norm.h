@@ -1115,7 +1115,7 @@ inline char32_t to_compose(char32_t c1, char32_t c2) noexcept
 inline std::u32string to_decompose_u32(char32_t c)
 {
     std::u32string dst;
-    dst.resize(detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
+    dst.resize(detail::impl_max_norm_decomp_canon);
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_norm_to_decompose(c, dst.begin()));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
@@ -1130,7 +1130,7 @@ inline std::u32string to_decompose_u32(char32_t c)
 inline std::u32string to_decompose_compat_u32(char32_t c)
 {
     std::u32string dst;
-    dst.resize(detail::impl_x_norm_to_nfkd_utf16); // TODO: Better value
+    dst.resize(detail::impl_max_norm_decomp_compat);
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_norm_to_decompose_compat(c, dst.begin()));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
@@ -1145,7 +1145,7 @@ inline std::u32string to_decompose_compat_u32(char32_t c)
 inline std::u32string to_decompose_hangul_u32(char32_t c)
 {
     std::u32string dst;
-    dst.resize(detail::impl_x_norm_to_nfd_utf16); // TODO: Better value
+    dst.resize(detail::impl_max_norm_decomp_canon);
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_norm_to_decompose_hangul(c, dst.begin()));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)

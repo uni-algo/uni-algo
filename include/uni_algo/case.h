@@ -920,7 +920,7 @@ inline char32_t to_simple_titlecase(char32_t c) noexcept
 inline std::u32string to_lowercase_u32(char32_t c)
 {
     std::u32string dst;
-    dst.resize(3); // TODO: Magic number
+    dst.resize(detail::impl_max_case_expand);
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_case_to_lowercase(c, dst.begin()));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
@@ -934,7 +934,7 @@ inline std::u32string to_lowercase_u32(char32_t c)
 inline std::u32string to_uppercase_u32(char32_t c)
 {
     std::u32string dst;
-    dst.resize(3); // TODO: Magic number
+    dst.resize(detail::impl_max_case_expand);
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_case_to_uppercase(c, dst.begin()));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
@@ -948,7 +948,7 @@ inline std::u32string to_uppercase_u32(char32_t c)
 inline std::u32string to_casefold_u32(char32_t c)
 {
     std::u32string dst;
-    dst.resize(3); // TODO: Magic number
+    dst.resize(detail::impl_max_case_expand);
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_case_to_casefold(c, dst.begin()));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
@@ -963,7 +963,7 @@ inline std::u32string to_casefold_u32(char32_t c)
 inline std::u32string to_titlecase_u32(char32_t c)
 {
     std::u32string dst;
-    dst.resize(3); // TODO: Magic number
+    dst.resize(detail::impl_max_case_expand);
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     dst.resize(detail::impl_case_to_titlecase(c, dst.begin()));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
