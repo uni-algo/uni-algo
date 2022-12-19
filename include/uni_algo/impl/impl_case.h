@@ -58,7 +58,7 @@ uaix_const type_codept prop_CCC_230          = 1 << 6; // impl_case_locale.h
 
 struct case_special_buffer
 {
-    uaix_array(type_codept, data, impl_max_case_expand);
+    uaix_array(type_codept, cps, impl_max_case_expand);
 };
 
 struct case_special_pair
@@ -126,9 +126,9 @@ uaix_static size_t stages_special_fold(type_codept c, struct case_special_buffer
     if (c <= 0xFFFF)
     {
         size_t n = stages(c, stage1_special_fold, stage2_special_fold);
-        buffer->data[0] = stage3_special_fold[n][1];
-        buffer->data[1] = stage3_special_fold[n][2];
-        buffer->data[2] = stage3_special_fold[n][3];
+        buffer->cps[0] = stage3_special_fold[n][1];
+        buffer->cps[1] = stage3_special_fold[n][2];
+        buffer->cps[2] = stage3_special_fold[n][3];
         return stage3_special_fold[n][0];
     }
     return 0;
@@ -153,9 +153,9 @@ uaix_static size_t stages_special_upper(type_codept c, struct case_special_buffe
     if (c <= 0xFFFF)
     {
         size_t n = stages(c, stage1_special_upper, stage2_special_upper);
-        buffer->data[0] = stage3_special_upper[n][1];
-        buffer->data[1] = stage3_special_upper[n][2];
-        buffer->data[2] = stage3_special_upper[n][3];
+        buffer->cps[0] = stage3_special_upper[n][1];
+        buffer->cps[1] = stage3_special_upper[n][2];
+        buffer->cps[2] = stage3_special_upper[n][3];
         return stage3_special_upper[n][0];
     }
     return 0;
@@ -182,9 +182,9 @@ uaix_static size_t stages_special_title(type_codept c, struct case_special_buffe
     if (c <= 0xFFFF)
     {
         size_t n = stages(c, stage1_special_title, stage2_special_title);
-        buffer->data[0] = stage3_special_title[n][1];
-        buffer->data[1] = stage3_special_title[n][2];
-        buffer->data[2] = stage3_special_title[n][3];
+        buffer->cps[0] = stage3_special_title[n][1];
+        buffer->cps[1] = stage3_special_title[n][2];
+        buffer->cps[2] = stage3_special_title[n][3];
         return stage3_special_title[n][0];
     }
     return 0;
@@ -381,7 +381,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
                 size_t size = stages_special_upper(c, &buffer);
 
                 for (size_t i = 0; i < size; ++i)
-                    dst = codepoint_to_utf8(buffer.data[i], dst);
+                    dst = codepoint_to_utf8(buffer.cps[i], dst);
 
                 continue;
             }
@@ -404,7 +404,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
                 size_t size = stages_special_fold(c, &buffer);
 
                 for (size_t i = 0; i < size; ++i)
-                    dst = codepoint_to_utf8(buffer.data[i], dst);
+                    dst = codepoint_to_utf8(buffer.cps[i], dst);
 
                 continue;
             }
@@ -478,7 +478,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
                 size_t size = stages_special_upper(c, &buffer);
 
                 for (size_t i = 0; i < size; ++i)
-                    dst = codepoint_to_utf16(buffer.data[i], dst);
+                    dst = codepoint_to_utf16(buffer.cps[i], dst);
 
                 continue;
             }
@@ -501,7 +501,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
                 size_t size = stages_special_fold(c, &buffer);
 
                 for (size_t i = 0; i < size; ++i)
-                    dst = codepoint_to_utf16(buffer.data[i], dst);
+                    dst = codepoint_to_utf16(buffer.cps[i], dst);
 
                 continue;
             }
@@ -541,7 +541,7 @@ uaix_static it_in_utf8 iter_fold_utf8(it_in_utf8 first, it_end_utf8 last, type_c
         }
     }
     if (pair->count != 0)
-        *codepoint = buffer->data[pair->size - pair->count--];
+        *codepoint = buffer->cps[pair->size - pair->count--];
 
     return src;
 }
@@ -566,7 +566,7 @@ uaix_static it_in_utf16 iter_fold_utf16(it_in_utf16 first, it_end_utf16 last, ty
         }
     }
     if (pair->count != 0)
-        *codepoint = buffer->data[pair->size - pair->count--];
+        *codepoint = buffer->cps[pair->size - pair->count--];
 
     return src;
 }
@@ -1311,7 +1311,7 @@ uaix_static size_t case_title_utf8(it_in_utf8 first, it_end_utf8 last, it_out_ut
                     size_t size = stages_special_title(c, &buffer);
 
                     for (size_t i = 0; i < size; ++i)
-                        dst = codepoint_to_utf8(buffer.data[i], dst);
+                        dst = codepoint_to_utf8(buffer.cps[i], dst);
 
                     continue;
                 }
@@ -1409,7 +1409,7 @@ uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out
                     size_t size = stages_special_title(c, &buffer);
 
                     for (size_t i = 0; i < size; ++i)
-                        dst = codepoint_to_utf16(buffer.data[i], dst);
+                        dst = codepoint_to_utf16(buffer.cps[i], dst);
 
                     continue;
                 }
