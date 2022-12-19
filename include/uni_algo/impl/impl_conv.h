@@ -12,7 +12,7 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 // The length of a destination (result) string must be premultiplied with one of these
 // Example: destination_length = source_length * impl_x_function_name
 uaix_const size_t impl_x_utf8to16  = 1; // tag_unicode_stable_value
-uaix_const size_t impl_x_utf16to8  = 4; // TODO: Isn't it 3?
+uaix_const size_t impl_x_utf16to8  = 3; // tag_unicode_stable_value
 uaix_const size_t impl_x_utf8to32  = 1; // tag_unicode_stable_value
 uaix_const size_t impl_x_utf32to8  = 4; // tag_unicode_stable_value
 uaix_const size_t impl_x_utf16to32 = 1; // tag_unicode_stable_value
