@@ -573,7 +573,7 @@ uaix_static bool impl_is_valid_utf8(it_in_utf8 first, it_end_utf8 last, size_t* 
 
     while (s != last)
     {
-        type_codept c = (*s & 0xFF), c2, c3, c4;
+        type_codept c = (*s & 0xFF), c2 = 0, c3 = 0, c4 = 0; // c2, c3, c4 tag_can_be_uninitialized
         prev = s; // Save previous position for error
 
         if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
