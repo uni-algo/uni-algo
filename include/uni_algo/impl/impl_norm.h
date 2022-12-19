@@ -81,8 +81,7 @@ struct norm_buffer
     uaix_array(unsigned char, ccc, norm_buffer_size);
 };
 
-// TODO: Better name
-struct norm_meow
+struct norm_multi
 {
     size_t size;
     size_t last_qc;
@@ -603,7 +602,7 @@ uaix_static void norm_comp(struct norm_buffer* const buffer, size_t size)
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_return(struct norm_buffer* const buffer, struct norm_meow* const m)
+uaix_static bool norm_decomp_return(struct norm_buffer* const buffer, struct norm_multi* const m)
 {
     // UNUSED: buffer->cps, m->count_ns
 
@@ -636,7 +635,7 @@ uaix_static bool norm_decomp_return(struct norm_buffer* const buffer, struct nor
 }
 
 uaix_always_inline
-uaix_static void norm_decomp_count_ns(struct norm_buffer* const buffer, struct norm_meow* const m)
+uaix_static void norm_decomp_count_ns(struct norm_buffer* const buffer, struct norm_multi* const m)
 {
     // Insert U+034F COMBINING GRAPHEME JOINER (CGJ) if there is more than 30 non-starters
 
@@ -651,7 +650,7 @@ uaix_static void norm_decomp_count_ns(struct norm_buffer* const buffer, struct n
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer, struct norm_meow* const m)
+uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer, struct norm_multi* const m)
 {
     norm_decomp_count_ns(buffer, m);
 
@@ -715,7 +714,7 @@ uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* const buffer, struct norm_meow* const m)
+uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* const buffer, struct norm_multi* const m)
 {
     // Almost the same as norm_decomp_nfc but decompose everything
 
@@ -757,7 +756,7 @@ uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* const buffer
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* const buffer, struct norm_meow* const m)
+uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* const buffer, struct norm_multi* const m)
 {
     // The same as norm_decomp_nfc but uses NFKC data
 
@@ -815,7 +814,7 @@ uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* const buffe
 }
 
 uaix_always_inline
-uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* const buffer, struct norm_meow* const m)
+uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* const buffer, struct norm_multi* const m)
 {
     // The same as norm_decomp_nfd but uses NFKD data
 
@@ -859,7 +858,7 @@ uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* const buffe
 #ifndef UNI_ALGO_DISABLE_PROP
 
 uaix_always_inline
-uaix_static bool norm_decomp_unaccent(type_codept c, struct norm_buffer* const buffer, struct norm_meow* const m)
+uaix_static bool norm_decomp_unaccent(type_codept c, struct norm_buffer* const buffer, struct norm_multi* const m)
 {
     // Ignore Hanguls, decompose to NFD, skip Nonspacing Mark
     // The full algorithm is: NFD -> remove Nonspacing Mark -> NFC
@@ -901,7 +900,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, struct norm_buffer* const b
 #endif // UNI_ALGO_DISABLE_PROP
 
 uaix_always_inline
-uaix_static void norm_proc_buffer(struct norm_buffer* const buffer, struct norm_meow* const m)
+uaix_static void norm_proc_buffer(struct norm_buffer* const buffer, struct norm_multi* const m)
 {
     // UNUSED: m->count_ns
 
@@ -928,7 +927,7 @@ uaix_static size_t impl_norm_to_nfc_utf8(it_in_utf8 first, it_end_utf8 last, it_
     type_codept c = 0; // tag_can_be_uninitialized
 
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
-    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
+    struct norm_multi m = {0, 0, 0}; // tag_must_be_initialized
 
     /* while (src != last) is the fast loop, any slow down there reduces the performance drastically,
      * so everything moved outside this loop and we drop there if we actually need to do something.
@@ -997,7 +996,7 @@ uaix_static size_t impl_norm_to_nfd_utf8(it_in_utf8 first, it_end_utf8 last, it_
     type_codept c = 0; // tag_can_be_uninitialized
 
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
-    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
+    struct norm_multi m = {0, 0, 0}; // tag_must_be_initialized
 
     do
     {
@@ -1053,7 +1052,7 @@ uaix_static size_t impl_norm_to_nfkc_utf8(it_in_utf8 first, it_end_utf8 last, it
     type_codept c = 0; // tag_can_be_uninitialized
 
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
-    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
+    struct norm_multi m = {0, 0, 0}; // tag_must_be_initialized
 
     do
     {
@@ -1111,7 +1110,7 @@ uaix_static size_t impl_norm_to_nfkd_utf8(it_in_utf8 first, it_end_utf8 last, it
     type_codept c = 0; // tag_can_be_uninitialized
 
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
-    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
+    struct norm_multi m = {0, 0, 0}; // tag_must_be_initialized
 
     do
     {
@@ -1167,7 +1166,7 @@ uaix_static size_t impl_norm_to_unaccent_utf8(it_in_utf8 first, it_end_utf8 last
     type_codept c = 0; // tag_can_be_uninitialized
 
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
-    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
+    struct norm_multi m = {0, 0, 0}; // tag_must_be_initialized
 
     // Algorithm: NFD -> remove Nonspacing Mark -> NFC
 
@@ -1318,7 +1317,7 @@ uaix_static size_t impl_norm_to_nfc_utf16(it_in_utf16 first, it_end_utf16 last, 
     type_codept c = 0; // tag_can_be_uninitialized
 
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
-    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
+    struct norm_multi m = {0, 0, 0}; // tag_must_be_initialized
 
     do
     {
@@ -1374,7 +1373,7 @@ uaix_static size_t impl_norm_to_nfd_utf16(it_in_utf16 first, it_end_utf16 last, 
     type_codept c = 0; // tag_can_be_uninitialized
 
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
-    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
+    struct norm_multi m = {0, 0, 0}; // tag_must_be_initialized
 
     do
     {
@@ -1428,7 +1427,7 @@ uaix_static size_t impl_norm_to_nfkc_utf16(it_in_utf16 first, it_end_utf16 last,
     type_codept c = 0; // tag_can_be_uninitialized
 
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
-    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
+    struct norm_multi m = {0, 0, 0}; // tag_must_be_initialized
 
     do
     {
@@ -1484,7 +1483,7 @@ uaix_static size_t impl_norm_to_nfkd_utf16(it_in_utf16 first, it_end_utf16 last,
     type_codept c = 0; // tag_can_be_uninitialized
 
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
-    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
+    struct norm_multi m = {0, 0, 0}; // tag_must_be_initialized
 
     do
     {
@@ -1540,7 +1539,7 @@ uaix_static size_t impl_norm_to_unaccent_utf16(it_in_utf16 first, it_end_utf16 l
     type_codept c = 0; // tag_can_be_uninitialized
 
     struct norm_buffer buffer = {{0}, {0}}; // tag_can_be_uninitialized
-    struct norm_meow m = {0, 0, 0}; // tag_must_be_initialized
+    struct norm_multi m = {0, 0, 0}; // tag_must_be_initialized
 
     do
     {
@@ -1684,7 +1683,7 @@ struct impl_norm_iter_state
 {
     size_t pos; // Iterator position
 
-    struct norm_meow m;
+    struct norm_multi m;
     struct norm_buffer buffer;
 };
 
