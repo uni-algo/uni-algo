@@ -15,12 +15,12 @@ namespace uni {
 class error
 {
 public:
-    error() noexcept = default;
-    error(bool f, std::size_t p) noexcept : fail(f), position(p) {}
-    explicit operator bool() const noexcept { return fail; }
-    void reset() noexcept { fail = false; position = detail::impl_npos; }
-    bool has_pos() const noexcept { return position != detail::impl_npos; }
-    std::size_t pos() const noexcept { assert(fail); assert(has_pos()); return position; }
+    constexpr error() noexcept = default;
+    constexpr error(bool f, std::size_t p) noexcept : fail(f), position(p) {}
+    constexpr explicit operator bool() const noexcept { return fail; }
+    constexpr void reset() noexcept { fail = false; position = detail::impl_npos; }
+    constexpr bool has_pos() const noexcept { return position != detail::impl_npos; }
+    constexpr std::size_t pos() const noexcept { assert(fail); assert(has_pos()); return position; }
 private:
     bool fail = false;
     std::size_t position = detail::impl_npos;
