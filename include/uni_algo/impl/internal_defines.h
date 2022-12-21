@@ -48,22 +48,23 @@
 
 // C implementation must be static because it will be included in .c file
 // Also add maybe unused to everything in C because a wrapper doesn't need to implement everything
+// If an internal (non-template) function should not be always inlined
+// then uaix_inline must be used instead of uaix_static. This prevents C++ ODR violation.
+// Note that it must be used for small functions only because we test with -Winline too.
 #ifdef __cplusplus
-#  define uaix_static
+#  ifdef UNI_ALGO_CONSTEXPR
+#    define uaix_static constexpr
+#    define uaix_inline constexpr
+#  else
+#    define uaix_static
+#    define uaix_inline inline // template<typename = void> alternative if -Winline will be too annoying
+#  endif
 #else
 #  if defined(__GNUC__) || defined(__clang__)
 #    define uaix_static static __attribute__((__unused__))
 #  else
 #    define uaix_static static
 #  endif
-#endif
-
-// If an internal (non-template) function should not be always inlined
-// then this must be used instead of uaix_static. This prevents C++ ODR violation.
-// Note that it must be used for small functions only because we test with -Winline too.
-#ifdef __cplusplus
-#  define uaix_inline inline // template<typename = void> alternative if -Winline will be too annoying
-#else
 #  define uaix_inline uaix_static
 #endif
 
