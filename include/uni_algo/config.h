@@ -154,8 +154,13 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 #define UNI_ALGO_DLL
 #endif
 
-// TODO: Disable constexpr for now it doesn't work properly in some cases
-#define uaiw_constexpr //constexpr
+// C++20 or higher and header-only version is required for constexpr
+#if __cpp_constexpr >= 201907L && defined(UNI_ALGO_STATIC_DATA)
+#define UNI_ALGO_CONSTEXPR
+#define uaiw_constexpr constexpr
+#else
+#define uaiw_constexpr
+#endif
 
 //#define UNI_ALGO_EXPERIMENTAL // Enable experimental stuff for tests
 //#define UNI_ALGO_LOG_CPP_ITER // Enable logging for UTF-8/16 iterators
