@@ -86,8 +86,8 @@ inline constexpr char32_t to_ascii_lowercase(char32_t c)
 namespace cases {
 
 template<typename T, typename Alloc = std::allocator<T>>
-std::basic_string<T, std::char_traits<T>, Alloc>
-constexpr to_lowercase_ascii(std::basic_string_view<T> source, const Alloc& alloc = Alloc())
+uaiw_constexpr std::basic_string<T, std::char_traits<T>, Alloc>
+to_lowercase_ascii(std::basic_string_view<T> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<T>);
 
@@ -103,8 +103,8 @@ constexpr to_lowercase_ascii(std::basic_string_view<T> source, const Alloc& allo
 }
 
 template<typename T, typename Alloc = std::allocator<T>>
-std::basic_string<T, std::char_traits<T>, Alloc>
-constexpr to_uppercase_ascii(std::basic_string_view<T> source, const Alloc& alloc = Alloc())
+uaiw_constexpr std::basic_string<T, std::char_traits<T>, Alloc>
+to_uppercase_ascii(std::basic_string_view<T> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<T>);
 
@@ -119,11 +119,11 @@ constexpr to_uppercase_ascii(std::basic_string_view<T> source, const Alloc& allo
     return dst;
 }
 
-inline std::string to_lowercase_ascii(std::string_view source)
+inline uaiw_constexpr std::string to_lowercase_ascii(std::string_view source)
 {
     return to_lowercase_ascii<char>(source);
 }
-inline std::string to_uppercase_ascii(std::string_view source)
+inline uaiw_constexpr std::string to_uppercase_ascii(std::string_view source)
 {
     return to_uppercase_ascii<char>(source);
 }
@@ -133,7 +133,7 @@ inline std::string to_uppercase_ascii(std::string_view source)
 namespace casesens {
 
 template<typename T>
-constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+uaiw_constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     static_assert(std::is_integral_v<T>);
 
@@ -143,7 +143,7 @@ constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic_string
 }
 
 template<typename T>
-constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+uaiw_constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     static_assert(std::is_integral_v<T>);
 
@@ -160,7 +160,7 @@ constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::basic
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
 
 template<typename T>
-constexpr int collate_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+uaiw_constexpr int collate_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     using namespace uni; // NOLINT(google-build-using-namespace)
 
@@ -196,17 +196,17 @@ constexpr int collate_ascii(std::basic_string_view<T> string1, std::basic_string
 
 #endif // UNI_ALGO_IMPL_DISABLE_COLLATE
 
-inline int compare_ascii(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr int compare_ascii(std::string_view string1, std::string_view string2)
 {
     return compare_ascii<char>(string1, string2);
 }
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
-inline int collate_ascii(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr int collate_ascii(std::string_view string1, std::string_view string2)
 {
     return collate_ascii<char>(string1, string2);
 }
 #endif // UNI_ALGO_IMPL_DISABLE_COLLATE
-inline uni::search search_ascii(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr uni::search search_ascii(std::string_view string1, std::string_view string2)
 {
     return search_ascii<char>(string1, string2);
 }
@@ -216,7 +216,7 @@ inline uni::search search_ascii(std::string_view string1, std::string_view strin
 namespace caseless {
 
 template<typename T>
-constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+uaiw_constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     static_assert(std::is_integral_v<T>);
 
@@ -246,7 +246,7 @@ constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic_string
 }
 
 template<typename T>
-constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+uaiw_constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     static_assert(std::is_integral_v<T>);
 
@@ -288,7 +288,7 @@ constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::basic
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
 
 template<typename T>
-constexpr int collate_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+uaiw_constexpr int collate_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     using namespace uni; // NOLINT(google-build-using-namespace)
 
@@ -321,17 +321,17 @@ constexpr int collate_ascii(std::basic_string_view<T> string1, std::basic_string
 
 #endif // UNI_ALGO_IMPL_DISABLE_COLLATE
 
-inline int compare_ascii(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr int compare_ascii(std::string_view string1, std::string_view string2)
 {
     return compare_ascii<char>(string1, string2);
 }
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
-inline int collate_ascii(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr int collate_ascii(std::string_view string1, std::string_view string2)
 {
     return collate_ascii<char>(string1, string2);
 }
 #endif // UNI_ALGO_IMPL_DISABLE_COLLATE
-inline uni::search search_ascii(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr uni::search search_ascii(std::string_view string1, std::string_view string2)
 {
     return search_ascii<char>(string1, string2);
 }
@@ -339,7 +339,7 @@ inline uni::search search_ascii(std::string_view string1, std::string_view strin
 } // namespace caseless
 
 template<typename T>
-constexpr bool is_valid_ascii(std::basic_string_view<T> view)
+uaiw_constexpr bool is_valid_ascii(std::basic_string_view<T> view)
 {
     static_assert(std::is_integral_v<T>);
 
@@ -352,13 +352,13 @@ constexpr bool is_valid_ascii(std::basic_string_view<T> view)
     return true;
 }
 
-inline constexpr bool is_valid_ascii(std::string_view view)
+inline uaiw_constexpr bool is_valid_ascii(std::string_view view)
 {
     return is_valid_ascii<char>(view);
 }
 
 template<typename T>
-constexpr std::basic_string_view<T> trim_ascii(std::basic_string_view<T> view)
+uaiw_constexpr std::basic_string_view<T> trim_ascii(std::basic_string_view<T> view)
 {
     using namespace uni; // NOLINT(google-build-using-namespace)
 
@@ -374,7 +374,7 @@ constexpr std::basic_string_view<T> trim_ascii(std::basic_string_view<T> view)
 }
 
 template<typename T>
-constexpr std::basic_string_view<T> trim_start_ascii(std::basic_string_view<T> view)
+uaiw_constexpr std::basic_string_view<T> trim_start_ascii(std::basic_string_view<T> view)
 {
     using namespace uni; // NOLINT(google-build-using-namespace)
 
@@ -388,7 +388,7 @@ constexpr std::basic_string_view<T> trim_start_ascii(std::basic_string_view<T> v
 }
 
 template<typename T>
-constexpr std::basic_string_view<T> trim_end_ascii(std::basic_string_view<T> view)
+uaiw_constexpr std::basic_string_view<T> trim_end_ascii(std::basic_string_view<T> view)
 {
     using namespace uni; // NOLINT(google-build-using-namespace)
 
@@ -401,15 +401,15 @@ constexpr std::basic_string_view<T> trim_end_ascii(std::basic_string_view<T> vie
     return view;
 }
 
-inline constexpr std::string_view trim_ascii(std::string_view view)
+inline uaiw_constexpr std::string_view trim_ascii(std::string_view view)
 {
     return trim_ascii<char>(view);
 }
-inline constexpr std::string_view trim_start_ascii(std::string_view view)
+inline uaiw_constexpr std::string_view trim_start_ascii(std::string_view view)
 {
     return trim_start_ascii<char>(view);
 }
-inline constexpr std::string_view trim_end_ascii(std::string_view view)
+inline uaiw_constexpr std::string_view trim_end_ascii(std::string_view view)
 {
     return trim_end_ascii<char>(view);
 }
