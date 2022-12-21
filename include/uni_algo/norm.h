@@ -33,7 +33,7 @@ template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #else // Safe layer
     size_t(*FnNorm)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>)>
 #endif
-Dst t_norm(const Alloc& alloc, const Src& src)
+uaiw_constexpr Dst t_norm(const Alloc& alloc, const Src& src)
 {
     Dst dst{alloc};
 
@@ -86,13 +86,13 @@ class proxy_it_out
 private:
     Iter it;
 public:
-    explicit proxy_it_out(Iter iter) : it(iter) {}
-    decltype(*it) operator*() { return *it; }
-    size_t operator-(const proxy_it_out&) { return 0; } // no-op
-    proxy_it_out& operator++(int) { return *this; } // no-op (by default in C++ output iterators)
+    constexpr explicit proxy_it_out(Iter iter) : it(iter) {}
+    constexpr decltype(*it) operator*() { return *it; }
+    constexpr size_t operator-(const proxy_it_out&) { return 0; } // no-op
+    constexpr proxy_it_out& operator++(int) { return *this; } // no-op (by default in C++ output iterators)
     // Test
-    /*size_t operator-(const proxy_it_out& rhs) { return it - rhs.it; }
-    proxy_it_out operator++(int)
+    /*constexpr size_t operator-(const proxy_it_out& rhs) { return it - rhs.it; }
+    constexpr proxy_it_out operator++(int)
     {
         proxy_it_out temp(*this);
         ++it;
@@ -110,7 +110,7 @@ template<typename Dst, typename Alloc, typename Src,
 #else // Safe layer
     size_t(*FnNorm)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, proxy_it_out<std::back_insert_iterator<Dst>>)>
 #endif
-Dst t_norm2(const Alloc& alloc, const Src& src)
+uaiw_constexpr Dst t_norm2(const Alloc& alloc, const Src& src)
 {
     Dst dst{alloc};
 
@@ -154,7 +154,7 @@ Dst t_norm2(const Alloc& alloc, const Src& src)
 namespace norm {
 
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 to_nfc_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -164,7 +164,7 @@ to_nfc_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 }
 
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 to_nfd_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -175,7 +175,7 @@ to_nfd_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 to_nfkc_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -185,7 +185,7 @@ to_nfkc_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 }
 
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 to_nfkd_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -197,7 +197,7 @@ to_nfkd_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 
 #ifndef UNI_ALGO_DISABLE_PROP
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 to_unaccent_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -208,7 +208,7 @@ to_unaccent_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc
 #endif // UNI_ALGO_DISABLE_PROP
 
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 to_nfc_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -218,7 +218,7 @@ to_nfc_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 }
 
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 to_nfd_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -229,7 +229,7 @@ to_nfd_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 to_nfkc_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -239,7 +239,7 @@ to_nfkc_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc()
 }
 
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 to_nfkd_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -251,7 +251,7 @@ to_nfkd_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc()
 
 #ifndef UNI_ALGO_DISABLE_PROP
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 to_unaccent_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -262,7 +262,7 @@ to_unaccent_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = All
 #endif // UNI_ALGO_DISABLE_PROP
 
 template<typename UTF8>
-bool is_nfc_utf8(std::basic_string_view<UTF8> source)
+uaiw_constexpr bool is_nfc_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -277,7 +277,7 @@ bool is_nfc_utf8(std::basic_string_view<UTF8> source)
 }
 
 template<typename UTF8>
-bool is_nfd_utf8(std::basic_string_view<UTF8> source)
+uaiw_constexpr bool is_nfd_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -293,7 +293,7 @@ bool is_nfd_utf8(std::basic_string_view<UTF8> source)
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<typename UTF8>
-bool is_nfkc_utf8(std::basic_string_view<UTF8> source)
+uaiw_constexpr bool is_nfkc_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -308,7 +308,7 @@ bool is_nfkc_utf8(std::basic_string_view<UTF8> source)
 }
 
 template<typename UTF8>
-bool is_nfkd_utf8(std::basic_string_view<UTF8> source)
+uaiw_constexpr bool is_nfkd_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -324,7 +324,7 @@ bool is_nfkd_utf8(std::basic_string_view<UTF8> source)
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 template<typename UTF16>
-bool is_nfc_utf16(std::basic_string_view<UTF16> source)
+uaiw_constexpr bool is_nfc_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -339,7 +339,7 @@ bool is_nfc_utf16(std::basic_string_view<UTF16> source)
 }
 
 template<typename UTF16>
-bool is_nfd_utf16(std::basic_string_view<UTF16> source)
+uaiw_constexpr bool is_nfd_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -355,7 +355,7 @@ bool is_nfd_utf16(std::basic_string_view<UTF16> source)
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<typename UTF16>
-bool is_nfkc_utf16(std::basic_string_view<UTF16> source)
+uaiw_constexpr bool is_nfkc_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -370,7 +370,7 @@ bool is_nfkc_utf16(std::basic_string_view<UTF16> source)
 }
 
 template<typename UTF16>
-bool is_nfkd_utf16(std::basic_string_view<UTF16> source)
+uaiw_constexpr bool is_nfkd_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -386,7 +386,7 @@ bool is_nfkd_utf16(std::basic_string_view<UTF16> source)
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 template<typename Iter, typename Sent, typename Dest>
-void to_nfc_utf8(Iter first, Sent last, Dest result)
+uaiw_constexpr void to_nfc_utf8(Iter first, Sent last, Dest result)
 {
     // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
@@ -394,7 +394,7 @@ void to_nfc_utf8(Iter first, Sent last, Dest result)
 }
 
 template<typename Iter, typename Sent, typename Dest>
-void to_nfd_utf8(Iter first, Sent last, Dest result)
+uaiw_constexpr void to_nfd_utf8(Iter first, Sent last, Dest result)
 {
     // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
@@ -403,7 +403,7 @@ void to_nfd_utf8(Iter first, Sent last, Dest result)
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 template<typename Iter, typename Sent, typename Dest>
-void to_nfkc_utf8(Iter first, Sent last, Dest result)
+uaiw_constexpr void to_nfkc_utf8(Iter first, Sent last, Dest result)
 {
     // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
@@ -411,7 +411,7 @@ void to_nfkc_utf8(Iter first, Sent last, Dest result)
 }
 
 template<typename Iter, typename Sent, typename Dest>
-void to_nfkd_utf8(Iter first, Sent last, Dest result)
+uaiw_constexpr void to_nfkd_utf8(Iter first, Sent last, Dest result)
 {
     // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
@@ -419,134 +419,134 @@ void to_nfkd_utf8(Iter first, Sent last, Dest result)
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-inline std::string to_nfc_utf8(std::string_view source)
+inline uaiw_constexpr std::string to_nfc_utf8(std::string_view source)
 {
     return to_nfc_utf8<char>(source);
 }
-inline std::string to_nfd_utf8(std::string_view source)
+inline uaiw_constexpr std::string to_nfd_utf8(std::string_view source)
 {
     return to_nfd_utf8<char>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline std::string to_nfkc_utf8(std::string_view source)
+inline uaiw_constexpr std::string to_nfkc_utf8(std::string_view source)
 {
     return to_nfkc_utf8<char>(source);
 }
-inline std::string to_nfkd_utf8(std::string_view source)
+inline uaiw_constexpr std::string to_nfkd_utf8(std::string_view source)
 {
     return to_nfkd_utf8<char>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-inline std::string to_unaccent_utf8(std::string_view source)
+inline uaiw_constexpr std::string to_unaccent_utf8(std::string_view source)
 {
     return to_unaccent_utf8<char>(source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
-inline std::u16string to_nfc_utf16(std::u16string_view source)
+inline uaiw_constexpr std::u16string to_nfc_utf16(std::u16string_view source)
 {
     return to_nfc_utf16<char16_t>(source);
 }
-inline std::u16string to_nfd_utf16(std::u16string_view source)
+inline uaiw_constexpr std::u16string to_nfd_utf16(std::u16string_view source)
 {
     return to_nfd_utf16<char16_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline std::u16string to_nfkc_utf16(std::u16string_view source)
+inline uaiw_constexpr std::u16string to_nfkc_utf16(std::u16string_view source)
 {
     return to_nfkc_utf16<char16_t>(source);
 }
-inline std::u16string to_nfkd_utf16(std::u16string_view source)
+inline uaiw_constexpr std::u16string to_nfkd_utf16(std::u16string_view source)
 {
     return to_nfkd_utf16<char16_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-inline std::u16string to_unaccent_utf16(std::u16string_view source)
+inline uaiw_constexpr std::u16string to_unaccent_utf16(std::u16string_view source)
 {
     return to_unaccent_utf16<char16_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
-inline bool is_nfc_utf8(std::string_view source)
+inline uaiw_constexpr bool is_nfc_utf8(std::string_view source)
 {
     return is_nfc_utf8<char>(source);
 }
-inline bool is_nfd_utf8(std::string_view source)
+inline uaiw_constexpr bool is_nfd_utf8(std::string_view source)
 {
     return is_nfd_utf8<char>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline bool is_nfkc_utf8(std::string_view source)
+inline uaiw_constexpr bool is_nfkc_utf8(std::string_view source)
 {
     return is_nfkc_utf8<char>(source);
 }
-inline bool is_nfkd_utf8(std::string_view source)
+inline uaiw_constexpr bool is_nfkd_utf8(std::string_view source)
 {
     return is_nfkd_utf8<char>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-inline bool is_nfc_utf16(std::u16string_view source)
+inline uaiw_constexpr bool is_nfc_utf16(std::u16string_view source)
 {
     return is_nfc_utf16<char16_t>(source);
 }
-inline bool is_nfd_utf16(std::u16string_view source)
+inline uaiw_constexpr bool is_nfd_utf16(std::u16string_view source)
 {
     return is_nfd_utf16<char16_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline bool is_nfkc_utf16(std::u16string_view source)
+inline uaiw_constexpr bool is_nfkc_utf16(std::u16string_view source)
 {
     return is_nfkc_utf16<char16_t>(source);
 }
-inline bool is_nfkd_utf16(std::u16string_view source)
+inline uaiw_constexpr bool is_nfkd_utf16(std::u16string_view source)
 {
     return is_nfkd_utf16<char16_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring to_nfc_utf16(std::wstring_view source)
+inline uaiw_constexpr std::wstring to_nfc_utf16(std::wstring_view source)
 {
     return to_nfc_utf16<wchar_t>(source);
 }
-inline std::wstring to_nfd_utf16(std::wstring_view source)
+inline uaiw_constexpr std::wstring to_nfd_utf16(std::wstring_view source)
 {
     return to_nfd_utf16<wchar_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline std::wstring to_nfkc_utf16(std::wstring_view source)
+inline uaiw_constexpr std::wstring to_nfkc_utf16(std::wstring_view source)
 {
     return to_nfkc_utf16<wchar_t>(source);
 }
-inline std::wstring to_nfkd_utf16(std::wstring_view source)
+inline uaiw_constexpr std::wstring to_nfkd_utf16(std::wstring_view source)
 {
     return to_nfkd_utf16<wchar_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-inline std::wstring to_unaccent_utf16(std::wstring_view source)
+inline uaiw_constexpr std::wstring to_unaccent_utf16(std::wstring_view source)
 {
     return to_unaccent_utf16<wchar_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
-inline bool is_nfc_utf16(std::wstring_view source)
+inline uaiw_constexpr bool is_nfc_utf16(std::wstring_view source)
 {
     return is_nfc_utf16<wchar_t>(source);
 }
-inline bool is_nfd_utf16(std::wstring_view source)
+inline uaiw_constexpr bool is_nfd_utf16(std::wstring_view source)
 {
     return is_nfd_utf16<wchar_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline bool is_nfkc_utf16(std::wstring_view source)
+inline uaiw_constexpr bool is_nfkc_utf16(std::wstring_view source)
 {
     return is_nfkc_utf16<wchar_t>(source);
 }
-inline bool is_nfkd_utf16(std::wstring_view source)
+inline uaiw_constexpr bool is_nfkd_utf16(std::wstring_view source)
 {
     return is_nfkd_utf16<wchar_t>(source);
 }
@@ -555,45 +555,45 @@ inline bool is_nfkd_utf16(std::wstring_view source)
 
 #ifdef __cpp_lib_char8_t
 
-inline std::u8string to_nfc_utf8(std::u8string_view source)
+inline uaiw_constexpr std::u8string to_nfc_utf8(std::u8string_view source)
 {
     return to_nfc_utf8<char8_t>(source);
 }
-inline std::u8string to_nfd_utf8(std::u8string_view source)
+inline uaiw_constexpr std::u8string to_nfd_utf8(std::u8string_view source)
 {
     return to_nfd_utf8<char8_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline std::u8string to_nfkc_utf8(std::u8string_view source)
+inline uaiw_constexpr std::u8string to_nfkc_utf8(std::u8string_view source)
 {
     return to_nfkc_utf8<char8_t>(source);
 }
-inline std::u8string to_nfkd_utf8(std::u8string_view source)
+inline uaiw_constexpr std::u8string to_nfkd_utf8(std::u8string_view source)
 {
     return to_nfkd_utf8<char8_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-inline std::u8string to_unaccent_utf8(std::u8string_view source)
+inline uaiw_constexpr std::u8string to_unaccent_utf8(std::u8string_view source)
 {
     return to_unaccent_utf8<char8_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_PROP
 
-inline bool is_nfc_utf8(std::u8string_view source)
+inline uaiw_constexpr bool is_nfc_utf8(std::u8string_view source)
 {
     return is_nfc_utf8<char8_t>(source);
 }
-inline bool is_nfd_utf8(std::u8string_view source)
+inline uaiw_constexpr bool is_nfd_utf8(std::u8string_view source)
 {
     return is_nfd_utf8<char8_t>(source);
 }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline bool is_nfkc_utf8(std::u8string_view source)
+inline uaiw_constexpr bool is_nfkc_utf8(std::u8string_view source)
 {
     return is_nfkc_utf8<char8_t>(source);
 }
-inline bool is_nfkd_utf8(std::u8string_view source)
+inline uaiw_constexpr bool is_nfkd_utf8(std::u8string_view source)
 {
     return is_nfkd_utf8<char8_t>(source);
 }

@@ -35,7 +35,7 @@ template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #else // Safe layer
     size_t(*FnUTF)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>, size_t*)>
 #endif
-Dst t_utf(const Alloc& alloc, const Src& src)
+uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src)
 {
     Dst dst{alloc};
 
@@ -85,7 +85,7 @@ template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #else // Safe layer
     size_t(*FnUTF)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>, size_t*)>
 #endif
-Dst t_utf(const Alloc& alloc, const Src& src, uni::error& error)
+uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src, uni::error& error)
 {
     error.reset();
 
@@ -145,7 +145,7 @@ Dst t_utf(const Alloc& alloc, const Src& src, uni::error& error)
 // Template functions
 
 template<typename UTF8, typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 utf8to16(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -155,7 +155,7 @@ utf8to16(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
             detail::impl_x_utf8to16, detail::impl_utf8to16>(alloc, source);
 }
 template<typename UTF16, typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 utf16to8(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -165,7 +165,7 @@ utf16to8(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
             detail::impl_x_utf16to8, detail::impl_utf16to8>(alloc, source);
 }
 template<typename UTF8, typename UTF32, typename Alloc = std::allocator<UTF32>>
-std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
+uaiw_constexpr std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
 utf8to32(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -175,7 +175,7 @@ utf8to32(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
             detail::impl_x_utf8to32, detail::impl_utf8to32>(alloc, source);
 }
 template<typename UTF32, typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 utf32to8(std::basic_string_view<UTF32> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -185,7 +185,7 @@ utf32to8(std::basic_string_view<UTF32> source, const Alloc& alloc = Alloc())
             detail::impl_x_utf32to8, detail::impl_utf32to8>(alloc, source);
 }
 template<typename UTF16, typename UTF32, typename Alloc = std::allocator<UTF32>>
-std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
+uaiw_constexpr std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
 utf16to32(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -195,7 +195,7 @@ utf16to32(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
             detail::impl_x_utf16to32, detail::impl_utf16to32>(alloc, source);
 }
 template<typename UTF32, typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 utf32to16(std::basic_string_view<UTF32> source, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -207,62 +207,62 @@ utf32to16(std::basic_string_view<UTF32> source, const Alloc& alloc = Alloc())
 
 // Short non-template functions for std::string, std::wstring, std::u16string, std::u32string
 
-inline std::u16string utf8to16u(std::string_view source)
+inline uaiw_constexpr std::u16string utf8to16u(std::string_view source)
 {
     return utf8to16<char, char16_t>(source);
 }
-inline std::string utf16to8(std::u16string_view source)
+inline uaiw_constexpr std::string utf16to8(std::u16string_view source)
 {
     return utf16to8<char16_t, char>(source);
 }
-inline std::u32string utf8to32u(std::string_view source)
+inline uaiw_constexpr std::u32string utf8to32u(std::string_view source)
 {
     return utf8to32<char, char32_t>(source);
 }
-inline std::string utf32to8(std::u32string_view source)
+inline uaiw_constexpr std::string utf32to8(std::u32string_view source)
 {
     return utf32to8<char32_t, char>(source);
 }
-inline std::u32string utf16to32u(std::u16string_view source)
+inline uaiw_constexpr std::u32string utf16to32u(std::u16string_view source)
 {
     return utf16to32<char16_t, char32_t>(source);
 }
-inline std::u16string utf32to16u(std::u32string_view source)
+inline uaiw_constexpr std::u16string utf32to16u(std::u32string_view source)
 {
     return utf32to16<char32_t, char16_t>(source);
 }
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf8to16(std::string_view source)
+inline uaiw_constexpr std::wstring utf8to16(std::string_view source)
 {
     return utf8to16<char, wchar_t>(source);
 }
-inline std::string utf16to8(std::wstring_view source)
+inline uaiw_constexpr std::string utf16to8(std::wstring_view source)
 {
     return utf16to8<wchar_t, char>(source);
 }
-inline std::u32string utf16to32u(std::wstring_view source)
+inline uaiw_constexpr std::u32string utf16to32u(std::wstring_view source)
 {
     return utf16to32<wchar_t, char32_t>(source);
 }
-inline std::wstring utf32to16(std::u32string_view source)
+inline uaiw_constexpr std::wstring utf32to16(std::u32string_view source)
 {
     return utf32to16<char32_t, wchar_t>(source);
 }
 #elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-inline std::wstring utf8to32(std::string_view source)
+inline uaiw_constexpr std::wstring utf8to32(std::string_view source)
 {
     return utf8to32<char, wchar_t>(source);
 }
-inline std::string utf32to8(std::wstring_view source)
+inline uaiw_constexpr std::string utf32to8(std::wstring_view source)
 {
     return utf32to8<wchar_t, char>(source);
 }
-inline std::wstring utf16to32(std::u16string_view source)
+inline uaiw_constexpr std::wstring utf16to32(std::u16string_view source)
 {
     return utf16to32<char16_t, wchar_t>(source);
 }
-inline std::u16string utf32to16u(std::wstring_view source)
+inline uaiw_constexpr std::u16string utf32to16u(std::wstring_view source)
 {
     return utf32to16<wchar_t, char16_t>(source);
 }
@@ -273,7 +273,7 @@ namespace strict {
 // Template functions
 
 template<typename UTF8, typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 utf8to16(std::basic_string_view<UTF8> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -283,7 +283,7 @@ utf8to16(std::basic_string_view<UTF8> source, uni::error& error, const Alloc& al
             detail::impl_x_utf8to16, detail::impl_utf8to16>(alloc, source, error);
 }
 template<typename UTF16, typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 utf16to8(std::basic_string_view<UTF16> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -293,7 +293,7 @@ utf16to8(std::basic_string_view<UTF16> source, uni::error& error, const Alloc& a
             detail::impl_x_utf16to8, detail::impl_utf16to8>(alloc, source, error);
 }
 template<typename UTF8, typename UTF32, typename Alloc = std::allocator<UTF32>>
-std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
+uaiw_constexpr std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
 utf8to32(std::basic_string_view<UTF8> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -303,7 +303,7 @@ utf8to32(std::basic_string_view<UTF8> source, uni::error& error, const Alloc& al
             detail::impl_x_utf8to32, detail::impl_utf8to32>(alloc, source, error);
 }
 template<typename UTF32, typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 utf32to8(std::basic_string_view<UTF32> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
@@ -313,7 +313,7 @@ utf32to8(std::basic_string_view<UTF32> source, uni::error& error, const Alloc& a
             detail::impl_x_utf32to8, detail::impl_utf32to8>(alloc, source, error);
 }
 template<typename UTF16, typename UTF32, typename Alloc = std::allocator<UTF32>>
-std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
+uaiw_constexpr std::basic_string<UTF32, std::char_traits<UTF32>, Alloc>
 utf16to32(std::basic_string_view<UTF16> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -323,7 +323,7 @@ utf16to32(std::basic_string_view<UTF16> source, uni::error& error, const Alloc& 
             detail::impl_x_utf16to32, detail::impl_utf16to32>(alloc, source, error);
 }
 template<typename UTF32, typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 utf32to16(std::basic_string_view<UTF32> source, uni::error& error, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -335,62 +335,62 @@ utf32to16(std::basic_string_view<UTF32> source, uni::error& error, const Alloc& 
 
 // Short non-template functions for std::string, std::wstring, std::u16string, std::u32string
 
-inline std::u16string utf8to16u(std::string_view source, uni::error& error)
+inline uaiw_constexpr std::u16string utf8to16u(std::string_view source, uni::error& error)
 {
     return utf8to16<char, char16_t>(source, error);
 }
-inline std::string utf16to8(std::u16string_view source, uni::error& error)
+inline uaiw_constexpr std::string utf16to8(std::u16string_view source, uni::error& error)
 {
     return utf16to8<char16_t, char>(source, error);
 }
-inline std::u32string utf8to32u(std::string_view source, uni::error& error)
+inline uaiw_constexpr std::u32string utf8to32u(std::string_view source, uni::error& error)
 {
     return utf8to32<char, char32_t>(source, error);
 }
-inline std::string utf32to8(std::u32string_view source, uni::error& error)
+inline uaiw_constexpr std::string utf32to8(std::u32string_view source, uni::error& error)
 {
     return utf32to8<char32_t, char>(source, error);
 }
-inline std::u32string utf16to32u(std::u16string_view source, uni::error& error)
+inline uaiw_constexpr std::u32string utf16to32u(std::u16string_view source, uni::error& error)
 {
     return utf16to32<char16_t, char32_t>(source, error);
 }
-inline std::u16string utf32to16u(std::u32string_view source, uni::error& error)
+inline uaiw_constexpr std::u16string utf32to16u(std::u32string_view source, uni::error& error)
 {
     return utf32to16<char32_t, char16_t>(source, error);
 }
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf8to16(std::string_view source, uni::error& error)
+inline uaiw_constexpr std::wstring utf8to16(std::string_view source, uni::error& error)
 {
     return utf8to16<char, wchar_t>(source, error);
 }
-inline std::string utf16to8(std::wstring_view source, uni::error& error)
+inline uaiw_constexpr std::string utf16to8(std::wstring_view source, uni::error& error)
 {
     return utf16to8<wchar_t, char>(source, error);
 }
-inline std::u32string utf16to32u(std::wstring_view source, uni::error& error)
+inline uaiw_constexpr std::u32string utf16to32u(std::wstring_view source, uni::error& error)
 {
     return utf16to32<wchar_t, char32_t>(source, error);
 }
-inline std::wstring utf32to16(std::u32string_view source, uni::error& error)
+inline uaiw_constexpr std::wstring utf32to16(std::u32string_view source, uni::error& error)
 {
     return utf32to16<char32_t, wchar_t>(source, error);
 }
 #elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-inline std::wstring utf8to32(std::string_view source, uni::error& error)
+inline uaiw_constexpr std::wstring utf8to32(std::string_view source, uni::error& error)
 {
     return utf8to32<char, wchar_t>(source, error);
 }
-inline std::string utf32to8(std::wstring_view source, uni::error& error)
+inline uaiw_constexpr std::string utf32to8(std::wstring_view source, uni::error& error)
 {
     return utf32to8<wchar_t, char>(source, error);
 }
-inline std::wstring utf16to32(std::u16string_view source, uni::error& error)
+inline uaiw_constexpr std::wstring utf16to32(std::u16string_view source, uni::error& error)
 {
     return utf16to32<char16_t, wchar_t>(source, error);
 }
-inline std::u16string utf32to16u(std::wstring_view source, uni::error& error)
+inline uaiw_constexpr std::u16string utf32to16u(std::wstring_view source, uni::error& error)
 {
     return utf32to16<wchar_t, char16_t>(source, error);
 }
@@ -399,7 +399,7 @@ inline std::u16string utf32to16u(std::wstring_view source, uni::error& error)
 } // namespace strict
 
 template<typename UTF8>
-bool is_valid_utf8(std::basic_string_view<UTF8> source)
+uaiw_constexpr bool is_valid_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -414,7 +414,7 @@ bool is_valid_utf8(std::basic_string_view<UTF8> source)
 }
 
 template<typename UTF16>
-bool is_valid_utf16(std::basic_string_view<UTF16> source)
+uaiw_constexpr bool is_valid_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -429,7 +429,7 @@ bool is_valid_utf16(std::basic_string_view<UTF16> source)
 }
 
 template<typename UTF32>
-bool is_valid_utf32(std::basic_string_view<UTF32> source)
+uaiw_constexpr bool is_valid_utf32(std::basic_string_view<UTF32> source)
 {
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
@@ -444,7 +444,7 @@ bool is_valid_utf32(std::basic_string_view<UTF32> source)
 }
 
 template<typename UTF8>
-bool is_valid_utf8(std::basic_string_view<UTF8> source, uni::error& error)
+uaiw_constexpr bool is_valid_utf8(std::basic_string_view<UTF8> source, uni::error& error)
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -463,7 +463,7 @@ bool is_valid_utf8(std::basic_string_view<UTF8> source, uni::error& error)
 }
 
 template<typename UTF16>
-bool is_valid_utf16(std::basic_string_view<UTF16> source, uni::error& error)
+uaiw_constexpr bool is_valid_utf16(std::basic_string_view<UTF16> source, uni::error& error)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -482,7 +482,7 @@ bool is_valid_utf16(std::basic_string_view<UTF16> source, uni::error& error)
 }
 
 template<typename UTF32>
-bool is_valid_utf32(std::basic_string_view<UTF32> source, uni::error& error)
+uaiw_constexpr bool is_valid_utf32(std::basic_string_view<UTF32> source, uni::error& error)
 {
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
@@ -500,45 +500,45 @@ bool is_valid_utf32(std::basic_string_view<UTF32> source, uni::error& error)
     return ret;
 }
 
-inline bool is_valid_utf8(std::string_view source)
+inline uaiw_constexpr bool is_valid_utf8(std::string_view source)
 {
     return is_valid_utf8<char>(source);
 }
-inline bool is_valid_utf16(std::u16string_view source)
+inline uaiw_constexpr bool is_valid_utf16(std::u16string_view source)
 {
     return is_valid_utf16<char16_t>(source);
 }
-inline bool is_valid_utf32(std::u32string_view source)
+inline uaiw_constexpr bool is_valid_utf32(std::u32string_view source)
 {
     return is_valid_utf32<char32_t>(source);
 }
-inline bool is_valid_utf8(std::string_view source, uni::error& error)
+inline uaiw_constexpr bool is_valid_utf8(std::string_view source, uni::error& error)
 {
     return is_valid_utf8<char>(source, error);
 }
-inline bool is_valid_utf16(std::u16string_view source, uni::error& error)
+inline uaiw_constexpr bool is_valid_utf16(std::u16string_view source, uni::error& error)
 {
     return is_valid_utf16<char16_t>(source, error);
 }
-inline bool is_valid_utf32(std::u32string_view source, uni::error& error)
+inline uaiw_constexpr bool is_valid_utf32(std::u32string_view source, uni::error& error)
 {
     return is_valid_utf32<char32_t>(source, error);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline bool is_valid_utf16(std::wstring_view source)
+inline uaiw_constexpr bool is_valid_utf16(std::wstring_view source)
 {
     return is_valid_utf16<wchar_t>(source);
 }
-inline bool is_valid_utf16(std::wstring_view source, uni::error& error)
+inline uaiw_constexpr bool is_valid_utf16(std::wstring_view source, uni::error& error)
 {
     return is_valid_utf16<wchar_t>(source, error);
 }
 #elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-inline bool is_valid_utf32(std::wstring_view source)
+inline uaiw_constexpr bool is_valid_utf32(std::wstring_view source)
 {
     return is_valid_utf32<wchar_t>(source);
 }
-inline bool is_valid_utf32(std::wstring_view source, uni::error& error)
+inline uaiw_constexpr bool is_valid_utf32(std::wstring_view source, uni::error& error)
 {
     return is_valid_utf32<wchar_t>(source, error);
 }
@@ -547,47 +547,47 @@ inline bool is_valid_utf32(std::wstring_view source, uni::error& error)
 
 #ifdef __cpp_lib_char8_t
 
-inline std::u16string utf8to16u(std::u8string_view source)
+inline uaiw_constexpr std::u16string utf8to16u(std::u8string_view source)
 {
     return utf8to16<char8_t, char16_t>(source);
 }
-inline std::u8string utf16to8u(std::u16string_view source)
+inline uaiw_constexpr std::u8string utf16to8u(std::u16string_view source)
 {
     return utf16to8<char16_t, char8_t>(source);
 }
-inline std::u32string utf8to32u(std::u8string_view source)
+inline uaiw_constexpr std::u32string utf8to32u(std::u8string_view source)
 {
     return utf8to32<char8_t, char32_t>(source);
 }
-inline std::u8string utf32to8u(std::u32string_view source)
+inline uaiw_constexpr std::u8string utf32to8u(std::u32string_view source)
 {
     return utf32to8<char32_t, char8_t>(source);
 }
 
-inline bool is_valid_utf8(std::u8string_view source)
+inline uaiw_constexpr bool is_valid_utf8(std::u8string_view source)
 {
     return is_valid_utf8<char8_t>(source);
 }
-inline bool is_valid_utf8(std::u8string_view source, uni::error& error)
+inline uaiw_constexpr bool is_valid_utf8(std::u8string_view source, uni::error& error)
 {
     return is_valid_utf8<char8_t>(source, error);
 }
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf8to16(std::u8string_view source)
+inline uaiw_constexpr std::wstring utf8to16(std::u8string_view source)
 {
     return utf8to16<char8_t, wchar_t>(source);
 }
-inline std::u8string utf16to8u(std::wstring_view source)
+inline uaiw_constexpr std::u8string utf16to8u(std::wstring_view source)
 {
     return utf16to8<wchar_t, char8_t>(source);
 }
 #elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-inline std::wstring utf8to32(std::u8string_view source)
+inline uaiw_constexpr std::wstring utf8to32(std::u8string_view source)
 {
     return utf8to32<char8_t, wchar_t>(source);
 }
-inline std::u8string utf32to8u(std::wstring_view source)
+inline uaiw_constexpr std::u8string utf32to8u(std::wstring_view source)
 {
     return utf32to8<wchar_t, char8_t>(source);
 }
@@ -595,38 +595,38 @@ inline std::u8string utf32to8u(std::wstring_view source)
 
 namespace strict {
 
-inline std::u16string utf8to16u(std::u8string_view source, uni::error& error)
+inline uaiw_constexpr std::u16string utf8to16u(std::u8string_view source, uni::error& error)
 {
     return utf8to16<char8_t, char16_t>(source, error);
 }
-inline std::u8string utf16to8u(std::u16string_view source, uni::error& error)
+inline uaiw_constexpr std::u8string utf16to8u(std::u16string_view source, uni::error& error)
 {
     return utf16to8<char16_t, char8_t>(source, error);
 }
-inline std::u32string utf8to32u(std::u8string_view source, uni::error& error)
+inline uaiw_constexpr std::u32string utf8to32u(std::u8string_view source, uni::error& error)
 {
     return utf8to32<char8_t, char32_t>(source, error);
 }
-inline std::u8string utf32to8u(std::u32string_view source, uni::error& error)
+inline uaiw_constexpr std::u8string utf32to8u(std::u32string_view source, uni::error& error)
 {
     return utf32to8<char32_t, char8_t>(source, error);
 }
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring utf8to16(std::u8string_view source, uni::error& error)
+inline uaiw_constexpr std::wstring utf8to16(std::u8string_view source, uni::error& error)
 {
     return utf8to16<char8_t, wchar_t>(source, error);
 }
-inline std::u8string utf16to8u(std::wstring_view source, uni::error& error)
+inline uaiw_constexpr std::u8string utf16to8u(std::wstring_view source, uni::error& error)
 {
     return utf16to8<wchar_t, char8_t>(source, error);
 }
 #elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-inline std::wstring utf8to32(std::u8string_view source, uni::error& error)
+inline uaiw_constexpr std::wstring utf8to32(std::u8string_view source, uni::error& error)
 {
     return utf8to32<char8_t, wchar_t>(source, error);
 }
-inline std::u8string utf32to8u(std::wstring_view source, uni::error& error)
+inline uaiw_constexpr std::u8string utf32to8u(std::wstring_view source, uni::error& error)
 {
     return utf32to8<wchar_t, char8_t>(source, error);
 }
