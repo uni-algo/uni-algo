@@ -131,14 +131,14 @@ using is_range_contiguous = std::conditional_t<std::ranges::contiguous_range<Ran
 // This helper function requeries contiguous range, but no checks here must be checked where used.
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class StringViewResult, class Range, class Iter>
-StringViewResult to_string_view(const Range& range, Iter it_begin, Iter it_pos)
+constexpr StringViewResult to_string_view(const Range& range, Iter it_begin, Iter it_pos)
 {
     return StringViewResult{std::data(range) + (it_begin - std::begin(range)),
                             static_cast<std::size_t>(it_pos - it_begin)};
 }
 #else
 template<class StringViewResult, class Range, class Iter>
-StringViewResult to_string_view(const Range&, Iter it_begin, Iter it_pos)
+constexpr StringViewResult to_string_view(const Range&, Iter it_begin, Iter it_pos)
 {
     return StringViewResult{it_begin, it_pos};
 }

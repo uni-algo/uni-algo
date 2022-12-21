@@ -629,7 +629,7 @@ private:
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
 
-        void iter_func_norm_nfc()
+        uaiw_constexpr void iter_func_norm_nfc()
         {
             if (!detail::inline_norm_iter_ready(&state))
                 while (it_pos != std::end(parent->range) && !detail::inline_norm_iter_nfc(&state, *it_pos++));
@@ -644,21 +644,21 @@ private:
         using reference         = char32_t;
         using difference_type   = std::ptrdiff_t;
 
-        nfc() = default;
-        explicit nfc(nfc_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
+        uaiw_constexpr nfc() = default;
+        uaiw_constexpr explicit nfc(nfc_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
         {
             detail::impl_norm_iter_state_reset(&state);
 
             iter_func_norm_nfc(); // Fn call must not be inlined
         }
-        reference operator*() const noexcept { return codepoint; }
-        nfc& operator++()
+        uaiw_constexpr reference operator*() const noexcept { return codepoint; }
+        uaiw_constexpr nfc& operator++()
         {
             iter_func_norm_nfc(); // Fn call must not be inlined
 
             return *this;
         }
-        nfc operator++(int)
+        uaiw_constexpr nfc operator++(int)
         {
             nfc tmp = *this;
             operator++();
@@ -722,7 +722,7 @@ private:
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
 
-        void iter_func_norm_nfd()
+        uaiw_constexpr void iter_func_norm_nfd()
         {
             if (!detail::inline_norm_iter_ready(&state))
                 while (it_pos != std::end(parent->range) && !detail::inline_norm_iter_nfd(&state, *it_pos++));
@@ -737,21 +737,21 @@ private:
         using reference         = char32_t;
         using difference_type   = std::ptrdiff_t;
 
-        nfd() = default;
-        explicit nfd(nfd_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
+        uaiw_constexpr nfd() = default;
+        uaiw_constexpr explicit nfd(nfd_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
         {
             detail::impl_norm_iter_state_reset(&state);
 
             iter_func_norm_nfd(); // Fn call must not be inlined
         }
-        reference operator*() const noexcept { return codepoint; }
-        nfd& operator++()
+        uaiw_constexpr reference operator*() const noexcept { return codepoint; }
+        uaiw_constexpr nfd& operator++()
         {
             iter_func_norm_nfd(); // Fn call must not be inlined
 
             return *this;
         }
-        nfd operator++(int)
+        uaiw_constexpr nfd operator++(int)
         {
             nfd tmp = *this;
             operator++();
@@ -817,7 +817,7 @@ private:
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
 
-        void iter_func_norm_nfkc()
+        uaiw_constexpr void iter_func_norm_nfkc()
         {
             if (!detail::inline_norm_iter_ready(&state))
                 while (it_pos != std::end(parent->range) && !detail::inline_norm_iter_nfkc(&state, *it_pos++));
@@ -832,21 +832,21 @@ private:
         using reference         = char32_t;
         using difference_type   = std::ptrdiff_t;
 
-        nfkc() = default;
-        explicit nfkc(nfkc_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
+        uaiw_constexpr nfkc() = default;
+        uaiw_constexpr explicit nfkc(nfkc_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
         {
             detail::impl_norm_iter_state_reset(&state);
 
             iter_func_norm_nfkc(); // Fn call must not be inlined
         }
-        reference operator*() const noexcept { return codepoint; }
-        nfkc& operator++()
+        uaiw_constexpr reference operator*() const noexcept { return codepoint; }
+        uaiw_constexpr nfkc& operator++()
         {
             iter_func_norm_nfkc(); // Fn call must not be inlined
 
             return *this;
         }
-        nfkc operator++(int)
+        uaiw_constexpr nfkc operator++(int)
         {
             nfkc tmp = *this;
             operator++();
@@ -910,7 +910,7 @@ private:
         detail::type_codept codepoint = 0;
         detail::impl_norm_iter_state state{};
 
-        void iter_func_norm_nfkd()
+        uaiw_constexpr void iter_func_norm_nfkd()
         {
             if (!detail::inline_norm_iter_ready(&state))
                 while (it_pos != std::end(parent->range) && !detail::inline_norm_iter_nfkd(&state, *it_pos++));
@@ -925,21 +925,21 @@ private:
         using reference         = char32_t;
         using difference_type   = std::ptrdiff_t;
 
-        nfkd() = default;
-        explicit nfkd(nfkd_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
+        uaiw_constexpr nfkd() = default;
+        uaiw_constexpr explicit nfkd(nfkd_view& p, Iter begin, Sent) : parent{std::addressof(p)}, it_pos{begin}
         {
             detail::impl_norm_iter_state_reset(&state);
 
             iter_func_norm_nfkd(); // Fn call must not be inlined
         }
-        reference operator*() const noexcept { return codepoint; }
-        nfkd& operator++()
+        uaiw_constexpr reference operator*() const noexcept { return codepoint; }
+        uaiw_constexpr nfkd& operator++()
         {
             iter_func_norm_nfkd(); // Fn call must not be inlined
 
             return *this;
         }
-        nfkd operator++(int)
+        uaiw_constexpr nfkd operator++(int)
         {
             nfkd tmp = *this;
             operator++();

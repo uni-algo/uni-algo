@@ -99,8 +99,8 @@ private:
         using reference         = value_type;
         using difference_type   = detail::rng::iter_difference_t<Iter>;
 
-        utf8() = default;
-        explicit utf8(utf8_view& p, Iter begin, Sent end)
+        uaiw_constexpr utf8() = default;
+        uaiw_constexpr explicit utf8(utf8_view& p, Iter begin, Sent end)
             : parent{std::addressof(p)}, it_begin{begin}, it_pos{begin}, it_next{begin}
         {
             if (begin == end)
@@ -150,8 +150,8 @@ private:
             operator--();
             return tmp;
         }
-        friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
-        friend bool operator!=(const utf8& x, const utf8& y) { return (x.it_begin != y.it_begin); }
+        friend uaiw_constexpr bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
+        friend uaiw_constexpr bool operator!=(const utf8& x, const utf8& y) { return (x.it_begin != y.it_begin); }
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
     public:
@@ -265,8 +265,8 @@ private:
         using reference         = value_type;
         using difference_type   = detail::rng::iter_difference_t<Iter>;
 
-        utf16() = default;
-        explicit utf16(utf16_view& p, Iter begin, Sent end)
+        uaiw_constexpr utf16() = default;
+        uaiw_constexpr explicit utf16(utf16_view& p, Iter begin, Sent end)
             : parent{std::addressof(p)}, it_begin{begin}, it_pos{begin}, it_next{begin}
         {
             if (begin == end)
@@ -316,8 +316,8 @@ private:
             operator--();
             return tmp;
         }
-        friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
-        friend bool operator!=(const utf16& x, const utf16& y) { return (x.it_begin != y.it_begin); }
+        friend uaiw_constexpr bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
+        friend uaiw_constexpr bool operator!=(const utf16& x, const utf16& y) { return (x.it_begin != y.it_begin); }
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
     public:
@@ -447,8 +447,8 @@ private:
         using reference         = value_type;
         using difference_type   = detail::rng::iter_difference_t<Iter>;
 
-        utf8() = default;
-        explicit utf8(utf8_view& p, Iter begin, Sent end)
+        uaiw_constexpr utf8() = default;
+        uaiw_constexpr explicit utf8(utf8_view& p, Iter begin, Sent end)
             : parent{std::addressof(p)}, it_begin{begin}, it_pos{begin}, it_next{begin}
         {
             if (begin == end)
@@ -489,8 +489,8 @@ private:
             operator--();
             return tmp;
         }
-        friend bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
-        friend bool operator!=(const utf8& x, const utf8& y) { return (x.it_begin != y.it_begin); }
+        friend uaiw_constexpr bool operator==(const utf8& x, const utf8& y) { return (x.it_begin == y.it_begin); }
+        friend uaiw_constexpr bool operator!=(const utf8& x, const utf8& y) { return (x.it_begin != y.it_begin); }
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
     public:
@@ -617,8 +617,8 @@ private:
         using reference         = value_type;
         using difference_type   = detail::rng::iter_difference_t<Iter>;
 
-        utf16() = default;
-        explicit utf16(utf16_view& p, Iter begin, Sent end)
+        uaiw_constexpr utf16() = default;
+        uaiw_constexpr explicit utf16(utf16_view& p, Iter begin, Sent end)
             : parent{std::addressof(p)}, it_begin{begin}, it_pos{begin}, it_next{begin}
         {
             if (begin == end)
@@ -659,8 +659,8 @@ private:
             operator--();
             return tmp;
         }
-        friend bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
-        friend bool operator!=(const utf16& x, const utf16& y) { return (x.it_begin != y.it_begin); }
+        friend uaiw_constexpr bool operator==(const utf16& x, const utf16& y) { return (x.it_begin == y.it_begin); }
+        friend uaiw_constexpr bool operator!=(const utf16& x, const utf16& y) { return (x.it_begin != y.it_begin); }
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
     public:

@@ -247,7 +247,7 @@ private:
         detail::translit::buffer data;
         std::size_t skip = 1;
 
-        void iter_func_translit()
+        uaiw_constexpr void iter_func_translit()
         {
             do
             {
