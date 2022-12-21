@@ -46,12 +46,12 @@ private:
     { },    { },      { },        { },        { },    { },{ },    { },      { },  { },{{'r','y'}},{ },    { },    { },        { },    { },     // 308x
     { },    { },      { },        { },        { },    { },{ },{{'s','h'}},  { },  { },    { },    { },    { },    { },        { },    { }  }}; // 309x
 
-    static bool is_vowel(char32_t c)
+    static constexpr bool is_vowel(char32_t c)
     {
         return c == U'a' || c == U'i' || c == U'u' || c == U'e' || c == U'o' || c == U'y';
     }
 
-    static std::size_t simple_fn(detail::translit::buffer& buf, char32_t c, std::size_t i)
+    static constexpr std::size_t simple_fn(detail::translit::buffer& buf, char32_t c, std::size_t i)
     {
         std::size_t m = 0;
         if (c >= 0x3040 && c <= 0x309F) // Hiragana
@@ -81,7 +81,7 @@ private:
         return 1;
     }
 
-    static std::size_t complex_fn(detail::translit::buffer& buf, std::u32string_view view, std::size_t i)
+    static constexpr std::size_t complex_fn(detail::translit::buffer& buf, std::u32string_view view, std::size_t i)
     {
         if (view.size() != 2)
             return 0;
@@ -141,11 +141,11 @@ public:
     japanese_kana_to_romaji_hepburn() = delete;
 
     // The buffer size 3 is enough for the algorithm
-    static const std::size_t buf_size = 3;
+    static constexpr std::size_t buf_size = 3;
 
     // Note that this function has additional data parameter prev
     // so a proxy function is required to use it with translit view
-    static std::size_t buf_func(detail::translit::buffer& buf, bool& prev)
+    static constexpr std::size_t buf_func(detail::translit::buffer& buf, bool& prev)
     {
         std::u32string_view view = buf;
 
@@ -266,7 +266,7 @@ public:
 namespace unx::translit {
 
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 japanese_kana_to_romaji_hepburn_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     using namespace uni; // NOLINT(google-build-using-namespace)
@@ -285,7 +285,7 @@ japanese_kana_to_romaji_hepburn_utf8(std::basic_string_view<UTF8> source, const 
     return result;
 }
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 japanese_kana_to_romaji_hepburn_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     using namespace uni; // NOLINT(google-build-using-namespace)
@@ -303,22 +303,22 @@ japanese_kana_to_romaji_hepburn_utf16(std::basic_string_view<UTF16> source, cons
 #endif
     return result;
 }
-inline std::string japanese_kana_to_romaji_hepburn_utf8(std::string_view source)
+inline uaiw_constexpr std::string japanese_kana_to_romaji_hepburn_utf8(std::string_view source)
 {
     return japanese_kana_to_romaji_hepburn_utf8<char>(source);
 }
-inline std::u16string japanese_kana_to_romaji_hepburn_utf16(std::u16string_view source)
+inline uaiw_constexpr std::u16string japanese_kana_to_romaji_hepburn_utf16(std::u16string_view source)
 {
     return japanese_kana_to_romaji_hepburn_utf16<char16_t>(source);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring japanese_kana_to_romaji_hepburn_utf16(std::wstring_view source)
+inline uaiw_constexpr std::wstring japanese_kana_to_romaji_hepburn_utf16(std::wstring_view source)
 {
     return japanese_kana_to_romaji_hepburn_utf16<wchar_t>(source);
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #ifdef __cpp_lib_char8_t
-inline std::u8string utf8_japanese_kana_to_romaji_hepburn(std::u8string_view source)
+inline uaiw_constexpr std::u8string utf8_japanese_kana_to_romaji_hepburn(std::u8string_view source)
 {
     return japanese_kana_to_romaji_hepburn_utf8<char8_t>(source);
 }

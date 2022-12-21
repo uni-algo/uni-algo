@@ -68,15 +68,15 @@ private:
     {{{{'k','j'}},{{'k','j'}}}},            { },                        { },            {{{{'d','j'}},{{'d','j'}}}}}};
 
     // Cyrilic Unicode Block
-    static bool is_block(char32_t c) { return (c >= 0x0400 && c <= 0x045F); }
-    static std::size_t to_block(char32_t c) { return (c - 0x0400); }
+    static constexpr bool is_block(char32_t c) { return (c >= 0x0400 && c <= 0x045F); }
+    static constexpr std::size_t to_block(char32_t c) { return (c - 0x0400); }
 
 public:
     macedonian_to_latin_docs() = delete;
 
     // Buffer size 2 is enought to translit Macedonian to Latin
     // the smaller the buffer the faster the translit view works.
-    static const std::size_t buf_size = 2;
+    static constexpr std::size_t buf_size = 2;
 
     // The function below is used by the translit view.
     // Translit view is very powerfull it can do everything that
@@ -87,7 +87,7 @@ public:
     // This is the reason why the view is not available for a user.
     // Note the function have only one parameter - buffer, you can do whatever
     // you want with the buffer just make sure you return the proper value.
-    static std::size_t buf_func(detail::translit::buffer& buf)
+    static constexpr std::size_t buf_func(detail::translit::buffer& buf)
     {
         // Compose small/capital letters GJE/KJE first.
         // In Macedonian there are only 4 cases when letters can be decomposed
@@ -188,7 +188,7 @@ public:
 namespace unx::translit {
 
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
-std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
+uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 macedonian_to_latin_docs_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
     using namespace uni; // NOLINT(google-build-using-namespace)
@@ -208,7 +208,7 @@ macedonian_to_latin_docs_utf8(std::basic_string_view<UTF8> source, const Alloc& 
     return result;
 }
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
-std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
+uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 macedonian_to_latin_docs_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
     using namespace uni; // NOLINT(google-build-using-namespace)
@@ -223,22 +223,22 @@ macedonian_to_latin_docs_utf16(std::basic_string_view<UTF16> source, const Alloc
 #endif
     return result;
 }
-inline std::string macedonian_to_latin_docs_utf8(std::string_view source)
+inline uaiw_constexpr std::string macedonian_to_latin_docs_utf8(std::string_view source)
 {
     return macedonian_to_latin_docs_utf8<char>(source);
 }
-inline std::u16string macedonian_to_latin_docs_utf16(std::u16string_view source)
+inline uaiw_constexpr std::u16string macedonian_to_latin_docs_utf16(std::u16string_view source)
 {
     return macedonian_to_latin_docs_utf16<char16_t>(source);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline std::wstring macedonian_to_latin_docs_utf16(std::wstring_view source)
+inline uaiw_constexpr std::wstring macedonian_to_latin_docs_utf16(std::wstring_view source)
 {
     return macedonian_to_latin_docs_utf16<wchar_t>(source);
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #ifdef __cpp_lib_char8_t
-inline std::u8string macedonian_to_latin_docs_utf8(std::u8string_view source)
+inline uaiw_constexpr std::u8string macedonian_to_latin_docs_utf8(std::u8string_view source)
 {
     return macedonian_to_latin_docs_utf8<char8_t>(source);
 }
