@@ -843,73 +843,73 @@ private:
     detail::type_codept data = 0;
 
 public:
-    prop_case() = delete;
-    explicit prop_case(char32_t c) noexcept : data{detail::impl_case_get_prop(c)} {}
+    uaiw_constexpr prop_case() = delete;
+    uaiw_constexpr explicit prop_case(char32_t c) noexcept : data{detail::impl_case_get_prop(c)} {}
 
-    bool Lowercase() const noexcept
+    uaiw_constexpr bool Lowercase() const noexcept
     {
         // The Unicode Standard: DerivedCoreProperties.txt -> Lowercase
         return detail::impl_case_is_lowercase_prop(data);
     }
-    bool Uppercase() const noexcept
+    uaiw_constexpr bool Uppercase() const noexcept
     {
         // The Unicode Standard: DerivedCoreProperties.txt -> Uppercase
         return detail::impl_case_is_uppercase_prop(data);
     }
-    bool Cased() const noexcept
+    uaiw_constexpr bool Cased() const noexcept
     {
         // The Unicode Standard: DerivedCoreProperties.txt -> Cased
         return detail::impl_case_is_cased_prop(data);
     }
-    bool Case_Ignorable() const noexcept
+    uaiw_constexpr bool Case_Ignorable() const noexcept
     {
         // The Unicode Standard: DerivedCoreProperties.txt -> Case_Ignorable
         return detail::impl_case_is_case_ignorable_prop(data);
     }
-    bool Soft_Dotted() const noexcept
+    uaiw_constexpr bool Soft_Dotted() const noexcept
     {
         // The Unicode Standard: PropList.txt -> Soft_Dotted
         return detail::impl_case_is_soft_dotted_prop(data);
     }
 };
 
-inline bool is_lowercase(char32_t c) noexcept
+inline uaiw_constexpr bool is_lowercase(char32_t c) noexcept
 {
     return prop_case{c}.Lowercase();
 }
 
-inline bool is_lowercase(const prop_case& p) noexcept
+inline uaiw_constexpr bool is_lowercase(const prop_case& p) noexcept
 {
     return p.Lowercase();
 }
 
-inline bool is_uppercase(char32_t c) noexcept
+inline uaiw_constexpr bool is_uppercase(char32_t c) noexcept
 {
     return prop_case{c}.Uppercase();
 }
 
-inline bool is_uppercase(const prop_case& p) noexcept
+inline uaiw_constexpr bool is_uppercase(const prop_case& p) noexcept
 {
     return p.Uppercase();
 }
 
-inline char32_t to_simple_lowercase(char32_t c) noexcept
+inline uaiw_constexpr char32_t to_simple_lowercase(char32_t c) noexcept
 {
     return detail::impl_case_to_simple_lowercase(c);
 }
 
-inline char32_t to_simple_uppercase(char32_t c) noexcept
+inline uaiw_constexpr char32_t to_simple_uppercase(char32_t c) noexcept
 {
     return detail::impl_case_to_simple_uppercase(c);
 }
 
-inline char32_t to_simple_casefold(char32_t c) noexcept
+inline uaiw_constexpr char32_t to_simple_casefold(char32_t c) noexcept
 {
     return detail::impl_case_to_simple_casefold(c);
 }
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-inline char32_t to_simple_titlecase(char32_t c) noexcept
+inline uaiw_constexpr char32_t to_simple_titlecase(char32_t c) noexcept
 {
     return detail::impl_case_to_simple_titlecase(c);
 }
@@ -917,7 +917,7 @@ inline char32_t to_simple_titlecase(char32_t c) noexcept
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
-inline std::u32string to_lowercase_u32(char32_t c)
+inline uaiw_constexpr std::u32string to_lowercase_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(detail::impl_max_case_expand);
@@ -931,7 +931,7 @@ inline std::u32string to_lowercase_u32(char32_t c)
     return dst;
 }
 
-inline std::u32string to_uppercase_u32(char32_t c)
+inline uaiw_constexpr std::u32string to_uppercase_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(detail::impl_max_case_expand);
@@ -945,7 +945,7 @@ inline std::u32string to_uppercase_u32(char32_t c)
     return dst;
 }
 
-inline std::u32string to_casefold_u32(char32_t c)
+inline uaiw_constexpr std::u32string to_casefold_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(detail::impl_max_case_expand);
@@ -960,7 +960,7 @@ inline std::u32string to_casefold_u32(char32_t c)
 }
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-inline std::u32string to_titlecase_u32(char32_t c)
+inline uaiw_constexpr std::u32string to_titlecase_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(detail::impl_max_case_expand);

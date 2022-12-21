@@ -1075,31 +1075,31 @@ private:
     detail::type_codept data = 0;
 
 public:
-    prop_norm() = delete;
-    explicit prop_norm(char32_t c) noexcept : data{detail::impl_norm_get_prop(c)} {}
+    uaiw_constexpr prop_norm() = delete;
+    uaiw_constexpr explicit prop_norm(char32_t c) noexcept : data{detail::impl_norm_get_prop(c)} {}
 
-    unsigned char Canonical_Combining_Class() const noexcept
+    uaiw_constexpr unsigned char Canonical_Combining_Class() const noexcept
     {
         // The Unicode Standard: UnicodeData.txt -> Canonical_Combining_Class
         return detail::impl_norm_get_ccc_prop(data);
     }
-    bool NFC_Quick_Check_Yes() const noexcept
+    uaiw_constexpr bool NFC_Quick_Check_Yes() const noexcept
     {
         // The Unicode Standard: DerivedNormalizationProps.txt -> NFC_Quick_Check=Yes
         return detail::impl_norm_is_nfc_qc_yes_prop(data);
     }
-    bool NFD_Quick_Check_Yes() const noexcept
+    uaiw_constexpr bool NFD_Quick_Check_Yes() const noexcept
     {
         // The Unicode Standard: DerivedNormalizationProps.txt -> NFD_Quick_Check=Yes
         return detail::impl_norm_is_nfd_qc_yes_prop(data);
     }
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    bool NFKC_Quick_Check_Yes() const noexcept
+    uaiw_constexpr bool NFKC_Quick_Check_Yes() const noexcept
     {
         // The Unicode Standard: DerivedNormalizationProps.txt -> NFKC_Quick_Check=Yes
         return detail::impl_norm_is_nfkc_qc_yes_prop(data);
     }
-    bool NFKD_Quick_Check_Yes() const noexcept
+    uaiw_constexpr bool NFKD_Quick_Check_Yes() const noexcept
     {
         // The Unicode Standard: DerivedNormalizationProps.txt -> NFKD_Quick_Check=Yes
         return detail::impl_norm_is_nfkd_qc_yes_prop(data);
@@ -1107,12 +1107,12 @@ public:
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 };
 
-inline char32_t to_compose(char32_t c1, char32_t c2) noexcept
+inline uaiw_constexpr char32_t to_compose(char32_t c1, char32_t c2) noexcept
 {
     return detail::impl_norm_to_compose(c1, c2);
 }
 
-inline std::u32string to_decompose_u32(char32_t c)
+inline uaiw_constexpr std::u32string to_decompose_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(detail::impl_max_norm_decomp_canon);
@@ -1127,7 +1127,7 @@ inline std::u32string to_decompose_u32(char32_t c)
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-inline std::u32string to_decompose_compat_u32(char32_t c)
+inline uaiw_constexpr std::u32string to_decompose_compat_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(detail::impl_max_norm_decomp_compat);
@@ -1142,7 +1142,7 @@ inline std::u32string to_decompose_compat_u32(char32_t c)
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
-inline std::u32string to_decompose_hangul_u32(char32_t c)
+inline uaiw_constexpr std::u32string to_decompose_hangul_u32(char32_t c)
 {
     std::u32string dst;
     dst.resize(detail::impl_max_norm_decomp_canon);
