@@ -246,20 +246,27 @@ private:
                 {
                     has_lang = true;
                     if (size == 2 || size == 3)
-                        lang.set_value(detail::impl_locale_from_language(s.substr(prev, size), size, 0));
+                    {
+                        std::basic_string_view<T> substr = s.substr(prev, size);
+                        lang.set_value(detail::impl_locale_from_language(substr, substr.size(), 0));
+                    }
                     else
                         break;
                 }
                 else if (!has_scpt && size == 4)
                 {
                     has_scpt = true;
-                    scpt.set_value(detail::impl_locale_from_script(s.substr(prev, size), size, 0));
+                    std::basic_string_view<T> substr = s.substr(prev, size);
+                    scpt.set_value(detail::impl_locale_from_script(substr, substr.size(), 0));
                 }
                 else if (!has_regn)
                 {
                     has_regn = true;
                     if (size == 2 || size == 3)
-                        regn.set_value(detail::impl_locale_from_region(s.substr(prev, size), size, 0));
+                    {
+                        std::basic_string_view<T> substr = s.substr(prev, size);
+                        regn.set_value(detail::impl_locale_from_region(substr, substr.size(), 0));
+                    }
                     break;
                 }
 
