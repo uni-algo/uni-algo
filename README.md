@@ -103,6 +103,7 @@ Add to your CMakeLists.txt
 ```cmake
 # CMake option example (enable header-only version)
 # set(UNI_ALGO_HEADER_ONLY ON CACHE INTERNAL "")
+# Note that header-only makes the library constexpr
 
 add_subdirectory(repo) # The directory where you extracted this repository
 
