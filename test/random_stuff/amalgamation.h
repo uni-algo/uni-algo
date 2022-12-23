@@ -184,8 +184,10 @@ void amalgam()
     // Config needs these includes
     output << "#include <type_traits>" << '\n';
     output << "#include <cstddef>" << '\n' << '\n';
+    // Safe layer needs these includes
+    output << "#include <array>" << '\n' << '\n';
 
-    // Make all data tables inline constexpr
+    // Enable header-only (make all data tables inline constexpr)
     output << "#define UNI_ALGO_STATIC_DATA" << '\n';
 
     // Disable system locale or it will leak windows.h
@@ -198,6 +200,9 @@ void amalgam()
 
     // LOW-LEVEL needs config
     output << amalgam_part("uni_algo/config.h"); // Old full
+
+    // LOW-LEVEL needs safe layer
+    output << amalgam_part("uni_algo/internal/safe_layer.h");
 
     // LOW-LEVEL BEGIN
 
@@ -217,12 +222,11 @@ void amalgam()
     output << amalgam_part("uni_algo/impl/impl_conv.h");
     output << amalgam_part("uni_algo/impl/impl_break_grapheme.h");
     output << amalgam_part("uni_algo/impl/impl_break_word.h"); // Must be before case
+    output << amalgam_part("uni_algo/impl/impl_locale.h"); // Must be before case
     output << amalgam_part("uni_algo/impl/impl_case.h");
     output << amalgam_part("uni_algo/impl/impl_case_locale.h"); // Must be after case
     output << amalgam_part("uni_algo/impl/impl_prop.h"); // Must be before norm
     output << amalgam_part("uni_algo/impl/impl_norm.h");
-    // TODO: Move it before case when constexpr low-level will be done
-    output << amalgam_part("uni_algo/impl/impl_locale.h"); // Must be before case
 
     output << amalgam_full("uni_algo/impl/internal_undefs.h");
 
@@ -234,6 +238,7 @@ void amalgam()
 
     // Internals must be first
     output << amalgam_part("uni_algo/internal/error.h");
+    output << amalgam_part("uni_algo/internal/search.h");
     output << amalgam_part("uni_algo/internal/ranges_core.h");
     output << amalgam_part("uni_algo/internal/ranges_translit.h");
 
@@ -250,6 +255,9 @@ void amalgam()
     // WRAPPER END
 
     // EXTENSIONS BEGIN
+
+    // ASCII
+    output << amalgam_part("uni_algo/ext/ascii.h");
 
     // Transliterators
     output << amalgam_part("uni_algo/ext/translit/macedonian_to_latin_docs.h");
