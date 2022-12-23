@@ -69,18 +69,20 @@ class alloc_range
 public:
     using value_type = T;
 
-    alloc_range() = default;
-    T* allocate(std::size_t n)
+    test_constexpr alloc_range() = default;
+    test_constexpr T* allocate(std::size_t n)
     {
-        T* p = static_cast<T*>(std::malloc(n * sizeof(T)));
+        T* p = new T[n];
+        //T* p = static_cast<T*>(std::malloc(n * sizeof(T)));
         //std::cout << "Alloc  : " << n << " bytes at " << static_cast<void*>(p) << '\n';
         return p;
     }
-    void deallocate(T* p, std::size_t n)
+    test_constexpr void deallocate(T* p, std::size_t n)
     {
         (void)n;
         //std::cout << "Dealloc: " << n << " bytes at " << static_cast<void*>(p) << '\n';
-        std::free(static_cast<void*>(p));
+        //std::free(static_cast<void*>(p));
+        delete[] p;
     }
 };
 
@@ -136,6 +138,8 @@ test_constexpr bool test_ranges_to()
 
 test_constexpr bool test_ranges_ctad()
 {
+#ifndef TEST_MODE_CONSTEXPR
+
     // If everything works properly none of these constructors and operators must be called
     class my_string
     {
@@ -177,6 +181,8 @@ test_constexpr bool test_ranges_ctad()
     TESTX(*(u"123" | uni::views::grapheme::utf8).begin() == u"1");
     TESTX(*(u"123 789" | uni::views::word::utf8).begin() == u"123");
     TESTX(*(u" 123 789" | uni::views::word_only::utf8).begin() == u"123");
+
+#endif // TEST_MODE_CONSTEXPR
 
     return true;
 }

@@ -14,7 +14,7 @@ test_constexpr std::u16string to_nfd_utf16(std::u16string_view str);
 test_constexpr std::u16string to_nfkc_utf16(std::u16string_view str);
 test_constexpr std::u16string to_nfkd_utf16(std::u16string_view str);
 
-size_t test_norm_impl(bool with_part2 = true, size_t with_prefix = 0, size_t with_suffix = 0)
+bool test_norm_impl(size_t& count_lines, bool with_part2 = true, size_t with_prefix = 0, size_t with_suffix = 0)
 {
     std::ifstream input("NormalizationTest.txt", std::ios::binary);
     TESTX(input.is_open());
@@ -27,7 +27,7 @@ size_t test_norm_impl(bool with_part2 = true, size_t with_prefix = 0, size_t wit
 
     std::u32string source, NFC, NFD, NFKC, NFKD;
     std::set<char32_t> set;
-    size_t count_lines = 0;
+    count_lines = 0;
 
     std::string line;
     while (std::getline(input, line))
@@ -357,18 +357,18 @@ size_t test_norm_impl(bool with_part2 = true, size_t with_prefix = 0, size_t wit
         }
     }
 
-    return count_lines;
+    return true;
 }
 
 void test_norm()
 {
     size_t count_lines = 0;
 
-    count_lines = test_norm_impl();
+    test_norm_impl(count_lines);
     std::cout << "DONE: " << count_lines << " lines" << '\n';
-    count_lines = test_norm_impl(false, 100, 0);
+    test_norm_impl(count_lines, false, 100, 0);
     std::cout << "DONE: " << count_lines << " lines with prefix" << '\n';
-    count_lines = test_norm_impl(false, 0, 100);
+    test_norm_impl(count_lines, false, 0, 100);
     std::cout << "DONE: " << count_lines << " lines with suffix" << '\n';
 }
 
@@ -428,8 +428,6 @@ test_constexpr bool test_norm_detect()
     TESTX(uni::norm::is_nfd_utf16(u"\xDC00") == false);
     TESTX(uni::norm::is_nfkc_utf16(u"\xDC00") == false);
     TESTX(uni::norm::is_nfkd_utf16(u"\xDC00") == false);
-
-    std::cout << "DONE: Detecting Normalization Forms" << '\n';
 
     return true;
 }
@@ -716,8 +714,6 @@ test_constexpr bool test_norm_stream_safe()
     TESTX(uni::utf32to16u(NFD_CGJ) == to_nfd_utf16(uni::utf32to16u(NFD)));
     TESTX(uni::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(uni::utf32to16u(NFKC)));
     TESTX(uni::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(uni::utf32to16u(NFKD)));
-
-    std::cout << "DONE: Normalization Stream-Safe Text Format" << '\n';
 
     return true;
 }

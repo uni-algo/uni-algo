@@ -175,10 +175,11 @@ class alloc_ascii
 public:
     using value_type = T;
 
-    alloc_ascii() = default;
-    T* allocate(std::size_t n)
+    test_constexpr alloc_ascii() = default;
+    test_constexpr T* allocate(std::size_t n)
     {
-        T* p = static_cast<T*>(std::malloc(n * sizeof(T)));
+        T* p = new T[n];
+        //T* p = static_cast<T*>(std::malloc(n * sizeof(T)));
         //std::cout << "Alloc  : " << n << " bytes at " << static_cast<void*>(p) << '\n';
         return p;
     }
@@ -186,7 +187,8 @@ public:
     {
         (void)n;
         //std::cout << "Dealloc: " << n << " bytes at " << static_cast<void*>(p) << '\n';
-        std::free(static_cast<void*>(p));
+        //std::free(static_cast<void*>(p));
+        delete[] p;
     }
 };
 
@@ -205,6 +207,8 @@ test_constexpr bool test_ascii_alloc_func()
 
 test_constexpr bool test_ascii_collate()
 {
+#ifndef TEST_MODE_CONSTEXPR
+
     std::string str_ascii;
     for(char32_t c = 0; c <= 0x7F; c++)
         str_ascii.push_back(static_cast<char>(c));
@@ -306,6 +310,8 @@ test_constexpr bool test_ascii_collate()
     TESTX(valid_result_group == result_group_ascii);
     TESTX(valid_result_group == result_group_utf8);
     TESTX(valid_result_group == result_group_utf16);
+
+#endif // TEST_MODE_CONSTEXPR
 
     return true;
 }

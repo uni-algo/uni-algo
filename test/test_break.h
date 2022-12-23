@@ -555,6 +555,8 @@ test_constexpr bool test_break_word_prop()
 
 test_constexpr bool test_break_bidi()
 {
+#ifndef TEST_MODE_CONSTEXPR
+
     std::string_view sv = "Tes't. 123,5 7test,test7 \xE3\x83\x90\xE3\x82\xAB \xE6\xA8\xB1 \xF0\x9F\x98\xBA";
     std::u16string_view sv16 = u"Tes't. 123,5 7test,test7 \x30D0\x30AB \x6A31 \xD83D\xDE3A";
 
@@ -649,6 +651,8 @@ test_constexpr bool test_break_bidi()
     result16.clear();
     for (auto it = vwgp16.end(); it != vwgp16.begin();) { --it; result16 += std::u16string{it.begin(), it.end()}; result16 += u'|'; }
     TESTX(result16 == u"\xD83D\xDE3A| |\x6A31| |\x30AB|\x30D0| |.|t|'|s|e|T|");
+
+#endif // TEST_MODE_CONSTEXPR
 
     return true;
 }

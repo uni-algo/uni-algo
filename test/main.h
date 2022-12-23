@@ -29,15 +29,33 @@
 
 //#define TEST_MODE_GENERATE_VISUAL_FILES
 //#define TEST_MODE_WITHOUT_UNICODE_TEST_FILES
+//#define TEST_MODE_CONSTEXPR
 
 //#ifndef UNI_ALGO_EXPERIMENTAL
 //#error "Don't forget to test experimental stuff"
 //#endif
 
+#ifdef TEST_MODE_CONSTEXPR
+#ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
+#define TEST_MODE_WITHOUT_UNICODE_TEST_FILES
+#endif
+#endif
+
+#if defined(TEST_MODE_CONSTEXPR) && !defined(UNI_ALGO_CONSTEXPR)
+#error "Test mode constexpr requires constexpr library (C++20 or higher and header-only enabled)"
+#undef TEST_MODE_CONSTEXPR
+#endif
+
+#ifndef TEST_MODE_CONSTEXPR
 // Do not use exceptions so it possible to compile the tests with -fno-exceptions
 #define TESTX(x) do {if (!(x)) {std::cout << "TEST FAILED: " << (__FILE__) << ":" << (__LINE__) << '\n'; exit(111);}} while(0)
 #define STATIC_TESTX
 #define test_constexpr
+#else
+#define TESTX(x) do {if (!(x)) return false;} while(0)
+#define STATIC_TESTX(x) static_assert(x)
+#define test_constexpr constexpr
+#endif
 
 // Tests have some big functions so disable -Wstack-usage warning for them
 #ifdef __GNUC__
@@ -95,7 +113,9 @@ int main7()
     return 0;
 #endif
 
-#ifdef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
+#if defined(TEST_MODE_CONSTEXPR)
+    std::cout << "MODE: TEST_MODE_CONSTEXPR" << '\n' << '\n';
+#elif defined(TEST_MODE_WITHOUT_UNICODE_TEST_FILES)
     std::cout << "MODE: TEST_MODE_WITHOUT_UNICODE_TEST_FILES" << '\n' << '\n';
 #endif
 
@@ -133,115 +153,117 @@ int main7()
 
     std::cout << '\n';
 
-    test_lenient_utf8to16();
-    test_lenient_utf8to32();
-    test_lenient_utf16to8();
-    test_lenient_utf32to8();
-    test_lenient_utf16to32();
-    test_lenient_utf32to16();
+    STATIC_TESTX(test_lenient_utf8to16());
+    STATIC_TESTX(test_lenient_utf8to32());
+    STATIC_TESTX(test_lenient_utf16to8());
+    STATIC_TESTX(test_lenient_utf32to8());
+    STATIC_TESTX(test_lenient_utf16to32());
+    STATIC_TESTX(test_lenient_utf32to16());
 
-    test_strict_utf8to16();
-    test_strict_utf8to32();
-    test_strict_utf16to8();
-    test_strict_utf32to8();
-    test_strict_utf16to32();
-    test_strict_utf32to16();
+    STATIC_TESTX(test_strict_utf8to16());
+    STATIC_TESTX(test_strict_utf8to32());
+    STATIC_TESTX(test_strict_utf16to8());
+    STATIC_TESTX(test_strict_utf32to8());
+    STATIC_TESTX(test_strict_utf16to32());
+    STATIC_TESTX(test_strict_utf32to16());
 
-    test2_lenient_utf8to16();
-    test2_lenient_utf8to32();
-    test2_lenient_utf16to8();
-    test2_lenient_utf32to8();
-    test2_lenient_utf16to32();
-    test2_lenient_utf32to16();
+    STATIC_TESTX(test2_lenient_utf8to16());
+    STATIC_TESTX(test2_lenient_utf8to32());
+    STATIC_TESTX(test2_lenient_utf16to8());
+    STATIC_TESTX(test2_lenient_utf32to8());
+    STATIC_TESTX(test2_lenient_utf16to32());
+    STATIC_TESTX(test2_lenient_utf32to16());
 
-    test2_strict_utf8to16();
-    test2_strict_utf8to32();
-    test2_strict_utf16to8();
-    test2_strict_utf32to8();
-    test2_strict_utf16to32();
-    test2_strict_utf32to16();
+    STATIC_TESTX(test2_strict_utf8to16());
+    STATIC_TESTX(test2_strict_utf8to32());
+    STATIC_TESTX(test2_strict_utf16to8());
+    STATIC_TESTX(test2_strict_utf32to8());
+    STATIC_TESTX(test2_strict_utf16to32());
+    STATIC_TESTX(test2_strict_utf32to16());
 
-    test_valid_utf8();
-    test_valid_utf16();
-    test_valid_utf32();
-    test2_valid_utf8();
-    test2_valid_utf16();
-    test2_valid_utf32();
+    STATIC_TESTX(test_valid_utf8());
+    STATIC_TESTX(test_valid_utf16());
+    STATIC_TESTX(test_valid_utf32());
+    STATIC_TESTX(test2_valid_utf8());
+    STATIC_TESTX(test2_valid_utf16());
+    STATIC_TESTX(test2_valid_utf32());
 
-    test_overflow();
-    test_alter_value();
+    STATIC_TESTX(test_overflow());
+    STATIC_TESTX(test_alter_value());
 
     std::cout << "DONE: Conversion Functions" << '\n';
 
-    test_lenient_iter_utf8to16();
-    test_lenient_iter_utf16to8();
-    test_lenient_iter_rev_utf8to16();
-    test_lenient_iter_rev_utf16to8();
-    test_strict_iter_utf8to16();
-    test_strict_iter_utf16to8();
-    test_strict_iter_rev_utf8to16();
-    test_strict_iter_rev_utf16to8();
+    STATIC_TESTX(test_lenient_iter_utf8to16());
+    STATIC_TESTX(test_lenient_iter_utf16to8());
+#ifndef TEST_MODE_CONSTEXPR
+    STATIC_TESTX(test_lenient_iter_rev_utf8to16());
+    STATIC_TESTX(test_lenient_iter_rev_utf16to8());
+#endif
+    STATIC_TESTX(test_strict_iter_utf8to16());
+    STATIC_TESTX(test_strict_iter_utf16to8());
+    STATIC_TESTX(test_strict_iter_rev_utf8to16());
+    STATIC_TESTX(test_strict_iter_rev_utf16to8());
 
     std::cout << "DONE: Conversion Ranges" << '\n';
 
-    test_short_func_conv();
-    test_short_func_case();
-    test_short_func_norm();
+    STATIC_TESTX(test_short_func_conv());
+    STATIC_TESTX(test_short_func_case());
+    STATIC_TESTX(test_short_func_norm());
 
-    test_alloc_func_conv();
-    test_alloc_func_case();
-    test_alloc_func_norm();
+    STATIC_TESTX(test_alloc_func_conv());
+    STATIC_TESTX(test_alloc_func_case());
+    STATIC_TESTX(test_alloc_func_norm());
 
     std::cout << "DONE: Functions" << '\n';
 
-    test_ranges();
-    test_ranges_to();
-    test_ranges_ctad();
-    test_ranges_static_assert();
+    STATIC_TESTX(test_ranges());
+    STATIC_TESTX(test_ranges_to());
+    STATIC_TESTX(test_ranges_ctad());
+    STATIC_TESTX(test_ranges_static_assert());
 
     std::cout << "DONE: Ranges" << '\n';
 
-    test_locale();
+    STATIC_TESTX(test_locale());
 
     std::cout << "DONE: Locale" << '\n';
 
-    test_case_compare_collate();
-    test_case_search();
-    test_case_search_ex();
-    test_case_ill_formed();
-    test_case_full_case();
-    test_case_upper_lower_fold();
-    test_case_final_sigma();
-    test_case_sort_key();
-    test_case_like();
-    test_case_locale_lt();
-    test_case_locale_tr_az();
-    test_case_locale_el();
-    test_case_title();
-    test_case_title_locale();
+    STATIC_TESTX(test_case_compare_collate());
+    STATIC_TESTX(test_case_search());
+    STATIC_TESTX(test_case_search_ex());
+    STATIC_TESTX(test_case_ill_formed());
+    STATIC_TESTX(test_case_full_case());
+    STATIC_TESTX(test_case_upper_lower_fold());
+    STATIC_TESTX(test_case_final_sigma());
+    STATIC_TESTX(test_case_sort_key());
+    STATIC_TESTX(test_case_like());
+    STATIC_TESTX(test_case_locale_lt());
+    STATIC_TESTX(test_case_locale_tr_az());
+    STATIC_TESTX(test_case_locale_el());
+    STATIC_TESTX(test_case_title());
+    STATIC_TESTX(test_case_title_locale());
 
     std::cout << "DONE: Case Functions" << '\n';
 
-    test_translit_buffer();
-    test_translit_macedonian_to_latin_docs();
-    test_translit_japanese_kana_to_romaji_hepburn();
+    STATIC_TESTX(test_translit_buffer());
+    STATIC_TESTX(test_translit_macedonian_to_latin_docs());
+    STATIC_TESTX(test_translit_japanese_kana_to_romaji_hepburn());
 
     std::cout << "DONE: Transliterators" << '\n';
 
-    test_ascii_prop();
-    test_ascii_upper_lower();
-    test_ascii_search();
-    test_ascii_trim();
-    test_ascii_valid();
-    test_ascii_collate();
-    test_ascii_short_func();
-    test_ascii_alloc_func();
+    STATIC_TESTX(test_ascii_prop());
+    STATIC_TESTX(test_ascii_upper_lower());
+    STATIC_TESTX(test_ascii_search());
+    STATIC_TESTX(test_ascii_trim());
+    STATIC_TESTX(test_ascii_valid());
+    STATIC_TESTX(test_ascii_collate());
+    STATIC_TESTX(test_ascii_short_func());
+    STATIC_TESTX(test_ascii_alloc_func());
 
     std::cout << "DONE: ASCII Extension" << '\n';
 
-    test_prop();
-    test_prop_case();
-    test_prop_norm();
+    STATIC_TESTX(test_prop());
+    STATIC_TESTX(test_prop_case());
+    STATIC_TESTX(test_prop_norm());
 
     std::cout << "DONE: Code Point Properties" << '\n';
 
@@ -251,18 +273,22 @@ int main7()
 #else
     std::cout << "SKIP: Break Grapheme and Word with test files" << '\n';
 #endif
-    test_break_word_corner_cases();
-    test_break_word_prop();
-    test_break_bidi();
+    STATIC_TESTX(test_break_word_corner_cases());
+    STATIC_TESTX(test_break_word_prop());
+    STATIC_TESTX(test_break_bidi());
 
     std::cout << "DONE: Break Grapheme and Word" << '\n';
 
+#ifndef TEST_MODE_CONSTEXPR
     std::cout << "WAIT: Conversion and Ranges Extra" << '\n';
 
-    test_conv_and_iter_conv();
-    test_conv_and_iter_iter();
+    STATIC_TESTX(test_conv_and_iter_conv());
+    STATIC_TESTX(test_conv_and_iter_iter());
 
     std::cout << "DONE: Conversion and Ranges Extra" << '\n';
+#else
+    std::cout << "SKIP: Conversion and Ranges Extra" << '\n';
+#endif
 
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
     std::cout << "WAIT: Normalization" << '\n';
@@ -270,13 +296,19 @@ int main7()
 #else
     std::cout << "SKIP: Normalization with test files" << '\n';
 #endif
-    test_norm_detect();
-    test_norm_stream_safe();
-    test_norm_unaccent();
+    STATIC_TESTX(test_norm_detect());
+    std::cout << "DONE: Detecting Normalization Forms" << '\n';
+    STATIC_TESTX(test_norm_stream_safe());
+    std::cout << "DONE: Normalization Stream-Safe Text Format" << '\n';
+    STATIC_TESTX(test_norm_unaccent());
 
     std::cout << "DONE: Normalization" << '\n';
 
+#ifdef TEST_MODE_CONSTEXPR
+    std::cout << "ALL CONSTEXPR TESTS PASSED!" << '\n';
+#else
     std::cout << "ALL TESTS PASSED!" << '\n';
+#endif
 
     return 0;
 }

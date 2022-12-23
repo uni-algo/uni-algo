@@ -12,18 +12,20 @@ class alloc_func
 public:
     using value_type = T;
 
-    alloc_func() = default;
-    T* allocate(std::size_t n)
+    test_constexpr alloc_func() = default;
+    test_constexpr T* allocate(std::size_t n)
     {
-        T* p = static_cast<T*>(std::malloc(n * sizeof(T)));
+        T* p = new T[n];
+        //T* p = static_cast<T*>(std::malloc(n * sizeof(T)));
         //std::cout << "Alloc  : " << n << " bytes at " << static_cast<void*>(p) << '\n';
         return p;
     }
-    void deallocate(T* p, std::size_t n)
+    test_constexpr void deallocate(T* p, std::size_t n)
     {
         (void)n;
         //std::cout << "Dealloc: " << n << " bytes at " << static_cast<void*>(p) << '\n';
-        std::free(static_cast<void*>(p));
+        //std::free(static_cast<void*>(p));
+        delete[] p;
     }
 };
 

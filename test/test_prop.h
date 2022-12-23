@@ -4,6 +4,8 @@
 
 test_constexpr bool test_prop()
 {
+#ifndef TEST_MODE_CONSTEXPR
+
     std::size_t count_surrogate      = 0;
     std::size_t count_control        = 0;
     std::size_t count_noncharacter   = 0;
@@ -111,6 +113,8 @@ test_constexpr bool test_prop()
 
     TESTX(count_invalid        == 3);
     TESTX(count_invalid_scalar == count_surrogate + count_invalid);
+
+#endif // TEST_MODE_CONSTEXPR
 
     static_assert(uni::codepoint::max_value == 0x10FFFF);
     static_assert(uni::codepoint::total_number == 0x110000);
