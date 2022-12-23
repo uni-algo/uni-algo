@@ -6,7 +6,7 @@
 // If the compiler is MSVC then /utf-8 command line option must be used.
 static_assert(U'㋡' == 0x32E1);
 
-void test_ranges()
+test_constexpr bool test_ranges()
 {
     TESTX("789" == (std::u32string_view{U"123789"} | uni::views::drop(3) | uni::ranges::to_utf8<std::string>()));
     TESTX("123" == (std::u32string_view{U"123789"} | uni::views::take(3) | uni::ranges::to_utf8<std::string>()));
@@ -58,6 +58,8 @@ void test_ranges()
     };
     std::u32string result3{range3.begin(), range3.end()};
     TESTX(result3 == U"ココケクキ");
+
+    return true;
 }
 
 // Custom allocator for the following tests
@@ -82,7 +84,7 @@ public:
     }
 };
 
-void test_ranges_to()
+test_constexpr bool test_ranges_to()
 {
     TESTX("123" == (std::u32string_view{U"123"} | uni::ranges::to_utf8<std::string>()));
     TESTX("123" == uni::ranges::to_utf8<std::string>(std::u32string_view{U"123"}));
@@ -128,9 +130,11 @@ void test_ranges_to()
     TESTX(std::string_view("12", 3) == uni::ranges::to_utf8_reserve<string>(U"12", 3, alloc_range<char>{}));
     TESTX(std::u16string_view(u"12", 3) == (U"12" | uni::ranges::to_utf16_reserve<u16string>(3, alloc_range<char16_t>{})));
     TESTX(std::u16string_view(u"12", 3) == uni::ranges::to_utf16_reserve<u16string>(U"12", 3, alloc_range<char16_t>{}));
+
+    return true;
 }
 
-void test_ranges_ctad()
+test_constexpr bool test_ranges_ctad()
 {
     // If everything works properly none of these constructors and operators must be called
     class my_string
@@ -173,9 +177,11 @@ void test_ranges_ctad()
     TESTX(*(u"123" | uni::views::grapheme::utf8).begin() == u"1");
     TESTX(*(u"123 789" | uni::views::word::utf8).begin() == u"123");
     TESTX(*(u" 123 789" | uni::views::word_only::utf8).begin() == u"123");
+
+    return true;
 }
 
-void test_ranges_static_assert()
+test_constexpr bool test_ranges_static_assert()
 {
     static_assert(std::is_same_v<decltype("12345" | uni::views::reverse),
             decltype(uni::ranges::reverse_view{uni::ranges::ref_view{"00000"}})>); // must be ref_view here
@@ -238,4 +244,6 @@ void test_ranges_static_assert()
     static_assert(std::is_same_v<const char*, uni::detail::rng::iter_pointer_t<decltype(std::string{"123"}.cbegin())>>);
     static_assert(std::is_same_v<const char*, uni::detail::rng::iter_pointer_t<decltype(std::string_view{"123"}.begin())>>);
     static_assert(std::is_same_v<const char*, uni::detail::rng::iter_pointer_t<decltype(std::string_view{"123"}.cbegin())>>);
+
+    return true;
 }

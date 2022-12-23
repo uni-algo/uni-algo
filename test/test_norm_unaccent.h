@@ -6,7 +6,7 @@
 // If the compiler is MSVC then /utf-8 command line option must be used.
 static_assert(U'㋡' == 0x32E1);
 
-void test_norm_unaccent()
+test_constexpr bool test_norm_unaccent()
 {
     TESTX(uni::norm::to_unaccent_utf8("Naïve") == "Naive");
     TESTX(uni::norm::to_unaccent_utf8("Voilà, Pâte, Dîner, Côté, Goûter") == "Voila, Pate, Diner, Cote, Gouter");
@@ -19,4 +19,6 @@ void test_norm_unaccent()
     TESTX(uni::norm::to_unaccent_utf16(u"İstanbul") == u"Istanbul");
     TESTX(uni::norm::to_unaccent_utf16(u"Μαΐου, τρόλεϊ") == u"Μαιου, τρολει");
     TESTX(uni::norm::to_unaccent_utf16(u"Το ένα ή το άλλο.") == u"Το ενα η το αλλο.");
+
+    return true;
 }

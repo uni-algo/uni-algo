@@ -6,7 +6,7 @@
 // If the compiler is MSVC then /utf-8 command line option must be used.
 static_assert(U'㋡' == 0x32E1);
 
-void test_case_compare_collate()
+test_constexpr bool test_case_compare_collate()
 {
     // Use Cyrilic letter Џ/џ (U+040F/U+045F), this letter is always in the incorrect order
     // when comparing code points but must be in the correct order when collation
@@ -42,9 +42,11 @@ void test_case_compare_collate()
 
     TESTX(uni::casesens::compare_utf16(uni::utf32to16u(U"\x10000"), uni::utf32to16u(U"\x10001")) != 0);
     TESTX(uni::casesens::collate_utf16(uni::utf32to16u(U"\x10000"), uni::utf32to16u(U"\x10001")) != 0);
+
+    return true;
 }
 
-void test_case_search()
+test_constexpr bool test_case_search()
 {
     uni::search s;
 
@@ -83,9 +85,11 @@ void test_case_search()
     TESTX((s = uni::caseless::search_utf16(u"", u"")) && s.pos() == 0 && s.end_pos() == 0);
     TESTX(!uni::casesens::search_utf16(u"", u"バカ"));
     TESTX(!uni::caseless::search_utf16(u"", u"バカ"));
+
+    return true;
 }
 
-void test_case_ill_formed()
+test_constexpr bool test_case_ill_formed()
 {
     // Ill-formed UTF must always produce replacement character U+FFFD
     // Check that all functions are consistent in this case
@@ -121,9 +125,11 @@ void test_case_ill_formed()
     TESTX(uni::cases::to_lowercase_utf16(u"\xDC00") == u"\xFFFD");
     TESTX(uni::cases::to_uppercase_utf16(u"\xDC00") == u"\xFFFD");
     TESTX(uni::cases::to_casefold_utf16(u"\xDC00") == u"\xFFFD");
+
+    return true;
 }
 
-void test_case_full_case()
+test_constexpr bool test_case_full_case()
 {
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
@@ -176,9 +182,11 @@ void test_case_full_case()
     TESTX((s = uni::caseless::search_utf16(u"abcﬁ", u"ﬁ")) && s.pos() == 3 && s.end_pos() == 4);
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
+
+    return true;
 }
 
-void test_case_upper_lower_fold()
+test_constexpr bool test_case_upper_lower_fold()
 {
     TESTX(uni::cases::to_uppercase_utf8("Test") == "TEST");
     TESTX(uni::cases::to_uppercase_utf8("два") == "ДВА");
@@ -213,9 +221,11 @@ void test_case_upper_lower_fold()
     TESTX(uni::cases::to_uppercase_utf16(u"\x1F80") == u"\x1F08\x0399");
     TESTX(uni::cases::to_uppercase_utf16(u"\x1F88") == u"\x1F08\x0399");
 #endif // UNI_ALGO_DISABLE_FULL_CASE
+
+    return true;
 }
 
-void test_case_final_sigma()
+test_constexpr bool test_case_final_sigma()
 {
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
@@ -254,9 +264,11 @@ void test_case_final_sigma()
     TESTX(uni::cases::to_lowercase_utf16(u":::Σ::\xDC00:F") == u":::σ::\xFFFD:f");
 
 #endif /* UNI_ALGO_DISABLE_FULL_CASE */
+
+    return true;
 }
 
-void test_case_sort_key()
+test_constexpr bool test_case_sort_key()
 {
 #ifdef UNI_ALGO_EXPERIMENTAL
     TESTX(uni::casesens::collate_utf8("Џ", "Ч") > 0 && uni::casesens::sortkey_utf8("Џ") > uni::casesens::sortkey_utf8("Ч"));
@@ -278,9 +290,11 @@ void test_case_sort_key()
           uni::caseless::sortkey_utf16(u"\x0390") == uni::caseless::sortkey_utf16(u"\x03B9\x0308\x0301"));
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_EXPERIMENTAL
+
+    return true;
 }
 
-void test_case_like()
+test_constexpr bool test_case_like()
 {
 #ifdef UNI_ALGO_EXPERIMENTAL
     TESTX(uni::caseless::like_utf8("abc123xyz789", "%ABC%XYZ%"));
@@ -325,9 +339,11 @@ void test_case_like()
     TESTX(!uni::caseless::like_utf8("abc", ""));
     TESTX(uni::caseless::like_utf8("", ""));
 #endif // UNI_ALGO_EXPERIMENTAL
+
+    return true;
 }
 
-void test_case_locale_lt()
+test_constexpr bool test_case_locale_lt()
 {
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
@@ -396,9 +412,11 @@ void test_case_locale_lt()
     TESTX(uni::cases::to_lowercase_utf16(u"\x0128", locale) == u"\x0069\x0307\x0303");
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
+
+    return true;
 }
 
-void test_case_locale_tr_az()
+test_constexpr bool test_case_locale_tr_az()
 {
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
@@ -441,9 +459,11 @@ void test_case_locale_tr_az()
     TESTX(uni::cases::to_uppercase_utf16(u"\x0069", locale) == u"\x0130");
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
+
+    return true;
 }
 
-void test_case_locale_el()
+test_constexpr bool test_case_locale_el()
 {
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
@@ -492,9 +512,11 @@ void test_case_locale_el()
     TESTX(uni::cases::to_uppercase_utf16(u"άZυλος", locale) == u"ΑZΥΛΟΣ");
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
+
+    return true;
 }
 
-void test_case_title()
+test_constexpr bool test_case_title()
 {
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 
@@ -546,9 +568,11 @@ void test_case_title()
     TESTX(uni::cases::to_titlecase_utf16(u"\x0345\x0345\x0345") == u"\x0399\x0345\x0345");
 
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
+
+    return true;
 }
 
-void test_case_title_locale()
+test_constexpr bool test_case_title_locale()
 {
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
@@ -576,12 +600,14 @@ void test_case_title_locale()
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
+
+    return true;
 }
 
 // Implement random algorithms using search function
 
 template<typename T>
-bool caseless_ends_with(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+test_constexpr bool caseless_ends_with(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     // Search always returns true for empty string2 so we need this to avoid endless loop
     if (string2.empty())
@@ -606,7 +632,7 @@ bool caseless_ends_with(std::basic_string_view<T> string1, std::basic_string_vie
 }
 
 template<typename T>
-bool caseless_starts_with(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+test_constexpr bool caseless_starts_with(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     uni::search found;
 
@@ -624,7 +650,7 @@ bool caseless_starts_with(std::basic_string_view<T> string1, std::basic_string_v
 #define TEST_CASELESS_FIND_ALL
 
 template<typename T>
-std::vector<std::pair<std::size_t, std::size_t>>
+test_constexpr std::vector<std::pair<std::size_t, std::size_t>>
 caseless_find_all(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     std::vector<std::pair<std::size_t, std::size_t>> result;
@@ -652,7 +678,7 @@ caseless_find_all(std::basic_string_view<T> string1, std::basic_string_view<T> s
 
 // Test them
 
-void test_case_search_ex()
+test_constexpr bool test_case_search_ex()
 {
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
@@ -755,4 +781,6 @@ void test_case_search_ex()
     TESTX(str16 == u"ABCXYZ");
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
+
+    return true;
 }

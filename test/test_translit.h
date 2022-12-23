@@ -6,7 +6,7 @@
 // If the compiler is MSVC then /utf-8 command line option must be used.
 static_assert(U'㋡' == 0x32E1);
 
-void test_translit_macedonian_to_latin_docs()
+test_constexpr bool test_translit_macedonian_to_latin_docs()
 {
     using namespace unx::translit;
 
@@ -37,9 +37,11 @@ void test_translit_macedonian_to_latin_docs()
 
     // Decomposed "ѓ Ѓ ќ Ќ" == "gj GJ kj KJ"
     TESTX(macedonian_to_latin_docs_utf16(u"г\x0301 Г\x0301 к\x0301 К\x0301") == u"gj GJ kj KJ");
+
+    return true;
 }
 
-void test_translit_japanese_kana_to_romaji_hepburn()
+test_constexpr bool test_translit_japanese_kana_to_romaji_hepburn()
 {
     using namespace unx::translit;
 
@@ -219,4 +221,6 @@ void test_translit_japanese_kana_to_romaji_hepburn()
                             u"ja ju jo ja ju jo bya byu byo pya pyu pyo\n";
 
     TESTX(japanese_kana_to_romaji_hepburn_utf16(hira16 + u'\n' + kata16) == (roma16 + u'\n' + roma16));
+
+    return true;
 }

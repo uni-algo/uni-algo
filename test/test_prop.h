@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-void test_prop()
+test_constexpr bool test_prop()
 {
     std::size_t count_surrogate      = 0;
     std::size_t count_control        = 0;
@@ -410,9 +410,11 @@ void test_prop()
     static_assert(uni::detail::impl_General_Category_Cs == static_cast<unsigned char>(gc::Cs));
     static_assert(uni::detail::impl_General_Category_Co == static_cast<unsigned char>(gc::Co));
     static_assert(uni::detail::impl_General_Category_Cn == static_cast<unsigned char>(gc::Cn));
+
+    return true;
 }
 
-void test_prop_case()
+test_constexpr bool test_prop_case()
 {
     TESTX(uni::codepoint::is_lowercase(U'w'));
     TESTX(!uni::codepoint::is_lowercase(U'W'));
@@ -580,9 +582,11 @@ void test_prop_case()
     TESTX(uni::codepoint::to_casefold_u32(0xDC00) == U"\xFFFD");
     TESTX(uni::codepoint::to_casefold_u32(0xDFFF) == U"\xFFFD");
 #endif // UNI_ALGO_DISABLE_FULL_CASE
+
+    return true;
 }
 
-void test_prop_norm()
+test_constexpr bool test_prop_norm()
 {
     TESTX(uni::codepoint::prop_norm{0}.Canonical_Combining_Class() == 0);
     TESTX(uni::codepoint::prop_norm{0x0300}.Canonical_Combining_Class() == 230);
@@ -695,4 +699,6 @@ void test_prop_norm()
     TESTX(uni::codepoint::to_compose(0xDFFF, 0xDFFF) == 0xFFFD);
     TESTX(uni::codepoint::to_compose(0xD800, 0xDC00) == 0xFFFD);
     TESTX(uni::codepoint::to_compose(0xDBFF, 0xDFFF) == 0xFFFD);
+
+    return true;
 }

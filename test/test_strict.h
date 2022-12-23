@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-void test_strict_utf8to16()
+test_constexpr bool test_strict_utf8to16()
 {
     uni::error error;
     std::u16string str;
@@ -155,9 +155,11 @@ void test_strict_utf8to16()
     TESTX(str.empty() && error && error.pos() == 0);
     str = uni::strict::utf8to16u("\xFF\x80", error);
     TESTX(str.empty() && error && error.pos() == 0);
+
+    return true;
 }
 
-void test_strict_utf8to32()
+test_constexpr bool test_strict_utf8to32()
 {
     uni::error error;
     std::u32string str;
@@ -311,9 +313,11 @@ void test_strict_utf8to32()
     TESTX(str.empty() && error && error.pos() == 0);
     str = uni::strict::utf8to32u("\xFF\x80", error);
     TESTX(str.empty() && error && error.pos() == 0);
+
+    return true;
 }
 
-void test_strict_utf16to8()
+test_constexpr bool test_strict_utf16to8()
 {
     uni::error error;
     std::string str;
@@ -359,9 +363,11 @@ void test_strict_utf16to8()
     TESTX(str.empty() && error && error.pos() == 2);
     str = uni::strict::utf16to8(u"\x0041\x0042\xD800\xFF37\x0043", error);
     TESTX(str.empty() && error && error.pos() == 2);
+
+    return true;
 }
 
-void test_strict_utf32to8()
+test_constexpr bool test_strict_utf32to8()
 {
     uni::error error;
     std::string str;
@@ -395,9 +401,11 @@ void test_strict_utf32to8()
 
     str = uni::strict::utf32to8(U"\x00000041\x0000D800\x0000DC00\x00000042\x00110000\x00000043", error);
     TESTX(str.empty() && error && error.pos() == 1);
+
+    return true;
 }
 
-void test_strict_utf16to32()
+test_constexpr bool test_strict_utf16to32()
 {
     uni::error error;
     std::u32string str;
@@ -415,9 +423,11 @@ void test_strict_utf16to32()
     TESTX(str.empty() && error && error.pos() == 2);
     str = uni::strict::utf16to32u(u"\x0041\x0042\xD800\xFF37\x0043", error);
     TESTX(str.empty() && error && error.pos() == 2);
+
+    return true;
 }
 
-void test_strict_utf32to16()
+test_constexpr bool test_strict_utf32to16()
 {
     uni::error error;
     std::u16string str;
@@ -431,4 +441,6 @@ void test_strict_utf32to16()
 
     str = uni::strict::utf32to16u(U"\x00000041\x0000D800\x0000DC00\x00000042\x00110000\x00000043", error);
     TESTX(str.empty() && error && error.pos() == 1);
+
+    return true;
 }

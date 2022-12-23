@@ -2,17 +2,17 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-std::u16string test_iter_utf8to16(std::string_view str)
+test_constexpr std::u16string test_iter_utf8to16(std::string_view str)
 {
     return str | uni::views::utf8 | uni::ranges::to_utf16<std::u16string>();
 }
 
-std::string test_iter_utf16to8(std::u16string_view str)
+test_constexpr std::string test_iter_utf16to8(std::u16string_view str)
 {
     return str | uni::views::utf16 | uni::ranges::to_utf8<std::string>();
 }
 
-void test_lenient_iter_utf8to16()
+test_constexpr bool test_lenient_iter_utf8to16()
 {
     TESTX(test_iter_utf8to16("ABC") == u"ABC");
     TESTX(test_iter_utf8to16("\xD0\x90\xD0\x91\xD0\x92") == u"\x0410\x0411\x0412");
@@ -95,9 +95,11 @@ void test_lenient_iter_utf8to16()
     TESTX(test_iter_utf8to16("\xFE\x80") == u"\xFFFD\xFFFD");
     TESTX(test_iter_utf8to16("\xFF") == u"\xFFFD");
     TESTX(test_iter_utf8to16("\xFF\x80") == u"\xFFFD\xFFFD");
+
+    return true;
 }
 
-void test_lenient_iter_utf16to8()
+test_constexpr bool test_lenient_iter_utf16to8()
 {
     TESTX(test_iter_utf16to8(u"ABC") == "ABC");
     TESTX(test_iter_utf16to8(u"\xFF21\xFF22\xFF23") == "\xEF\xBC\xA1\xEF\xBC\xA2\xEF\xBC\xA3");
@@ -122,5 +124,7 @@ void test_lenient_iter_utf16to8()
     TESTX(test_iter_utf16to8(u"\x0041\x0042\xD800\x0043") == "\x41\x42\xEF\xBF\xBD\x43");
     TESTX(test_iter_utf16to8(u"\x0041\x0042\xDC00\x0043") == "\x41\x42\xEF\xBF\xBD\x43");
     TESTX(test_iter_utf16to8(u"\x0041\x0042\xD800\xFF37\x0043") == "\x41\x42\xEF\xBF\xBD\xEF\xBC\xB7\x43");
+
+    return true;
 }
 

@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-void test_translit_buffer()
+test_constexpr bool test_translit_buffer()
 {
     // The internal translit buffer must behave the same as std::u32string
 
@@ -175,4 +175,6 @@ void test_translit_buffer()
     TESTX(buf == std::u32string_view{U"CABAB"});
     buf.replace(1, 0, arr, 0, 0);
     TESTX(buf == std::u32string_view{U"CABAB"});
+
+    return true;
 }

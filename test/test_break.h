@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-void test_break_grapheme()
+bool test_break_grapheme()
 {
     std::ifstream input("GraphemeBreakTest.txt", std::ios::binary);
     TESTX(input.is_open());
@@ -140,9 +140,11 @@ void test_break_grapheme()
             TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
         }
     }
+
+    return true;
 }
 
-void test_break_word()
+bool test_break_word()
 {
     std::ifstream input("WordBreakTest.txt", std::ios::binary);
     TESTX(input.is_open());
@@ -280,37 +282,39 @@ void test_break_word()
             TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
         }
     }
+
+    return true;
 }
 
-std::size_t test_break_count_words(std::string_view str)
+test_constexpr std::size_t test_break_count_words(std::string_view str)
 {
     auto view = uni::ranges::word::utf8_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
-std::size_t test_break_count_only_words(std::string_view str)
+test_constexpr std::size_t test_break_count_only_words(std::string_view str)
 {
     auto view = uni::ranges::word_only::utf8_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
-std::size_t test_break_count_words16(std::u16string_view str)
+test_constexpr std::size_t test_break_count_words16(std::u16string_view str)
 {
     auto view = uni::ranges::word::utf16_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
-std::size_t test_break_count_only_words16(std::u16string_view str)
+test_constexpr std::size_t test_break_count_only_words16(std::u16string_view str)
 {
     auto view = uni::ranges::word_only::utf16_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
-void test_break_word_corner_cases()
+test_constexpr bool test_break_word_corner_cases()
 {
     // Word indicator must work properly in all the cases.
     // The behavior is the same as in ICU.
@@ -358,9 +362,11 @@ void test_break_word_corner_cases()
     TESTX(test_break_count_only_words("\xE2\x84\xB9\xE2\x80\x8D") == 0);
     TESTX(test_break_count_only_words16(u"\x200D\x2139") == 0);
     TESTX(test_break_count_only_words16(u"\x2139\x200D") == 0);
+
+    return true;
 }
 
-void test_break_word_prop()
+test_constexpr bool test_break_word_prop()
 {
     // FORWARD
 
@@ -543,9 +549,11 @@ void test_break_word_prop()
     result16.clear();
     for (std::u16string_view s : sv16 | uni::views::word_only::utf16 | uni::views::reverse) { result16 += s; result16 += u'|'; }
     TESTX(result16 == u"\x6A31|\x30D0\x30AB|test7|7test|123,5|Tes't|");
+
+    return true;
 }
 
-void test_break_bidi()
+test_constexpr bool test_break_bidi()
 {
     std::string_view sv = "Tes't. 123,5 7test,test7 \xE3\x83\x90\xE3\x82\xAB \xE6\xA8\xB1 \xF0\x9F\x98\xBA";
     std::u16string_view sv16 = u"Tes't. 123,5 7test,test7 \x30D0\x30AB \x6A31 \xD83D\xDE3A";
@@ -641,4 +649,6 @@ void test_break_bidi()
     result16.clear();
     for (auto it = vwgp16.end(); it != vwgp16.begin();) { --it; result16 += std::u16string{it.begin(), it.end()}; result16 += u'|'; }
     TESTX(result16 == u"\xD83D\xDE3A| |\x6A31| |\x30AB|\x30D0| |.|t|'|s|e|T|");
+
+    return true;
 }

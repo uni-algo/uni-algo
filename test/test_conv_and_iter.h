@@ -4,7 +4,7 @@
 
 // Conversion module test
 
-void test_conv_and_iter_conv()
+test_constexpr bool test_conv_and_iter_conv()
 {
     // UTF-32 code unit (code point)
     for (char32_t c = 0; c <= 0x110000; ++c)
@@ -97,6 +97,8 @@ void test_conv_and_iter_conv()
             TESTX((str32 == std::basic_string<type>{0xFFFD}));
         }
     }
+
+    return true;
 }
 
 // Iterator module test
@@ -104,7 +106,7 @@ void test_conv_and_iter_conv()
 // Implement all conversion functions using ranges
 
 template<typename UTF8, typename UTF16>
-std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source)
+test_constexpr std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -112,7 +114,7 @@ std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> source)
     return source | uni::views::utf8 | uni::ranges::to_utf16<std::basic_string<UTF16>>();
 }
 template<typename UTF16, typename UTF8>
-std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source)
+test_constexpr std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
@@ -120,7 +122,7 @@ std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source)
     return source | uni::views::utf16 | uni::ranges::to_utf8<std::basic_string<UTF8>>();
 }
 template<typename UTF8, typename UTF32>
-std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source)
+test_constexpr std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
@@ -130,7 +132,7 @@ std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source)
     return std::basic_string<UTF32>{view.begin(), view.end()};
 }
 template<typename UTF32, typename UTF8>
-std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> source)
+test_constexpr std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> source)
 {
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
@@ -138,7 +140,7 @@ std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> source)
     return source | uni::ranges::to_utf8<std::basic_string<UTF8>>();
 }
 template<typename UTF16, typename UTF32>
-std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source)
+test_constexpr std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
@@ -148,7 +150,7 @@ std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source)
     return std::basic_string<UTF32>{view.begin(), view.end()};
 }
 template<typename UTF32, typename UTF16>
-std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source)
+test_constexpr std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
@@ -158,7 +160,7 @@ std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> source)
 
 // Redo the previous test using these conversion functions
 
-void test_conv_and_iter_iter()
+test_constexpr bool test_conv_and_iter_iter()
 {
     // UTF-32 code unit (code point)
     for (char32_t c = 0; c <= 0x110000; ++c)
@@ -251,4 +253,6 @@ void test_conv_and_iter_iter()
             TESTX((str32 == std::basic_string<type>{0xFFFD}));
         }
     }
+
+    return true;
 }

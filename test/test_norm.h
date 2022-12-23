@@ -5,14 +5,14 @@
 // Forward declaration for normalization functions that uses high-level ranges
 // We must test the ranges together with fast functions
 // See the end of the file for bodies
-std::string to_nfc_utf8(std::string_view str);
-std::string to_nfd_utf8(std::string_view str);
-std::string to_nfkc_utf8(std::string_view str);
-std::string to_nfkd_utf8(std::string_view str);
-std::u16string to_nfc_utf16(std::u16string_view str);
-std::u16string to_nfd_utf16(std::u16string_view str);
-std::u16string to_nfkc_utf16(std::u16string_view str);
-std::u16string to_nfkd_utf16(std::u16string_view str);
+test_constexpr std::string to_nfc_utf8(std::string_view str);
+test_constexpr std::string to_nfd_utf8(std::string_view str);
+test_constexpr std::string to_nfkc_utf8(std::string_view str);
+test_constexpr std::string to_nfkd_utf8(std::string_view str);
+test_constexpr std::u16string to_nfc_utf16(std::u16string_view str);
+test_constexpr std::u16string to_nfd_utf16(std::u16string_view str);
+test_constexpr std::u16string to_nfkc_utf16(std::u16string_view str);
+test_constexpr std::u16string to_nfkd_utf16(std::u16string_view str);
 
 size_t test_norm_impl(bool with_part2 = true, size_t with_prefix = 0, size_t with_suffix = 0)
 {
@@ -372,7 +372,7 @@ void test_norm()
     std::cout << "DONE: " << count_lines << " lines with suffix" << '\n';
 }
 
-void test_norm_detect()
+test_constexpr bool test_norm_detect()
 {
     // Composition exclusion -> always false
     TESTX(uni::norm::is_nfc_utf8(uni::utf32to8(U"\x0344")) == false);
@@ -430,9 +430,11 @@ void test_norm_detect()
     TESTX(uni::norm::is_nfkd_utf16(u"\xDC00") == false);
 
     std::cout << "DONE: Detecting Normalization Forms" << '\n';
+
+    return true;
 }
 
-void test_norm_stream_safe()
+test_constexpr bool test_norm_stream_safe()
 {
     // Note: 0x034F is U+034F COMBINING GRAPHEME JOINER (CGJ) that must be inserted within long sequences (30) of non-starters
 
@@ -716,44 +718,46 @@ void test_norm_stream_safe()
     TESTX(uni::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(uni::utf32to16u(NFKD)));
 
     std::cout << "DONE: Normalization Stream-Safe Text Format" << '\n';
+
+    return true;
 }
 
-std::string to_nfc_utf8(std::string_view str)
+test_constexpr std::string to_nfc_utf8(std::string_view str)
 {
     return str | uni::views::utf8 | uni::views::norm::nfc | uni::ranges::to_utf8<std::string>();
 }
 
-std::string to_nfd_utf8(std::string_view str)
+test_constexpr std::string to_nfd_utf8(std::string_view str)
 {
     return str | uni::views::utf8 | uni::views::norm::nfd | uni::ranges::to_utf8<std::string>();
 }
 
-std::string to_nfkc_utf8(std::string_view str)
+test_constexpr std::string to_nfkc_utf8(std::string_view str)
 {
     return str | uni::views::utf8 | uni::views::norm::nfkc | uni::ranges::to_utf8<std::string>();
 }
 
-std::string to_nfkd_utf8(std::string_view str)
+test_constexpr std::string to_nfkd_utf8(std::string_view str)
 {
     return str | uni::views::utf8 | uni::views::norm::nfkd | uni::ranges::to_utf8<std::string>();
 }
 
-std::u16string to_nfc_utf16(std::u16string_view str)
+test_constexpr std::u16string to_nfc_utf16(std::u16string_view str)
 {
     return str | uni::views::utf16 | uni::views::norm::nfc | uni::ranges::to_utf16<std::u16string>();
 }
 
-std::u16string to_nfd_utf16(std::u16string_view str)
+test_constexpr std::u16string to_nfd_utf16(std::u16string_view str)
 {
     return str | uni::views::utf16 | uni::views::norm::nfd | uni::ranges::to_utf16<std::u16string>();
 }
 
-std::u16string to_nfkc_utf16(std::u16string_view str)
+test_constexpr std::u16string to_nfkc_utf16(std::u16string_view str)
 {
     return str | uni::views::utf16 | uni::views::norm::nfkc | uni::ranges::to_utf16<std::u16string>();
 }
 
-std::u16string to_nfkd_utf16(std::u16string_view str)
+test_constexpr std::u16string to_nfkd_utf16(std::u16string_view str)
 {
     return str | uni::views::utf16 | uni::views::norm::nfkd | uni::ranges::to_utf16<std::u16string>();
 }

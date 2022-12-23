@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-void test2_lenient_utf8to16()
+test_constexpr bool test2_lenient_utf8to16()
 {
     TESTX(uni::utf8to16u("!!!ABC!!!") == u"!!!ABC!!!");
     TESTX(uni::utf8to16u("!!!\xD0\x90\xD0\x91\xD0\x92!!!") == u"!!!\x0410\x0411\x0412!!!");
@@ -85,9 +85,11 @@ void test2_lenient_utf8to16()
     TESTX(uni::utf8to16u("!!!\xFE\x80!!!") == u"!!!\xFFFD\xFFFD!!!");
     TESTX(uni::utf8to16u("!!!\xFF!!!") == u"!!!\xFFFD!!!");
     TESTX(uni::utf8to16u("!!!\xFF\x80!!!") == u"!!!\xFFFD\xFFFD!!!");
+
+    return true;
 }
 
-void test2_lenient_utf8to32()
+test_constexpr bool test2_lenient_utf8to32()
 {
     TESTX(uni::utf8to32u("!!!ABC!!!") == U"!!!ABC!!!");
     TESTX(uni::utf8to32u("!!!\xD0\x90\xD0\x91\xD0\x92!!!") == U"!!!\x0410\x0411\x0412!!!");
@@ -170,9 +172,11 @@ void test2_lenient_utf8to32()
     TESTX(uni::utf8to32u("!!!\xFE\x80!!!") == U"!!!\xFFFD\xFFFD!!!");
     TESTX(uni::utf8to32u("!!!\xFF!!!") == U"!!!\xFFFD!!!");
     TESTX(uni::utf8to32u("!!!\xFF\x80!!!") == U"!!!\xFFFD\xFFFD!!!");
+
+    return true;
 }
 
-void test2_lenient_utf16to8()
+test_constexpr bool test2_lenient_utf16to8()
 {
     TESTX(uni::utf16to8(u"!!!ABC!!!") == "!!!ABC!!!");
     TESTX(uni::utf16to8(u"!!!\xFF21\xFF22\xFF23!!!") == "!!!\xEF\xBC\xA1\xEF\xBC\xA2\xEF\xBC\xA3!!!");
@@ -197,9 +201,11 @@ void test2_lenient_utf16to8()
     TESTX(uni::utf16to8(u"!!!\x0041\x0042\xD800\x0043!!!") == "!!!\x41\x42\xEF\xBF\xBD\x43!!!");
     TESTX(uni::utf16to8(u"!!!\x0041\x0042\xDC00\x0043!!!") == "!!!\x41\x42\xEF\xBF\xBD\x43!!!");
     TESTX(uni::utf16to8(u"!!!\x0041\x0042\xD800\xFF37\x0043!!!") == "!!!\x41\x42\xEF\xBF\xBD\xEF\xBC\xB7\x43!!!");
+
+    return true;
 }
 
-void test2_lenient_utf32to8()
+test_constexpr bool test2_lenient_utf32to8()
 {
     TESTX(uni::utf32to8(U"!!!ABC!!!") == "!!!ABC!!!");
     TESTX(uni::utf32to8(U"!!!\x0000FF21\x0000FF22\x0000FF23!!!") == "!!!\xEF\xBC\xA1\xEF\xBC\xA2\xEF\xBC\xA3!!!");
@@ -218,9 +224,11 @@ void test2_lenient_utf32to8()
     TESTX(uni::utf32to8(U"!!!\x00110000\xFFFFFFFF!!!") == "!!!\xEF\xBF\xBD\xEF\xBF\xBD!!!");
 
     TESTX(uni::utf32to8(U"!!!\x00000041\x0000D800\x0000DC00\x00000042\x00110000\x00000043!!!") == "!!!\x41\xEF\xBF\xBD\xEF\xBF\xBD\x42\xEF\xBF\xBD\x43!!!");
+
+    return true;
 }
 
-void test2_lenient_utf16to32()
+test_constexpr bool test2_lenient_utf16to32()
 {
     TESTX(uni::utf16to32u(u"!!!ABC!!!") == U"!!!ABC!!!");
     TESTX(uni::utf16to32u(u"!!!\xFF21\xFF22\xFF23!!!") == U"!!!\x0000FF21\x0000FF22\x0000FF23!!!");
@@ -229,13 +237,17 @@ void test2_lenient_utf16to32()
     TESTX(uni::utf16to32u(u"!!!\x0041\x0042\xD800\x0043!!!") == U"!!!\x00000041\x00000042\x0000FFFD\x00000043!!!");
     TESTX(uni::utf16to32u(u"!!!\x0041\x0042\xDC00\x0043!!!") == U"!!!\x00000041\x00000042\x0000FFFD\x00000043!!!");
     TESTX(uni::utf16to32u(u"!!!\x0041\x0042\xD800\xFF37\x0043!!!") == U"!!!\x00000041\x00000042\x0000FFFD\x0000FF37\x00000043!!!");
+
+    return true;
 }
 
-void test2_lenient_utf32to16()
+test_constexpr bool test2_lenient_utf32to16()
 {
     TESTX(uni::utf32to16u(U"!!!ABC!!!") == u"!!!ABC!!!");
     TESTX(uni::utf32to16u(U"!!!\x0000FF21\x0000FF22\x0000FF23!!!") == u"!!!\xFF21\xFF22\xFF23!!!");
     TESTX(uni::utf32to16u(U"!!!\x0001D400\x0001D401\x0001D402!!!") == u"!!!\xD835\xDC00\xD835\xDC01\xD835\xDC02!!!");
 
     TESTX(uni::utf32to16u(U"!!!\x00000041\x0000D800\x0000DC00\x00000042\x00110000\x00000043!!!") == u"!!!\x0041\xFFFD\xFFFD\x0042\xFFFD\x0043!!!");
+
+    return true;
 }

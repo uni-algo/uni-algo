@@ -53,7 +53,7 @@ class memory_resource_func : public std::pmr::memory_resource
 };
 #endif
 
-void test_alloc_func_conv()
+test_constexpr bool test_alloc_func_conv()
 {
     alloc_func<char> alloc;
     alloc_func<char16_t> alloc16;
@@ -88,9 +88,11 @@ void test_alloc_func_conv()
     std::pmr::string result = uni::utf16to8<char16_t, char>(u"123", pa);
     TESTX(result == "123");
 #endif
+
+    return true;
 }
 
-void test_alloc_func_case()
+test_constexpr bool test_alloc_func_case()
 {
     alloc_func<char> alloc;
     alloc_func<char16_t> alloc16;
@@ -125,9 +127,11 @@ void test_alloc_func_case()
     TESTX(uni::cases::to_titlecase_utf16<char16_t>(u16str, uni::locale{}, alloc16) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
+
+    return true;
 }
 
-void test_alloc_func_norm()
+test_constexpr bool test_alloc_func_norm()
 {
     alloc_func<char> alloc;
     alloc_func<char16_t> alloc16;
@@ -154,4 +158,6 @@ void test_alloc_func_norm()
 #ifndef UNI_ALGO_DISABLE_PROP
     TESTX(uni::norm::to_unaccent_utf16<char16_t>(u16str, alloc16) == u16str);
 #endif // UNI_ALGO_DISABLE_PROP
+
+    return true;
 }

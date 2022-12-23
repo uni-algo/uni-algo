@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-void test_valid_utf8()
+test_constexpr bool test_valid_utf8()
 {
     uni::error error;
 
@@ -23,9 +23,11 @@ void test_valid_utf8()
     TESTX(!uni::is_valid_utf8("\xE2\x98\x83\x80", error) && error && error.pos() == 3);
     TESTX(!uni::is_valid_utf8("\xF0\x9F\x92\xA9\x80"));
     TESTX(!uni::is_valid_utf8("\xF0\x9F\x92\xA9\x80", error) && error && error.pos() == 4);
+
+    return true;
 }
 
-void test_valid_utf16()
+test_constexpr bool test_valid_utf16()
 {
     uni::error error;
 
@@ -40,9 +42,11 @@ void test_valid_utf16()
     TESTX(!uni::is_valid_utf16(u"\xDC00\xD835", error) && error && error.pos() == 0);
     TESTX(!uni::is_valid_utf16(u"\x0041\x0042\xD800\x0043"));
     TESTX(!uni::is_valid_utf16(u"\x0041\x0042\xD800\x0043", error) && error && error.pos() == 2);
+
+    return true;
 }
 
-void test_valid_utf32()
+test_constexpr bool test_valid_utf32()
 {
     uni::error error;
 
@@ -57,9 +61,11 @@ void test_valid_utf32()
     TESTX(!uni::is_valid_utf32(U"\x00110000", error) && error && error.pos() == 0);
     TESTX(!uni::is_valid_utf32(U"\x00000041\x0000D800\x0000DC00\x00000042\x00110000\x00000043"));
     TESTX(!uni::is_valid_utf32(U"\x00000041\x0000D800\x0000DC00\x00000042\x00110000\x00000043", error) && error && error.pos() == 1);
+
+    return true;
 }
 
-void test2_valid_utf8()
+test_constexpr bool test2_valid_utf8()
 {
     uni::error error;
 
@@ -80,9 +86,11 @@ void test2_valid_utf8()
     TESTX(!uni::is_valid_utf8("!!!\xE2\x98\x83\x80!!!", error) && error && error.pos() == 6);
     TESTX(!uni::is_valid_utf8("!!!\xF0\x9F\x92\xA9\x80!!!"));
     TESTX(!uni::is_valid_utf8("!!!\xF0\x9F\x92\xA9\x80!!!", error) && error && error.pos() == 7);
+
+    return true;
 }
 
-void test2_valid_utf16()
+test_constexpr bool test2_valid_utf16()
 {
     uni::error error;
 
@@ -97,9 +105,11 @@ void test2_valid_utf16()
     TESTX(!uni::is_valid_utf16(u"!!!\xDC00\xD835!!!", error) && error && error.pos() == 3);
     TESTX(!uni::is_valid_utf16(u"!!!\x0041\x0042\xD800\x0043!!!"));
     TESTX(!uni::is_valid_utf16(u"!!!\x0041\x0042\xD800\x0043!!!", error) && error && error.pos() == 5);
+
+    return true;
 }
 
-void test2_valid_utf32()
+test_constexpr bool test2_valid_utf32()
 {
     uni::error error;
 
@@ -114,4 +124,6 @@ void test2_valid_utf32()
     TESTX(!uni::is_valid_utf32(U"!!!\x00110000", error) && error && error.pos() == 3);
     TESTX(!uni::is_valid_utf32(U"!!!\x00000041\x0000D800\x0000DC00\x00000042\x00110000\x00000043!!!"));
     TESTX(!uni::is_valid_utf32(U"!!!\x00000041\x0000D800\x0000DC00\x00000042\x00110000\x00000043!!!", error) && error && error.pos() == 4);
+
+    return true;
 }

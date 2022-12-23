@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-void test_ascii_prop()
+test_constexpr bool test_ascii_prop()
 {
     // NOTE:
     // ASCII functions know nothing about Unicode so they are not consistent with Unicode functions
@@ -55,17 +55,21 @@ void test_ascii_prop()
     TESTX(unx::codepoint::to_ascii_uppercase(0x110000) == 0x110000);
     TESTX(unx::codepoint::to_ascii_lowercase(0xFFFFFFFF) == 0xFFFFFFFF);
     TESTX(unx::codepoint::to_ascii_uppercase(0xFFFFFFFF) == 0xFFFFFFFF);
+
+    return true;
 }
 
-void test_ascii_upper_lower()
+test_constexpr bool test_ascii_upper_lower()
 {
     TESTX(unx::cases::to_uppercase_ascii("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
                                       == "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ");
     TESTX(unx::cases::to_lowercase_ascii("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
                                       == "0123456789abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz");
+
+    return true;
 }
 
-void test_ascii_search()
+test_constexpr bool test_ascii_search()
 {
     uni::search s;
 
@@ -85,9 +89,11 @@ void test_ascii_search()
     TESTX((s = unx::caseless::search_ascii("", "")) && s.pos() == 0 && s.end_pos() == 0);
     TESTX(!unx::casesens::search_ascii("", "bbk"));
     TESTX(!unx::caseless::search_ascii("", "bbk"));
+
+    return true;
 }
 
-void test_ascii_trim()
+test_constexpr bool test_ascii_trim()
 {
     TESTX(unx::trim_ascii("   123   ") == "123");
     TESTX(unx::trim_start_ascii("   123   ") == "123   ");
@@ -114,9 +120,11 @@ void test_ascii_trim()
     TESTX(unx::trim_ascii<char16_t>(u"") == u"");
     TESTX(unx::trim_start_ascii<char16_t>(u"") == u"");
     TESTX(unx::trim_end_ascii<char16_t>(u"") == u"");
+
+    return true;
 }
 
-void test_ascii_valid()
+test_constexpr bool test_ascii_valid()
 {
     TESTX(unx::is_valid_ascii(""));
     TESTX(unx::is_valid_ascii("123"));
@@ -133,9 +141,11 @@ void test_ascii_valid()
     TESTX(!unx::is_valid_ascii<char16_t>(u"\x80"));
     TESTX(!unx::is_valid_ascii<char16_t>(u"123 \x80"));
     TESTX(!unx::is_valid_ascii<char16_t>(u"\x80 123"));
+
+    return true;
 }
 
-void test_ascii_short_func()
+test_constexpr bool test_ascii_short_func()
 {
     std::string str = "123";
 
@@ -154,6 +164,8 @@ void test_ascii_short_func()
     TESTX(unx::trim_ascii(str) == str);
     TESTX(unx::trim_start_ascii(str) == str);
     TESTX(unx::trim_end_ascii(str) == str);
+
+    return true;
 }
 
 // Custom allocator for the following tests
@@ -170,7 +182,7 @@ public:
         //std::cout << "Alloc  : " << n << " bytes at " << static_cast<void*>(p) << '\n';
         return p;
     }
-    void deallocate(T* p, std::size_t n)
+    test_constexpr void deallocate(T* p, std::size_t n)
     {
         (void)n;
         //std::cout << "Dealloc: " << n << " bytes at " << static_cast<void*>(p) << '\n';
@@ -179,7 +191,7 @@ public:
 };
 
 
-void test_ascii_alloc_func()
+test_constexpr bool test_ascii_alloc_func()
 {
     alloc_ascii<char> alloc;
 
@@ -187,9 +199,11 @@ void test_ascii_alloc_func()
 
     TESTX((unx::cases::to_lowercase_ascii<char>(str, alloc) == str));
     TESTX((unx::cases::to_uppercase_ascii<char>(str, alloc) == str));
+
+    return true;
 }
 
-void test_ascii_collate()
+test_constexpr bool test_ascii_collate()
 {
     std::string str_ascii;
     for(char32_t c = 0; c <= 0x7F; c++)
@@ -292,6 +306,8 @@ void test_ascii_collate()
     TESTX(valid_result_group == result_group_ascii);
     TESTX(valid_result_group == result_group_utf8);
     TESTX(valid_result_group == result_group_utf16);
+
+    return true;
 }
 
 #if 0

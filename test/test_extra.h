@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-void test_overflow()
+test_constexpr bool test_overflow()
 {
     // Even though this usage is incorrect all overflows must be consistent
 
@@ -27,9 +27,11 @@ void test_overflow()
 
     TESTX(*uni::ranges::utf8_view{str8}.begin() == 0x5A);
     TESTX(*uni::ranges::utf16_view{str16}.begin() == 0x5A);
+
+    return true;
 }
 
-void test_alter_value()
+test_constexpr bool test_alter_value()
 {
     // Make sure that low-level casts don't alter values
     // This test just explains why all low-level types must be unsigned in C++
@@ -93,4 +95,6 @@ void test_alter_value()
 
     str16 = uni::ranges::to_utf16<decltype(str16)>(std::u32string{0xD800}); // ill-formed
     TESTX(str16.size() == 1 && str16[0] == 0xFFFD);
+
+    return true;
 }

@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-void test_locale()
+test_constexpr bool test_locale()
 {
     // Ill-formed locale tags are allowed because they are constexpr
     // and we don't want to slow down compilation for no reason with checks
@@ -130,4 +130,6 @@ void test_locale()
     TESTX(uni::locale{}.is_empty());
     TESTX(uni::locale{""}.is_empty());
     TESTX(!uni::locale{"en-US"}.is_empty());
+
+    return true;
 }

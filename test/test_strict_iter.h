@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-std::u16string test_iter_utf8to16strict(std::string_view str, uni::error& error)
+test_constexpr std::u16string test_iter_utf8to16strict(std::string_view str, uni::error& error)
 {
     auto view = uni::ranges::utf8_view<std::string_view, uni::detail::impl_iter_error>{str};
 
@@ -24,7 +24,7 @@ std::u16string test_iter_utf8to16strict(std::string_view str, uni::error& error)
     return result;
 }
 
-std::string test_iter_utf16to8strict(std::u16string_view str, uni::error& error)
+test_constexpr std::string test_iter_utf16to8strict(std::u16string_view str, uni::error& error)
 {
     auto view = uni::ranges::utf16_view<std::u16string_view, uni::detail::impl_iter_error>{str};
 
@@ -47,7 +47,7 @@ std::string test_iter_utf16to8strict(std::u16string_view str, uni::error& error)
     return result;
 }
 
-void test_strict_iter_utf8to16()
+test_constexpr bool test_strict_iter_utf8to16()
 {
     uni::error error;
     std::u16string str;
@@ -200,9 +200,11 @@ void test_strict_iter_utf8to16()
     TESTX(str.empty() && error && error.pos() == 0);
     str = test_iter_utf8to16strict("\xFF\x80", error);
     TESTX(str.empty() && error && error.pos() == 0);
+
+    return true;
 }
 
-void test_strict_iter_utf16to8()
+test_constexpr bool test_strict_iter_utf16to8()
 {
     uni::error error;
     std::string str;
@@ -248,7 +250,6 @@ void test_strict_iter_utf16to8()
     TESTX(str.empty() && error && error.pos() == 2);
     str = test_iter_utf16to8strict(u"\x0041\x0042\xD800\xFF37\x0043", error);
     TESTX(str.empty() && error && error.pos() == 2);
+
+    return true;
 }
-
-
-

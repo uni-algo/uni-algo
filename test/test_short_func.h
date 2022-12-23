@@ -6,7 +6,7 @@
 // Note that this test doesn't test that the functions produce the correct result
 // because if template functions in other tests work then these functions work too.
 
-void test_short_func_conv()
+test_constexpr bool test_short_func_conv()
 {
     std::string str = "123";
     std::u16string u16str = u"123";
@@ -122,9 +122,11 @@ void test_short_func_conv()
     TESTX(uni::is_valid_utf8(u8str));
     TESTX(uni::is_valid_utf8(u8str, error));
 #endif // __cpp_lib_char8_t
+
+    return true;
 }
 
-void test_short_func_case()
+test_constexpr bool test_short_func_case()
 {
     std::string str = "123";
     std::u16string u16str = u"123";
@@ -248,9 +250,11 @@ void test_short_func_case()
     TESTX(uni::caseless::search_utf8(u8str, u8str));
 
 #endif // __cpp_lib_char8_t
+
+    return true;
 }
 
-void test_short_func_norm()
+test_constexpr bool test_short_func_norm()
 {
     std::string str = "123";
     std::u16string u16str = u"123";
@@ -350,4 +354,6 @@ void test_short_func_norm()
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #endif // __cpp_lib_char8_t
+
+    return true;
 }
