@@ -31,18 +31,13 @@ uaix_const type_codept impl_locale_region_ZZ    = 0x5A5A0000; // ISO 3166-1 alph
 //uaix_const type_codept impl_locale_region_999   = 0x39393900; // ISO 3166-1 numeric (UN M.49)
 //uaix_const type_codept impl_locale_currency_XXX = 0x58585800; // ISO 4217
 
-// TODO: Remove this ugly hack when constexpr low-level will be done
-#ifdef __cplusplus
-#undef uaix_static
-#define uaix_static constexpr
-#undef uaix_inline
-#define uaix_inline constexpr
-#endif
-
+// This function must be always constexpr in C++ even if constexpr low-level is disabled
 #ifdef __cplusplus
 template <typename it_in_utf8>
-#endif
+constexpr   type_codept impl_locate_from_tag(it_in_utf8 s, size_t size)
+#else
 uaix_static type_codept impl_locate_from_tag(it_in_utf8 s, size_t size)
+#endif
 {
     if (size == 1)
         return ((s[0] & 0xFF) << 24);
