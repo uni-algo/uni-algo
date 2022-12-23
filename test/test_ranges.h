@@ -138,6 +138,8 @@ test_constexpr bool test_ranges_to()
 
 test_constexpr bool test_ranges_ctad()
 {
+    // Skip constexpr test because uses TESTX inside class my_string
+    // TODO: It can be fixed
 #ifndef TEST_MODE_CONSTEXPR
 
     // If everything works properly none of these constructors and operators must be called

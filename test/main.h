@@ -195,6 +195,9 @@ int main7()
 
     STATIC_TESTX(test_lenient_iter_utf8to16());
     STATIC_TESTX(test_lenient_iter_utf16to8());
+    // Skip constexpr because constexpr std::reverse that is
+    // used inside these functions is broken in GCC 12.1
+    // TODO: Should fix this with manual reverse probably
 #ifndef TEST_MODE_CONSTEXPR
     STATIC_TESTX(test_lenient_iter_rev_utf8to16());
     STATIC_TESTX(test_lenient_iter_rev_utf16to8());
@@ -279,6 +282,7 @@ int main7()
 
     std::cout << "DONE: Break Grapheme and Word" << '\n';
 
+    // Skip constexpr test because takes too long
 #ifndef TEST_MODE_CONSTEXPR
     std::cout << "WAIT: Conversion and Ranges Extra" << '\n';
 

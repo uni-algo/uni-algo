@@ -207,6 +207,7 @@ test_constexpr bool test_ascii_alloc_func()
 
 test_constexpr bool test_ascii_collate()
 {
+    // Skip constexpr test because uses no constexpr functions
 #ifndef TEST_MODE_CONSTEXPR
 
     std::string str_ascii;

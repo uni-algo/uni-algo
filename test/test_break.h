@@ -555,6 +555,7 @@ test_constexpr bool test_break_word_prop()
 
 test_constexpr bool test_break_bidi()
 {
+    // Skip constexpr test because uses std::list
 #ifndef TEST_MODE_CONSTEXPR
 
     std::string_view sv = "Tes't. 123,5 7test,test7 \xE3\x83\x90\xE3\x82\xAB \xE6\xA8\xB1 \xF0\x9F\x98\xBA";
