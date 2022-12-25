@@ -2,6 +2,13 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
+//#define TEST_MODE_WITHOUT_UNICODE_TEST_FILES
+//#define TEST_MODE_SINGLE_INCLUDE
+//#define TEST_MODE_CONSTEXPR
+
+//#define TEST_MODE_GENERATE_VISUAL_FILES
+
+#ifndef TEST_MODE_SINGLE_INCLUDE
 #include "../include/uni_algo/conv.h"
 #include "../include/uni_algo/case.h"
 #include "../include/uni_algo/norm.h"
@@ -15,6 +22,9 @@
 // Transliterators
 #include "../include/uni_algo/ext/translit/macedonian_to_latin_docs.h"
 #include "../include/uni_algo/ext/translit/japanese_kana_to_romaji_hepburn.h"
+#else
+#include "uni_algo.h"
+#endif
 
 // Additional C++ Standard Library includes that are needed for tests
 #include <stdexcept>
@@ -26,10 +36,6 @@
 #include <fstream>
 #include <chrono>
 #include <random>
-
-//#define TEST_MODE_GENERATE_VISUAL_FILES
-//#define TEST_MODE_WITHOUT_UNICODE_TEST_FILES
-//#define TEST_MODE_CONSTEXPR
 
 //#ifndef UNI_ALGO_EXPERIMENTAL
 //#error "Don't forget to test experimental stuff"
@@ -111,6 +117,10 @@ int main7()
     std::cout << "MODE: TEST_MODE_GENERATE_VISUAL_FILES" << '\n';
     test_visual(); // This generates files for the visual test
     return 0;
+#endif
+
+#ifdef TEST_MODE_SINGLE_INCLUDE
+    std::cout << "MODE: TEST_MODE_SINGLE_INCLUDE" << '\n';
 #endif
 
 #if defined(TEST_MODE_CONSTEXPR)
