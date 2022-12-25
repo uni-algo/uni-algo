@@ -158,6 +158,7 @@ FetchContent_Declare(uni-algo
 # Or if you have Git installed
 # FetchContent_Declare(uni-algo
 #   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
+#   GIT_SHALLOW ON  # Download the branch without its history
 #   GIT_TAG v0.6.0) # The version you want to download
 
 FetchContent_MakeAvailable(uni-algo)
@@ -193,6 +194,9 @@ cmake --build build_test --config Release
 cd build_test
 ctest --verbose --build-config Release
 ```
+
+For constexpr tests use -DTEST_CONSTEXPR=ON without -DDOWNLOAD_UNICODE_TEST_FILES=ON<br>
+For other options see test/CMakeLists.txt
 </p></details>
 
 ## Examples
