@@ -176,7 +176,7 @@ public:
 #endif // UNI_ALGO_STATIC_DATA
 #endif // UNI_ALGO_DISABLE_SYSTEM_LOCALE
 #ifdef UNI_ALGO_EXPERIMENTAL
-    constexpr void normalize()
+    uaiw_constexpr void normalize()
     {
         lang.set_value(detail::impl_locale_norm_language(lang.get_value(), 0));
         if (lang.get_value() == 0)
