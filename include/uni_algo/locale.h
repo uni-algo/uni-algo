@@ -238,35 +238,28 @@ private:
                 if (found) // Multiple -_
                     break;
 
-                std::size_t size = i - prev;
+                std::basic_string_view<T> x = s.substr(prev, i - prev);
 
-                //std::cout << s.substr(prev, size) << '\n'; // Test
+                //std::cout << x << '\n'; // Test
 
                 if (!has_lang)
                 {
                     has_lang = true;
-                    if (size == 2 || size == 3)
-                    {
-                        std::basic_string_view<T> substr = s.substr(prev, size);
-                        lang.set_value(detail::impl_locale_from_language(substr, substr.size(), 0));
-                    }
+                    if (x.size() == 2 || x.size() == 3)
+                        lang.set_value(detail::impl_locale_from_language(x, x.size(), 0));
                     else
                         break;
                 }
-                else if (!has_scpt && size == 4)
+                else if (!has_scpt && x.size() == 4)
                 {
                     has_scpt = true;
-                    std::basic_string_view<T> substr = s.substr(prev, size);
-                    scpt.set_value(detail::impl_locale_from_script(substr, substr.size(), 0));
+                    scpt.set_value(detail::impl_locale_from_script(x, x.size(), 0));
                 }
                 else if (!has_regn)
                 {
                     has_regn = true;
-                    if (size == 2 || size == 3)
-                    {
-                        std::basic_string_view<T> substr = s.substr(prev, size);
-                        regn.set_value(detail::impl_locale_from_region(substr, substr.size(), 0));
-                    }
+                    if (x.size() == 2 || x.size() == 3)
+                        regn.set_value(detail::impl_locale_from_region(x, x.size(), 0));
                     break;
                 }
 
