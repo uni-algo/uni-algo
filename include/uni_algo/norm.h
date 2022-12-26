@@ -86,13 +86,13 @@ class proxy_it_out
 private:
     Iter it;
 public:
-    constexpr explicit proxy_it_out(Iter iter) : it(iter) {}
-    constexpr decltype(*it) operator*() { return *it; }
-    constexpr size_t operator-(const proxy_it_out&) { return 0; } // no-op
-    constexpr proxy_it_out& operator++(int) { return *this; } // no-op (by default in C++ output iterators)
+    uaiw_constexpr explicit proxy_it_out(Iter iter) : it{iter} {}
+    uaiw_constexpr decltype(*it) operator*() { return *it; }
+    uaiw_constexpr std::size_t operator-(const proxy_it_out&) { return 0; } // no-op
+    uaiw_constexpr proxy_it_out& operator++(int) { return *this; } // no-op (by default in C++ output iterators)
     // Test
-    /*constexpr size_t operator-(const proxy_it_out& rhs) { return it - rhs.it; }
-    constexpr proxy_it_out operator++(int)
+    /*uaiw_constexpr std::size_t operator-(const proxy_it_out& rhs) { return it - rhs.it; }
+    uaiw_constexpr proxy_it_out operator++(int)
     {
         proxy_it_out temp(*this);
         ++it;
