@@ -1,38 +1,40 @@
-REMINDER
+Notes to myself (mg152)
 
 Download these 3 files first from unicode.org:
 Latest version:
-ftp://ftp.unicode.org/Public/UNIDATA/NormalizationTest.txt
-ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.txt
-ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.txt
+https://www.unicode.org/Public/UNIDATA/NormalizationTest.txt
+https://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.txt
+https://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.txt
 Other versions:
-ftp://ftp.unicode.org/Public/12.0.0/ucd/NormalizationTest.txt
-ftp://ftp.unicode.org/Public/12.0.0/ucd/auxiliary/GraphemeBreakTest.txt
-ftp://ftp.unicode.org/Public/12.0.0/ucd/auxiliary/WordBreakTest.txt
-ftp://ftp.unicode.org/Public/12.1.0/ucd/NormalizationTest.txt
-ftp://ftp.unicode.org/Public/12.1.0/ucd/auxiliary/GraphemeBreakTest.txt
-ftp://ftp.unicode.org/Public/12.1.0/ucd/auxiliary/WordBreakTest.txt
+https://www.unicode.org/Public/12.0.0/ucd/NormalizationTest.txt
+https://www.unicode.org/Public/12.0.0/ucd/auxiliary/GraphemeBreakTest.txt
+https://www.unicode.org/Public/12.0.0/ucd/auxiliary/WordBreakTest.txt
+https://www.unicode.org/Public/12.1.0/ucd/NormalizationTest.txt
+https://www.unicode.org/Public/12.1.0/ucd/auxiliary/GraphemeBreakTest.txt
+https://www.unicode.org/Public/12.1.0/ucd/auxiliary/WordBreakTest.txt
 etc.
 
 GCC/Clang command lines:
-g++ -O3 -std=c++17 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-compare -Wsign-conversion -Wshadow -Wmissing-braces -Warray-bounds=2 -Wstrict-overflow=2 -Wstack-usage=3000 -Wnull-dereference -Wcast-align -Wcast-qual -Wduplicated-branches -Wduplicated-cond test/main.cpp src/data.cpp
-clang++ -O3 -std=c++17 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wsign-compare -Wshadow -Wmissing-braces -Warray-bounds -Wcast-align -Wcast-qual test/main.cpp src/data.cpp
+g++ -O3 -std=c++17 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wsign-compare -Wshadow -Wmissing-braces -Wnull-dereference -Wcast-align -Wcast-qual -Warray-bounds=2 -Wstrict-overflow=2 -Wstack-usage=3000 -Wduplicated-branches -Wduplicated-cond test/main.cpp src/data.cpp
+clang++ -O3 -std=c++17 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wsign-compare -Wshadow -Wmissing-braces -Wnull-dereference -Wcast-align -Wcast-qual -Warray-bounds test/main.cpp src/data.cpp
 
 DEBUG: -g -O0 -D_GLIBCXX_DEBUG -DUNI_ALGO_TEST_ASSERT
 
-MSVC: /W4 /WX
+MSVC: /std:c++17 /utf-8 /W4 /WX
 
 Must be 0 warnings and every warning must be fixed.
 
-Tested in:
-GCC 7.3.0 (x86/x64)
-GCC 10.1.0 (x64)
+Tested in (v0.6.0):
 GCC 12.1.0 (x64)
+GCC 10.1.0 (x64)
+GCC 7.3.0 (x86/x64)
+Clang 15.0.6 (x64)
+Clang 14.0.6 (x64)
 Clang 10.0.0
 Clang 9.0.0
 Clang 8.0.0
 Clang 7.1.0 (x64)
-MSVS 2017 (x86/x64)
+MSVS 2017 15.9 (MSVC 19.16) (x86/x64)
 
 Clang-Tidy command line:
 clang-tidy test/clang-tidy/main.cpp -header-filter=.* -extra-arg=-std=c++17 --
@@ -42,6 +44,7 @@ nm --print-size --size-sort --radix=d cpp_uni_data.cpp.o >nm_result.txt
 
 ASM:
 objdump -d main.cpp.o >asm_result.txt
+gcc -fverbose-asm -S -DNDEBUG -O3 -std=c++17 main.cpp
 
 -------
 
