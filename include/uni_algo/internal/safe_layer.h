@@ -133,27 +133,25 @@ public:
         --it;
         return tmp;
     }
-    uaiw_constexpr in& operator+=(int n)
+    uaiw_constexpr in& operator+=(std::ptrdiff_t n)
     {
         it += n;
         return *this;
     }
-    uaiw_constexpr in operator+(int n) const
-    {
-        in tmp = *this;
-        tmp += n;
-        return tmp;
-    }
-    uaiw_constexpr in& operator-=(int n)
+    uaiw_constexpr in& operator-=(std::ptrdiff_t n)
     {
         it -= n;
         return *this;
     }
-    uaiw_constexpr in operator-(int n) const
+    friend uaiw_constexpr in operator+(in x, std::ptrdiff_t n)
     {
-        in tmp = *this;
-        tmp -= n;
-        return tmp;
+        x += n;
+        return x;
+    }
+    friend uaiw_constexpr in operator-(in x, std::ptrdiff_t n)
+    {
+        x -= n;
+        return x;
     }
     friend uaiw_constexpr std::ptrdiff_t operator-(const in& x, const in& y) { return x.it - y.it; }
     friend uaiw_constexpr bool operator!=(const in& x, const in& y) { return x.it != y.it; }
