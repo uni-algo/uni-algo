@@ -7,6 +7,7 @@ See commit history between tags for details.
 - Added safe layer (bounds checks enabled in debug disabled in release)
 - In C++23 std::string::resize_and_overwrite is now used for better performance
 - Added ASCII extension
+- Removed function uni::codepoint::to_decompose_hangul_u32
 
 ## [v0.6.0](https://github.com/uni-algo/uni-algo/tree/v0.6.0) (07.11.2022)
 - Added uni::is_valid_utf8/16/32 functions for strings
