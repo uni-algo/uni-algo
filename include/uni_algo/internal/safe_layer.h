@@ -88,7 +88,8 @@ static_assert(std::is_aggregate_v<safe::array<char, 1>>, "safe::array must be ag
 template<class Iter>
 class end
 {
-public:
+    template<class U> friend class in;
+private:
     Iter it;
 public:
     uaiw_constexpr explicit end(Iter iter) : it{iter} {}
@@ -154,11 +155,14 @@ public:
         return x;
     }
     friend uaiw_constexpr std::ptrdiff_t operator-(const in& x, const in& y) { return x.it - y.it; }
-    friend uaiw_constexpr bool operator!=(const in& x, const in& y) { return x.it != y.it; }
     friend uaiw_constexpr bool operator==(const in& x, const in& y) { return x.it == y.it; }
+    friend uaiw_constexpr bool operator!=(const in& x, const in& y) { return x.it != y.it; }
     friend uaiw_constexpr bool operator>(const in& x, const in& y) { return x.it > y.it; }
-    friend uaiw_constexpr bool operator!=(const in& x, const safe::end<Iter>& y) { return x.it != y.it; }
-    friend uaiw_constexpr bool operator==(const in& x, const safe::end<Iter>& y) { return x.it == y.it; }
+private:
+    static uaiw_constexpr const Iter& friend_it(const safe::end<Iter>& i) { return i.it; }
+public:
+    friend uaiw_constexpr bool operator==(const in& x, const safe::end<Iter>& y) { return x.it == friend_it(y); }
+    friend uaiw_constexpr bool operator!=(const in& x, const safe::end<Iter>& y) { return x.it != friend_it(y); }
 };
 
 template<class Iter>
