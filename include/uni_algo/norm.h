@@ -1142,6 +1142,7 @@ inline uaiw_constexpr std::u32string to_decompose_compat_u32(char32_t c)
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
+#ifdef UNI_ALGO_EXPERIMENTAL
 inline uaiw_constexpr std::u32string to_decompose_hangul_u32(char32_t c)
 {
     std::u32string dst;
@@ -1155,6 +1156,7 @@ inline uaiw_constexpr std::u32string to_decompose_hangul_u32(char32_t c)
 #endif
     return dst;
 }
+#endif // UNI_ALGO_EXPERIMENTAL
 
 } // namespace codepoint
 
