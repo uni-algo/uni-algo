@@ -248,11 +248,10 @@ class uni::codepoint::prop_case     - provides <a href="https://www.unicode.org/
 
 <b>uni_algo/norm.h</b>
 
-uni::codepoint::to_decompose_u32        - full canonical decomposition (includes hangul decomposition)
-uni::codepoint::to_decompose_compat_u32 - full compatibility decomposition (includes hangul decomposition)
-uni::codepoint::to_decompose_hangul_u32 - hangul decomposition
+uni::codepoint::to_decompose_u32        - full canonical decomposition
+uni::codepoint::to_decompose_compat_u32 - full compatibility decomposition
 
-uni::codepoint::to_compose              - composes two code points (includes hangul composition)
+uni::codepoint::to_compose              - composes two code points
 
 class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Combining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a> functions
 </code></pre>
