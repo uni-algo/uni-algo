@@ -34,13 +34,13 @@ namespace detail {
 
 template<typename Dst, typename Alloc, typename Src, size_t SizeX,
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    size_t(*FnMap)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator, int, char32_t)>
+    size_t(*FnMap)(typename Src::const_iterator, typename Src::const_iterator, typename Dst::iterator, int, type_codept)>
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    size_t(*FnMap)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer, int, char32_t)>
+    size_t(*FnMap)(typename Src::const_pointer, typename Src::const_pointer, typename Dst::pointer, int, type_codept)>
 #else // Safe layer
-    size_t(*FnMap)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>, int, char32_t)>
+    size_t(*FnMap)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, safe::out<typename Dst::pointer>, int, type_codept)>
 #endif
-uaiw_constexpr Dst t_map(const Alloc& alloc, const Src& src, int mode, char32_t loc = 0)
+uaiw_constexpr Dst t_map(const Alloc& alloc, const Src& src, int mode, type_codept loc = 0)
 {
     Dst dst{alloc};
 
