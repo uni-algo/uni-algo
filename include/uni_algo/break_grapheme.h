@@ -11,6 +11,7 @@
 
 #include <type_traits>
 #include <cassert>
+#include <string_view>
 
 #include "config.h"
 #include "version.h"
