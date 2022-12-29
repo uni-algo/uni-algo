@@ -231,7 +231,7 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
-    bool result = false; // tag_must_be_initialized
+    bool result = false; // tag_can_be_uninitialized
 
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
@@ -451,7 +451,7 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
-    bool result = false; // tag_must_be_initialized
+    bool result = false; // tag_can_be_uninitialized
 
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
@@ -618,7 +618,7 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
-    bool result = false; // tag_must_be_initialized
+    bool result = false; // tag_can_be_uninitialized
 
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
@@ -834,7 +834,7 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
-    bool result = false; // tag_must_be_initialized
+    bool result = false; // tag_can_be_uninitialized
 
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules

@@ -99,7 +99,7 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* const state, t
     type_codept c_prop = stages_break_grapheme_prop(c);
     type_codept p_prop = state->prev_cp_prop;
 
-    bool result = false; // tag_must_be_initialized
+    bool result = false; // tag_can_be_uninitialized
 
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
@@ -230,7 +230,7 @@ uaix_static bool break_grapheme_rev_utf8(struct impl_break_grapheme_state* const
     type_codept c_prop = stages_break_grapheme_prop(c);
     type_codept p_prop = state->prev_cp_prop;
 
-    bool result = false; // tag_must_be_initialized
+    bool result = false; // tag_can_be_uninitialized
 
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
@@ -347,7 +347,7 @@ uaix_static bool break_grapheme_rev_utf16(struct impl_break_grapheme_state* cons
     type_codept c_prop = stages_break_grapheme_prop(c);
     type_codept p_prop = state->prev_cp_prop;
 
-    bool result = false; // tag_must_be_initialized
+    bool result = false; // tag_can_be_uninitialized
 
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
