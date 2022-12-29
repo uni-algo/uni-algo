@@ -70,7 +70,7 @@ The functions return a number of code units written to destination (result) stri
 If error is NULL then lenient mode:
 Conversion will never fail and invalid code units will be replaced with replacement character.
 If error is not NULL then strict mode:
-If conversion fails (*error != impl_npos) then *error will be a number of valid code units + 1
+If conversion fails (*error != impl_npos) then *error will be a number of valid code units
 in source (first, last) string.
 Note 1: destination string will never be terminated with null character.
 Note 2: destination string bounds will never be checked.

@@ -38,9 +38,12 @@ UNI_ALGO_DISABLE_CONV_UTF32 - Disable UTF-32 functions in conversion module.
 See examples/c_wrapper for an example how they can be implemented.
 UNI_ALGO_DISABLE_SYSTEM_LOCALE - Disable system locale.
 
-Reserved for C++ wrapper.
-UNI_ALGO_DISABLE_CPP_ITERATORS
+Reserved for C++ wrapper (see uni_algo/config.h).
 UNI_ALGO_DISABLE_SHRINK_TO_FIT
+UNI_ALGO_FORCE_CPP17_RANGES
+UNI_ALGO_FORCE_CPP_ITERATORS
+UNI_ALGO_FORCE_C_POINTERS
+UNI_ALGO_FORCE_C_ARRAYS
 
 Other configuration defines.
 UNI_ALGO_UNICODE_VERSION - See impl_unicode_version.h
