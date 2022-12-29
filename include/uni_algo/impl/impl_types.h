@@ -5,7 +5,9 @@
 // Must be included to define and check internal types in C wrapper.
 // Must never be included by a C++ wrapper.
 
-#ifndef __cplusplus
+#ifdef __cplusplus
+#error "This file must never be used in C++"
+#else
 // This part is only for C
 
 // typedef something type_char8 // Can be whatever
