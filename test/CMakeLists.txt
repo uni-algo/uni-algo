@@ -33,6 +33,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Cl
         "-Werror"
         "-Wall;-Wextra;-Wpedantic"
         "-Wconversion;-Wsign-conversion;-Wsign-compare"
+        "-Wnull-dereference;-Wcast-align;-Wcast-qual"
         "-Wshadow;-Wmissing-braces")
 endif()
 
