@@ -13,13 +13,9 @@ bool test_break_grapheme()
     // https://www.unicode.org/Public/12.1.0/ucd/auxiliary/GraphemeBreakTest.txt
     // etc.
 
-    size_t count_lines = 0;
-
     std::string line;
     while (std::getline(input, line))
     {
-        count_lines++;
-
         if (line.empty() || line[0] == '#' || line[0] == '@')
             continue;
 
@@ -155,13 +151,9 @@ bool test_break_word()
     // ftp://ftp.unicode.org/Public/12.1.0/ucd/auxiliary/WordBreakTest.txt
     // etc.
 
-    size_t count_lines = 0;
-
     std::string line;
     while (std::getline(input, line))
     {
-        count_lines++;
-
         if (line.empty() || line[0] == '#' || line[0] == '@')
             continue;
 
