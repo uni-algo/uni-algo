@@ -36,11 +36,10 @@ if(NOT UNI_ALGO_HEADER_ONLY)
     target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
     if(NOT DEFINED CMAKE_DEBUG_POSTFIX)
-        set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
+        set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX "-debug")
     endif()
 
-    target_sources(${PROJECT_NAME} PRIVATE
-        ${PROJECT_SOURCE_DIR}/src/data.cpp)
+    target_sources(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/src/data.cpp")
 else()
     target_include_directories(${PROJECT_NAME} INTERFACE
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
@@ -111,9 +110,15 @@ endif() # UNI_ALGO_INSTALL
 # CPACK
 # -----
 
-if (IS_TOP_LEVEL)
+if(IS_TOP_LEVEL)
 
-set(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/include/uni_algo/impl/LICENSE.txt)
+set(CPACK_GENERATOR "ZIP")
+set(CPACK_SOURCE_GENERATOR "ZIP;TGZ")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME ${PROJECT_NAME}-${PROJECT_VERSION})
+
+# Use LICENSE.txt from low-level because .txt file is needed here
+# The content of the file is the same as the main LICENSE.md
+set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/include/uni_algo/impl/LICENSE.txt")
 
 include(CPack)
 
