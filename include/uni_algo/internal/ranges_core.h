@@ -5,13 +5,13 @@
 #ifndef UNI_ALGO_INTERNAL_RANGES_CORE_H_UAIH
 #define UNI_ALGO_INTERNAL_RANGES_CORE_H_UAIH
 
-// In Clang std::ranges implementation is still partial and doesn't work properly
-// but it defines __cpp_lib_ranges in some versions for some strange reason
-// so always force our own implementation of ranges in Clang.
+// In Clang with libstdc++ std::ranges implementation doesn't work properly
+// but it defines __cpp_lib_ranges so always force our own implementation of ranges in this case.
+// Works fine when Clang with libc++ or MSVC STL (TODO: Not sure about MSVC STL need to test)
 // TODO: maybe move the define to config later so it will be easier to test in other compilers too
-#ifdef __clang__
+#if defined(__clang__) && defined(__GLIBCXX__)
 #  ifndef UNI_ALGO_FORCE_CPP17_RANGES
-#    define UNI_ALGO_FORCE_CPP17_RANGES
+#  define UNI_ALGO_FORCE_CPP17_RANGES
 #  endif
 #endif
 
