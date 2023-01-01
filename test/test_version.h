@@ -56,6 +56,29 @@ std::string processor_architecture()
     return result;
 }
 
+std::string compiler_clang_stdlib()
+{
+    // Find out what stdlib Clang uses
+    std::string result;
+#if defined(_LIBCPP_VERSION)
+    result += " libc++ " + std::to_string(_LIBCPP_VERSION);
+#elif defined(__GLIBCXX__)
+#  if defined(_GLIBCXX_RELEASE)
+    result += " libstdc++ " + std::to_string(_GLIBCXX_RELEASE);
+#  else
+    result += " libstdc++ " + std::to_string(__GLIBCXX__);
+#  endif
+#elif defined(_MSC_VER)
+    result += " MSVC STL " + std::to_string(_MSC_VER / 100) + '.' + std::to_string(_MSC_VER % 100);
+#endif
+    return result;
+
+    // NOTE:
+    // Some info about Clang stdlib on Windows: https://blog.conan.io/2022/10/13/Different-flavors-Clang-compiler-Windows.html
+    // Linux uses -stdlib=libstdc++ by default with ability to -stdlib=libc++
+    // macOS (Xcode) AppleClang uses -stdlib=libc++ by default -stdlib=libstdc++ is deprecated
+}
+
 std::string test_version_compiler()
 {
     std::string result;
@@ -65,20 +88,20 @@ std::string test_version_compiler()
 #elif defined(__INTEL_COMPILER) // icc
     result += "Intel " + std::to_string(__INTEL_COMPILER) + processor_architecture();
 #elif defined(__clang__)
-#if defined(__apple_build_version__)
+#  if defined(__apple_build_version__)
     result += "Apple";
-#endif
-#if defined(__ARMCOMPILER_VERSION)
+#  endif
+#  if defined(__ARMCOMPILER_VERSION)
     result += "ARM";
-#endif
+#  endif
     result += "Clang " +
             std::to_string(__clang_major__) + '.' +
             std::to_string(__clang_minor__) + '.' +
-            std::to_string(__clang_patchlevel__) + processor_architecture();
+            std::to_string(__clang_patchlevel__) + compiler_clang_stdlib() + processor_architecture();
 #elif defined(__GNUC__)
-#if defined(__MINGW32__)
+#  if defined(__MINGW32__)
     result += "MinGW ";
-#endif
+#  endif
     result += "GCC " +
             std::to_string(__GNUC__) + '.' +
             std::to_string(__GNUC_MINOR__) + '.' +
