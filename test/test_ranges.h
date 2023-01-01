@@ -191,6 +191,12 @@ test_constexpr bool test_ranges_ctad()
 
 test_constexpr bool test_ranges_static_assert()
 {
+    // NOTE: When ranges from Clang with libc++ (15.0.5 -fexperimental-library) is used
+    // then this test doesn't compile because of P1814R0 (still not implemented in Clang 15) it seems.
+    // Always works fine with our ranges so use !defined(__cpp_lib_ranges) first.
+    // This test is only needed for our ranges btw because we test here that our ranges are implemented properly so it's fine.
+#if !defined(__cpp_lib_ranges) || !defined(__clang__)
+
     static_assert(std::is_same_v<decltype("12345" | uni::views::reverse),
             decltype(uni::ranges::reverse_view{uni::ranges::ref_view{"00000"}})>); // must be ref_view here
     static_assert(std::is_same_v<decltype(std::string_view{"12345"} | uni::views::reverse),
@@ -246,6 +252,8 @@ test_constexpr bool test_ranges_static_assert()
         static_assert(std::is_same_v<decltype(str_view | uni::views::reverse),
                 decltype(uni::ranges::reverse_view{str_view})>); // must not be ref_view here
     }
+
+#endif // Clang
 
     // Test uni::detail::rng::iter_pointer_t
     static_assert(std::is_same_v<char*, uni::detail::rng::iter_pointer_t<decltype(std::string{"123"}.begin())>>);
