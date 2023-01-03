@@ -593,6 +593,10 @@ test_constexpr bool test_prop_case()
 
 test_constexpr bool test_prop_norm()
 {
+    // NOTE: This test start to cause internal compiler error in MSVC 19.16 if the library is not header-only
+    // after safe layer (safe arrays) was added so just disable it because nothing can be done about this anyway.
+#if !defined(_MSC_VER) || (_MSC_VER > 1916) || defined(UNI_ALGO_STATIC_DATA)
+
     TESTX(uni::codepoint::prop_norm{0}.Canonical_Combining_Class() == 0);
     TESTX(uni::codepoint::prop_norm{0x0300}.Canonical_Combining_Class() == 230);
     TESTX(uni::codepoint::prop_norm{0x0315}.Canonical_Combining_Class() == 232);
@@ -701,6 +705,8 @@ test_constexpr bool test_prop_norm()
     TESTX(uni::codepoint::to_compose(0xDFFF, 0xDFFF) == 0xFFFD);
     TESTX(uni::codepoint::to_compose(0xD800, 0xDC00) == 0xFFFD);
     TESTX(uni::codepoint::to_compose(0xDBFF, 0xDFFF) == 0xFFFD);
+
+#endif // MSVC
 
     return true;
 }
