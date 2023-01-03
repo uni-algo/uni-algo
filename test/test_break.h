@@ -109,7 +109,7 @@ bool test_break_grapheme()
 
             // Insert brakes
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 1)
-                string_with_breaks_utf16.insert(vec[i] + expand, u"\x00F7");
+                string_with_breaks_utf16.insert(vec[i] + expand, 1, 0x00F7);
 
             TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
         }
@@ -131,7 +131,7 @@ bool test_break_grapheme()
 
             // Insert brakes
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 1)
-                string_with_breaks_utf16.insert(vec[i] + expand, u"\x00F7");
+                string_with_breaks_utf16.insert(vec[i] + expand, 1, 0x00F7);
 
             TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
         }
@@ -247,7 +247,7 @@ bool test_break_word()
 
             // Insert brakes
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 1)
-                string_with_breaks_utf16.insert(vec[i] + expand, u"\x00F7");
+                string_with_breaks_utf16.insert(vec[i] + expand, 1, 0x00F7);
 
             TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
         }
@@ -269,7 +269,7 @@ bool test_break_word()
 
             // Insert brakes
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 1)
-                string_with_breaks_utf16.insert(vec[i] + expand, u"\x00F7");
+                string_with_breaks_utf16.insert(vec[i] + expand, 1, 0x00F7);
 
             TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
         }
