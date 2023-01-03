@@ -201,7 +201,7 @@ test_constexpr bool test_ranges_static_assert()
             decltype(uni::ranges::reverse_view{uni::ranges::ref_view{"00000"}})>); // must be ref_view here
     static_assert(std::is_same_v<decltype(std::string_view{"12345"} | uni::views::reverse),
             decltype(uni::ranges::reverse_view{std::string_view{}})>); // must not be ref_view here
-#if !defined(__cpp_lib_ranges) || __cpp_lib_ranges > 202106L
+#if !defined(__cpp_lib_ranges) || (__cpp_lib_ranges >= 202110L) // if owning_view is available
     static_assert(std::is_same_v<decltype(std::string{"12345"} | uni::views::reverse),
             decltype(uni::ranges::reverse_view{uni::ranges::owning_view{std::string{}}})>); // must be owning_view here
 #endif
@@ -228,7 +228,7 @@ test_constexpr bool test_ranges_static_assert()
                 decltype(uni::ranges::reverse_view{std::string_view{}})>); // must not be ref_view here
     }
     // Other tests
-#if !defined(__cpp_lib_ranges) || __cpp_lib_ranges > 202106L
+#if !defined(__cpp_lib_ranges) || (__cpp_lib_ranges >= 202110L) // if owning_view is available
     static_assert(std::is_same_v<decltype(std::string{"12345"} | uni::views::reverse | uni::views::drop(1)),
             decltype(uni::ranges::drop_view{uni::ranges::reverse_view{uni::ranges::owning_view{std::string{}}}, 1})>); // must be owning_view here
 #endif
