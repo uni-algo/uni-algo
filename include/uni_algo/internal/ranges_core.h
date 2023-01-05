@@ -200,8 +200,8 @@ public:
     uaiw_constexpr owning_view& operator=(const owning_view&) = default;
     uaiw_constexpr auto begin() { return std::begin(range); }
     uaiw_constexpr auto end() { return std::end(range); }
-    //uaiw_constexpr auto begin() const { return ranges::begin(range); }
-    //uaiw_constexpr auto end() const { return ranges::end(range); }
+    uaiw_constexpr auto begin() const { return std::begin(range); }
+    uaiw_constexpr auto end() const { return std::end(range); }
     template<class T = void, class = std::enable_if_t<detail::rng::has_member_data<Range>::value, T>>
     uaiw_constexpr auto data() { return std::data(range); }
     template<class T = void, class = std::enable_if_t<detail::rng::has_member_data<Range>::value, T>>
