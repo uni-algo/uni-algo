@@ -92,6 +92,7 @@ class end
 private:
     Iter it;
 public:
+    uaiw_constexpr end() = delete;
     uaiw_constexpr explicit end(Iter iter) : it{iter} {}
 };
 
@@ -112,6 +113,7 @@ public:
     uaiw_constexpr explicit in(Iter iter, std::size_t) : it{iter} {}
     uaiw_constexpr decltype(*it) operator*() const { return *it; }
 #endif
+    uaiw_constexpr in() = delete;
     uaiw_constexpr in& operator++()
     {
         ++it;
@@ -181,6 +183,7 @@ public:
     uaiw_constexpr explicit out(Iter iter, std::size_t) : it{iter} {}
     uaiw_constexpr decltype(*it) operator*() const { return *it; }
 #endif
+    uaiw_constexpr out() = delete;
     uaiw_constexpr out operator++(int)
     {
         out tmp = *this;
