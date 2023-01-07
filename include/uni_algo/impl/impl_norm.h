@@ -936,7 +936,6 @@ uaix_static size_t impl_norm_to_nfc_utf8(it_in_utf8 first, it_end_utf8 last, it_
      * it's impossible to achieve the same speed of the fast loop as in an algorithm that doesn't support streams.
      * ifs are written like that to avoid unnecessary jumps so it gives the best performance.
      * __builtin_expect is used because it achieves a better performance in GCC.
-     * TODO: questionable, this likely in while looks funny, should be retested with different GCC versions.
      * Other normalization functions are based on this function.
      */
 
