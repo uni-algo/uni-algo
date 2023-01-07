@@ -1321,7 +1321,7 @@ uaix_static size_t impl_norm_to_nfc_utf16(it_in_utf16 first, it_end_utf16 last, 
 
     do
     {
-        while (uaix_likely(src != last))
+        while (src != last)
         {
             src = iter_utf16(src, last, &c, iter_replacement);
             if (uaix_likely(stages_qc_yes_ns_nfc(c, &m.count_ns)))
