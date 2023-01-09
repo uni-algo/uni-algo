@@ -74,20 +74,31 @@ endif()
 target_sources(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/main.cpp")
 
 if(DOWNLOAD_UNICODE_TEST_FILES)
-    # https://stackoverflow.com/questions/61255773/cmake-file-download-ignores-errors
-    function(func_download func_arg)
-        get_filename_component(file_name ${func_arg} NAME)
-        message(STATUS "Downloading... " ${file_name})
-        file(DOWNLOAD ${func_arg} ${PROJECT_BINARY_DIR}/${file_name} STATUS download_status)
-        list(GET download_status 0 status_code)
-        if(NOT ${status_code} EQUAL 0)
-            message(FATAL_ERROR "Error while downloading: " ${file_name})
-        endif()
-    endfunction()
+    set(UNICODE_TEST_FILES_VERSION "15.0.0")
 
-    func_download("https://www.unicode.org/Public/15.0.0/ucd/NormalizationTest.txt")
-    func_download("https://www.unicode.org/Public/15.0.0/ucd/auxiliary/GraphemeBreakTest.txt")
-    func_download("https://www.unicode.org/Public/15.0.0/ucd/auxiliary/WordBreakTest.txt")
+    # if Unicode test files are not already downloaded
+    if(NOT UNICODE_TEST_FILES_VERSION STREQUAL UNICODE_TEST_FILES_CACHE)
+        # https://stackoverflow.com/questions/61255773/cmake-file-download-ignores-errors
+        function(func_download func_arg)
+            get_filename_component(file_name ${func_arg} NAME)
+            message(STATUS "Downloading... " ${file_name})
+            file(DOWNLOAD ${func_arg} ${PROJECT_BINARY_DIR}/${file_name} STATUS download_status)
+            list(GET download_status 0 status_code)
+            if(NOT ${status_code} EQUAL 0)
+                message(FATAL_ERROR "Error while downloading: " ${file_name})
+            endif()
+        endfunction()
+
+        message(STATUS "Download Unicode test files version: " ${UNICODE_TEST_FILES_VERSION})
+
+        func_download("https://www.unicode.org/Public/${UNICODE_TEST_FILES_VERSION}/ucd/NormalizationTest.txt")
+        func_download("https://www.unicode.org/Public/${UNICODE_TEST_FILES_VERSION}/ucd/auxiliary/GraphemeBreakTest.txt")
+        func_download("https://www.unicode.org/Public/${UNICODE_TEST_FILES_VERSION}/ucd/auxiliary/WordBreakTest.txt")
+
+        #set(UNICODE_TEST_FILES_CACHE ${UNICODE_TEST_FILES_VERSION} CACHE STRING "" FORCE)
+        #mark_as_advanced(FORCE UNICODE_TEST_FILES_CACHE) # Hide cache variable from cmake-gui
+        set(UNICODE_TEST_FILES_CACHE ${UNICODE_TEST_FILES_VERSION} CACHE INTERNAL "") # Should be better than previous
+    endif()
 endif() # DOWNLOAD_UNICODE_TEST_FILES
 
 enable_testing()
