@@ -81,10 +81,8 @@ if(NOT BUILD_UNI_ALGO)
     unset(UNI_ALGO_INSTALL CACHE)
 else()
     if(TEST_HEADER_ONLY OR TEST_CONSTEXPR)
-        #set(UNI_ALGO_HEADER_ONLY ON CACHE INTERNAL "") # Hides from cmake-gui (bad)
-        set(UNI_ALGO_HEADER_ONLY ON CACHE BOOL "" FORCE) # Doesn't hide (good)
+        set(UNI_ALGO_HEADER_ONLY ON CACHE BOOL "" FORCE)
     else()
-        #set(UNI_ALGO_HEADER_ONLY OFF CACHE INTERNAL "")
         set(UNI_ALGO_HEADER_ONLY OFF CACHE BOOL "" FORCE)
     endif()
 
@@ -116,9 +114,7 @@ if(DOWNLOAD_UNICODE_TEST_FILES)
         func_download("https://www.unicode.org/Public/${UNICODE_TEST_FILES_VERSION}/ucd/auxiliary/GraphemeBreakTest.txt")
         func_download("https://www.unicode.org/Public/${UNICODE_TEST_FILES_VERSION}/ucd/auxiliary/WordBreakTest.txt")
 
-        #set(UNICODE_TEST_FILES_CACHE ${UNICODE_TEST_FILES_VERSION} CACHE STRING "" FORCE)
-        #mark_as_advanced(FORCE UNICODE_TEST_FILES_CACHE) # Hide cache variable from cmake-gui
-        set(UNICODE_TEST_FILES_CACHE ${UNICODE_TEST_FILES_VERSION} CACHE INTERNAL "") # Should be better than previous
+        set(UNICODE_TEST_FILES_CACHE ${UNICODE_TEST_FILES_VERSION} CACHE INTERNAL "")
     endif()
 endif() # DOWNLOAD_UNICODE_TEST_FILES
 
