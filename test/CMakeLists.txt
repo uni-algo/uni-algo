@@ -2,22 +2,27 @@ cmake_minimum_required(VERSION 3.12...3.20)
 
 # NOTE: This file is used by GitHub Actions workflows edit with care
 
-# OPTIONS:
-# DOWNLOAD_UNICODE_TEST_FILES - Download/redownload Unicode test files before testing
-# BUILD_UNI_ALGO - Build the library before testing otherwise build together with tests (manual use)
-# TEST_CONSTEXPR - Test in constexpr mode (implies header-only and requeries C++20 or higher)
-# TEST_HEADER_ONLY - Test with header-only library
-# TEST_SINGLE_INCLUDE - Test with single include library (copy uni_algo.h to test folder first)
-
 project(uni-algo-test LANGUAGES CXX)
 
-if(DOWNLOAD_UNICODE_TEST_FILES AND TEST_CONSTEXPR)
-    message(FATAL_ERROR "DOWNLOAD_UNICODE_TEST_FILES and TEST_CONSTEXPR must not be used together")
+option(DOWNLOAD_UNICODE_TEST_FILES "Download Unicode test files and test with them" OFF)
+option(BUILD_UNI_ALGO "Build the library before testing otherwise build together with tests (manual use)" OFF)
+option(TEST_CONSTEXPR "Test in constexpr mode (implies header-only and requeries C++20 or higher)" OFF)
+option(TEST_HEADER_ONLY "Test with header-only library" OFF)
+option(TEST_SINGLE_INCLUDE "Test with single include library (copy uni_algo.h to test folder)" OFF)
+
+if(TEST_CONSTEXPR AND DOWNLOAD_UNICODE_TEST_FILES)
+    message(WARNING "TEST_CONSTEXPR and DOWNLOAD_UNICODE_TEST_FILES should not be used together")
+    set(DOWNLOAD_UNICODE_TEST_FILES OFF CACHE BOOL "" FORCE)
+endif()
+
+if(TEST_SINGLE_INCLUDE AND BUILD_UNI_ALGO)
+    message(WARNING "TEST_SINGLE_INCLUDE and BUILD_UNI_ALGO should not be used together")
+    set(BUILD_UNI_ALGO OFF CACHE BOOL "" FORCE)
 endif()
 
 add_executable(${PROJECT_NAME})
 
-# Use C++17 for old compilers or when it forced with CMAKE_CXX_STANDARD=17 otherwise C++20
+# Use C++17 for old compilers or when it forced with -DCMAKE_CXX_STANDARD=17 otherwise C++20
 if((CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0) OR
     (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0) OR
     (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.29))
@@ -25,6 +30,8 @@ if((CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION
 elseif(NOT DEFINED CMAKE_CXX_STANDARD)
     target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 endif()
+
+# Compile warnings
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(${PROJECT_NAME} PRIVATE "/utf-8;/W4;/WX")
@@ -36,6 +43,8 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Cl
         "-Wnull-dereference;-Wcast-align;-Wcast-qual"
         "-Wshadow;-Wmissing-braces")
 endif()
+
+# Compile definitions
 
 if(NOT DOWNLOAD_UNICODE_TEST_FILES)
     target_compile_definitions(${PROJECT_NAME} PRIVATE TEST_MODE_WITHOUT_UNICODE_TEST_FILES)
@@ -54,17 +63,29 @@ endif()
 # then pass to CMake: -DBUILD_UNI_ALGO=ON -DUNI_ALGO_HEADER_ONLY=ON
 # For header-only mode -DTEST_HEADER_ONLY can be used instead now.
 if(NOT BUILD_UNI_ALGO)
-    # Manual use should work even without include directory compile option
-    #target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../include/uni_algo")
-
-    if(TEST_HEADER_ONLY OR TEST_CONSTEXPR)
-        target_compile_definitions(${PROJECT_NAME} PRIVATE UNI_ALGO_STATIC_DATA)
-    elseif(NOT TEST_SINGLE_INCLUDE)
-        target_sources(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../src/data.cpp")
+    # Single include is always header-only so skip
+    if(NOT TEST_SINGLE_INCLUDE)
+        # Manual use must work even without include directory compile option
+        #target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../include/uni_algo")
+        if(TEST_HEADER_ONLY OR TEST_CONSTEXPR)
+            target_compile_definitions(${PROJECT_NAME} PRIVATE UNI_ALGO_STATIC_DATA)
+        else()
+            target_sources(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../src/data.cpp")
+        endif()
     endif()
+
+    # For better visual switch between BUILD_UNI_ALGO=ON/OFF in cmake-gui
+    # unset (hide) all uni-algo library options (see main CMakeLists.txt for them)
+    unset(BUILD_SHARED_LIBS CACHE)
+    unset(UNI_ALGO_HEADER_ONLY CACHE)
+    unset(UNI_ALGO_INSTALL CACHE)
 else()
     if(TEST_HEADER_ONLY OR TEST_CONSTEXPR)
-        set(UNI_ALGO_HEADER_ONLY ON CACHE INTERNAL "")
+        #set(UNI_ALGO_HEADER_ONLY ON CACHE INTERNAL "") # Hides from cmake-gui (bad)
+        set(UNI_ALGO_HEADER_ONLY ON CACHE BOOL "" FORCE) # Doesn't hide (good)
+    else()
+        #set(UNI_ALGO_HEADER_ONLY OFF CACHE INTERNAL "")
+        set(UNI_ALGO_HEADER_ONLY OFF CACHE BOOL "" FORCE)
     endif()
 
     add_subdirectory("${PROJECT_SOURCE_DIR}/.." build_uni_algo)
