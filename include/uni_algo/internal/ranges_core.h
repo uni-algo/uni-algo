@@ -17,6 +17,7 @@
 
 #include <type_traits>
 #include <iterator>
+#include <utility>
 #include <cassert>
 #include <memory>
 #if defined(__cpp_lib_ranges) && !defined(UNI_ALGO_FORCE_CPP17_RANGES)
