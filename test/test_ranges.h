@@ -69,6 +69,10 @@ class alloc_range
 public:
     using value_type = T;
 
+    // NOTE: Does not compile in MSVC Debug without this constructor but compiles in Release
+    template <class U>
+    test_constexpr alloc_range(const alloc_range<U>&) {}
+
     test_constexpr alloc_range() = default;
     test_constexpr T* allocate(std::size_t n)
     {

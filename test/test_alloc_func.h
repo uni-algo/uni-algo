@@ -12,6 +12,10 @@ class alloc_func
 public:
     using value_type = T;
 
+    // NOTE: Does not compile in MSVC Debug without this constructor but compiles in Release
+    template <class U>
+    test_constexpr alloc_func(const alloc_func<U>&) {}
+
     test_constexpr alloc_func() = default;
     test_constexpr T* allocate(std::size_t n)
     {
