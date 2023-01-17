@@ -142,7 +142,7 @@ test_constexpr bool test_ranges_to()
 
 test_constexpr bool test_ranges_ctad()
 {
-    // Skip constexpr test because uses TESTX inside class my_string
+    // Skip constexpr test for this part because uses TESTX inside class my_string
     // TODO: It can be fixed
 #ifndef TEST_MODE_CONSTEXPR
 
@@ -171,6 +171,8 @@ test_constexpr bool test_ranges_ctad()
     TESTX(*(str | uni::views::filter([](char c) { return c != '1'; })).begin() == '2');
     TESTX(*(str | uni::views::transform([](char) { return '7'; })).begin() == '7');
 
+#endif // TEST_MODE_CONSTEXPR
+
     // It works this way too (it breaks compilation if CTAD is wrong)
     // so for views that won't work with std::string just the simple test
     TESTX(*(u"123" | uni::views::utf16).begin() == u'1');
@@ -187,8 +189,6 @@ test_constexpr bool test_ranges_ctad()
     TESTX(*(u"123" | uni::views::grapheme::utf8).begin() == u"1");
     TESTX(*(u"123 789" | uni::views::word::utf8).begin() == u"123");
     TESTX(*(u" 123 789" | uni::views::word_only::utf8).begin() == u"123");
-
-#endif // TEST_MODE_CONSTEXPR
 
     return true;
 }
