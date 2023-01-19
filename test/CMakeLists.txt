@@ -44,6 +44,18 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Cl
         "-Wshadow;-Wmissing-braces")
 endif()
 
+# Compile constexpr limit
+
+if(TEST_CONSTEXPR)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_compile_options(${PROJECT_NAME} PRIVATE       "/constexpr:steps33554432") # Default is 100000
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(${PROJECT_NAME} PRIVATE     "-fconstexpr-steps=33554432") # Default is unknown
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(${PROJECT_NAME} PRIVATE "-fconstexpr-ops-limit=33554432") # Default is 33554432
+    endif()
+endif()
+
 # Compile definitions
 
 if(NOT DOWNLOAD_UNICODE_TEST_FILES)
