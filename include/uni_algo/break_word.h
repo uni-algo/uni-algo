@@ -40,9 +40,9 @@ private:
 
     private:
         utf8_view* parent = nullptr;
-        Iter it_begin;
-        Iter it_pos;
-        Iter it_next;
+        Iter it_begin = Iter{};
+        Iter it_pos = Iter{};
+        Iter it_next = Iter{};
         detail::type_codept word_prop = 0;
         detail::type_codept next_word_prop = 0;
 
@@ -206,9 +206,9 @@ private:
 
     private:
         utf16_view* parent = nullptr;
-        Iter it_begin;
-        Iter it_pos;
-        Iter it_next;
+        Iter it_begin = Iter{};
+        Iter it_pos = Iter{};
+        Iter it_next = Iter{};
         detail::type_codept word_prop = 0;
         detail::type_codept next_word_prop = 0;
 
@@ -375,9 +375,9 @@ private:
 
     private:
         utf8_view* parent = nullptr;
-        Iter it_begin;
-        Iter it_pos;
-        Iter it_next;
+        Iter it_begin = Iter{};
+        Iter it_pos = Iter{};
+        Iter it_next = Iter{};
         detail::type_codept word_prop = 0;
         detail::type_codept next_word_prop = 0;
 
@@ -545,9 +545,9 @@ private:
 
     private:
         utf16_view* parent = nullptr;
-        Iter it_begin;
-        Iter it_pos;
-        Iter it_next;
+        Iter it_begin = Iter{};
+        Iter it_pos = Iter{};
+        Iter it_next = Iter{};
         detail::type_codept word_prop = 0;
         detail::type_codept next_word_prop = 0;
 

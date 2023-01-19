@@ -38,9 +38,9 @@ private:
 
     private:
         utf8_view* parent = nullptr;
-        Iter it_begin;
-        Iter it_pos;
-        Iter it_next;
+        Iter it_begin = Iter{};
+        Iter it_pos = Iter{};
+        Iter it_next = Iter{};
 
         detail::impl_break_grapheme_state state{};
 
@@ -188,9 +188,9 @@ private:
 
     private:
         utf16_view* parent = nullptr;
-        Iter it_begin;
-        Iter it_pos;
-        Iter it_next;
+        Iter it_begin = Iter{};
+        Iter it_pos = Iter{};
+        Iter it_next = Iter{};
 
         detail::impl_break_grapheme_state state{};
 

@@ -35,8 +35,8 @@ private:
 
     private:
         utf8_view* parent = nullptr;
-        Iter it_pos;
-        Iter it_next;
+        Iter it_pos = Iter{};
+        Iter it_next = Iter{};
         detail::type_codept codepoint = 0;
 
         using iter_tag = detail::rng::iter_tag<Iter>;
@@ -161,8 +161,8 @@ private:
 
     private:
         utf16_view* parent = nullptr;
-        Iter it_pos;
-        Iter it_next;
+        Iter it_pos = Iter{};
+        Iter it_next = Iter{};
         detail::type_codept codepoint = 0;
 
         using iter_tag = detail::rng::iter_tag<Iter>;
@@ -290,7 +290,7 @@ private:
 
     private:
         reverse_view* parent = nullptr;
-        Iter it_pos;
+        Iter it_pos = Iter{};
         bool past_begin = true;
 
     public:
@@ -416,7 +416,7 @@ private:
     {
     private:
         filter_view* parent = nullptr;
-        Iter it_pos;
+        Iter it_pos = Iter{};
 
         using iter_tag = detail::rng::iter_tag<Iter>;
 
@@ -530,7 +530,7 @@ private:
     {
     private:
         transform_view* parent = nullptr;
-        Iter it_pos;
+        Iter it_pos = Iter{};
 
         using iter_tag = detail::rng::iter_tag<Iter>;
 
@@ -632,7 +632,7 @@ private:
     {
     private:
         take_view* parent = nullptr;
-        Iter it_pos;
+        Iter it_pos = Iter{};
         std::size_t count = 0;
 
         using iter_tag = detail::rng::iter_tag<Iter>;
@@ -737,7 +737,7 @@ private:
     {
     private:
         drop_view* parent = nullptr;
-        Iter it_pos;
+        Iter it_pos = Iter{};
 
         using iter_tag = detail::rng::iter_tag<Iter>;
 

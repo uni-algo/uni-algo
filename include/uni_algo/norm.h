@@ -622,7 +622,7 @@ private:
 
     private:
         nfc_view* parent = nullptr;
-        Iter it_pos;
+        Iter it_pos = Iter{};
 
         bool stream_end = false;
 
@@ -715,7 +715,7 @@ private:
 
     private:
         nfd_view* parent = nullptr;
-        Iter it_pos;
+        Iter it_pos = Iter{};
 
         bool stream_end = false;
 
@@ -810,7 +810,7 @@ private:
 
     private:
         nfkc_view* parent = nullptr;
-        Iter it_pos;
+        Iter it_pos = Iter{};
 
         bool stream_end = false;
 
@@ -903,7 +903,7 @@ private:
 
     private:
         nfkd_view* parent = nullptr;
-        Iter it_pos;
+        Iter it_pos = Iter{};
 
         bool stream_end = false;
 
