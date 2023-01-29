@@ -51,11 +51,6 @@
 #error "Test mode constexpr requires constexpr library (C++20 or higher and header-only enabled)"
 #undef TEST_MODE_CONSTEXPR
 #endif
-// TODO: GCC with -D_GLIBCXX_DEBUG breaks compilation of contstexpr tests with wall of text errors
-// so if it's not fixable it better to check defined(_GLIBCXX_DEBUG) and probably defined(_GLIBCXX_ASSERTIONS)
-// and fail early here with #error and readable message that those flags should not be used with constexpr tests.
-// Note that it only causes problems for tests, constexpr library seems to work fine with -D_GLIBCXX_DEBUG
-// Anyway the problem with -D_GLIBCXX_DEBUG and constexpr is much bigger than it seems and wastes too much time.
 
 #ifndef TEST_MODE_CONSTEXPR
 // Do not use exceptions so it possible to compile the tests with -fno-exceptions

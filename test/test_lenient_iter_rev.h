@@ -12,7 +12,19 @@ test_constexpr std::u16string test_iter_rev_utf8to16(std::string_view str)
         --it;
         codepoints.push_back(*it);
     }
+
+    // NOTE: Use manual reverse here when constexpr test because constexpr std::reverse
+    // is kinda annoying (produces many false positives) in GCC with -Wstrict-overflow=2
+#if !defined(TEST_MODE_CONSTEXPR)
     std::reverse(codepoints.begin(), codepoints.end());
+#else
+    for(std::size_t i = 0, j = codepoints.size() - 1; i < (codepoints.size() / 2); ++i, --j)
+    {
+            char32_t temp = codepoints[j];
+            codepoints[j] = codepoints[i];
+            codepoints[i] = temp;
+    }
+#endif
 
     return codepoints | uni::ranges::to_utf16<std::u16string>();
 }
@@ -27,7 +39,18 @@ test_constexpr std::string test_iter_rev_utf16to8(std::u16string_view str)
         --it;
         codepoints.push_back(*it);
     }
+
+    // NOTE: See comment in the function above for details
+#if !defined(TEST_MODE_CONSTEXPR)
     std::reverse(codepoints.begin(), codepoints.end());
+#else
+    for(std::size_t i = 0, j = codepoints.size() - 1; i < (codepoints.size() / 2); ++i, --j)
+    {
+            char32_t temp = codepoints[j];
+            codepoints[j] = codepoints[i];
+            codepoints[i] = temp;
+    }
+#endif
 
     return codepoints | uni::ranges::to_utf8<std::string>();
 }
