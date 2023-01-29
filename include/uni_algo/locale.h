@@ -195,6 +195,8 @@ public:
 
         std::size_t size = 0;
 
+        // REMINDER 1: Uncomment "size &&" parts to output empty string if ill-formed locale
+        // REMINDER 2: Uncomment "if (size)" parts to not prepend ill-formed locale with '-'
         size += detail::impl_locate_to_tag(lang.get_value(), result.begin() + static_cast<std::ptrdiff_t>(size));
         if (/*size && */scpt.get_value())
         {
