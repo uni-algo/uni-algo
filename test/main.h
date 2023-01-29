@@ -64,9 +64,9 @@
 #endif
 
 // Tests have some big functions so disable -Wstack-usage warning for them
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic push
-//#pragma GCC diagnostic ignored "-Wstack-usage="
+#pragma GCC diagnostic ignored "-Wstack-usage="
 #endif
 
 // All the following includes should not include other files.
@@ -107,7 +107,7 @@
 #include "test_translit.h"
 #include "test_translit_buffer.h"
 
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic pop
 #endif
 
