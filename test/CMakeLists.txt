@@ -42,6 +42,11 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Cl
         "-Wconversion;-Wsign-conversion;-Wsign-compare"
         "-Wnull-dereference;-Wcast-align;-Wcast-qual"
         "-Wshadow;-Wmissing-braces")
+
+    # Hidden option GCC extra strict (may produce false positives especially with constexpr tests)
+    if(TEST_GCC_EXTRA_STRICT)
+        target_compile_options(${PROJECT_NAME} PRIVATE "-Wstrict-overflow=2;-Warray-bounds=2")
+    endif()
 endif()
 
 # Compile constexpr limit
