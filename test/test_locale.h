@@ -31,66 +31,73 @@ test_constexpr bool test_locale()
 
     // Locale string parser must normalize locale tags always
 
-    TESTX((uni::locale{} == uni::locale{{}, {}, {}}));
-    TESTX((uni::locale{} == uni::locale{{}, uni::locale::script{}}));
-    TESTX((uni::locale{} == uni::locale{{}, uni::locale::region{}}));
-    TESTX((uni::locale{} == uni::locale{{}, uni::locale::script{}, uni::locale::region{}}));
-    TESTX((uni::locale{} == uni::locale{uni::locale::language{}, uni::locale::script{}, uni::locale::region{}}));
-    TESTX((uni::locale{} == uni::locale{uni::locale::language{}}));
-    TESTX((uni::locale{""} == uni::locale{}));
-    TESTX((uni::locale{"e"} == uni::locale{}));
-    TESTX((uni::locale{"1"} == uni::locale{}));
-    TESTX((uni::locale{"12"} == uni::locale{}));
-    TESTX((uni::locale{"123"} == uni::locale{}));
-    TESTX((uni::locale{"1234"} == uni::locale{}));
-    TESTX((uni::locale{"12345"} == uni::locale{}));
+    auto eq = [](const uni::locale& loc1, const uni::locale& loc2) -> bool
+    {
+        return loc1.get_language() == loc2.get_language() &&
+               loc1.get_script() == loc2.get_script() &&
+               loc1.get_region() == loc2.get_region();
+    };
 
-    TESTX((uni::locale{"en"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
-    TESTX((uni::locale{"en-US"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
-    TESTX((uni::locale{"en-Latn"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
-    TESTX((uni::locale{"en-Latn-US"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
-    TESTX((uni::locale{"en-Latn-029"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"029"}}));
-    TESTX((uni::locale{"en-029"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"029"}}));
-    TESTX((uni::locale{"en-029"} == uni::locale{uni::locale::language{"en"}, uni::locale::region{"029"}}));
+    TESTX(eq(uni::locale{}, uni::locale{{}, {}, {}}));
+    TESTX(eq(uni::locale{}, uni::locale{{}, uni::locale::script{}}));
+    TESTX(eq(uni::locale{}, uni::locale{{}, uni::locale::region{}}));
+    TESTX(eq(uni::locale{}, uni::locale{{}, uni::locale::script{}, uni::locale::region{}}));
+    TESTX(eq(uni::locale{}, uni::locale{uni::locale::language{}, uni::locale::script{}, uni::locale::region{}}));
+    TESTX(eq(uni::locale{}, uni::locale{uni::locale::language{}}));
+    TESTX(eq(uni::locale{""}, uni::locale{}));
+    TESTX(eq(uni::locale{"e"}, uni::locale{}));
+    TESTX(eq(uni::locale{"1"}, uni::locale{}));
+    TESTX(eq(uni::locale{"12"}, uni::locale{}));
+    TESTX(eq(uni::locale{"123"}, uni::locale{}));
+    TESTX(eq(uni::locale{"1234"}, uni::locale{}));
+    TESTX(eq(uni::locale{"12345"}, uni::locale{}));
 
-    TESTX((uni::locale{"EN"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
-    TESTX((uni::locale{"EN-us"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
-    TESTX((uni::locale{"EN-lATN"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
-    TESTX((uni::locale{"EN-lATN-us"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
-    TESTX((uni::locale{"EN-lATN-029"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"029"}}));
-    TESTX((uni::locale{"EN-029"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"029"}}));
-    TESTX((uni::locale{"EN-029"} == uni::locale{uni::locale::language{"en"}, uni::locale::region{"029"}}));
+    TESTX(eq(uni::locale{"en"}, uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX(eq(uni::locale{"en-US"}, uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
+    TESTX(eq(uni::locale{"en-Latn"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
+    TESTX(eq(uni::locale{"en-Latn-US"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
+    TESTX(eq(uni::locale{"en-Latn-029"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"029"}}));
+    TESTX(eq(uni::locale{"en-029"}, uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"029"}}));
+    TESTX(eq(uni::locale{"en-029"}, uni::locale{uni::locale::language{"en"}, uni::locale::region{"029"}}));
 
-    TESTX((uni::locale{"tzm"} == uni::locale{uni::locale::language{"tzm"}, {}, {}}));
-    TESTX((uni::locale{"tzm-DZ"} == uni::locale{uni::locale::language{"tzm"}, {}, uni::locale::region{"DZ"}}));
-    TESTX((uni::locale{"tzm-Latn"} == uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, {}}));
-    TESTX((uni::locale{"tzm-Latn-DZ"} == uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, uni::locale::region{"DZ"}}));
-    TESTX((uni::locale{"tzm-Latn-999"} == uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, uni::locale::region{"999"}}));
-    TESTX((uni::locale{"tzm-999"} == uni::locale{uni::locale::language{"tzm"}, {}, uni::locale::region{"999"}}));
-    TESTX((uni::locale{"tzm-999"} == uni::locale{uni::locale::language{"tzm"}, uni::locale::region{"999"}}));
+    TESTX(eq(uni::locale{"EN"}, uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX(eq(uni::locale{"EN-us"}, uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
+    TESTX(eq(uni::locale{"EN-lATN"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
+    TESTX(eq(uni::locale{"EN-lATN-us"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
+    TESTX(eq(uni::locale{"EN-lATN-029"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"029"}}));
+    TESTX(eq(uni::locale{"EN-029"}, uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"029"}}));
+    TESTX(eq(uni::locale{"EN-029"}, uni::locale{uni::locale::language{"en"}, uni::locale::region{"029"}}));
 
-    TESTX((uni::locale{"en_US.UTF8"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
-    TESTX((uni::locale{"en_Latn_US.UTF8"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
-    TESTX((uni::locale{"en_US_POSIX"} == uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
-    TESTX((uni::locale{"en_POSIX_US"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
-    TESTX((uni::locale{"POSIX"} == uni::locale{{}, {}, {}}));
+    TESTX(eq(uni::locale{"tzm"}, uni::locale{uni::locale::language{"tzm"}, {}, {}}));
+    TESTX(eq(uni::locale{"tzm-DZ"}, uni::locale{uni::locale::language{"tzm"}, {}, uni::locale::region{"DZ"}}));
+    TESTX(eq(uni::locale{"tzm-Latn"}, uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, {}}));
+    TESTX(eq(uni::locale{"tzm-Latn-DZ"}, uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, uni::locale::region{"DZ"}}));
+    TESTX(eq(uni::locale{"tzm-Latn-999"}, uni::locale{uni::locale::language{"tzm"}, uni::locale::script{"Latn"}, uni::locale::region{"999"}}));
+    TESTX(eq(uni::locale{"tzm-999"}, uni::locale{uni::locale::language{"tzm"}, {}, uni::locale::region{"999"}}));
+    TESTX(eq(uni::locale{"tzm-999"}, uni::locale{uni::locale::language{"tzm"}, uni::locale::region{"999"}}));
 
-    TESTX((uni::locale{"en-0029"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
-    TESTX((uni::locale{"en-29"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
-    TESTX((uni::locale{"en-9"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
-    TESTX((uni::locale{"en-Latn-0029"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
-    TESTX((uni::locale{"en-Latn-29"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
-    TESTX((uni::locale{"en-Latn-9"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
+    TESTX(eq(uni::locale{"en_US.UTF8"}, uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
+    TESTX(eq(uni::locale{"en_Latn_US.UTF8"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
+    TESTX(eq(uni::locale{"en_US_POSIX"}, uni::locale{uni::locale::language{"en"}, {}, uni::locale::region{"US"}}));
+    TESTX(eq(uni::locale{"en_POSIX_US"}, uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX(eq(uni::locale{"POSIX"}, uni::locale{{}, {}, {}}));
 
-    TESTX((uni::locale{"en-"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
-    TESTX((uni::locale{"en-Latn-"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
-    TESTX((uni::locale{"en-Latn-US-"} == uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
+    TESTX(eq(uni::locale{"en-0029"}, uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX(eq(uni::locale{"en-29"}, uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX(eq(uni::locale{"en-9"}, uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX(eq(uni::locale{"en-Latn-0029"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
+    TESTX(eq(uni::locale{"en-Latn-29"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
+    TESTX(eq(uni::locale{"en-Latn-9"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
 
-    TESTX((uni::locale{"en."} == uni::locale{uni::locale::language{"en"}, {}, {}}));
-    TESTX((uni::locale{"en.Latn"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
-    TESTX((uni::locale{"en.Latn-US"} == uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX(eq(uni::locale{"en-"}, uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX(eq(uni::locale{"en-Latn-"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, {}}));
+    TESTX(eq(uni::locale{"en-Latn-US-"}, uni::locale{uni::locale::language{"en"}, uni::locale::script{"Latn"}, uni::locale::region{"US"}}));
 
-    TESTX((uni::locale{"es-ES_tradnl"} == uni::locale{uni::locale::language{"es"}, {}, uni::locale::region{"ES"}}));
+    TESTX(eq(uni::locale{"en."}, uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX(eq(uni::locale{"en.Latn"}, uni::locale{uni::locale::language{"en"}, {}, {}}));
+    TESTX(eq(uni::locale{"en.Latn-US"}, uni::locale{uni::locale::language{"en"}, {}, {}}));
+
+    TESTX(eq(uni::locale{"es-ES_tradnl"}, uni::locale{uni::locale::language{"es"}, {}, uni::locale::region{"ES"}}));
 
     // TEST Locale to_string
 

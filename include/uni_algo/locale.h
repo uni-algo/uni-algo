@@ -280,10 +280,8 @@ public:
     uaiw_constexpr explicit locale(std::string_view s) { parse<char>(s); }
     uaiw_constexpr explicit locale(std::wstring_view s) { parse<wchar_t>(s); }
 
-    // TODO: It might be better to disallow comparison of locale objects
-    // and allow only comparison locale with locale subtags: language, region, script
-    // so remove these 2 operators or make them experimental.
-    // Be aware that it used in tests.
+    // NOTE: Comparison of locale objects is incorrect usage in most cases
+#ifdef UNI_ALGO_EXPERIMENTAL
     friend constexpr bool operator==(const locale& x, const locale& y)
     {
         return x.lang == y.lang &&
@@ -291,6 +289,7 @@ public:
                x.regn == y.regn;
     }
     friend constexpr bool operator!=(const locale& x, const locale& y) noexcept { return !(x == y); }
+#endif // UNI_ALGO_EXPERIMENTAL
     friend constexpr bool operator==(const language& x, const locale& y) { return x == y.lang; }
     friend constexpr bool operator!=(const language& x, const locale& y) { return x != y.lang; }
     friend constexpr bool operator==(const locale& x, const language& y) { return x.lang == y; }
