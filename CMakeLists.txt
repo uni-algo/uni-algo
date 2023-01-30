@@ -7,12 +7,12 @@ option(UNI_ALGO_HEADER_ONLY "Header-only" OFF)
 
 # ON if main project OFF if subproject (add_subdirectory etc.)
 # REMINDER: Remove and use PROJECT_IS_TOP_LEVEL in CMake 3.21
-set(IS_TOP_LEVEL OFF)
+set(UNI_ALGO_IS_TOP_LEVEL OFF)
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    set(IS_TOP_LEVEL ON)
+    set(UNI_ALGO_IS_TOP_LEVEL ON)
 endif()
 
-option(UNI_ALGO_INSTALL "Generate install targets" ${IS_TOP_LEVEL})
+option(UNI_ALGO_INSTALL "Generate install targets" ${UNI_ALGO_IS_TOP_LEVEL})
 
 message(STATUS "Configuring: " ${PROJECT_NAME} " " ${PROJECT_VERSION})
 message(STATUS "BUILD_SHARED_LIBS   : " ${BUILD_SHARED_LIBS})
@@ -110,7 +110,7 @@ endif() # UNI_ALGO_INSTALL
 # CPACK
 # -----
 
-if(IS_TOP_LEVEL)
+if(UNI_ALGO_IS_TOP_LEVEL)
 
 set(CPACK_GENERATOR "ZIP")
 set(CPACK_SOURCE_GENERATOR "ZIP;TGZ")
@@ -122,4 +122,4 @@ set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/include/uni_algo/impl/LIC
 
 include(CPack)
 
-endif() # IS_TOP_LEVEL
+endif() # UNI_ALGO_IS_TOP_LEVEL
