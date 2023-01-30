@@ -4,7 +4,7 @@
 
 test_constexpr bool test_prop()
 {
-    // Skip constexpr test for this part because takes too long
+    // Skip constexpr test for this part because takes too long and may exceed constexpr ops limit
 #ifndef TEST_MODE_CONSTEXPR
 
     std::size_t count_surrogate      = 0;

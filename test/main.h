@@ -287,7 +287,7 @@ int main7()
 
     std::cout << "DONE: Break Grapheme and Word" << '\n';
 
-    // Skip constexpr test because takes too long
+    // Skip constexpr test because takes too long and may exceed constexpr ops limit
 #ifndef TEST_MODE_CONSTEXPR
     std::cout << "WAIT: Conversion and Ranges Extra" << '\n';
 
