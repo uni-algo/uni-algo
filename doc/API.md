@@ -8,16 +8,18 @@ The uni-algo library API consists of the following parts:
 - [**uni_algo/conv.h**](#anchor-conv) - conversion functions
 - [**uni_algo/case.h**](#anchor-case) - case functions
 - [**uni_algo/locale.h**](#anchor-locale) - locale class
-- [**uni_algo/ranges.h**](#anchor-ranges) - UTF and basic ranges
-- [**uni_algo/norm.h**](#anchor-norm) - normalization functions and ranges
-- [**uni_algo/break_grapheme.h**](#anchor-grapheme) - grapheme ranges
-- [**uni_algo/break_word.h**](#anchor-word) - word ranges
+- [**uni_algo/norm.h**](#anchor-norm) - normalization functions
+- [**uni_algo/ranges.h**](#anchor-ranges) - basic ranges
+- [**uni_algo/ranges_conv.h**](#anchor-ranges-conv) - conversion ranges
+- [**uni_algo/ranges_norm.h**](#anchor-ranges-norm) - normalization ranges
+- [**uni_algo/ranges_grapheme.h**](#anchor-ranges-grapheme) - grapheme ranges
+- [**uni_algo/ranges_word.h**](#anchor-ranges-word) - word ranges
 - [**uni_algo/prop.h**](#anchor-prop) - code point properties
 - [**other classes**](#anchor-other)
 
 Things that are not listed in this file:
 - Functions and ranges that work with UTF end with `utf8` and `utf16` only UTF-8 functions and ranges are listed
-- Ranges come in pairs for example: `uni::ranges::word::utf8_view` / `uni::views::word::utf8` only views are listed
+- Range views come in pairs for example: `uni::ranges::utf8_view` / `uni::views::utf8` only second one is listed
 
 ---
 
@@ -126,23 +128,8 @@ where enum classes can be used for example in switch case.
 
 ---
 
-<a id="anchor-ranges"></a>
-**`uni_algo/ranges.h`** - UTF and basic ranges (header-only)
-```
-uni::views::utf8 - requires integral UTF-8 range produces char32_t range
-
-uni::ranges::to_utf8<type>() - requires char32_t range produces type range
-
-uni::views::reverse   - always use this instead of std::views::reverse
-uni::views::filter    - similar to std::views::filter
-uni::views::transform - similar to std::views::transform
-uni::views::drop      - similar to std::views::drop
-uni::views::take      - similar to std::views::take
-```
----
-
 <a id="anchor-norm"></a>
-**`uni_algo/norm.h`** - normalization functions and ranges (requeries src/data.cpp)
+**`uni_algo/norm.h`** - normalization functions (requeries src/data.cpp)
 ```
 uni::norm::to_nfc_utf8 - normalize a string to NFC normalization form
 uni::norm::to_nfd_utf8
@@ -153,27 +140,53 @@ uni::norm::is_nfd_utf8
 uni::norm::is_nfkc_utf8
 uni::norm::is_nfkd_utf8
 uni::norm::to_unaccent_utf8 - remove all accents and normalize a string to NFC
+```
+---
 
-uni::views::norm::nfc - requires char32_t range produces char32_t range
+<a id="anchor-ranges"></a>
+**`uni_algo/ranges.h`** - basic ranges (header-only)
+```
+uni::views::reverse   - always use this instead of std::views::reverse
+uni::views::filter    - similar to std::views::filter
+uni::views::transform - similar to std::views::transform
+uni::views::drop      - similar to std::views::drop
+uni::views::take      - similar to std::views::take
+```
+---
+
+<a id="anchor-ranges-conv"></a>
+**`uni_algo/ranges_conv.h`** - conversion ranges (header-only)
+```
+uni::views::utf8 - requires integral UTF-8 range produces char32_t range
+
+uni::ranges::to_utf8<type>() - requires char32_t range produces type range
+uni::ranges::to_utf8_reserve<type>(n) - same as previous but with reserve(n) call
+```
+---
+
+<a id="anchor-ranges-norm"></a>
+**`uni_algo/ranges_norm.h`** - normalization ranges (requeries src/data.cpp)
+```
+uni::views::norm::nfc - requires char32_t range produces char32_t NFC normalized range
 uni::views::norm::nfd
 uni::views::norm::nfkc
 uni::views::norm::nfkd
 ```
 ---
 
-<a id="anchor-grapheme"></a>
-**`uni_algo/break_grapheme.h`** - grapheme ranges (requeries src/data.cpp)
+<a id="anchor-ranges-grapheme"></a>
+**`uni_algo/ranges_grapheme.h`** - grapheme ranges (requeries src/data.cpp)
 ```
-uni::views::grapheme::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges
+uni::views::grapheme::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges of graphemes
 ```
-Uses UAX #29: Unicode Text Segmentation -> Grapheme Cluster Boundary Rules
+Uses [UAX #29: Unicode Text Segmentation -> Grapheme Cluster Boundary Rules](https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries)
 
 ---
 
-<a id="anchor-word"></a>
-**`uni_algo/break_word.h`** - word ranges (requeries src/data.cpp)
+<a id="anchor-ranges-word"></a>
+**`uni_algo/ranges_word.h`** - word ranges (requeries src/data.cpp)
 ```
-uni::views::word::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges
+uni::views::word::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges of words
 uni::views::word_only::utf8
 
 word properties (iterator of word view provides these functions):
@@ -188,8 +201,8 @@ is_punctuation      - includes only punctuation
 is_segspace         - includes only spaces
 is_newline          - includes only new lines
 ```
-Uses UAX #29: Unicode Text Segmentation -> Word Boundary Rules<br>
-`word_only` is a special case of UAX #29 that takes only words and skips all punctuation.
+Uses [UAX #29: Unicode Text Segmentation -> Word Boundary Rules](https://unicode.org/reports/tr29/#Word_Boundaries)<br>
+`word_only` is a special case of UAX #29 that takes only words and skips all punctuation and such.
 
 ---
 
@@ -261,7 +274,7 @@ class uni::codepoint::prop_norm         - provides <a href="https://www.unicode.
 <a id="anchor-other"></a>
 **`other classes`**
 ```
-class uni::error    - used by validation functions
-class uni::search   - used by search functions
-class uni::sentinel - used by ranges
+class uni::error    - error status, used by validation functions
+class uni::search   - search result, used by search functions
+class uni::sentinel - sentinel, used by ranges
 ```
