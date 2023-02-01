@@ -3,6 +3,10 @@ Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
 ## v0.7.0 (TBD)
+- Splitted .h files with ranges and functions:
+  - Added files: `uni_algo/ranges_norm.h` and `uni_algo/ranges_conv.h`
+  - Renamed file `uni_algo/break_grapheme.h` to `uni_algo/ranges_grapheme.h`
+  - Renamed file `uni_algo/break_word.h` to `uni_algo/ranges_word.h`
 - The library is full constexpr now (requeries C++20 or higher and header-only enabled)
 - Added safe layer (bounds checks enabled in debug disabled in release)
 - In C++23 std::string::resize_and_overwrite is now used for better performance
