@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_BREAK_WORD_H_UAIH
-#define UNI_ALGO_BREAK_WORD_H_UAIH
+#ifndef UNI_ALGO_RANGES_WORD_H_UAIH
+#define UNI_ALGO_RANGES_WORD_H_UAIH
 
 #ifdef UNI_ALGO_DISABLE_BREAK_WORD
 #error "Break Word module is disabled via define UNI_ALGO_DISABLE_BREAK_WORD"
@@ -783,7 +783,7 @@ namespace views = ranges::views;
 
 } // namespace uni
 
-#endif // UNI_ALGO_BREAK_WORD_H_UAIH
+#endif // UNI_ALGO_RANGES_WORD_H_UAIH
 
 /* Public Domain License
  *
