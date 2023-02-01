@@ -18,7 +18,7 @@
   - [Code Point Properties](#code-point-properties)
   - [Locale](#locale)
   - [Basic Ranges](#basic-ranges)
-  - [UTF Ranges](#utf-ranges)
+  - [Conversion Ranges](#conversion-ranges)
   - [Grapheme/Word Ranges](#graphemeword-ranges)
   - [Normalization Ranges](#normalization-ranges)
 - [Ranges vs Functions](#ranges-vs-functions)
@@ -379,7 +379,7 @@ assert(uni::codepoint::prop_case{U'w'}.Lowercase()); // Equivalent to the previo
 // Code point properties are usefull when you want to implement your own Unicode algorithm.
 // For example a functions that checks that an UTF-8 string contains only alphabetic characters
 // and works properly for all scripts and all Unicode normalization forms looks something like this:
-bool is_alphabetic_string(std::string_view view)
+bool is_alphabetic_string_utf8(std::string_view view)
 {
     // Note that this algorithm uses UTF-8 range view read below about this
     for (char32_t c : view | uni::views::utf8)
@@ -403,6 +403,7 @@ bool is_alphabetic_string(std::string_view view)
 ## Locale
 ```cpp
 #include "uni_algo/locale.h"
+#include "uni_algo/case.h"
 
 // Uppercase a string using system locale
 uni::cases::to_uppercase_utf8("Test", uni::locale::system());
@@ -419,7 +420,7 @@ assert(locale == uni::locale::script{"Latn"});
 assert(locale == uni::locale::region{"US"});
 assert(locale.to_string() == "en-Latn-US");
 
-// Use locale subtags in switch
+// Use locale subtags in switch case
 switch (uni::locale::system().get_language())
 {
     case uni::locale::language{"en"}:
@@ -439,6 +440,7 @@ switch (uni::locale::system().get_language())
 ```cpp
 // This module doesn't require Unicode data so it can be used as header-only
 #include "uni_algo/ranges.h"
+#include "uni_algo/ranges_conv.h"
 
 // Ranges in this library are compatible with C++20 ranges.
 // In C++17 the library implements some basic ranges that are similar to C++20 ranges:
@@ -458,19 +460,19 @@ assert(std::string_view{"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ"}
         | uni::views::reverse | uni::views::drop(3) | uni::views::take(5)
         | uni::views::reverse | uni::ranges::to_utf8<std::string>()
         == "ⅢⅣⅤⅥⅦ");
+```
+## Conversion Ranges
+```cpp
+// This module doesn't require Unicode data so it can be used as header-only
+#include "uni_algo/ranges_conv.h"
 
 // A simple conversion function using ranges looks like this:
 std::u16string utf8to16(std::string_view view)
 {
     return view | uni::views::utf8 | uni::ranges::to_utf16<std::u16string>();
 }
-```
-## UTF Ranges
-```cpp
-// This module doesn't require Unicode data so it can be used as header-only
-#include "uni_algo/ranges.h"
 
-// This example demonstrates how to work directly with a range view
+// The following examples demonstrates how to work directly with a conversion range view
 
 // 3 UTF-8 code points
 std::string str8 = "😺😼🙀"; // These emojis use 1 code point
@@ -518,12 +520,12 @@ for (auto it = view.end(); it != view.begin();)
 ```
 ## Grapheme/Word Ranges
 ```cpp
-#include "uni_algo/break_grapheme.h"
-#include "uni_algo/break_word.h"
+#include "uni_algo/ranges_grapheme.h"
+#include "uni_algo/ranges_word.h"
 
-// Grapheme/Word aka Break ranges are similar to UTF ranges
+// Grapheme/Word ranges are similar to conversion ranges
 // but they return subranges in the form of std::string_view
-// Break ranges use default grapheme/word boundary rules from The Unicode Standard UAX #29
+// They use default grapheme/word boundary rules from the Unicode Standard UAX #29
 
 std::string str8 = "Άλμπερτ Αϊνστάιν";
 
@@ -573,14 +575,13 @@ str8.insert(pos, uni::utf32to8(std::u32string{U'😼'})); // This emoji use 1 co
 ```cpp
 // For example we need to remove accents that mark the stressed vowels in a text.
 // The algorithm is simple: NFD -> Remove grave and acute accents (U+0300 and U+0301) -> NFC
-// Note that the library has uni::norm::utf8_unaccent function but it won't produce
+// Note that the library has uni::norm::to_unaccent_utf8 function but it won't produce
 // the same result because it removes all accents not specific ones,
 // but it is possible to implement this algorithm using ranges like this.
 
 #include "uni_algo/ranges.h"
-#include "uni_algo/norm.h"
-// Note that we include Normalization module because some modules
-// provide not only functions but ranges too.
+#include "uni_algo/ranges_conv.h"
+#include "uni_algo/ranges_norm.h"
 
 std::string remove_grave_and_acute_accents(std::string_view str_view)
 {
