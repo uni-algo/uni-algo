@@ -12,6 +12,7 @@
 #include <type_traits>
 #include <string>
 #include <string_view>
+#include <iterator>
 
 #include "config.h"
 #include "version.h"
