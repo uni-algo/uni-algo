@@ -9,7 +9,7 @@
 #include <string>
 #include <string_view>
 
-#include "../../ranges.h"
+#include "../../ranges_conv.h"
 #include "../../internal/ranges_translit.h"
 
 namespace uni::detail::translit {

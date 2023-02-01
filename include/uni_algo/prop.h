@@ -9,6 +9,7 @@
 #error "Property module is disabled via define UNI_ALGO_DISABLE_PROP"
 #endif
 
+#include <cstddef>
 #include <type_traits>
 
 #include "config.h"
