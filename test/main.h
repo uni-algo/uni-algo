@@ -10,13 +10,15 @@
 
 #ifndef TEST_MODE_SINGLE_INCLUDE
 #include "../include/uni_algo/conv.h"
+#include "../include/uni_algo/locale.h"
 #include "../include/uni_algo/case.h"
 #include "../include/uni_algo/norm.h"
 #include "../include/uni_algo/prop.h"
-#include "../include/uni_algo/break_grapheme.h"
-#include "../include/uni_algo/break_word.h"
 #include "../include/uni_algo/ranges.h"
-#include "../include/uni_algo/locale.h"
+#include "../include/uni_algo/ranges_conv.h"
+#include "../include/uni_algo/ranges_norm.h"
+#include "../include/uni_algo/ranges_grapheme.h"
+#include "../include/uni_algo/ranges_word.h"
 // Extensions
 #include "../include/uni_algo/ext/ascii.h"
 // Transliterators
