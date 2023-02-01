@@ -25,8 +25,8 @@
 #include <vector>
 #include <stdexcept>
 #include "../include/uni_algo/conv.h"
-#include "../include/uni_algo/break_grapheme.h"
-#include "../include/uni_algo/break_word.h"
+#include "../include/uni_algo/ranges_grapheme.h"
+#include "../include/uni_algo/ranges_word.h"
 
 // Use the attribute in GCC/CLang to force inline ranges for perf tests
 //__attribute__((flatten))
