@@ -7,7 +7,6 @@
 
 #include <cstddef>
 #include <type_traits>
-#include <iterator>
 
 #include "config.h"
 #include "version.h"
