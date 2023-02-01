@@ -3,7 +3,7 @@
  * See LICENSE.md */
 
 #include "uni_algo/case.h"
-#include "uni_algo/break_word.h"
+#include "uni_algo/ranges_word.h"
 
 void find_whole_word_in_file(const std::string& file, std::string_view word)
 {

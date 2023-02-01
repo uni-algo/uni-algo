@@ -1,10 +1,12 @@
-/* Example for Unicode Algorithms Implementation.
+﻿/* Example for Unicode Algorithms Implementation.
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-#include "uni_algo/ranges.h"
 #include "uni_algo/norm.h"
-#include "uni_algo/break_word.h"
+#include "uni_algo/ranges.h"
+#include "uni_algo/ranges_norm.h"
+#include "uni_algo/ranges_conv.h"
+#include "uni_algo/ranges_word.h"
 
 // -----------------------------
 // Do not overuse ranges example
