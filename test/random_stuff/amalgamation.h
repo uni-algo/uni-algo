@@ -243,14 +243,16 @@ void amalgam()
     output << amalgam_part("uni_algo/internal/ranges_translit.h");
 
     // Use the same order as low-level
-    output << amalgam_part("uni_algo/ranges.h");
     output << amalgam_part("uni_algo/conv.h");
-    output << amalgam_part("uni_algo/break_grapheme.h");
-    output << amalgam_part("uni_algo/break_word.h");
     output << amalgam_part("uni_algo/locale.h");
     output << amalgam_part("uni_algo/case.h");
     output << amalgam_part("uni_algo/prop.h");
     output << amalgam_part("uni_algo/norm.h");
+    output << amalgam_part("uni_algo/ranges.h");
+    output << amalgam_part("uni_algo/ranges_conv.h");
+    output << amalgam_part("uni_algo/ranges_norm.h");
+    output << amalgam_part("uni_algo/ranges_grapheme.h");
+    output << amalgam_part("uni_algo/ranges_word.h");
 
     // WRAPPER END
 
