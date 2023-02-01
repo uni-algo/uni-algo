@@ -9,6 +9,7 @@
 
 #include "conv.h"
 #include "ranges.h"
+#include "ranges_conv.h"
 
 #ifndef UNI_ALGO_DISABLE_CASE
 #include "case.h"
@@ -16,6 +17,7 @@
 
 #ifndef UNI_ALGO_DISABLE_NORM
 #include "norm.h"
+#include "ranges_norm.h"
 #endif
 
 #ifndef UNI_ALGO_DISABLE_PROP
@@ -23,11 +25,11 @@
 #endif
 
 #ifndef UNI_ALGO_DISABLE_BREAK_GRAPHEME
-#include "break_grapheme.h"
+#include "ranges_grapheme.h"
 #endif
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-#include "break_word.h"
+#include "ranges_word.h"
 #endif
 
 #endif // UNI_ALGO_ALL_H_UAIH
