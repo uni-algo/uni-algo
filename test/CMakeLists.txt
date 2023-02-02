@@ -9,6 +9,7 @@ option(BUILD_UNI_ALGO "Build the library before testing otherwise build together
 option(TEST_CONSTEXPR "Test in constexpr mode (implies header-only and requeries C++20 or higher)" OFF)
 option(TEST_HEADER_ONLY "Test with header-only library" OFF)
 option(TEST_SINGLE_INCLUDE "Test with single include library (copy uni_algo.h to test folder)" OFF)
+option(TEST_STANDALONE "Test that every file can be compiled as standalone include" OFF)
 
 if(TEST_CONSTEXPR AND DOWNLOAD_UNICODE_TEST_FILES)
     message(WARNING "TEST_CONSTEXPR and DOWNLOAD_UNICODE_TEST_FILES should not be used together")
@@ -137,3 +138,8 @@ endif() # DOWNLOAD_UNICODE_TEST_FILES
 
 enable_testing()
 add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})
+
+# Test that every file can be compiled as standalone include
+if(TEST_STANDALONE)
+    include("${PROJECT_SOURCE_DIR}/standalone/standalone.cmake")
+endif()
