@@ -5,9 +5,9 @@
 #ifndef UNI_ALGO_LOCALE_H_UAIH
 #define UNI_ALGO_LOCALE_H_UAIH
 
-#include <cassert>
 #include <string>
 #include <string_view>
+#include <cassert>
 
 #include "config.h"
 #include "version.h"

@@ -17,9 +17,9 @@
 
 #include <type_traits>
 #include <iterator>
-#include <utility>
+#include <utility> // std::forward
+#include <memory> // std::addressof
 #include <cassert>
-#include <memory>
 #if defined(__cpp_lib_ranges) && !defined(UNI_ALGO_FORCE_CPP17_RANGES)
 #include <ranges>
 #else

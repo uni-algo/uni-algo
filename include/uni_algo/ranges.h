@@ -5,8 +5,8 @@
 #ifndef UNI_ALGO_RANGES_H_UAIH
 #define UNI_ALGO_RANGES_H_UAIH
 
-#include <cassert>
 #include <functional>
+#include <cassert>
 
 #include "config.h"
 #include "version.h"
