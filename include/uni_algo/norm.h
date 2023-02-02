@@ -9,7 +9,6 @@
 #error "Normalization module is disabled via define UNI_ALGO_DISABLE_NORM"
 #endif
 
-#include <type_traits>
 #include <string>
 #include <string_view>
 #include <iterator>

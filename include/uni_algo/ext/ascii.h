@@ -5,7 +5,6 @@
 #ifndef UNI_ALGO_EXT_ASCII_H_UAIH
 #define UNI_ALGO_EXT_ASCII_H_UAIH
 
-#include <type_traits>
 #include <array>
 #include <string>
 #include <string_view>

@@ -9,7 +9,6 @@
 #error "Break Grapheme module is disabled via define UNI_ALGO_DISABLE_BREAK_GRAPHEME"
 #endif
 
-#include <type_traits>
 #include <cassert>
 #include <string_view>
 

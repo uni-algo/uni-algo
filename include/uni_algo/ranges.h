@@ -5,7 +5,6 @@
 #ifndef UNI_ALGO_RANGES_H_UAIH
 #define UNI_ALGO_RANGES_H_UAIH
 
-#include <type_traits>
 #include <cassert>
 #include <functional>
 

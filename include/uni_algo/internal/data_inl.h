@@ -4,9 +4,6 @@
 
 // IMPORTANT: This file doesn't have include guards and must be inlined into .cpp file
 
-#include <cstddef>
-#include <type_traits>
-
 #include "../config.h"
 #include "safe_layer.h"
 

@@ -9,7 +9,6 @@
 #error "Case module is disabled via define UNI_ALGO_DISABLE_CASE"
 #endif
 
-#include <type_traits>
 #include <string>
 #include <string_view>
 #include <cassert>
