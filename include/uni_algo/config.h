@@ -92,11 +92,18 @@
 
 // --------------------------------- DO NOT CHANGE ANYTHING BELOW THIS LINE ---------------------------------
 
+// All the comments below are not for users of the library
+
+// This file must include only these 2 files
+// Low-level requires <cstddef> for size_t and such, static asserts here require <type_traits>
+// Note that most low-level modules also need type_array to be defined it's located in safe layer
+// that need to be included after config.h (this file) for such low-level modules.
+#include <cstddef> // size_t, nullptr_t
+#include <type_traits> // std::is_unsigned
+
 #if (__cplusplus < 201703L && !defined(_MSVC_LANG)) || (defined(_MSVC_LANG) && _MSVC_LANG < 201703L)
 #error "C++17 or better is required"
 #endif
-
-// All the comments below are not for users of the library
 
 namespace uni::detail {
 // Never change these types except for tests.
@@ -104,6 +111,7 @@ using type_codept = char32_t;
 using type_char8  = unsigned char;
 using type_char16 = char16_t;
 using type_char32 = char32_t;
+//using type_array = [std::array like]; // Defined in internal/safe_layer.h
 inline constexpr size_t impl_npos = static_cast<size_t>(-1);
 inline constexpr std::nullptr_t impl_nullptr = nullptr;
 // The types can be changed for tests without violating these static asserts.
