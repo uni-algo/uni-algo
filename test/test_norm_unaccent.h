@@ -8,17 +8,17 @@ static_assert(U'㋡' == 0x32E1);
 
 test_constexpr bool test_norm_unaccent()
 {
-    TESTX(uni::norm::to_unaccent_utf8("Naïve") == "Naive");
-    TESTX(uni::norm::to_unaccent_utf8("Voilà, Pâte, Dîner, Côté, Goûter") == "Voila, Pate, Diner, Cote, Gouter");
-    TESTX(uni::norm::to_unaccent_utf8("İstanbul") == "Istanbul");
-    TESTX(uni::norm::to_unaccent_utf8("Μαΐου, τρόλεϊ") == "Μαιου, τρολει");
-    TESTX(uni::norm::to_unaccent_utf8("Το ένα ή το άλλο.") == "Το ενα η το αλλο.");
+    TESTX(una::norm::to_unaccent_utf8("Naïve") == "Naive");
+    TESTX(una::norm::to_unaccent_utf8("Voilà, Pâte, Dîner, Côté, Goûter") == "Voila, Pate, Diner, Cote, Gouter");
+    TESTX(una::norm::to_unaccent_utf8("İstanbul") == "Istanbul");
+    TESTX(una::norm::to_unaccent_utf8("Μαΐου, τρόλεϊ") == "Μαιου, τρολει");
+    TESTX(una::norm::to_unaccent_utf8("Το ένα ή το άλλο.") == "Το ενα η το αλλο.");
 
-    TESTX(uni::norm::to_unaccent_utf16(u"Naïve") == u"Naive");
-    TESTX(uni::norm::to_unaccent_utf16(u"Voilà, Pâte, Dîner, Côté, Goûter") == u"Voila, Pate, Diner, Cote, Gouter");
-    TESTX(uni::norm::to_unaccent_utf16(u"İstanbul") == u"Istanbul");
-    TESTX(uni::norm::to_unaccent_utf16(u"Μαΐου, τρόλεϊ") == u"Μαιου, τρολει");
-    TESTX(uni::norm::to_unaccent_utf16(u"Το ένα ή το άλλο.") == u"Το ενα η το αλλο.");
+    TESTX(una::norm::to_unaccent_utf16(u"Naïve") == u"Naive");
+    TESTX(una::norm::to_unaccent_utf16(u"Voilà, Pâte, Dîner, Côté, Goûter") == u"Voila, Pate, Diner, Cote, Gouter");
+    TESTX(una::norm::to_unaccent_utf16(u"İstanbul") == u"Istanbul");
+    TESTX(una::norm::to_unaccent_utf16(u"Μαΐου, τρόλεϊ") == u"Μαιου, τρολει");
+    TESTX(una::norm::to_unaccent_utf16(u"Το ένα ή το άλλο.") == u"Το ενα η το αλλο.");
 
     return true;
 }

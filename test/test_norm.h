@@ -144,50 +144,50 @@ bool test_norm_impl(size_t& count_lines, bool with_part2 = true, size_t with_pre
 
         // UTF-16
 
-        std::u16string c1_utf16 = uni::utf32to16u(source);
-        std::u16string c2_utf16 = uni::utf32to16u(NFC);
-        std::u16string c3_utf16 = uni::utf32to16u(NFD);
-        std::u16string c4_utf16 = uni::utf32to16u(NFKC);
-        std::u16string c5_utf16 = uni::utf32to16u(NFKD);
+        std::u16string c1_utf16 = una::utf32to16u(source);
+        std::u16string c2_utf16 = una::utf32to16u(NFC);
+        std::u16string c3_utf16 = una::utf32to16u(NFD);
+        std::u16string c4_utf16 = una::utf32to16u(NFKC);
+        std::u16string c5_utf16 = una::utf32to16u(NFKD);
 
         // NFC
-        TESTX(c2_utf16 == uni::norm::to_nfc_utf16(c1_utf16));
-        TESTX(c2_utf16 == uni::norm::to_nfc_utf16(c2_utf16));
-        TESTX(c2_utf16 == uni::norm::to_nfc_utf16(c3_utf16));
+        TESTX(c2_utf16 == una::norm::to_nfc_utf16(c1_utf16));
+        TESTX(c2_utf16 == una::norm::to_nfc_utf16(c2_utf16));
+        TESTX(c2_utf16 == una::norm::to_nfc_utf16(c3_utf16));
 
-        TESTX(c4_utf16 == uni::norm::to_nfc_utf16(c4_utf16));
-        TESTX(c4_utf16 == uni::norm::to_nfc_utf16(c5_utf16));
+        TESTX(c4_utf16 == una::norm::to_nfc_utf16(c4_utf16));
+        TESTX(c4_utf16 == una::norm::to_nfc_utf16(c5_utf16));
 
         // NFD
-        TESTX(c3_utf16 == uni::norm::to_nfd_utf16(c1_utf16));
-        TESTX(c3_utf16 == uni::norm::to_nfd_utf16(c2_utf16));
-        TESTX(c3_utf16 == uni::norm::to_nfd_utf16(c3_utf16));
+        TESTX(c3_utf16 == una::norm::to_nfd_utf16(c1_utf16));
+        TESTX(c3_utf16 == una::norm::to_nfd_utf16(c2_utf16));
+        TESTX(c3_utf16 == una::norm::to_nfd_utf16(c3_utf16));
 
-        TESTX(c5_utf16 == uni::norm::to_nfd_utf16(c4_utf16));
-        TESTX(c5_utf16 == uni::norm::to_nfd_utf16(c5_utf16));
+        TESTX(c5_utf16 == una::norm::to_nfd_utf16(c4_utf16));
+        TESTX(c5_utf16 == una::norm::to_nfd_utf16(c5_utf16));
 
         // NFKC
-        TESTX(c4_utf16 == uni::norm::to_nfkc_utf16(c1_utf16));
-        TESTX(c4_utf16 == uni::norm::to_nfkc_utf16(c2_utf16));
-        TESTX(c4_utf16 == uni::norm::to_nfkc_utf16(c3_utf16));
-        TESTX(c4_utf16 == uni::norm::to_nfkc_utf16(c4_utf16));
-        TESTX(c4_utf16 == uni::norm::to_nfkc_utf16(c5_utf16));
+        TESTX(c4_utf16 == una::norm::to_nfkc_utf16(c1_utf16));
+        TESTX(c4_utf16 == una::norm::to_nfkc_utf16(c2_utf16));
+        TESTX(c4_utf16 == una::norm::to_nfkc_utf16(c3_utf16));
+        TESTX(c4_utf16 == una::norm::to_nfkc_utf16(c4_utf16));
+        TESTX(c4_utf16 == una::norm::to_nfkc_utf16(c5_utf16));
 
         // NFKD
-        TESTX(c5_utf16 == uni::norm::to_nfkd_utf16(c1_utf16));
-        TESTX(c5_utf16 == uni::norm::to_nfkd_utf16(c2_utf16));
-        TESTX(c5_utf16 == uni::norm::to_nfkd_utf16(c3_utf16));
-        TESTX(c5_utf16 == uni::norm::to_nfkd_utf16(c4_utf16));
-        TESTX(c5_utf16 == uni::norm::to_nfkd_utf16(c5_utf16));
+        TESTX(c5_utf16 == una::norm::to_nfkd_utf16(c1_utf16));
+        TESTX(c5_utf16 == una::norm::to_nfkd_utf16(c2_utf16));
+        TESTX(c5_utf16 == una::norm::to_nfkd_utf16(c3_utf16));
+        TESTX(c5_utf16 == una::norm::to_nfkd_utf16(c4_utf16));
+        TESTX(c5_utf16 == una::norm::to_nfkd_utf16(c5_utf16));
 
         // NFC and NFKC quick checks cannot be tested with this data
         // because there is some lines that return NFC/NFKC_Quick_Check=Maybe
         // our functions return true only if there is a clear NFC/NFKC_Quick_Check=Yes
         // NFD and NFKD can be tested, there is no Maybe answer for these normalization forms
-        //TESTX(uni::norm::is_nfc_utf16(c2_utf16) == true);
-        TESTX(uni::norm::is_nfd_utf16(c3_utf16) == true);
-        //TESTX(uni::norm::is_nfkc_utf16(c4_utf16) == true);
-        TESTX(uni::norm::is_nfkd_utf16(c5_utf16) == true);
+        //TESTX(una::norm::is_nfc_utf16(c2_utf16) == true);
+        TESTX(una::norm::is_nfd_utf16(c3_utf16) == true);
+        //TESTX(una::norm::is_nfkc_utf16(c4_utf16) == true);
+        TESTX(una::norm::is_nfkd_utf16(c5_utf16) == true);
 
         // Ranges
 
@@ -223,46 +223,46 @@ bool test_norm_impl(size_t& count_lines, bool with_part2 = true, size_t with_pre
 
         // UTF-8
 
-        std::string c1_utf8 = uni::utf32to8(source);
-        std::string c2_utf8 = uni::utf32to8(NFC);
-        std::string c3_utf8 = uni::utf32to8(NFD);
-        std::string c4_utf8 = uni::utf32to8(NFKC);
-        std::string c5_utf8 = uni::utf32to8(NFKD);
+        std::string c1_utf8 = una::utf32to8(source);
+        std::string c2_utf8 = una::utf32to8(NFC);
+        std::string c3_utf8 = una::utf32to8(NFD);
+        std::string c4_utf8 = una::utf32to8(NFKC);
+        std::string c5_utf8 = una::utf32to8(NFKD);
 
         // NFC
-        TESTX(c2_utf8 == uni::norm::to_nfc_utf8(c1_utf8));
-        TESTX(c2_utf8 == uni::norm::to_nfc_utf8(c2_utf8));
-        TESTX(c2_utf8 == uni::norm::to_nfc_utf8(c3_utf8));
+        TESTX(c2_utf8 == una::norm::to_nfc_utf8(c1_utf8));
+        TESTX(c2_utf8 == una::norm::to_nfc_utf8(c2_utf8));
+        TESTX(c2_utf8 == una::norm::to_nfc_utf8(c3_utf8));
 
-        TESTX(c4_utf8 == uni::norm::to_nfc_utf8(c4_utf8));
-        TESTX(c4_utf8 == uni::norm::to_nfc_utf8(c5_utf8));
+        TESTX(c4_utf8 == una::norm::to_nfc_utf8(c4_utf8));
+        TESTX(c4_utf8 == una::norm::to_nfc_utf8(c5_utf8));
 
         // NFD
-        TESTX(c3_utf8 == uni::norm::to_nfd_utf8(c1_utf8));
-        TESTX(c3_utf8 == uni::norm::to_nfd_utf8(c2_utf8));
-        TESTX(c3_utf8 == uni::norm::to_nfd_utf8(c3_utf8));
+        TESTX(c3_utf8 == una::norm::to_nfd_utf8(c1_utf8));
+        TESTX(c3_utf8 == una::norm::to_nfd_utf8(c2_utf8));
+        TESTX(c3_utf8 == una::norm::to_nfd_utf8(c3_utf8));
 
-        TESTX(c5_utf8 == uni::norm::to_nfd_utf8(c4_utf8));
-        TESTX(c5_utf8 == uni::norm::to_nfd_utf8(c5_utf8));
+        TESTX(c5_utf8 == una::norm::to_nfd_utf8(c4_utf8));
+        TESTX(c5_utf8 == una::norm::to_nfd_utf8(c5_utf8));
 
         // NFKC
-        TESTX(c4_utf8 == uni::norm::to_nfkc_utf8(c1_utf8));
-        TESTX(c4_utf8 == uni::norm::to_nfkc_utf8(c2_utf8));
-        TESTX(c4_utf8 == uni::norm::to_nfkc_utf8(c3_utf8));
-        TESTX(c4_utf8 == uni::norm::to_nfkc_utf8(c4_utf8));
-        TESTX(c4_utf8 == uni::norm::to_nfkc_utf8(c5_utf8));
+        TESTX(c4_utf8 == una::norm::to_nfkc_utf8(c1_utf8));
+        TESTX(c4_utf8 == una::norm::to_nfkc_utf8(c2_utf8));
+        TESTX(c4_utf8 == una::norm::to_nfkc_utf8(c3_utf8));
+        TESTX(c4_utf8 == una::norm::to_nfkc_utf8(c4_utf8));
+        TESTX(c4_utf8 == una::norm::to_nfkc_utf8(c5_utf8));
 
         // NFKD
-        TESTX(c5_utf8 == uni::norm::to_nfkd_utf8(c1_utf8));
-        TESTX(c5_utf8 == uni::norm::to_nfkd_utf8(c2_utf8));
-        TESTX(c5_utf8 == uni::norm::to_nfkd_utf8(c3_utf8));
-        TESTX(c5_utf8 == uni::norm::to_nfkd_utf8(c4_utf8));
-        TESTX(c5_utf8 == uni::norm::to_nfkd_utf8(c5_utf8));
+        TESTX(c5_utf8 == una::norm::to_nfkd_utf8(c1_utf8));
+        TESTX(c5_utf8 == una::norm::to_nfkd_utf8(c2_utf8));
+        TESTX(c5_utf8 == una::norm::to_nfkd_utf8(c3_utf8));
+        TESTX(c5_utf8 == una::norm::to_nfkd_utf8(c4_utf8));
+        TESTX(c5_utf8 == una::norm::to_nfkd_utf8(c5_utf8));
 
-        //TESTX(uni::norm::is_nfc_utf8(c2_utf8) == true);
-        TESTX(uni::norm::is_nfd_utf8(c3_utf8) == true);
-        //TESTX(uni::norm::is_nfkc_utf8(c4_utf8) == true);
-        TESTX(uni::norm::is_nfkd_utf8(c5_utf8) == true);
+        //TESTX(una::norm::is_nfc_utf8(c2_utf8) == true);
+        TESTX(una::norm::is_nfd_utf8(c3_utf8) == true);
+        //TESTX(una::norm::is_nfkc_utf8(c4_utf8) == true);
+        TESTX(una::norm::is_nfkd_utf8(c5_utf8) == true);
 
         // Ranges
 
@@ -317,17 +317,17 @@ bool test_norm_impl(size_t& count_lines, bool with_part2 = true, size_t with_pre
 
             // UTF-8
 
-            std::string X_utf8 = uni::utf32to8(X);
+            std::string X_utf8 = una::utf32to8(X);
 
-            TESTX(X_utf8 == uni::norm::to_nfc_utf8(X_utf8));
-            TESTX(X_utf8 == uni::norm::to_nfd_utf8(X_utf8));
-            TESTX(X_utf8 == uni::norm::to_nfkc_utf8(X_utf8));
-            TESTX(X_utf8 == uni::norm::to_nfkd_utf8(X_utf8));
+            TESTX(X_utf8 == una::norm::to_nfc_utf8(X_utf8));
+            TESTX(X_utf8 == una::norm::to_nfd_utf8(X_utf8));
+            TESTX(X_utf8 == una::norm::to_nfkc_utf8(X_utf8));
+            TESTX(X_utf8 == una::norm::to_nfkd_utf8(X_utf8));
 
-            TESTX(uni::norm::is_nfc_utf8(X_utf8) == true);
-            TESTX(uni::norm::is_nfd_utf8(X_utf8) == true);
-            TESTX(uni::norm::is_nfkc_utf8(X_utf8) == true);
-            TESTX(uni::norm::is_nfkd_utf8(X_utf8) == true);
+            TESTX(una::norm::is_nfc_utf8(X_utf8) == true);
+            TESTX(una::norm::is_nfd_utf8(X_utf8) == true);
+            TESTX(una::norm::is_nfkc_utf8(X_utf8) == true);
+            TESTX(una::norm::is_nfkd_utf8(X_utf8) == true);
 
             // Ranges
             TESTX(X_utf8 == to_nfc_utf8(X_utf8));
@@ -337,17 +337,17 @@ bool test_norm_impl(size_t& count_lines, bool with_part2 = true, size_t with_pre
 
             // UTF-16
 
-            std::u16string X_utf16 = uni::utf32to16u(X);
+            std::u16string X_utf16 = una::utf32to16u(X);
 
-            TESTX(X_utf16 == uni::norm::to_nfc_utf16(X_utf16));
-            TESTX(X_utf16 == uni::norm::to_nfd_utf16(X_utf16));
-            TESTX(X_utf16 == uni::norm::to_nfkc_utf16(X_utf16));
-            TESTX(X_utf16 == uni::norm::to_nfkd_utf16(X_utf16));
+            TESTX(X_utf16 == una::norm::to_nfc_utf16(X_utf16));
+            TESTX(X_utf16 == una::norm::to_nfd_utf16(X_utf16));
+            TESTX(X_utf16 == una::norm::to_nfkc_utf16(X_utf16));
+            TESTX(X_utf16 == una::norm::to_nfkd_utf16(X_utf16));
 
-            TESTX(uni::norm::is_nfc_utf16(X_utf16) == true);
-            TESTX(uni::norm::is_nfd_utf16(X_utf16) == true);
-            TESTX(uni::norm::is_nfkc_utf16(X_utf16) == true);
-            TESTX(uni::norm::is_nfkd_utf16(X_utf16) == true);
+            TESTX(una::norm::is_nfc_utf16(X_utf16) == true);
+            TESTX(una::norm::is_nfd_utf16(X_utf16) == true);
+            TESTX(una::norm::is_nfkc_utf16(X_utf16) == true);
+            TESTX(una::norm::is_nfkd_utf16(X_utf16) == true);
 
             // Ranges
             TESTX(X_utf16 == to_nfc_utf16(X_utf16));
@@ -375,59 +375,59 @@ void test_norm()
 test_constexpr bool test_norm_detect()
 {
     // Composition exclusion -> always false
-    TESTX(uni::norm::is_nfc_utf8(uni::utf32to8(U"\x0344")) == false);
-    TESTX(uni::norm::is_nfd_utf8(uni::utf32to8(U"\x0344")) == false);
-    TESTX(uni::norm::is_nfkc_utf8(uni::utf32to8(U"\x0344")) == false);
-    TESTX(uni::norm::is_nfkd_utf8(uni::utf32to8(U"\x0344")) == false);
+    TESTX(una::norm::is_nfc_utf8(una::utf32to8(U"\x0344")) == false);
+    TESTX(una::norm::is_nfd_utf8(una::utf32to8(U"\x0344")) == false);
+    TESTX(una::norm::is_nfkc_utf8(una::utf32to8(U"\x0344")) == false);
+    TESTX(una::norm::is_nfkd_utf8(una::utf32to8(U"\x0344")) == false);
 
-    TESTX(uni::norm::is_nfc_utf16(uni::utf32to16u(U"\x0344")) == false);
-    TESTX(uni::norm::is_nfd_utf16(uni::utf32to16u(U"\x0344")) == false);
-    TESTX(uni::norm::is_nfkc_utf16(uni::utf32to16u(U"\x0344")) == false);
-    TESTX(uni::norm::is_nfkd_utf16(uni::utf32to16u(U"\x0344")) == false);
+    TESTX(una::norm::is_nfc_utf16(una::utf32to16u(U"\x0344")) == false);
+    TESTX(una::norm::is_nfd_utf16(una::utf32to16u(U"\x0344")) == false);
+    TESTX(una::norm::is_nfkc_utf16(una::utf32to16u(U"\x0344")) == false);
+    TESTX(una::norm::is_nfkd_utf16(una::utf32to16u(U"\x0344")) == false);
 
     // Must be in the correct order
-    TESTX(uni::norm::is_nfc_utf8(uni::utf32to8(U"\x0315\x0305")) == false);
-    TESTX(uni::norm::is_nfd_utf8(uni::utf32to8(U"\x0315\x0305")) == false);
-    TESTX(uni::norm::is_nfkc_utf8(uni::utf32to8(U"\x0315\x0305")) == false);
-    TESTX(uni::norm::is_nfkd_utf8(uni::utf32to8(U"\x0315\x0305")) == false);
+    TESTX(una::norm::is_nfc_utf8(una::utf32to8(U"\x0315\x0305")) == false);
+    TESTX(una::norm::is_nfd_utf8(una::utf32to8(U"\x0315\x0305")) == false);
+    TESTX(una::norm::is_nfkc_utf8(una::utf32to8(U"\x0315\x0305")) == false);
+    TESTX(una::norm::is_nfkd_utf8(una::utf32to8(U"\x0315\x0305")) == false);
 
-    TESTX(uni::norm::is_nfc_utf16(uni::utf32to16u(U"\x0315\x0305")) == false);
-    TESTX(uni::norm::is_nfd_utf16(uni::utf32to16u(U"\x0315\x0305")) == false);
-    TESTX(uni::norm::is_nfkc_utf16(uni::utf32to16u(U"\x0315\x0305")) == false);
-    TESTX(uni::norm::is_nfkd_utf16(uni::utf32to16u(U"\x0315\x0305")) == false);
+    TESTX(una::norm::is_nfc_utf16(una::utf32to16u(U"\x0315\x0305")) == false);
+    TESTX(una::norm::is_nfd_utf16(una::utf32to16u(U"\x0315\x0305")) == false);
+    TESTX(una::norm::is_nfkc_utf16(una::utf32to16u(U"\x0315\x0305")) == false);
+    TESTX(una::norm::is_nfkd_utf16(una::utf32to16u(U"\x0315\x0305")) == false);
 
     // Must be decomposed in NFKC/NFKD
-    TESTX(uni::norm::is_nfc_utf8(uni::utf32to8(U"\x00A0")) == true);
-    TESTX(uni::norm::is_nfd_utf8(uni::utf32to8(U"\x00A0")) == true);
-    TESTX(uni::norm::is_nfkc_utf8(uni::utf32to8(U"\x00A0")) == false);
-    TESTX(uni::norm::is_nfkd_utf8(uni::utf32to8(U"\x00A0")) == false);
+    TESTX(una::norm::is_nfc_utf8(una::utf32to8(U"\x00A0")) == true);
+    TESTX(una::norm::is_nfd_utf8(una::utf32to8(U"\x00A0")) == true);
+    TESTX(una::norm::is_nfkc_utf8(una::utf32to8(U"\x00A0")) == false);
+    TESTX(una::norm::is_nfkd_utf8(una::utf32to8(U"\x00A0")) == false);
 
-    TESTX(uni::norm::is_nfc_utf16(uni::utf32to16u(U"\x00A0")) == true);
-    TESTX(uni::norm::is_nfd_utf16(uni::utf32to16u(U"\x00A0")) == true);
-    TESTX(uni::norm::is_nfkc_utf16(uni::utf32to16u(U"\x00A0")) == false);
-    TESTX(uni::norm::is_nfkd_utf16(uni::utf32to16u(U"\x00A0")) == false);
+    TESTX(una::norm::is_nfc_utf16(una::utf32to16u(U"\x00A0")) == true);
+    TESTX(una::norm::is_nfd_utf16(una::utf32to16u(U"\x00A0")) == true);
+    TESTX(una::norm::is_nfkc_utf16(una::utf32to16u(U"\x00A0")) == false);
+    TESTX(una::norm::is_nfkd_utf16(una::utf32to16u(U"\x00A0")) == false);
 
     // Must be decomposed in NFD/NFKD
-    TESTX(uni::norm::is_nfc_utf8(uni::utf32to8(U"\x00C0")) == true);
-    TESTX(uni::norm::is_nfd_utf8(uni::utf32to8(U"\x00C0")) == false);
-    TESTX(uni::norm::is_nfkc_utf8(uni::utf32to8(U"\x00C0")) == true);
-    TESTX(uni::norm::is_nfkd_utf8(uni::utf32to8(U"\x00C0")) == false);
+    TESTX(una::norm::is_nfc_utf8(una::utf32to8(U"\x00C0")) == true);
+    TESTX(una::norm::is_nfd_utf8(una::utf32to8(U"\x00C0")) == false);
+    TESTX(una::norm::is_nfkc_utf8(una::utf32to8(U"\x00C0")) == true);
+    TESTX(una::norm::is_nfkd_utf8(una::utf32to8(U"\x00C0")) == false);
 
-    TESTX(uni::norm::is_nfc_utf16(uni::utf32to16u(U"\x00C0")) == true);
-    TESTX(uni::norm::is_nfd_utf16(uni::utf32to16u(U"\x00C0")) == false);
-    TESTX(uni::norm::is_nfkc_utf16(uni::utf32to16u(U"\x00C0")) == true);
-    TESTX(uni::norm::is_nfkd_utf16(uni::utf32to16u(U"\x00C0")) == false);
+    TESTX(una::norm::is_nfc_utf16(una::utf32to16u(U"\x00C0")) == true);
+    TESTX(una::norm::is_nfd_utf16(una::utf32to16u(U"\x00C0")) == false);
+    TESTX(una::norm::is_nfkc_utf16(una::utf32to16u(U"\x00C0")) == true);
+    TESTX(una::norm::is_nfkd_utf16(una::utf32to16u(U"\x00C0")) == false);
 
     // Ill-formed -> always false
-    TESTX(uni::norm::is_nfc_utf8("\x80") == false);
-    TESTX(uni::norm::is_nfd_utf8("\x80") == false);
-    TESTX(uni::norm::is_nfkc_utf8("\x80") == false);
-    TESTX(uni::norm::is_nfkd_utf8("\x80") == false);
+    TESTX(una::norm::is_nfc_utf8("\x80") == false);
+    TESTX(una::norm::is_nfd_utf8("\x80") == false);
+    TESTX(una::norm::is_nfkc_utf8("\x80") == false);
+    TESTX(una::norm::is_nfkd_utf8("\x80") == false);
 
-    TESTX(uni::norm::is_nfc_utf16(u"\xDC00") == false);
-    TESTX(uni::norm::is_nfd_utf16(u"\xDC00") == false);
-    TESTX(uni::norm::is_nfkc_utf16(u"\xDC00") == false);
-    TESTX(uni::norm::is_nfkd_utf16(u"\xDC00") == false);
+    TESTX(una::norm::is_nfc_utf16(u"\xDC00") == false);
+    TESTX(una::norm::is_nfd_utf16(u"\xDC00") == false);
+    TESTX(una::norm::is_nfkc_utf16(u"\xDC00") == false);
+    TESTX(una::norm::is_nfkd_utf16(u"\xDC00") == false);
 
     return true;
 }
@@ -450,25 +450,25 @@ test_constexpr bool test_norm_stream_safe()
     NFKC_CGJ = NFKC; NFKC_CGJ.insert(3 + 30 - 2, 1, 0x034F);
     NFKD_CGJ = NFKD; NFKD_CGJ.insert(3 + 30 - 2, 1, 0x034F);
 
-    TESTX(uni::utf32to8(NFC_CGJ) == uni::norm::to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == uni::norm::to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == uni::norm::to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == uni::norm::to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == una::norm::to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == una::norm::to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == una::norm::to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == una::norm::to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == uni::norm::to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == uni::norm::to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == uni::norm::to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == uni::norm::to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == una::norm::to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == una::norm::to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == una::norm::to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == una::norm::to_nfkd_utf16(una::utf32to16u(NFKD)));
 
-    TESTX(uni::utf32to8(NFC_CGJ) == to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(una::utf32to16u(NFKD)));
 
     // Same but instead of 0300 use FF9E, this is starter in NFC/NFD, but non-starter (3099) in NFKD/NFKC
 
@@ -482,25 +482,25 @@ test_constexpr bool test_norm_stream_safe()
     NFKC_CGJ = NFKC; NFKC_CGJ.insert(3 + 30 - 2, 1, 0x034F);
     NFKD_CGJ = NFKD; NFKD_CGJ.insert(3 + 30 - 2, 1, 0x034F);
 
-    TESTX(uni::utf32to8(NFC_CGJ) == uni::norm::to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == uni::norm::to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == uni::norm::to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == uni::norm::to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == una::norm::to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == una::norm::to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == una::norm::to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == una::norm::to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == uni::norm::to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == uni::norm::to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == uni::norm::to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == uni::norm::to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == una::norm::to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == una::norm::to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == una::norm::to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == una::norm::to_nfkd_utf16(una::utf32to16u(NFKD)));
 
-    TESTX(uni::utf32to8(NFC_CGJ) == to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(una::utf32to16u(NFKD)));
 
     // Same but instead of 0300 use 1161, this is Hangul V "non-starter" with CCC=0, so CGJ must not be produced
 
@@ -519,25 +519,25 @@ test_constexpr bool test_norm_stream_safe()
     NFKC_CGJ = NFKC;
     NFKD_CGJ = NFKD;
 
-    TESTX(uni::utf32to8(NFC_CGJ) == uni::norm::to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == uni::norm::to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == uni::norm::to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == uni::norm::to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == una::norm::to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == una::norm::to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == una::norm::to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == una::norm::to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == uni::norm::to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == uni::norm::to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == uni::norm::to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == uni::norm::to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == una::norm::to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == una::norm::to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == una::norm::to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == una::norm::to_nfkd_utf16(una::utf32to16u(NFKD)));
 
-    TESTX(uni::utf32to8(NFC_CGJ) == to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(una::utf32to16u(NFKD)));
 
     // Same but use 00C0, it has 1 trailing non-starter therefore 0 initial non-starters, so CGJ must not be produced
     // This test to make sure that generated data for initial/trailing non-starters counters is not messed up/swapped
@@ -552,25 +552,25 @@ test_constexpr bool test_norm_stream_safe()
     NFKC_CGJ = NFKC;
     NFKD_CGJ = NFKD;
 
-    TESTX(uni::utf32to8(NFC_CGJ) == uni::norm::to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == uni::norm::to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == uni::norm::to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == uni::norm::to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == una::norm::to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == una::norm::to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == una::norm::to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == una::norm::to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == uni::norm::to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == uni::norm::to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == uni::norm::to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == uni::norm::to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == una::norm::to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == una::norm::to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == una::norm::to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == una::norm::to_nfkd_utf16(una::utf32to16u(NFKD)));
 
-    TESTX(uni::utf32to8(NFC_CGJ) == to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(una::utf32to16u(NFKD)));
 
     // EXTRA: 2 CGJ
 
@@ -586,25 +586,25 @@ test_constexpr bool test_norm_stream_safe()
     NFKC_CGJ = NFKC; NFKC_CGJ.insert(3 + 30 - 2, 1, 0x034F); NFKC_CGJ.insert(3 + 30 - 2 + 1 + 30, 1, 0x034F);
     NFKD_CGJ = NFKD; NFKD_CGJ.insert(3 + 30 - 2, 1, 0x034F); NFKD_CGJ.insert(3 + 30 - 2 + 1 + 30, 1, 0x034F);
 
-    TESTX(uni::utf32to8(NFC_CGJ) == uni::norm::to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == uni::norm::to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == uni::norm::to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == uni::norm::to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == una::norm::to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == una::norm::to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == una::norm::to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == una::norm::to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == uni::norm::to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == uni::norm::to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == uni::norm::to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == uni::norm::to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == una::norm::to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == una::norm::to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == una::norm::to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == una::norm::to_nfkd_utf16(una::utf32to16u(NFKD)));
 
-    TESTX(uni::utf32to8(NFC_CGJ) == to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(una::utf32to16u(NFKD)));
 
     // Same as first but strings full of non-starters + produce 2 CGJ
 
@@ -618,25 +618,25 @@ test_constexpr bool test_norm_stream_safe()
     NFKC_CGJ = NFKC; NFKC_CGJ.insert(30, 1, 0x034F); NFKC_CGJ.insert(30 + 1 + 30, 1, 0x034F);
     NFKD_CGJ = NFKD; NFKD_CGJ.insert(30, 1, 0x034F); NFKD_CGJ.insert(30 + 1 + 30, 1, 0x034F);
 
-    TESTX(uni::utf32to8(NFC_CGJ) == uni::norm::to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == uni::norm::to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == uni::norm::to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == uni::norm::to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == una::norm::to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == una::norm::to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == una::norm::to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == una::norm::to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == uni::norm::to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == uni::norm::to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == uni::norm::to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == uni::norm::to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == una::norm::to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == una::norm::to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == una::norm::to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == una::norm::to_nfkd_utf16(una::utf32to16u(NFKD)));
 
-    TESTX(uni::utf32to8(NFC_CGJ) == to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(una::utf32to16u(NFKD)));
 
     // Same as previous but use 0344 non-starter (and composition exclusion) that decomposes into 2 non-starters 0308 0301
 
@@ -654,25 +654,25 @@ test_constexpr bool test_norm_stream_safe()
     NFKC_CGJ = TEMP; NFKC_CGJ.insert(30, 1, 0x034F); NFKC_CGJ.insert(30 + 1 + 30, 1, 0x034F);
     NFKD_CGJ = TEMP; NFKD_CGJ.insert(30, 1, 0x034F); NFKD_CGJ.insert(30 + 1 + 30, 1, 0x034F);
 
-    TESTX(uni::utf32to8(NFC_CGJ) == uni::norm::to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == uni::norm::to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == uni::norm::to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == uni::norm::to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == una::norm::to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == una::norm::to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == una::norm::to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == una::norm::to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == uni::norm::to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == uni::norm::to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == uni::norm::to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == uni::norm::to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == una::norm::to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == una::norm::to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == una::norm::to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == una::norm::to_nfkd_utf16(una::utf32to16u(NFKD)));
 
-    TESTX(uni::utf32to8(NFC_CGJ) == to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(una::utf32to16u(NFKD)));
 
     // Corner case
     // When non-starter decomposes into 2 non-starters in some cases we need to add CGJ after 29 non-starters instead of 30
@@ -695,65 +695,65 @@ test_constexpr bool test_norm_stream_safe()
     NFKC_CGJ = TEMP4; NFKC_CGJ.insert(29, 1, 0x034F); NFKC_CGJ.insert(29 + 1 + 30, 1, 0x034F);
     NFKD_CGJ = TEMP4; NFKD_CGJ.insert(29, 1, 0x034F); NFKD_CGJ.insert(29 + 1 + 30, 1, 0x034F);
 
-    TESTX(uni::utf32to8(NFC_CGJ) == uni::norm::to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == uni::norm::to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == uni::norm::to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == uni::norm::to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == una::norm::to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == una::norm::to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == una::norm::to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == una::norm::to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == uni::norm::to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == uni::norm::to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == uni::norm::to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == uni::norm::to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == una::norm::to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == una::norm::to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == una::norm::to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == una::norm::to_nfkd_utf16(una::utf32to16u(NFKD)));
 
-    TESTX(uni::utf32to8(NFC_CGJ) == to_nfc_utf8(uni::utf32to8(NFC)));
-    TESTX(uni::utf32to8(NFD_CGJ) == to_nfd_utf8(uni::utf32to8(NFD)));
-    TESTX(uni::utf32to8(NFKC_CGJ) == to_nfkc_utf8(uni::utf32to8(NFKC)));
-    TESTX(uni::utf32to8(NFKD_CGJ) == to_nfkd_utf8(uni::utf32to8(NFKD)));
+    TESTX(una::utf32to8(NFC_CGJ) == to_nfc_utf8(una::utf32to8(NFC)));
+    TESTX(una::utf32to8(NFD_CGJ) == to_nfd_utf8(una::utf32to8(NFD)));
+    TESTX(una::utf32to8(NFKC_CGJ) == to_nfkc_utf8(una::utf32to8(NFKC)));
+    TESTX(una::utf32to8(NFKD_CGJ) == to_nfkd_utf8(una::utf32to8(NFKD)));
 
-    TESTX(uni::utf32to16u(NFC_CGJ) == to_nfc_utf16(uni::utf32to16u(NFC)));
-    TESTX(uni::utf32to16u(NFD_CGJ) == to_nfd_utf16(uni::utf32to16u(NFD)));
-    TESTX(uni::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(uni::utf32to16u(NFKC)));
-    TESTX(uni::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(uni::utf32to16u(NFKD)));
+    TESTX(una::utf32to16u(NFC_CGJ) == to_nfc_utf16(una::utf32to16u(NFC)));
+    TESTX(una::utf32to16u(NFD_CGJ) == to_nfd_utf16(una::utf32to16u(NFD)));
+    TESTX(una::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(una::utf32to16u(NFKC)));
+    TESTX(una::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(una::utf32to16u(NFKD)));
 
     return true;
 }
 
 test_constexpr std::string to_nfc_utf8(std::string_view str)
 {
-    return str | uni::views::utf8 | uni::views::norm::nfc | uni::ranges::to_utf8<std::string>();
+    return str | una::views::utf8 | una::views::norm::nfc | una::ranges::to_utf8<std::string>();
 }
 
 test_constexpr std::string to_nfd_utf8(std::string_view str)
 {
-    return str | uni::views::utf8 | uni::views::norm::nfd | uni::ranges::to_utf8<std::string>();
+    return str | una::views::utf8 | una::views::norm::nfd | una::ranges::to_utf8<std::string>();
 }
 
 test_constexpr std::string to_nfkc_utf8(std::string_view str)
 {
-    return str | uni::views::utf8 | uni::views::norm::nfkc | uni::ranges::to_utf8<std::string>();
+    return str | una::views::utf8 | una::views::norm::nfkc | una::ranges::to_utf8<std::string>();
 }
 
 test_constexpr std::string to_nfkd_utf8(std::string_view str)
 {
-    return str | uni::views::utf8 | uni::views::norm::nfkd | uni::ranges::to_utf8<std::string>();
+    return str | una::views::utf8 | una::views::norm::nfkd | una::ranges::to_utf8<std::string>();
 }
 
 test_constexpr std::u16string to_nfc_utf16(std::u16string_view str)
 {
-    return str | uni::views::utf16 | uni::views::norm::nfc | uni::ranges::to_utf16<std::u16string>();
+    return str | una::views::utf16 | una::views::norm::nfc | una::ranges::to_utf16<std::u16string>();
 }
 
 test_constexpr std::u16string to_nfd_utf16(std::u16string_view str)
 {
-    return str | uni::views::utf16 | uni::views::norm::nfd | uni::ranges::to_utf16<std::u16string>();
+    return str | una::views::utf16 | una::views::norm::nfd | una::ranges::to_utf16<std::u16string>();
 }
 
 test_constexpr std::u16string to_nfkc_utf16(std::u16string_view str)
 {
-    return str | uni::views::utf16 | uni::views::norm::nfkc | uni::ranges::to_utf16<std::u16string>();
+    return str | una::views::utf16 | una::views::norm::nfkc | una::ranges::to_utf16<std::u16string>();
 }
 
 test_constexpr std::u16string to_nfkd_utf16(std::u16string_view str)
 {
-    return str | uni::views::utf16 | uni::views::norm::nfkd | uni::ranges::to_utf16<std::u16string>();
+    return str | una::views::utf16 | una::views::norm::nfkd | una::ranges::to_utf16<std::u16string>();
 }

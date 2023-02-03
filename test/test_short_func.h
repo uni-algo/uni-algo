@@ -18,84 +18,84 @@ test_constexpr bool test_short_func_conv()
     std::u8string u8str = u8"123";
 #endif // __cpp_lib_char8_t
 
-    TESTX(uni::utf8to16u(str) == u16str);
-    TESTX(uni::utf8to32u(str) == u32str);
+    TESTX(una::utf8to16u(str) == u16str);
+    TESTX(una::utf8to32u(str) == u32str);
 
-    TESTX(uni::utf16to8(u16str) == str);
-    TESTX(uni::utf32to8(u32str) == str);
+    TESTX(una::utf16to8(u16str) == str);
+    TESTX(una::utf32to8(u32str) == str);
 
-    TESTX(uni::utf16to32u(u16str) == u32str);
-    TESTX(uni::utf32to16u(u32str) == u16str);
+    TESTX(una::utf16to32u(u16str) == u32str);
+    TESTX(una::utf32to16u(u32str) == u16str);
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-    TESTX(uni::utf8to16(str) == wstr);
-    TESTX(uni::utf16to8(wstr) == str);
+    TESTX(una::utf8to16(str) == wstr);
+    TESTX(una::utf16to8(wstr) == str);
 
-    TESTX(uni::utf16to32u(wstr) == u32str);
-    TESTX(uni::utf32to16(u32str) == wstr);
+    TESTX(una::utf16to32u(wstr) == u32str);
+    TESTX(una::utf32to16(u32str) == wstr);
 #elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-    TESTX(uni::utf8to32(str) == wstr);
-    TESTX(uni::utf32to8(wstr) == str);
+    TESTX(una::utf8to32(str) == wstr);
+    TESTX(una::utf32to8(wstr) == str);
 
-    TESTX(uni::utf16to32(u16str) == wstr);
-    TESTX(uni::utf32to16u(wstr) == u16str);
+    TESTX(una::utf16to32(u16str) == wstr);
+    TESTX(una::utf32to16u(wstr) == u16str);
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 
 #ifdef __cpp_lib_char8_t
-    TESTX(uni::utf8to16u(u8str) == u16str);
-    TESTX(uni::utf8to32u(u8str) == u32str);
+    TESTX(una::utf8to16u(u8str) == u16str);
+    TESTX(una::utf8to32u(u8str) == u32str);
 
-    TESTX(uni::utf16to8u(u16str) == u8str);
-    TESTX(uni::utf32to8u(u32str) == u8str);
+    TESTX(una::utf16to8u(u16str) == u8str);
+    TESTX(una::utf32to8u(u32str) == u8str);
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-    TESTX(uni::utf8to16(u8str) == wstr);
-    TESTX(uni::utf16to8u(wstr) == u8str);
+    TESTX(una::utf8to16(u8str) == wstr);
+    TESTX(una::utf16to8u(wstr) == u8str);
 #elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-    TESTX(uni::utf8to32(u8str) == wstr);
-    TESTX(uni::utf32to8u(wstr) == u8str);
+    TESTX(una::utf8to32(u8str) == wstr);
+    TESTX(una::utf32to8u(wstr) == u8str);
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 #endif // __cpp_lib_char8_t
 
 //---------------------------------------------
-// Repeat prev tests with uni::strict namespace
+// Repeat prev tests with una::strict namespace
 //---------------------------------------------
-    uni::error error;
+    una::error error;
 
-    TESTX(uni::strict::utf8to16u(str, error) == u16str);
-    TESTX(uni::strict::utf8to32u(str, error) == u32str);
+    TESTX(una::strict::utf8to16u(str, error) == u16str);
+    TESTX(una::strict::utf8to32u(str, error) == u32str);
 
-    TESTX(uni::strict::utf16to8(u16str, error) == str);
-    TESTX(uni::strict::utf32to8(u32str, error) == str);
+    TESTX(una::strict::utf16to8(u16str, error) == str);
+    TESTX(una::strict::utf32to8(u32str, error) == str);
 
-    TESTX(uni::strict::utf16to32u(u16str, error) == u32str);
-    TESTX(uni::strict::utf32to16u(u32str, error) == u16str);
+    TESTX(una::strict::utf16to32u(u16str, error) == u32str);
+    TESTX(una::strict::utf32to16u(u32str, error) == u16str);
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-    TESTX(uni::strict::utf8to16(str, error) == wstr);
-    TESTX(uni::strict::utf16to8(wstr, error) == str);
+    TESTX(una::strict::utf8to16(str, error) == wstr);
+    TESTX(una::strict::utf16to8(wstr, error) == str);
 
-    TESTX(uni::strict::utf16to32u(wstr, error) == u32str);
-    TESTX(uni::strict::utf32to16(u32str, error) == wstr);
+    TESTX(una::strict::utf16to32u(wstr, error) == u32str);
+    TESTX(una::strict::utf32to16(u32str, error) == wstr);
 #elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-    TESTX(uni::strict::utf8to32(str, error) == wstr);
-    TESTX(uni::strict::utf32to8(wstr, error) == str);
+    TESTX(una::strict::utf8to32(str, error) == wstr);
+    TESTX(una::strict::utf32to8(wstr, error) == str);
 
-    TESTX(uni::strict::utf16to32(u16str, error) == wstr);
-    TESTX(uni::strict::utf32to16u(wstr, error) == u16str);
+    TESTX(una::strict::utf16to32(u16str, error) == wstr);
+    TESTX(una::strict::utf32to16u(wstr, error) == u16str);
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 
 #ifdef __cpp_lib_char8_t
-    TESTX(uni::strict::utf8to16u(u8str, error) == u16str);
-    TESTX(uni::strict::utf8to32u(u8str, error) == u32str);
+    TESTX(una::strict::utf8to16u(u8str, error) == u16str);
+    TESTX(una::strict::utf8to32u(u8str, error) == u32str);
 
-    TESTX(uni::strict::utf16to8u(u16str, error) == u8str);
-    TESTX(uni::strict::utf32to8u(u32str, error) == u8str);
+    TESTX(una::strict::utf16to8u(u16str, error) == u8str);
+    TESTX(una::strict::utf32to8u(u32str, error) == u8str);
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-    TESTX(uni::strict::utf8to16(u8str, error) == wstr);
-    TESTX(uni::strict::utf16to8u(wstr, error) == u8str);
+    TESTX(una::strict::utf8to16(u8str, error) == wstr);
+    TESTX(una::strict::utf16to8u(wstr, error) == u8str);
 #elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-    TESTX(uni::strict::utf8to32(u8str, error) == wstr);
-    TESTX(uni::strict::utf32to8u(wstr, error) == u8str);
+    TESTX(una::strict::utf8to32(u8str, error) == wstr);
+    TESTX(una::strict::utf32to8u(wstr, error) == u8str);
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 #endif // __cpp_lib_char8_t
 
@@ -103,24 +103,24 @@ test_constexpr bool test_short_func_conv()
 // Validation functions
 //---------------------------------------------
 
-    TESTX(uni::is_valid_utf8(str));
-    TESTX(uni::is_valid_utf8(str, error));
-    TESTX(uni::is_valid_utf16(u16str));
-    TESTX(uni::is_valid_utf16(u16str, error));
-    TESTX(uni::is_valid_utf32(u32str));
-    TESTX(uni::is_valid_utf32(u32str, error));
+    TESTX(una::is_valid_utf8(str));
+    TESTX(una::is_valid_utf8(str, error));
+    TESTX(una::is_valid_utf16(u16str));
+    TESTX(una::is_valid_utf16(u16str, error));
+    TESTX(una::is_valid_utf32(u32str));
+    TESTX(una::is_valid_utf32(u32str, error));
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-    TESTX(uni::is_valid_utf16(wstr));
-    TESTX(uni::is_valid_utf16(wstr, error));
+    TESTX(una::is_valid_utf16(wstr));
+    TESTX(una::is_valid_utf16(wstr, error));
 #elif WCHAR_MAX >= 0x7FFFFFFF // 32-bit wchar_t
-    TESTX(uni::is_valid_utf32(wstr));
-    TESTX(uni::is_valid_utf32(wstr, error));
+    TESTX(una::is_valid_utf32(wstr));
+    TESTX(una::is_valid_utf32(wstr, error));
 #endif // WCHAR_MAX >= 0x7FFFFFFF
 
 #ifdef __cpp_lib_char8_t
-    TESTX(uni::is_valid_utf8(u8str));
-    TESTX(uni::is_valid_utf8(u8str, error));
+    TESTX(una::is_valid_utf8(u8str));
+    TESTX(una::is_valid_utf8(u8str, error));
 #endif // __cpp_lib_char8_t
 
     return true;
@@ -141,83 +141,83 @@ test_constexpr bool test_short_func_case()
 // std::string
 // -----------
 
-    TESTX(uni::cases::to_lowercase_utf8(str) == str);
-    TESTX(uni::cases::to_uppercase_utf8(str) == str);
+    TESTX(una::cases::to_lowercase_utf8(str) == str);
+    TESTX(una::cases::to_uppercase_utf8(str) == str);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_lowercase_utf8(str, uni::locale{}) == str);
-    TESTX(uni::cases::to_uppercase_utf8(str, uni::locale{}) == str);
+    TESTX(una::cases::to_lowercase_utf8(str, una::locale{}) == str);
+    TESTX(una::cases::to_uppercase_utf8(str, una::locale{}) == str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_casefold_utf8(str) == str);
+    TESTX(una::cases::to_casefold_utf8(str) == str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_titlecase_utf8(str) == str);
-    TESTX(uni::cases::to_titlecase_utf8(str, uni::locale{}) == str);
+    TESTX(una::cases::to_titlecase_utf8(str) == str);
+    TESTX(una::cases::to_titlecase_utf8(str, una::locale{}) == str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
-    TESTX(uni::casesens::compare_utf8(str, str) == 0);
-    TESTX(uni::caseless::compare_utf8(str, str) == 0);
+    TESTX(una::casesens::compare_utf8(str, str) == 0);
+    TESTX(una::caseless::compare_utf8(str, str) == 0);
 #ifndef UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::collate_utf8(str, str) == 0);
-    TESTX(uni::caseless::collate_utf8(str, str) == 0);
+    TESTX(una::casesens::collate_utf8(str, str) == 0);
+    TESTX(una::caseless::collate_utf8(str, str) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::search_utf8(str, str));
-    TESTX(uni::caseless::search_utf8(str, str));
+    TESTX(una::casesens::search_utf8(str, str));
+    TESTX(una::caseless::search_utf8(str, str));
 
 // --------------
 // std::u16string
 // --------------
 
-    TESTX(uni::cases::to_lowercase_utf16(u16str) == u16str);
-    TESTX(uni::cases::to_uppercase_utf16(u16str) == u16str);
+    TESTX(una::cases::to_lowercase_utf16(u16str) == u16str);
+    TESTX(una::cases::to_uppercase_utf16(u16str) == u16str);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_lowercase_utf16(u16str, uni::locale{}) == u16str);
-    TESTX(uni::cases::to_uppercase_utf16(u16str, uni::locale{}) == u16str);
+    TESTX(una::cases::to_lowercase_utf16(u16str, una::locale{}) == u16str);
+    TESTX(una::cases::to_uppercase_utf16(u16str, una::locale{}) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_casefold_utf16(u16str) == u16str);
+    TESTX(una::cases::to_casefold_utf16(u16str) == u16str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_titlecase_utf16(u16str) == u16str);
-    TESTX(uni::cases::to_titlecase_utf16(u16str, uni::locale{}) == u16str);
+    TESTX(una::cases::to_titlecase_utf16(u16str) == u16str);
+    TESTX(una::cases::to_titlecase_utf16(u16str, una::locale{}) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
-    TESTX(uni::casesens::compare_utf16(u16str, u16str) == 0);
-    TESTX(uni::caseless::compare_utf16(u16str, u16str) == 0);
+    TESTX(una::casesens::compare_utf16(u16str, u16str) == 0);
+    TESTX(una::caseless::compare_utf16(u16str, u16str) == 0);
 #ifndef UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::collate_utf16(u16str, u16str) == 0);
-    TESTX(uni::caseless::collate_utf16(u16str, u16str) == 0);
+    TESTX(una::casesens::collate_utf16(u16str, u16str) == 0);
+    TESTX(una::caseless::collate_utf16(u16str, u16str) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::search_utf16(u16str, u16str));
-    TESTX(uni::caseless::search_utf16(u16str, u16str));
+    TESTX(una::casesens::search_utf16(u16str, u16str));
+    TESTX(una::caseless::search_utf16(u16str, u16str));
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
 // ------------
 // std::wstring
 // ------------
 
-    TESTX(uni::cases::to_lowercase_utf16(wstr) == wstr);
-    TESTX(uni::cases::to_uppercase_utf16(wstr) == wstr);
+    TESTX(una::cases::to_lowercase_utf16(wstr) == wstr);
+    TESTX(una::cases::to_uppercase_utf16(wstr) == wstr);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_lowercase_utf16(wstr, uni::locale{}) == wstr);
-    TESTX(uni::cases::to_uppercase_utf16(wstr, uni::locale{}) == wstr);
+    TESTX(una::cases::to_lowercase_utf16(wstr, una::locale{}) == wstr);
+    TESTX(una::cases::to_uppercase_utf16(wstr, una::locale{}) == wstr);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_casefold_utf16(wstr) == wstr);
+    TESTX(una::cases::to_casefold_utf16(wstr) == wstr);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_titlecase_utf16(wstr) == wstr);
-    TESTX(uni::cases::to_titlecase_utf16(wstr, uni::locale{}) == wstr);
+    TESTX(una::cases::to_titlecase_utf16(wstr) == wstr);
+    TESTX(una::cases::to_titlecase_utf16(wstr, una::locale{}) == wstr);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
-    TESTX(uni::casesens::compare_utf16(wstr, wstr) == 0);
-    TESTX(uni::caseless::compare_utf16(wstr, wstr) == 0);
+    TESTX(una::casesens::compare_utf16(wstr, wstr) == 0);
+    TESTX(una::caseless::compare_utf16(wstr, wstr) == 0);
 #ifndef UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::collate_utf16(wstr, wstr) == 0);
-    TESTX(uni::caseless::collate_utf16(wstr, wstr) == 0);
+    TESTX(una::casesens::collate_utf16(wstr, wstr) == 0);
+    TESTX(una::caseless::collate_utf16(wstr, wstr) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::search_utf16(wstr, wstr));
-    TESTX(uni::caseless::search_utf16(wstr, wstr));
+    TESTX(una::casesens::search_utf16(wstr, wstr));
+    TESTX(una::caseless::search_utf16(wstr, wstr));
 
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
@@ -226,28 +226,28 @@ test_constexpr bool test_short_func_case()
 // std::u8string
 // -------------
 
-    TESTX(uni::cases::to_lowercase_utf8(u8str) == u8str);
-    TESTX(uni::cases::to_uppercase_utf8(u8str) == u8str);
+    TESTX(una::cases::to_lowercase_utf8(u8str) == u8str);
+    TESTX(una::cases::to_uppercase_utf8(u8str) == u8str);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_lowercase_utf8(u8str, uni::locale{}) == u8str);
-    TESTX(uni::cases::to_uppercase_utf8(u8str, uni::locale{}) == u8str);
+    TESTX(una::cases::to_lowercase_utf8(u8str, una::locale{}) == u8str);
+    TESTX(una::cases::to_uppercase_utf8(u8str, una::locale{}) == u8str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_casefold_utf8(u8str) == u8str);
+    TESTX(una::cases::to_casefold_utf8(u8str) == u8str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_titlecase_utf8(u8str) == u8str);
-    TESTX(uni::cases::to_titlecase_utf8(u8str, uni::locale{}) == u8str);
+    TESTX(una::cases::to_titlecase_utf8(u8str) == u8str);
+    TESTX(una::cases::to_titlecase_utf8(u8str, una::locale{}) == u8str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
-    TESTX(uni::casesens::compare_utf8(u8str, u8str) == 0);
-    TESTX(uni::caseless::compare_utf8(u8str, u8str) == 0);
+    TESTX(una::casesens::compare_utf8(u8str, u8str) == 0);
+    TESTX(una::caseless::compare_utf8(u8str, u8str) == 0);
 #ifndef UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::collate_utf8(u8str, u8str) == 0);
-    TESTX(uni::caseless::collate_utf8(u8str, u8str) == 0);
+    TESTX(una::casesens::collate_utf8(u8str, u8str) == 0);
+    TESTX(una::caseless::collate_utf8(u8str, u8str) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(uni::casesens::search_utf8(u8str, u8str));
-    TESTX(uni::caseless::search_utf8(u8str, u8str));
+    TESTX(una::casesens::search_utf8(u8str, u8str));
+    TESTX(una::caseless::search_utf8(u8str, u8str));
 
 #endif // __cpp_lib_char8_t
 
@@ -269,42 +269,42 @@ test_constexpr bool test_short_func_norm()
 // std::string
 // -----------
 
-    TESTX(uni::norm::to_nfc_utf8(str) == str);
-    TESTX(uni::norm::to_nfd_utf8(str) == str);
+    TESTX(una::norm::to_nfc_utf8(str) == str);
+    TESTX(una::norm::to_nfd_utf8(str) == str);
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    TESTX(uni::norm::to_nfkc_utf8(str) == str);
-    TESTX(uni::norm::to_nfkd_utf8(str) == str);
+    TESTX(una::norm::to_nfkc_utf8(str) == str);
+    TESTX(una::norm::to_nfkd_utf8(str) == str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-    TESTX(uni::norm::to_unaccent_utf8(str) == str);
+    TESTX(una::norm::to_unaccent_utf8(str) == str);
 #endif // UNI_ALGO_DISABLE_PROP
 
-    TESTX(uni::norm::is_nfc_utf8(str));
-    TESTX(uni::norm::is_nfd_utf8(str));
+    TESTX(una::norm::is_nfc_utf8(str));
+    TESTX(una::norm::is_nfd_utf8(str));
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    TESTX(uni::norm::is_nfkc_utf8(str));
-    TESTX(uni::norm::is_nfkd_utf8(str));
+    TESTX(una::norm::is_nfkc_utf8(str));
+    TESTX(una::norm::is_nfkd_utf8(str));
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 // --------------
 // std::u16string
 // --------------
 
-    TESTX(uni::norm::to_nfc_utf16(u16str) == u16str);
-    TESTX(uni::norm::to_nfd_utf16(u16str) == u16str);
+    TESTX(una::norm::to_nfc_utf16(u16str) == u16str);
+    TESTX(una::norm::to_nfd_utf16(u16str) == u16str);
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    TESTX(uni::norm::to_nfkc_utf16(u16str) == u16str);
-    TESTX(uni::norm::to_nfkd_utf16(u16str) == u16str);
+    TESTX(una::norm::to_nfkc_utf16(u16str) == u16str);
+    TESTX(una::norm::to_nfkd_utf16(u16str) == u16str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-    TESTX(uni::norm::to_unaccent_utf16(u16str) == u16str);
+    TESTX(una::norm::to_unaccent_utf16(u16str) == u16str);
 #endif // UNI_ALGO_DISABLE_PROP
 
-    TESTX(uni::norm::is_nfc_utf16(u16str));
-    TESTX(uni::norm::is_nfd_utf16(u16str));
+    TESTX(una::norm::is_nfc_utf16(u16str));
+    TESTX(una::norm::is_nfd_utf16(u16str));
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    TESTX(uni::norm::is_nfkc_utf16(u16str));
-    TESTX(uni::norm::is_nfkd_utf16(u16str));
+    TESTX(una::norm::is_nfkc_utf16(u16str));
+    TESTX(una::norm::is_nfkd_utf16(u16str));
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
@@ -312,21 +312,21 @@ test_constexpr bool test_short_func_norm()
 // std::wstring
 // ------------
 
-    TESTX(uni::norm::to_nfc_utf16(wstr) == wstr);
-    TESTX(uni::norm::to_nfd_utf16(wstr) == wstr);
+    TESTX(una::norm::to_nfc_utf16(wstr) == wstr);
+    TESTX(una::norm::to_nfd_utf16(wstr) == wstr);
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    TESTX(uni::norm::to_nfkc_utf16(wstr) == wstr);
-    TESTX(uni::norm::to_nfkd_utf16(wstr) == wstr);
+    TESTX(una::norm::to_nfkc_utf16(wstr) == wstr);
+    TESTX(una::norm::to_nfkd_utf16(wstr) == wstr);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-    TESTX(uni::norm::to_unaccent_utf16(wstr) == wstr);
+    TESTX(una::norm::to_unaccent_utf16(wstr) == wstr);
 #endif // UNI_ALGO_DISABLE_PROP
 
-    TESTX(uni::norm::is_nfc_utf16(wstr));
-    TESTX(uni::norm::is_nfd_utf16(wstr));
+    TESTX(una::norm::is_nfc_utf16(wstr));
+    TESTX(una::norm::is_nfd_utf16(wstr));
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    TESTX(uni::norm::is_nfkc_utf16(wstr));
-    TESTX(uni::norm::is_nfkd_utf16(wstr));
+    TESTX(una::norm::is_nfkc_utf16(wstr));
+    TESTX(una::norm::is_nfkd_utf16(wstr));
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
@@ -336,21 +336,21 @@ test_constexpr bool test_short_func_norm()
 // std::u8string
 // -------------
 
-    TESTX(uni::norm::to_nfc_utf8(u8str) == u8str);
-    TESTX(uni::norm::to_nfd_utf8(u8str) == u8str);
+    TESTX(una::norm::to_nfc_utf8(u8str) == u8str);
+    TESTX(una::norm::to_nfd_utf8(u8str) == u8str);
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    TESTX(uni::norm::to_nfkc_utf8(u8str) == u8str);
-    TESTX(uni::norm::to_nfkd_utf8(u8str) == u8str);
+    TESTX(una::norm::to_nfkc_utf8(u8str) == u8str);
+    TESTX(una::norm::to_nfkd_utf8(u8str) == u8str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-    TESTX(uni::norm::to_unaccent_utf8(u8str) == u8str);
+    TESTX(una::norm::to_unaccent_utf8(u8str) == u8str);
 #endif // UNI_ALGO_DISABLE_PROP
 
-    TESTX(uni::norm::is_nfc_utf8(u8str));
-    TESTX(uni::norm::is_nfd_utf8(u8str));
+    TESTX(una::norm::is_nfc_utf8(u8str));
+    TESTX(una::norm::is_nfd_utf8(u8str));
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    TESTX(uni::norm::is_nfkc_utf8(u8str));
-    TESTX(uni::norm::is_nfkd_utf8(u8str));
+    TESTX(una::norm::is_nfkc_utf8(u8str));
+    TESTX(una::norm::is_nfkd_utf8(u8str));
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #endif // __cpp_lib_char8_t

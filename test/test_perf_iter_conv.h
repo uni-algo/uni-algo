@@ -10,7 +10,7 @@
  * Note that I did only basic tests, worse performance in some cases was enough for me to inline everything into a function
  */
 
-namespace uni::detail
+namespace una::detail
 {
 
 // The same as internal utf8iter function
@@ -168,4 +168,4 @@ size_t impl_utf8to16_test(it_in_utf8 first, it_end_utf8 last, it_out_utf16 resul
     return (size_t)(dst - result);
 }
 
-} // namespace uni::detail
+} // namespace una::detail

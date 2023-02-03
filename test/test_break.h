@@ -19,7 +19,7 @@ bool test_break_grapheme()
         if (line.empty() || line[0] == '#' || line[0] == '@')
             continue;
 
-        std::u32string line32 = uni::utf8to32u(line);
+        std::u32string line32 = una::utf8to32u(line);
 
         std::u32string string_without_breaks, string_with_breaks;
 
@@ -38,7 +38,7 @@ bool test_break_grapheme()
                 if (line32[i] == 0x00D7 || line32[i] == 0x00F7)
                     i++;
 
-                uint32_t c = (uint32_t)strtoul(uni::utf32to8(line32.c_str()+i).c_str(), 0, 16);
+                uint32_t c = (uint32_t)strtoul(una::utf32to8(line32.c_str()+i).c_str(), 0, 16);
 
                 if (c != 0)
                 {
@@ -54,9 +54,9 @@ bool test_break_grapheme()
 
         // FORWARD
         {
-            std::string string_with_breaks_utf8 = uni::utf32to8(string_without_breaks);
+            std::string string_with_breaks_utf8 = una::utf32to8(string_without_breaks);
 
-            auto view = uni::ranges::grapheme::utf8_view{string_with_breaks_utf8};
+            auto view = una::ranges::grapheme::utf8_view{string_with_breaks_utf8};
 
             // Collect brakes
             std::vector<std::size_t> vec;
@@ -68,13 +68,13 @@ bool test_break_grapheme()
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 2)
                 string_with_breaks_utf8.insert(vec[i] + expand, "\xC3\xB7");
 
-            TESTX(string_with_breaks_utf8 == uni::utf32to8(string_with_breaks));
+            TESTX(string_with_breaks_utf8 == una::utf32to8(string_with_breaks));
         }
         // REVERSE
         {
-            std::string string_with_breaks_utf8 = uni::utf32to8(string_without_breaks);
+            std::string string_with_breaks_utf8 = una::utf32to8(string_without_breaks);
 
-            auto view = uni::ranges::grapheme::utf8_view{string_with_breaks_utf8};
+            auto view = una::ranges::grapheme::utf8_view{string_with_breaks_utf8};
 
             // Collect reverse brakes
             std::vector<std::size_t> vec;
@@ -90,16 +90,16 @@ bool test_break_grapheme()
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 2)
                 string_with_breaks_utf8.insert(vec[i] + expand, "\xC3\xB7");
 
-            TESTX(string_with_breaks_utf8 == uni::utf32to8(string_with_breaks));
+            TESTX(string_with_breaks_utf8 == una::utf32to8(string_with_breaks));
         }
 
         // UTF-16
 
         // FORWARD
         {
-            std::u16string string_with_breaks_utf16 = uni::utf32to16u(string_without_breaks);
+            std::u16string string_with_breaks_utf16 = una::utf32to16u(string_without_breaks);
 
-            auto view = uni::ranges::grapheme::utf16_view{string_with_breaks_utf16};
+            auto view = una::ranges::grapheme::utf16_view{string_with_breaks_utf16};
 
             // Collect brakes
             std::vector<std::size_t> vec;
@@ -111,13 +111,13 @@ bool test_break_grapheme()
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 1)
                 string_with_breaks_utf16.insert(vec[i] + expand, 1, 0x00F7);
 
-            TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
+            TESTX(string_with_breaks_utf16 == una::utf32to16u(string_with_breaks));
         }
         // REVERSE
         {
-            std::u16string string_with_breaks_utf16 = uni::utf32to16u(string_without_breaks);
+            std::u16string string_with_breaks_utf16 = una::utf32to16u(string_without_breaks);
 
-            auto view = uni::ranges::grapheme::utf16_view{string_with_breaks_utf16};
+            auto view = una::ranges::grapheme::utf16_view{string_with_breaks_utf16};
 
             // Collect reverse brakes
             std::vector<std::size_t> vec;
@@ -133,7 +133,7 @@ bool test_break_grapheme()
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 1)
                 string_with_breaks_utf16.insert(vec[i] + expand, 1, 0x00F7);
 
-            TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
+            TESTX(string_with_breaks_utf16 == una::utf32to16u(string_with_breaks));
         }
     }
 
@@ -157,7 +157,7 @@ bool test_break_word()
         if (line.empty() || line[0] == '#' || line[0] == '@')
             continue;
 
-        std::u32string line32 = uni::utf8to32u(line);
+        std::u32string line32 = una::utf8to32u(line);
 
         std::u32string string_without_breaks, string_with_breaks;
 
@@ -176,7 +176,7 @@ bool test_break_word()
                 if (line32[i] == 0x00D7 || line32[i] == 0x00F7)
                     i++;
 
-                uint32_t c = (uint32_t)strtoul(uni::utf32to8(line32.c_str()+i).c_str(), 0, 16);
+                uint32_t c = (uint32_t)strtoul(una::utf32to8(line32.c_str()+i).c_str(), 0, 16);
 
                 if (c != 0)
                 {
@@ -192,9 +192,9 @@ bool test_break_word()
 
         // FORWARD
         {
-            std::string string_with_breaks_utf8 = uni::utf32to8(string_without_breaks);
+            std::string string_with_breaks_utf8 = una::utf32to8(string_without_breaks);
 
-            auto view = uni::ranges::word::utf8_view{string_with_breaks_utf8};
+            auto view = una::ranges::word::utf8_view{string_with_breaks_utf8};
 
             // Collect brakes
             std::vector<std::size_t> vec;
@@ -206,13 +206,13 @@ bool test_break_word()
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 2)
                 string_with_breaks_utf8.insert(vec[i] + expand, "\xC3\xB7");
 
-            TESTX(string_with_breaks_utf8 == uni::utf32to8(string_with_breaks));
+            TESTX(string_with_breaks_utf8 == una::utf32to8(string_with_breaks));
         }
         // REVERSE
         {
-            std::string string_with_breaks_utf8 = uni::utf32to8(string_without_breaks);
+            std::string string_with_breaks_utf8 = una::utf32to8(string_without_breaks);
 
-            auto view = uni::ranges::word::utf8_view{string_with_breaks_utf8};
+            auto view = una::ranges::word::utf8_view{string_with_breaks_utf8};
 
             // Collect reverse brakes
             std::vector<std::size_t> vec;
@@ -228,16 +228,16 @@ bool test_break_word()
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 2)
                 string_with_breaks_utf8.insert(vec[i] + expand, "\xC3\xB7");
 
-            TESTX(string_with_breaks_utf8 == uni::utf32to8(string_with_breaks));
+            TESTX(string_with_breaks_utf8 == una::utf32to8(string_with_breaks));
         }
 
         // UTF-16
 
         // FORWARD
         {
-            std::u16string string_with_breaks_utf16 = uni::utf32to16u(string_without_breaks);
+            std::u16string string_with_breaks_utf16 = una::utf32to16u(string_without_breaks);
 
-            auto view = uni::ranges::word::utf16_view{string_with_breaks_utf16};
+            auto view = una::ranges::word::utf16_view{string_with_breaks_utf16};
 
             // Collect brakes
             std::vector<std::size_t> vec;
@@ -249,13 +249,13 @@ bool test_break_word()
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 1)
                 string_with_breaks_utf16.insert(vec[i] + expand, 1, 0x00F7);
 
-            TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
+            TESTX(string_with_breaks_utf16 == una::utf32to16u(string_with_breaks));
         }
         // REVERSE
         {
-            std::u16string string_with_breaks_utf16 = uni::utf32to16u(string_without_breaks);
+            std::u16string string_with_breaks_utf16 = una::utf32to16u(string_without_breaks);
 
-            auto view = uni::ranges::word::utf16_view{string_with_breaks_utf16};
+            auto view = una::ranges::word::utf16_view{string_with_breaks_utf16};
 
             // Collect reverse brakes
             std::vector<std::size_t> vec;
@@ -271,7 +271,7 @@ bool test_break_word()
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 1)
                 string_with_breaks_utf16.insert(vec[i] + expand, 1, 0x00F7);
 
-            TESTX(string_with_breaks_utf16 == uni::utf32to16u(string_with_breaks));
+            TESTX(string_with_breaks_utf16 == una::utf32to16u(string_with_breaks));
         }
     }
 
@@ -280,28 +280,28 @@ bool test_break_word()
 
 test_constexpr std::size_t test_break_count_words(std::string_view str)
 {
-    auto view = uni::ranges::word::utf8_view{str};
+    auto view = una::ranges::word::utf8_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
 test_constexpr std::size_t test_break_count_only_words(std::string_view str)
 {
-    auto view = uni::ranges::word_only::utf8_view{str};
+    auto view = una::ranges::word_only::utf8_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
 test_constexpr std::size_t test_break_count_words16(std::u16string_view str)
 {
-    auto view = uni::ranges::word::utf16_view{str};
+    auto view = una::ranges::word::utf16_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
 test_constexpr std::size_t test_break_count_only_words16(std::u16string_view str)
 {
-    auto view = uni::ranges::word_only::utf16_view{str};
+    auto view = una::ranges::word_only::utf16_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
@@ -370,7 +370,7 @@ test_constexpr bool test_break_word_prop()
     std::size_t count_space = 0;
     std::string_view sv = "Tes't. 123,5 7test,test7 \xE3\x83\x90\xE3\x82\xAB \xE6\xA8\xB1 \xF0\x9F\x98\xBA"
         "\xF0\x9F\x8F\xB4\xF3\xA0\x81\xA7\xF3\xA0\x81\xA2\xF3\xA0\x81\xB7\xF3\xA0\x81\xAC\xF3\xA0\x81\xB3\xF3\xA0\x81\xBF"; // Flag: Wales
-    auto view = uni::ranges::word::utf8_view{sv};
+    auto view = una::ranges::word::utf8_view{sv};
     for (auto it = view.begin(); it != view.end(); ++it)
     {
         if (it.is_emoji())
@@ -410,7 +410,7 @@ test_constexpr bool test_break_word_prop()
     std::size_t count_space16 = 0;
     std::u16string_view sv16 = u"Tes't. 123,5 7test,test7 \x30D0\x30AB \x6A31 \xD83D\xDE3A"
         u"\xD83C\xDFF4\xDB40\xDC67\xDB40\xDC62\xDB40\xDC77\xDB40\xDC6C\xDB40\xDC73\xDB40\xDC7F"; // Flag: Wales
-    auto view16 = uni::ranges::word::utf16_view{sv16};
+    auto view16 = una::ranges::word::utf16_view{sv16};
     for (auto it = view16.begin(); it != view16.end(); ++it)
     {
         if (it.is_emoji())
@@ -525,21 +525,21 @@ test_constexpr bool test_break_word_prop()
     // FORWARD
 
     result.clear();
-    for (std::string_view s : sv | uni::views::word_only::utf8) { result += s; result += '|'; }
+    for (std::string_view s : sv | una::views::word_only::utf8) { result += s; result += '|'; }
     TESTX(result == "Tes't|123,5|7test|test7|\xE3\x83\x90\xE3\x82\xAB|\xE6\xA8\xB1|");
 
     result16.clear();
-    for (std::u16string_view s : sv16 | uni::views::word_only::utf16) { result16 += s; result16 += u'|'; }
+    for (std::u16string_view s : sv16 | una::views::word_only::utf16) { result16 += s; result16 += u'|'; }
     TESTX(result16 == u"Tes't|123,5|7test|test7|\x30D0\x30AB|\x6A31|");
 
     // REVERSE
 
     result.clear();
-    for (std::string_view s : sv | uni::views::word_only::utf8 | uni::views::reverse) { result += s; result += '|'; }
+    for (std::string_view s : sv | una::views::word_only::utf8 | una::views::reverse) { result += s; result += '|'; }
     TESTX(result == "\xE6\xA8\xB1|\xE3\x83\x90\xE3\x82\xAB|test7|7test|123,5|Tes't|");
 
     result16.clear();
-    for (std::u16string_view s : sv16 | uni::views::word_only::utf16 | uni::views::reverse) { result16 += s; result16 += u'|'; }
+    for (std::u16string_view s : sv16 | una::views::word_only::utf16 | una::views::reverse) { result16 += s; result16 += u'|'; }
     TESTX(result16 == u"\x6A31|\x30D0\x30AB|test7|7test|123,5|Tes't|");
 
     return true;
@@ -564,8 +564,8 @@ test_constexpr bool test_break_bidi()
     // TEST word
     // ---------
 
-    auto view = uni::ranges::word::utf8_view{list};
-    auto view16 = uni::ranges::word::utf16_view{list16};
+    auto view = una::ranges::word::utf8_view{list};
+    auto view16 = una::ranges::word::utf16_view{list16};
 
     // FORWARD
 
@@ -591,8 +591,8 @@ test_constexpr bool test_break_bidi()
     // TEST word_only
     // --------------
 
-    auto vwwo = uni::ranges::word_only::utf8_view{list};
-    auto vwwo16 = uni::ranges::word_only::utf16_view{list16};
+    auto vwwo = una::ranges::word_only::utf8_view{list};
+    auto vwwo16 = una::ranges::word_only::utf16_view{list16};
 
     // FORWARD
 
@@ -622,8 +622,8 @@ test_constexpr bool test_break_bidi()
     sv16 = u"Tes't. \x30D0\x30AB \x6A31 \xD83D\xDE3A";
     list = {sv.begin(), sv.end()};
     list16 = {sv16.begin(), sv16.end()};
-    auto vwgp = uni::ranges::grapheme::utf8_view{list};
-    auto vwgp16 = uni::ranges::grapheme::utf16_view{list16};
+    auto vwgp = una::ranges::grapheme::utf8_view{list};
+    auto vwgp16 = una::ranges::grapheme::utf16_view{list16};
 
     // FORWARD
 

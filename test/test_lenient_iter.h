@@ -4,12 +4,12 @@
 
 test_constexpr std::u16string test_iter_utf8to16(std::string_view str)
 {
-    return str | uni::views::utf8 | uni::ranges::to_utf16<std::u16string>();
+    return str | una::views::utf8 | una::ranges::to_utf16<std::u16string>();
 }
 
 test_constexpr std::string test_iter_utf16to8(std::u16string_view str)
 {
-    return str | uni::views::utf16 | uni::ranges::to_utf8<std::string>();
+    return str | una::views::utf16 | una::ranges::to_utf8<std::string>();
 }
 
 test_constexpr bool test_lenient_iter_utf8to16()

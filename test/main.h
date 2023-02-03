@@ -132,32 +132,32 @@ int main7()
 #endif
 
     std::cout << "Library  Version: " <<
-        uni::version::library::major << '.' <<
-        uni::version::library::minor << '.' <<
-        uni::version::library::patch << '\n';
+        una::version::library::major << '.' <<
+        una::version::library::minor << '.' <<
+        una::version::library::patch << '\n';
     std::cout << "Unicode  Version: " <<
-        uni::version::unicode::major << '.' <<
-        uni::version::unicode::minor << '.' <<
-        uni::version::unicode::update << '\n';
+        una::version::unicode::major << '.' <<
+        una::version::unicode::minor << '.' <<
+        una::version::unicode::update << '\n';
 
 #if defined(UNI_ALGO_DISABLE_SYSTEM_LOCALE)
     std::cout << "System    Locale: DISABLED" << '\n';
 #elif defined(UNI_ALGO_STATIC_DATA)
     std::cout << "System    Locale: DISABLED HEADER-ONLY" << '\n';
 #else
-    if (uni::locale::system().is_empty())
+    if (una::locale::system().is_empty())
         std::cout << "System    Locale: EMPTY" << '\n';
     else
-        std::cout << "System    Locale: " << uni::locale::system().to_string() << '\n';
+        std::cout << "System    Locale: " << una::locale::system().to_string() << '\n';
 #endif
 
-    static_assert(uni::version::library::major >= 0 && uni::version::library::major <= 255);
-    static_assert(uni::version::library::minor >= 0 && uni::version::library::minor <= 255);
-    static_assert(uni::version::library::patch >= 0 && uni::version::library::patch <= 255);
+    static_assert(una::version::library::major >= 0 && una::version::library::major <= 255);
+    static_assert(una::version::library::minor >= 0 && una::version::library::minor <= 255);
+    static_assert(una::version::library::patch >= 0 && una::version::library::patch <= 255);
 
-    static_assert(uni::version::unicode::major >= 1 && uni::version::unicode::major <= 255);
-    static_assert(uni::version::unicode::minor >= 0 && uni::version::unicode::minor <= 255);
-    static_assert(uni::version::unicode::update >= 0 && uni::version::unicode::update <= 255);
+    static_assert(una::version::unicode::major >= 1 && una::version::unicode::major <= 255);
+    static_assert(una::version::unicode::minor >= 0 && una::version::unicode::minor <= 255);
+    static_assert(una::version::unicode::update >= 0 && una::version::unicode::update <= 255);
 
     std::cout << "C++      Version: " << test_version_cpp() << '\n';
     std::cout << "Ranges   Version: " << test_version_ranges() << '\n';

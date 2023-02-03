@@ -4,7 +4,7 @@
 
 test_constexpr std::u16string test_iter_rev_utf8to16(std::string_view str)
 {
-    auto view = uni::ranges::utf8_view<std::string_view, uni::detail::impl_iter_error>{str};
+    auto view = una::ranges::utf8_view<std::string_view, una::detail::impl_iter_error>{str};
 
     std::u32string codepoints;
     for (auto it = view.end(); it != view.begin();)
@@ -26,12 +26,12 @@ test_constexpr std::u16string test_iter_rev_utf8to16(std::string_view str)
     }
 #endif
 
-    return codepoints | uni::ranges::to_utf16<std::u16string>();
+    return codepoints | una::ranges::to_utf16<std::u16string>();
 }
 
 test_constexpr std::string test_iter_rev_utf16to8(std::u16string_view str)
 {
-    auto view = uni::ranges::utf16_view<std::u16string_view, uni::detail::impl_iter_error>{str};
+    auto view = una::ranges::utf16_view<std::u16string_view, una::detail::impl_iter_error>{str};
 
     std::u32string codepoints;
     for (auto it = view.end(); it != view.begin();)
@@ -52,7 +52,7 @@ test_constexpr std::string test_iter_rev_utf16to8(std::u16string_view str)
     }
 #endif
 
-    return codepoints | uni::ranges::to_utf8<std::string>();
+    return codepoints | una::ranges::to_utf8<std::string>();
 }
 
 test_constexpr bool test_lenient_iter_rev_utf8to16()

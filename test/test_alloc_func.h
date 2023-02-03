@@ -69,21 +69,21 @@ test_constexpr bool test_alloc_func_conv()
     std::basic_string<char16_t, std::char_traits<char16_t>, decltype(alloc16)> u16str = u"123";
     std::basic_string<char32_t, std::char_traits<char32_t>, decltype(alloc32)> u32str = U"123";
 
-    TESTX((uni::utf8to16<char, char16_t>(str, alloc16) == u16str));
-    TESTX((uni::utf8to32<char, char32_t>(str, alloc32) == u32str));
-    TESTX((uni::utf16to8<char16_t, char>(u16str, alloc) == str));
-    TESTX((uni::utf32to8<char32_t, char>(u32str, alloc) == str));
-    TESTX((uni::utf16to32<char16_t, char32_t>(u16str, alloc32) == u32str));
-    TESTX((uni::utf32to16<char32_t, char16_t>(u32str, alloc16) == u16str));
+    TESTX((una::utf8to16<char, char16_t>(str, alloc16) == u16str));
+    TESTX((una::utf8to32<char, char32_t>(str, alloc32) == u32str));
+    TESTX((una::utf16to8<char16_t, char>(u16str, alloc) == str));
+    TESTX((una::utf32to8<char32_t, char>(u32str, alloc) == str));
+    TESTX((una::utf16to32<char16_t, char32_t>(u16str, alloc32) == u32str));
+    TESTX((una::utf32to16<char32_t, char16_t>(u32str, alloc16) == u16str));
 
-    uni::error error;
+    una::error error;
 
-    TESTX((uni::strict::utf8to16<char, char16_t>(str, error, alloc16) == u16str));
-    TESTX((uni::strict::utf8to32<char, char32_t>(str, error, alloc32) == u32str));
-    TESTX((uni::strict::utf16to8<char16_t, char>(u16str, error, alloc) == str));
-    TESTX((uni::strict::utf32to8<char32_t, char>(u32str, error, alloc) == str));
-    TESTX((uni::strict::utf16to32<char16_t, char32_t>(u16str, error, alloc32) == u32str));
-    TESTX((uni::strict::utf32to16<char32_t, char16_t>(u32str, error, alloc16) == u16str));
+    TESTX((una::strict::utf8to16<char, char16_t>(str, error, alloc16) == u16str));
+    TESTX((una::strict::utf8to32<char, char32_t>(str, error, alloc32) == u32str));
+    TESTX((una::strict::utf16to8<char16_t, char>(u16str, error, alloc) == str));
+    TESTX((una::strict::utf32to8<char32_t, char>(u32str, error, alloc) == str));
+    TESTX((una::strict::utf16to32<char16_t, char32_t>(u16str, error, alloc32) == u32str));
+    TESTX((una::strict::utf32to16<char32_t, char16_t>(u32str, error, alloc16) == u16str));
 
     // REMINDER: Custom memory resourse
 #if 0
@@ -91,7 +91,7 @@ test_constexpr bool test_alloc_func_conv()
     //std::pmr::monotonic_buffer_resource mr{std::data(buffer), std::size(buffer)};
     memory_resource_func mr;
     std::pmr::polymorphic_allocator<char> pa{&mr};
-    std::pmr::string result = uni::utf16to8<char16_t, char>(u"123", pa);
+    std::pmr::string result = una::utf16to8<char16_t, char>(u"123", pa);
     TESTX(result == "123");
 #endif
 
@@ -106,31 +106,31 @@ test_constexpr bool test_alloc_func_case()
     std::basic_string<char, std::char_traits<char>, decltype(alloc)> str = "123";
     std::basic_string<char16_t, std::char_traits<char16_t>, decltype(alloc16)> u16str = u"123";
 
-    TESTX(uni::cases::to_lowercase_utf8<char>(str, alloc) == str);
-    TESTX(uni::cases::to_uppercase_utf8<char>(str, alloc) == str);
+    TESTX(una::cases::to_lowercase_utf8<char>(str, alloc) == str);
+    TESTX(una::cases::to_uppercase_utf8<char>(str, alloc) == str);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_lowercase_utf8<char>(str, uni::locale{}, alloc) == str);
-    TESTX(uni::cases::to_uppercase_utf8<char>(str, uni::locale{}, alloc) == str);
+    TESTX(una::cases::to_lowercase_utf8<char>(str, una::locale{}, alloc) == str);
+    TESTX(una::cases::to_uppercase_utf8<char>(str, una::locale{}, alloc) == str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_casefold_utf8<char>(str, alloc) == str);
+    TESTX(una::cases::to_casefold_utf8<char>(str, alloc) == str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_titlecase_utf8<char>(str, alloc) == str);
-    TESTX(uni::cases::to_titlecase_utf8<char>(str, uni::locale{}, alloc) == str);
+    TESTX(una::cases::to_titlecase_utf8<char>(str, alloc) == str);
+    TESTX(una::cases::to_titlecase_utf8<char>(str, una::locale{}, alloc) == str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
-    TESTX(uni::cases::to_lowercase_utf16<char16_t>(u16str, alloc16) == u16str);
-    TESTX(uni::cases::to_uppercase_utf16<char16_t>(u16str, alloc16) == u16str);
+    TESTX(una::cases::to_lowercase_utf16<char16_t>(u16str, alloc16) == u16str);
+    TESTX(una::cases::to_uppercase_utf16<char16_t>(u16str, alloc16) == u16str);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_lowercase_utf16<char16_t>(u16str, uni::locale{}, alloc16) == u16str);
-    TESTX(uni::cases::to_uppercase_utf16<char16_t>(u16str, uni::locale{}, alloc16) == u16str);
+    TESTX(una::cases::to_lowercase_utf16<char16_t>(u16str, una::locale{}, alloc16) == u16str);
+    TESTX(una::cases::to_uppercase_utf16<char16_t>(u16str, una::locale{}, alloc16) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_casefold_utf16<char16_t>(u16str, alloc16) == u16str);
+    TESTX(una::cases::to_casefold_utf16<char16_t>(u16str, alloc16) == u16str);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
-    TESTX(uni::cases::to_titlecase_utf16<char16_t>(u16str, alloc16) == u16str);
-    TESTX(uni::cases::to_titlecase_utf16<char16_t>(u16str, uni::locale{}, alloc16) == u16str);
+    TESTX(una::cases::to_titlecase_utf16<char16_t>(u16str, alloc16) == u16str);
+    TESTX(una::cases::to_titlecase_utf16<char16_t>(u16str, una::locale{}, alloc16) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 #endif // UNI_ALGO_DISABLE_BREAK_WORD
 
@@ -145,24 +145,24 @@ test_constexpr bool test_alloc_func_norm()
     std::basic_string<char, std::char_traits<char>, decltype(alloc)> str = "123";
     std::basic_string<char16_t, std::char_traits<char16_t>, decltype(alloc16)> u16str = u"123";
 
-    TESTX(uni::norm::to_nfc_utf8<char>(str, alloc) == str);
-    TESTX(uni::norm::to_nfd_utf8<char>(str, alloc) == str);
+    TESTX(una::norm::to_nfc_utf8<char>(str, alloc) == str);
+    TESTX(una::norm::to_nfd_utf8<char>(str, alloc) == str);
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    TESTX(uni::norm::to_nfkc_utf8<char>(str, alloc) == str);
-    TESTX(uni::norm::to_nfkd_utf8<char>(str, alloc) == str);
+    TESTX(una::norm::to_nfkc_utf8<char>(str, alloc) == str);
+    TESTX(una::norm::to_nfkd_utf8<char>(str, alloc) == str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-    TESTX(uni::norm::to_unaccent_utf8<char>(str, alloc) == str);
+    TESTX(una::norm::to_unaccent_utf8<char>(str, alloc) == str);
 #endif // UNI_ALGO_DISABLE_PROP
 
-    TESTX(uni::norm::to_nfc_utf16<char16_t>(u16str, alloc16) == u16str);
-    TESTX(uni::norm::to_nfd_utf16<char16_t>(u16str, alloc16) == u16str);
+    TESTX(una::norm::to_nfc_utf16<char16_t>(u16str, alloc16) == u16str);
+    TESTX(una::norm::to_nfd_utf16<char16_t>(u16str, alloc16) == u16str);
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-    TESTX(uni::norm::to_nfkc_utf16<char16_t>(u16str, alloc16) == u16str);
-    TESTX(uni::norm::to_nfkd_utf16<char16_t>(u16str, alloc16) == u16str);
+    TESTX(una::norm::to_nfkc_utf16<char16_t>(u16str, alloc16) == u16str);
+    TESTX(una::norm::to_nfkd_utf16<char16_t>(u16str, alloc16) == u16str);
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 #ifndef UNI_ALGO_DISABLE_PROP
-    TESTX(uni::norm::to_unaccent_utf16<char16_t>(u16str, alloc16) == u16str);
+    TESTX(una::norm::to_unaccent_utf16<char16_t>(u16str, alloc16) == u16str);
 #endif // UNI_ALGO_DISABLE_PROP
 
     return true;

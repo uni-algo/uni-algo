@@ -6,8 +6,8 @@ test_constexpr bool test_translit_buffer()
 {
     // The internal translit buffer must behave the same as std::u32string
 
-    uni::detail::translit::buffer buffer{U"1234567890"};
-    uni::detail::translit::buffer buf = buffer;
+    una::detail::translit::buffer buffer{U"1234567890"};
+    una::detail::translit::buffer buf = buffer;
     std::u32string buff32{U"1234567890"};
     std::u32string b32 = buff32;
 

@@ -2,9 +2,9 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-test_constexpr std::u16string test_iter_utf8to16strict(std::string_view str, uni::error& error)
+test_constexpr std::u16string test_iter_utf8to16strict(std::string_view str, una::error& error)
 {
-    auto view = uni::ranges::utf8_view<std::string_view, uni::detail::impl_iter_error>{str};
+    auto view = una::ranges::utf8_view<std::string_view, una::detail::impl_iter_error>{str};
 
     error.reset();
 
@@ -13,20 +13,20 @@ test_constexpr std::u16string test_iter_utf8to16strict(std::string_view str, uni
 
     for (auto it = view.begin(); it != view.end(); ++it)
     {
-        if (*it == uni::detail::impl_iter_error)
+        if (*it == una::detail::impl_iter_error)
         {
-            error = uni::error{true, static_cast<std::size_t>(it.begin() - str.begin())};
+            error = una::error{true, static_cast<std::size_t>(it.begin() - str.begin())};
             return std::u16string{};
         }
 
-        uni::detail::impl_output_utf16(*it, output);
+        una::detail::impl_output_utf16(*it, output);
     }
     return result;
 }
 
-test_constexpr std::string test_iter_utf16to8strict(std::u16string_view str, uni::error& error)
+test_constexpr std::string test_iter_utf16to8strict(std::u16string_view str, una::error& error)
 {
-    auto view = uni::ranges::utf16_view<std::u16string_view, uni::detail::impl_iter_error>{str};
+    auto view = una::ranges::utf16_view<std::u16string_view, una::detail::impl_iter_error>{str};
 
     error.reset();
 
@@ -35,13 +35,13 @@ test_constexpr std::string test_iter_utf16to8strict(std::u16string_view str, uni
 
     for (auto it = view.begin(); it != view.end(); ++it)
     {
-        if (*it == uni::detail::impl_iter_error)
+        if (*it == una::detail::impl_iter_error)
         {
-            error = uni::error{true, static_cast<std::size_t>(it.begin() - str.begin())};
+            error = una::error{true, static_cast<std::size_t>(it.begin() - str.begin())};
             return std::string{};
         }
 
-        uni::detail::impl_output_utf8(*it, output);
+        una::detail::impl_output_utf8(*it, output);
     }
 
     return result;
@@ -49,7 +49,7 @@ test_constexpr std::string test_iter_utf16to8strict(std::u16string_view str, uni
 
 test_constexpr bool test_strict_iter_utf8to16()
 {
-    uni::error error;
+    una::error error;
     std::u16string str;
 
     str = test_iter_utf8to16strict("ABC", error);
@@ -206,7 +206,7 @@ test_constexpr bool test_strict_iter_utf8to16()
 
 test_constexpr bool test_strict_iter_utf16to8()
 {
-    uni::error error;
+    una::error error;
     std::string str;
 
     str = test_iter_utf16to8strict(u"ABC", error);

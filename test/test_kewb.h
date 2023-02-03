@@ -39,7 +39,7 @@
  * Disclaimer: Please don't use it as is, even though it passes tests it is just a test function.
  */
 
-namespace uni::detail
+namespace una::detail
 {
 
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf16>
@@ -180,7 +180,7 @@ size_t kewb_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf16 result, si
     return (size_t)(dst - result);
 }
 
-} // namespace uni::detail
+} // namespace una::detail
 
 /* Copyright (c) 2018 Robert N. Steagall and KEWB Computing
  * All rights reserved.

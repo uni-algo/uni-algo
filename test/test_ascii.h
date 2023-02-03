@@ -7,7 +7,7 @@ test_constexpr bool test_ascii_prop()
     // NOTE:
     // ASCII functions know nothing about Unicode so they are not consistent with Unicode functions
     // for example ASCII: unx::codepoint::to_ascii_lowercase(0x110000) == 0x110000
-    // but Unicode: uni::codepoint::to_simple_lowercase(0x110000) == 0xFFFD
+    // but Unicode: una::codepoint::to_simple_lowercase(0x110000) == 0xFFFD
     // this means Unicode function always forced to return valid code point but ASCII don't follow this rule.
 
     TESTX(unx::codepoint::is_ascii(U'w'));
@@ -71,7 +71,7 @@ test_constexpr bool test_ascii_upper_lower()
 
 test_constexpr bool test_ascii_search()
 {
-    uni::search s;
+    una::search s;
 
     TESTX((s = unx::caseless::search_ascii("bbbbbbbbbkbb", "BBK")) && s.pos() == 7 && s.end_pos() == 10);
     TESTX((s = unx::caseless::search_ascii("bbk", "BBK")) && s.pos() == 0 && s.end_pos() == 3);
@@ -238,11 +238,11 @@ test_constexpr bool test_ascii_collate()
     });
 
     std::sort(test_utf8.begin(), test_utf8.end(), [](char a, char b) {
-        return uni::casesens::collate_utf8<char>(std::string{a}, std::string{b}) < 0;
+        return una::casesens::collate_utf8<char>(std::string{a}, std::string{b}) < 0;
     });
 
     std::sort(test_utf16.begin(), test_utf16.end(), [](char a, char b) {
-        return uni::casesens::collate_utf16<char16_t>(std::u16string{static_cast<char16_t>(a)}, std::u16string{static_cast<char16_t>(b)}) < 0;
+        return una::casesens::collate_utf16<char16_t>(std::u16string{static_cast<char16_t>(a)}, std::u16string{static_cast<char16_t>(b)}) < 0;
     });
 
     std::string test_group_ascii = test_ascii;
@@ -255,12 +255,12 @@ test_constexpr bool test_ascii_collate()
     test_group_ascii.erase(it_ascii, test_group_ascii.end());
 
     auto it_utf8 = std::unique(test_group_utf8.begin(), test_group_utf8.end(), [](char a, char b) {
-        return uni::caseless::collate_utf8<char>(std::string{a}, std::string{b}) == 0;
+        return una::caseless::collate_utf8<char>(std::string{a}, std::string{b}) == 0;
     });
     test_group_utf8.erase(it_utf8, test_group_utf8.end());
 
     auto it_utf16 = std::unique(test_group_utf16.begin(), test_group_utf16.end(), [](char a, char b) {
-        return uni::caseless::collate_utf16<char16_t>(std::u16string{static_cast<char16_t>(a)}, std::u16string{static_cast<char16_t>(b)}) == 0;
+        return una::caseless::collate_utf16<char16_t>(std::u16string{static_cast<char16_t>(a)}, std::u16string{static_cast<char16_t>(b)}) == 0;
     });
     test_group_utf16.erase(it_utf16, test_group_utf16.end());
 
@@ -329,7 +329,7 @@ void generator_ascii_collate()
     std::u32string str_result;
 
     for(char32_t c = 0; c <= 0x7F; c++)
-        str.push_back(uni::detail::stages_order(c));
+        str.push_back(una::detail::stages_order(c));
 
     str_result.resize(str.size());
 

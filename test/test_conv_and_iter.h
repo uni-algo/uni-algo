@@ -11,15 +11,15 @@ test_constexpr bool test_conv_and_iter_conv()
     {
         std::u32string str32 = std::u32string(1, c);
 
-        std::string str8 = uni::utf32to8<char32_t, char>(str32);
-        std::u16string str16 = uni::utf32to16<char32_t, char16_t>(str32);
+        std::string str8 = una::utf32to8<char32_t, char>(str32);
+        std::u16string str16 = una::utf32to16<char32_t, char16_t>(str32);
 
         if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
         {
-            TESTX((str8 == uni::utf16to8<char16_t, char>(str16)));
-            TESTX((str16 == uni::utf8to16<char, char16_t>(str8)));
-            TESTX((str32 == uni::utf8to32<char, char32_t>(str8)));
-            TESTX((str32 == uni::utf16to32<char16_t, char32_t>(str16)));
+            TESTX((str8 == una::utf16to8<char16_t, char>(str16)));
+            TESTX((str16 == una::utf8to16<char, char16_t>(str8)));
+            TESTX((str32 == una::utf8to32<char, char32_t>(str8)));
+            TESTX((str32 == una::utf16to32<char16_t, char32_t>(str16)));
         }
         else
         {
@@ -33,15 +33,15 @@ test_constexpr bool test_conv_and_iter_conv()
     {
         std::u16string str16 = std::u16string(1, static_cast<char16_t>(c));
 
-        std::string str8 = uni::utf16to8<char16_t, char>(str16);
-        std::u32string str32 = uni::utf16to32<char16_t, char32_t>(str16);
+        std::string str8 = una::utf16to8<char16_t, char>(str16);
+        std::u32string str32 = una::utf16to32<char16_t, char32_t>(str16);
 
         if (!(c >= 0xD800 && c <= 0xDFFF))
         {
-            TESTX((str8 == uni::utf32to8<char32_t, char>(str32)));
-            TESTX((str32 == uni::utf8to32<char, char32_t>(str8)));
-            TESTX((str16 == uni::utf8to16<char, char16_t>(str8)));
-            TESTX((str16 == uni::utf32to16<char32_t, char16_t>(str32)));
+            TESTX((str8 == una::utf32to8<char32_t, char>(str32)));
+            TESTX((str32 == una::utf8to32<char, char32_t>(str8)));
+            TESTX((str16 == una::utf8to16<char, char16_t>(str8)));
+            TESTX((str16 == una::utf32to16<char32_t, char16_t>(str32)));
         }
         else
         {
@@ -59,15 +59,15 @@ test_constexpr bool test_conv_and_iter_conv()
     {
         std::basic_string<type> str32 = std::basic_string<type>(1, c);
 
-        std::basic_string<type> str8 = uni::utf32to8<type, type>(str32);
-        std::basic_string<type> str16 = uni::utf32to16<type, type>(str32);
+        std::basic_string<type> str8 = una::utf32to8<type, type>(str32);
+        std::basic_string<type> str16 = una::utf32to16<type, type>(str32);
 
         if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
         {
-            TESTX((str8 == uni::utf16to8<type, type>(str16)));
-            TESTX((str16 == uni::utf8to16<type, type>(str8)));
-            TESTX((str32 == uni::utf8to32<type, type>(str8)));
-            TESTX((str32 == uni::utf16to32<type, type>(str16)));
+            TESTX((str8 == una::utf16to8<type, type>(str16)));
+            TESTX((str16 == una::utf8to16<type, type>(str8)));
+            TESTX((str32 == una::utf8to32<type, type>(str8)));
+            TESTX((str32 == una::utf16to32<type, type>(str16)));
         }
         else
         {
@@ -81,15 +81,15 @@ test_constexpr bool test_conv_and_iter_conv()
     {
         std::basic_string<type> str16 = std::basic_string<type>(1, static_cast<type>(c));
 
-        std::basic_string<type> str8 = uni::utf16to8<type, type>(str16);
-        std::basic_string<type> str32 = uni::utf16to32<type, type>(str16);
+        std::basic_string<type> str8 = una::utf16to8<type, type>(str16);
+        std::basic_string<type> str32 = una::utf16to32<type, type>(str16);
 
         if (!(c >= 0xD800 && c <= 0xDFFF))
         {
-            TESTX((str8 == uni::utf32to8<type, type>(str32)));
-            TESTX((str32 == uni::utf8to32<type, type>(str8)));
-            TESTX((str16 == uni::utf8to16<type, type>(str8)));
-            TESTX((str16 == uni::utf32to16<type, type>(str32)));
+            TESTX((str8 == una::utf32to8<type, type>(str32)));
+            TESTX((str32 == una::utf8to32<type, type>(str8)));
+            TESTX((str16 == una::utf8to16<type, type>(str8)));
+            TESTX((str16 == una::utf32to16<type, type>(str32)));
         }
         else
         {
@@ -111,7 +111,7 @@ test_constexpr std::basic_string<UTF16> utf8to16(std::basic_string_view<UTF8> so
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return source | uni::views::utf8 | uni::ranges::to_utf16<std::basic_string<UTF16>>();
+    return source | una::views::utf8 | una::ranges::to_utf16<std::basic_string<UTF16>>();
 }
 template<typename UTF16, typename UTF8>
 test_constexpr std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> source)
@@ -119,7 +119,7 @@ test_constexpr std::basic_string<UTF8> utf16to8(std::basic_string_view<UTF16> so
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    return source | uni::views::utf16 | uni::ranges::to_utf8<std::basic_string<UTF8>>();
+    return source | una::views::utf16 | una::ranges::to_utf8<std::basic_string<UTF8>>();
 }
 template<typename UTF8, typename UTF32>
 test_constexpr std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> source)
@@ -127,7 +127,7 @@ test_constexpr std::basic_string<UTF32> utf8to32(std::basic_string_view<UTF8> so
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    auto view = source | uni::views::utf8;
+    auto view = source | una::views::utf8;
 
     return std::basic_string<UTF32>{view.begin(), view.end()};
 }
@@ -137,7 +137,7 @@ test_constexpr std::basic_string<UTF8> utf32to8(std::basic_string_view<UTF32> so
     static_assert(std::is_integral_v<UTF8>);
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    return source | uni::ranges::to_utf8<std::basic_string<UTF8>>();
+    return source | una::ranges::to_utf8<std::basic_string<UTF8>>();
 }
 template<typename UTF16, typename UTF32>
 test_constexpr std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> source)
@@ -145,7 +145,7 @@ test_constexpr std::basic_string<UTF32> utf16to32(std::basic_string_view<UTF16> 
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    auto view = source | uni::views::utf16;
+    auto view = source | una::views::utf16;
 
     return std::basic_string<UTF32>{view.begin(), view.end()};
 }
@@ -155,7 +155,7 @@ test_constexpr std::basic_string<UTF16> utf32to16(std::basic_string_view<UTF32> 
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    return source | uni::ranges::to_utf16<std::basic_string<UTF16>>();
+    return source | una::ranges::to_utf16<std::basic_string<UTF16>>();
 }
 
 // Redo the previous test using these conversion functions

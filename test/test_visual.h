@@ -51,7 +51,7 @@ void test_visual()
     test_visual_broken<char16_t, broken_utf16_test, std::size(broken_utf16_test)>("test_utf16_broken.txt", u"\xFEFF");
     test_visual_broken<char32_t, broken_utf32_test, std::size(broken_utf32_test)>("test_utf32_broken.txt", U"\x0000FEFF");
 
-    test_visual_result<char, broken_utf8_test, std::size(broken_utf8_test), char16_t, uni::utf8to16u>("test_utf8to16_result.txt", u"\xFEFF");
-    test_visual_result<char16_t, broken_utf16_test, std::size(broken_utf16_test), char, uni::utf16to8>("test_utf16to8_result.txt", "\xEF\xBB\xBF");
-    test_visual_result<char32_t, broken_utf32_test, std::size(broken_utf32_test), char, uni::utf32to8>("test_utf32to8_result.txt", "\xEF\xBB\xBF");
+    test_visual_result<char, broken_utf8_test, std::size(broken_utf8_test), char16_t, una::utf8to16u>("test_utf8to16_result.txt", u"\xFEFF");
+    test_visual_result<char16_t, broken_utf16_test, std::size(broken_utf16_test), char, una::utf16to8>("test_utf16to8_result.txt", "\xEF\xBB\xBF");
+    test_visual_result<char32_t, broken_utf32_test, std::size(broken_utf32_test), char, una::utf32to8>("test_utf32to8_result.txt", "\xEF\xBB\xBF");
 }
