@@ -218,23 +218,23 @@ It has nothing to do with C++20 modules.
 #include "uni_algo/conv.h"
 
 // Lenient conversion (cannot fail) "\xD800" is unpaired high surrogate in UTF-16
-std::string str8 = uni::utf16to8(u"Te\xD800st"); // std::u8string is supported too
+std::string str8 = una::utf16to8(u"Te\xD800st"); // std::u8string is supported too
 assert(str8 == "Te\xEF\xBF\xBDst"); // "\xEF\xBF\xBD" is replacement character U+FFFD in UTF-8
 
 // Strict conversion
-uni::error error;
-std::string str8 = uni::strict::utf16to8(u"Te\xD800st", error);
+una::error error;
+std::string str8 = una::strict::utf16to8(u"Te\xD800st", error);
 assert(str8.empty() && error && error.pos() == 2);
 
 // Template functions:
 
 // Lenient conversion (cannot fail) "\xC2" is truncated sequence in UTF-8
-std::u16string str16 = uni::utf8to16<char, char16_t>("Te\xC2st");
+std::u16string str16 = una::utf8to16<char, char16_t>("Te\xC2st");
 assert(str16 == u"Te\xFFFDst"); // "\xFFFD" is replacement character U+FFFD in UTF-16
 
 // Strict conversion
-uni::error error;
-std::u16string str16 = uni::strict::utf8to16<char, char16_t>("Te\xC2st", error);
+una::error error;
+std::u16string str16 = una::strict::utf8to16<char, char16_t>("Te\xC2st", error);
 assert(str16.empty() && error && error.pos() == 2);
 
 // Note that most of the functions in the library have template versions because the low-level
@@ -242,8 +242,8 @@ assert(str16.empty() && error && error.pos() == 2);
 // and UTF-32 is enough to store 32-bit aside from that the low-level doesn't care about the types,
 // so with the template functions you can do some strange stuff like this:
 
-std::basic_string<long long> str16 = uni::utf8to16<char, long long>("😺");
-std::string str8 = uni::utf16to8<long long, char>(str16);
+std::basic_string<long long> str16 = una::utf8to16<char, long long>("😺");
+std::string str8 = una::utf16to8<long long, char>(str16);
 assert(str8 == "😺");
 
 // This works perfectly fine this is allowed and tested. Of course it is not needed in most
@@ -252,7 +252,7 @@ assert(str8 == "😺");
 // on Linux convert it to the real UTF-32 std::wstring when it's needed. It can be done like this:
 
 // Works on Linux, static_assert on Windows
-std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test");
+std::wstring str32 = una::utf16to32<wchar_t, wchar_t>(L"Test");
 
 // It can be helpful if you work with a library that actually does this
 // for example: https://github.com/taglib/taglib
@@ -269,10 +269,10 @@ std::wstring str32 = uni::utf16to32<wchar_t, wchar_t>(L"Test");
 ```cpp
 #include "uni_algo/case.h"
 
-std::cout << uni::cases::to_uppercase_utf8("Straße") << '\n';
-std::cout << uni::cases::to_lowercase_utf8("ДВА") << '\n';
-std::cout << uni::cases::to_casefold_utf8("Ligature ﬃ") << '\n';
-std::cout << uni::cases::to_titlecase_utf8("teMPuS eDAX reRuM") << '\n';
+std::cout << una::cases::to_uppercase_utf8("Straße") << '\n';
+std::cout << una::cases::to_lowercase_utf8("ДВА") << '\n';
+std::cout << una::cases::to_casefold_utf8("Ligature ﬃ") << '\n';
+std::cout << una::cases::to_titlecase_utf8("teMPuS eDAX reRuM") << '\n';
 
 // Output:
 // STRASSE
@@ -281,20 +281,20 @@ std::cout << uni::cases::to_titlecase_utf8("teMPuS eDAX reRuM") << '\n';
 // Tempus Edax Rerum
 
 // With Greek locale, removes diacritics etc.
-std::cout << uni::cases::to_uppercase_utf8("Ἀριστοτέλης", uni::locale("el")) << '\n';
+std::cout << una::cases::to_uppercase_utf8("Ἀριστοτέλης", una::locale("el")) << '\n';
 // With Turkish locale, maps i to İ etc.
-std::cout << uni::cases::to_uppercase_utf8("istanbul", uni::locale("tr")) << '\n';
+std::cout << una::cases::to_uppercase_utf8("istanbul", una::locale("tr")) << '\n';
 // With Dutch locale, maps ij to IJ at the start of a word.
-std::cout << uni::cases::to_titlecase_utf8("ijsland", uni::locale("nl")) << '\n';
+std::cout << una::cases::to_titlecase_utf8("ijsland", una::locale("nl")) << '\n';
 
 // Output:
 // ΑΡΙΣΤΟΤΕΛΗΣ
 // İSTANBUL
 // IJsland
 
-assert(uni::caseless::compare_utf8("ﬃ", "FFI") == 0);
+assert(una::caseless::compare_utf8("ﬃ", "FFI") == 0);
 
-uni::search found = uni::caseless::search_utf8("Ligature ﬁ test", "FI");
+una::search found = una::caseless::search_utf8("Ligature ﬁ test", "FI");
 assert(found && found.pos() == 9 && found.end_pos() == 12);
 
 // The module provides a very simple collation function too.
@@ -304,7 +304,7 @@ std::u32string str32 = U"абвгдѓежзѕијклљмнњопрстќуфх�
 
 std::vector<std::string> vec8;
 for (char32_t c : str32) // Convert the code points to a vector of UTF-8 code units
-    vec8.emplace_back(uni::utf32to8(std::u32string(1, c)));
+    vec8.emplace_back(una::utf32to8(std::u32string(1, c)));
 std::shuffle(vec8.begin(), vec8.end(), std::mt19937(42)); // Shuffle them just in case
 
 // For example sort them with the binary comparison first
@@ -313,9 +313,9 @@ std::sort(vec8.begin(), vec8.end());
 // Output: ЃЅЈЉЊЌЏАБВГДЕЖЗИКЛМНОПРСТУФХЦЧШабвгдежзиклмнопрстуфхцчшѓѕјљњќџ
 // Everything is out of place
 
-// Sort them with uni::casesens::utf8_collate
+// Sort them with una::casesens::utf8_collate
 std::sort(vec8.begin(), vec8.end(), [](auto a, auto b) {
-    return uni::casesens::collate_utf8(a, b) < 0;
+    return una::casesens::collate_utf8(a, b) < 0;
 });
 
 std::for_each(vec8.begin(), vec8.end(), [](auto s) { std::cout << s; });
@@ -326,7 +326,7 @@ std::cout << '\n';
 
 // Group them too
 auto it = std::unique(vec8.begin(), vec8.end(), [](auto a, auto b) {
-    return uni::caseless::collate_utf8(a, b) == 0;
+    return una::caseless::collate_utf8(a, b) == 0;
 });
 vec8.erase(it, vec8.end());
 
@@ -337,10 +337,10 @@ vec8.erase(it, vec8.end());
 #include "uni_algo/norm.h"
 
 // "W" with circumflex == "Ŵ"
-assert(uni::norm::to_nfc_utf8("W\u0302") == "Ŵ");
+assert(una::norm::to_nfc_utf8("W\u0302") == "Ŵ");
 
-assert(uni::norm::is_nfc_utf8("Ŵ") == true);
-assert(uni::norm::is_nfc_utf8("W\u0302") == false);
+assert(una::norm::is_nfc_utf8("Ŵ") == true);
+assert(una::norm::is_nfc_utf8("W\u0302") == false);
 
 // Note that the normalization algorithm in the library supports streams
 // so you can use the same function to normalize a file with 0 allocations.
@@ -353,7 +353,7 @@ std::istreambuf_iterator<char> end;
 
 std::ostreambuf_iterator<char> out{output.rdbuf()};
 
-uni::norm::to_nfc_utf8(it, end, out);
+una::norm::to_nfc_utf8(it, end, out);
 
 // The function always produces well-formed normalized UTF-8 text in Stream-Safe Text Format
 // even if an input was a binary file, of course in such degenerate case the output will be
@@ -366,15 +366,15 @@ uni::norm::to_nfc_utf8(it, end, out);
 ```cpp
 #include "uni_algo/prop.h"
 
-assert(uni::codepoint::is_numeric(U'7'));
-assert(uni::codepoint::is_alphabetic(U'W'));
-assert(uni::codepoint::prop{U'W'}.Alphabetic()); // Equivalent to the previous one
+assert(una::codepoint::is_numeric(U'7'));
+assert(una::codepoint::is_alphabetic(U'W'));
+assert(una::codepoint::prop{U'W'}.Alphabetic()); // Equivalent to the previous one
 
 // Other modules can provide more properties
 #include "uni_algo/case.h"
 
-assert(uni::codepoint::is_lowercase(U'w'));
-assert(uni::codepoint::prop_case{U'w'}.Lowercase()); // Equivalent to the previous one
+assert(una::codepoint::is_lowercase(U'w'));
+assert(una::codepoint::prop_case{U'w'}.Lowercase()); // Equivalent to the previous one
 
 // Code point properties are usefull when you want to implement your own Unicode algorithm.
 // For example a functions that checks that an UTF-8 string contains only alphabetic characters
@@ -382,12 +382,12 @@ assert(uni::codepoint::prop_case{U'w'}.Lowercase()); // Equivalent to the previo
 bool is_alphabetic_string_utf8(std::string_view view)
 {
     // Note that this algorithm uses UTF-8 range view read below about this
-    for (char32_t c : view | uni::views::utf8)
+    for (char32_t c : view | una::views::utf8)
     {
         if (c == 0x200D || c == 0x200C) // Ignore ZERO WIDTH JOINER/NON-JOINER
             continue;
 
-        auto prop = uni::codepoint::prop{c};
+        auto prop = una::codepoint::prop{c};
 
         if (prop.General_Category_M()) // Ignore combining marks
             continue;
@@ -406,30 +406,30 @@ bool is_alphabetic_string_utf8(std::string_view view)
 #include "uni_algo/case.h"
 
 // Uppercase a string using system locale
-uni::cases::to_uppercase_utf8("Test", uni::locale::system());
+una::cases::to_uppercase_utf8("Test", una::locale::system());
 
-uni::cases::to_uppercase_utf8("Test", uni::locale{"en-US"}); // Using locale string
-uni::cases::to_uppercase_utf8("Test", uni::locale::language{"en"}); // Using language subtag directly
+una::cases::to_uppercase_utf8("Test", una::locale{"en-US"}); // Using locale string
+una::cases::to_uppercase_utf8("Test", una::locale::language{"en"}); // Using language subtag directly
 
 // Parse locale string (can be ill-formed the parser will normalize it)
-uni::locale locale{"EN_latn_US"};
+una::locale locale{"EN_latn_US"};
 
 assert(locale.is_empty() == false);
-assert(locale == uni::locale::language{"en"});
-assert(locale == uni::locale::script{"Latn"});
-assert(locale == uni::locale::region{"US"});
+assert(locale == una::locale::language{"en"});
+assert(locale == una::locale::script{"Latn"});
+assert(locale == una::locale::region{"US"});
 assert(locale.to_string() == "en-Latn-US");
 
 // Use locale subtags in switch case
-switch (uni::locale::system().get_language())
+switch (una::locale::system().get_language())
 {
-    case uni::locale::language{"en"}:
+    case una::locale::language{"en"}:
         std::cout << "English Language" << '\n';
         break;
-    case uni::locale::language{"ja"}:
+    case una::locale::language{"ja"}:
         std::cout << "Japanese Language" << '\n';
         break;
-    case uni::locale::language{"ar"}:
+    case una::locale::language{"ar"}:
         std::cout << "Arabic Language" << '\n';
         break;
 }
@@ -444,21 +444,21 @@ switch (uni::locale::system().get_language())
 
 // Ranges in this library are compatible with C++20 ranges.
 // In C++17 the library implements some basic ranges that are similar to C++20 ranges:
-uni::views::reverse
-uni::views::transform
-uni::views::filter
-uni::views::drop
-uni::views::take
+una::views::reverse
+una::views::transform
+una::views::filter
+una::views::drop
+una::views::take
 
 // In C++20 you can just use std::ranges variants of these ranges
-// but always use uni::views::reverse from this library
+// but always use una::views::reverse from this library
 // because std::views::reverse is not good enought for Unicode.
 
 // You use these ranges the same way you use C++20 ranges
 assert(std::string_view{"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ"}
-        | uni::views::utf8
-        | uni::views::reverse | uni::views::drop(3) | uni::views::take(5)
-        | uni::views::reverse | uni::ranges::to_utf8<std::string>()
+        | una::views::utf8
+        | una::views::reverse | una::views::drop(3) | una::views::take(5)
+        | una::views::reverse | una::ranges::to_utf8<std::string>()
         == "ⅢⅣⅤⅥⅦ");
 ```
 ## Conversion Ranges
@@ -469,7 +469,7 @@ assert(std::string_view{"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ"}
 // A simple conversion function using ranges looks like this:
 std::u16string utf8to16(std::string_view view)
 {
-    return view | uni::views::utf8 | uni::ranges::to_utf16<std::u16string>();
+    return view | una::views::utf8 | una::ranges::to_utf16<std::u16string>();
 }
 
 // The following examples demonstrates how to work directly with a conversion range view
@@ -478,7 +478,7 @@ std::u16string utf8to16(std::string_view view)
 std::string str8 = "😺😼🙀"; // These emojis use 1 code point
 
 // Make UTF-8 view from std::string
-auto view = uni::ranges::utf8_view{str8};
+auto view = una::ranges::utf8_view{str8};
 
 // Count code points
 std::cout << "Number of code points: " << std::distance(view.begin(), view.end()) << '\n';
@@ -529,8 +529,8 @@ for (auto it = view.end(); it != view.begin();)
 
 std::string str8 = "Άλμπερτ Αϊνστάιν";
 
-// Replace it with uni::views::grapheme::utf8 for grapheme breaks
-auto view = uni::views::word::utf8(str8);
+// Replace it with una::views::grapheme::utf8 for grapheme breaks
+auto view = una::views::word::utf8(str8);
 
 // Count words/graphemes (note that a space/punctuation is a word too according to rules)
 std::cout << "Number of words: " << std::distance(view.begin(), view.end()) << '\n';
@@ -542,7 +542,7 @@ for (auto it = view.begin(); it != view.end(); ++it)
 // Word/grapheme tokenizer
 std::cout << "Words:" << '\n';
 // Note that we use word_only view here to skip all punctuation and spaces
-for (std::string_view word : uni::views::word_only::utf8(str8))
+for (std::string_view word : una::views::word_only::utf8(str8))
     std::cout << word << '\n';
 
 // Output:
@@ -558,13 +558,13 @@ for (std::string_view word : uni::views::word_only::utf8(str8))
 
 // For append a code point to an UTF-8 string all you need is Conversion module
 std::string str8 = "🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧🧙‍♀️"; // These emojis use multiple code points
-str8 += uni::utf32to8(std::u32string{U'😺'}); // This emoji use 1 code point
+str8 += una::utf32to8(std::u32string{U'😺'}); // This emoji use 1 code point
 
 // But if you need to insert a code point you need break ranges too
-auto view = uni::views::grapheme::utf8(str8);
+auto view = una::views::grapheme::utf8(str8);
 // Insert a code point after 2nd grapheme
 auto pos = std::next(view.begin(), 2).begin() - str8.begin();
-str8.insert(pos, uni::utf32to8(std::u32string{U'😼'})); // This emoji use 1 code point
+str8.insert(pos, una::utf32to8(std::u32string{U'😼'})); // This emoji use 1 code point
 
 // The same way a grapheme can be appended or inserted and of course you don't even need
 // Conversion module if your grapheme or a code point is already in UTF-8 encoding.
@@ -575,7 +575,7 @@ str8.insert(pos, uni::utf32to8(std::u32string{U'😼'})); // This emoji use 1 co
 ```cpp
 // For example we need to remove accents that mark the stressed vowels in a text.
 // The algorithm is simple: NFD -> Remove grave and acute accents (U+0300 and U+0301) -> NFC
-// Note that the library has uni::norm::to_unaccent_utf8 function but it won't produce
+// Note that the library has una::norm::to_unaccent_utf8 function but it won't produce
 // the same result because it removes all accents not specific ones,
 // but it is possible to implement this algorithm using ranges like this.
 
@@ -587,14 +587,14 @@ std::string remove_grave_and_acute_accents(std::string_view str_view)
 {
     // Use ranges: UTF-8 -> NFD -> Filter -> NFC -> To UTF-8
 
-    // Note that in C++20 uni::views::filter can be replaced with std::views::filter
+    // Note that in C++20 una::views::filter can be replaced with std::views::filter
 
     return str_view
-         | uni::views::utf8
-         | uni::views::norm::nfd
-         | uni::views::filter([](char32_t c) { return c != 0x0300 && c != 0x0301; })
-         | uni::views::norm::nfc
-         | uni::ranges::to_utf8<std::string>();
+         | una::views::utf8
+         | una::views::norm::nfd
+         | una::views::filter([](char32_t c) { return c != 0x0300 && c != 0x0301; })
+         | una::views::norm::nfc
+         | una::ranges::to_utf8<std::string>();
 }
 
 std::cout << remove_grave_and_acute_accents("bótte bòtte") << '\n';

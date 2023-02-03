@@ -2,7 +2,7 @@
 
 This directory contains extensions for uni-algo library.
 
-Note that the extensions use unx:: namespace intead of uni:: namespace.
+Note that the extensions use unx:: namespace intead of una:: namespace.
 
 All the extensions are header-only.
 
