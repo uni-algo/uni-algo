@@ -8,25 +8,25 @@ int main(void)
     char str8[] = "Naïve"; // Random UTF-8 string
 
     // Convert the string to UTF-16 and back to UTF-8
-    wchar_t* str16_conv = uni_utf8to16(str8);
-    char* str8_conv = uni_utf16to8(str16_conv);
+    wchar_t* str16_conv = una_utf8to16(str8);
+    char* str8_conv = una_utf16to8(str16_conv);
 
     if (strcmp(str8, str8_conv) == 0)
         printf("OK1\n");
 
-    uni_strfree(str16_conv);
-    uni_strfree(str8_conv);
+    una_strfree(str16_conv);
+    una_strfree(str8_conv);
 
-    char* str8_upper = uni_to_uppercase_utf8("Straße");
+    char* str8_upper = una_to_uppercase_utf8("Straße");
     printf("%s\n", str8_upper); // Prints STRASSE
-    uni_strfree(str8_upper);
+    una_strfree(str8_upper);
 
-    if (uni_caseless_compare_utf8("naïve", "NAÏVE") == 0)
+    if (una_caseless_compare_utf8("naïve", "NAÏVE") == 0)
         printf("OK2\n");
 
-    size_t pos = uni_npos;
-    size_t end = uni_npos;
-    if (uni_caseless_search_utf8("Find naïve string", "NAÏVE", &pos, &end) && pos == 5 && end == 11)
+    size_t pos = una_npos;
+    size_t end = una_npos;
+    if (una_caseless_search_utf8("Find naïve string", "NAÏVE", &pos, &end) && pos == 5 && end == 11)
         printf("OK3\n");
 
     return 0;
@@ -74,7 +74,7 @@ typedef UNI_CHAR32    type_char32; // Can be 32-bit or more signed/unsigned
 #include "impl/impl_norm.h"
 #endif
 
-void uni_strfree(void* str)
+void una_strfree(void* str)
 {
     // Simple function to free a string
     free(str);
@@ -103,17 +103,17 @@ static size_t internal_strlen(const type_char8* str)
     return strlen(str);
 }
 
-size_t uni_strlen16(const type_char16* str)
+size_t una_strlen16(const type_char16* str)
 {
     return internal_strlen16(str);
 }
 
-size_t uni_strlen32(const type_char32* str)
+size_t una_strlen32(const type_char32* str)
 {
     return internal_strlen32(str);
 }
 
-type_char16* uni_utf8to16(const type_char8* str)
+type_char16* una_utf8to16(const type_char8* str)
 {
     // In a real program you'll probably be using some struct for strings where
     // the lenght of the string is known so this strlen call can be omitted
@@ -139,7 +139,7 @@ type_char16* uni_utf8to16(const type_char8* str)
 
 // Other functions can be implemented the same way
 
-type_char8* uni_utf16to8(const type_char16* str)
+type_char8* una_utf16to8(const type_char16* str)
 {
     size_t len = internal_strlen16(str);
 
@@ -159,7 +159,7 @@ type_char8* uni_utf16to8(const type_char16* str)
     return NULL;
 }
 
-type_char32* uni_utf8to32(const type_char8* str)
+type_char32* una_utf8to32(const type_char8* str)
 {
     size_t len = internal_strlen(str);
 
@@ -179,7 +179,7 @@ type_char32* uni_utf8to32(const type_char8* str)
     return NULL;
 }
 
-type_char8* uni_utf32to8(const type_char32* str)
+type_char8* una_utf32to8(const type_char32* str)
 {
     size_t len = internal_strlen32(str);
 
@@ -199,7 +199,7 @@ type_char8* uni_utf32to8(const type_char32* str)
     return NULL;
 }
 
-type_char32* uni_utf16to32(const type_char16* str)
+type_char32* una_utf16to32(const type_char16* str)
 {
     size_t len = internal_strlen16(str);
 
@@ -219,7 +219,7 @@ type_char32* uni_utf16to32(const type_char16* str)
     return NULL;
 }
 
-type_char16* uni_utf32to16(const type_char32* str)
+type_char16* una_utf32to16(const type_char32* str)
 {
     size_t len = internal_strlen32(str);
 
@@ -241,7 +241,7 @@ type_char16* uni_utf32to16(const type_char32* str)
 
 #ifndef UNI_ALGO_DISABLE_CASE
 
-const size_t uni_npos = impl_npos;
+const size_t una_npos = impl_npos;
 
 // Case mapping functions can be implemented the same way as Unicode conversion functions
 
@@ -287,33 +287,33 @@ static type_char16* internal_case_map_utf16(const type_char16* str, int mode)
 }
 #endif
 
-type_char8* uni_to_lowercase_utf8(const type_char8* str)
+type_char8* una_to_lowercase_utf8(const type_char8* str)
 {
     return internal_case_map_utf8(str, impl_case_map_mode_lowercase);
 }
 
-type_char8* uni_to_uppercase_utf8(const type_char8* str)
+type_char8* una_to_uppercase_utf8(const type_char8* str)
 {
     return internal_case_map_utf8(str, impl_case_map_mode_uppercase);
 }
 
-type_char8* uni_to_casefold_utf8(const type_char8* str)
+type_char8* una_to_casefold_utf8(const type_char8* str)
 {
     return internal_case_map_utf8(str, impl_case_map_mode_casefold);
 }
 
 #ifndef UNI_ALGO_DISABLE_UTF16
-type_char16* uni_to_lowercase_utf16(const type_char16* str)
+type_char16* una_to_lowercase_utf16(const type_char16* str)
 {
     return internal_case_map_utf16(str, impl_case_map_mode_lowercase);
 }
 
-type_char16* uni_to_uppercase_utf16(const type_char16* str)
+type_char16* una_to_uppercase_utf16(const type_char16* str)
 {
     return internal_case_map_utf16(str, impl_case_map_mode_uppercase);
 }
 
-type_char16* uni_to_casefold_utf16(const type_char16* str)
+type_char16* una_to_casefold_utf16(const type_char16* str)
 {
     return internal_case_map_utf16(str, impl_case_map_mode_casefold);
 }
@@ -321,14 +321,14 @@ type_char16* uni_to_casefold_utf16(const type_char16* str)
 
 // For compare, collate and search functions simple wrappers can be used
 
-int uni_utf8_casesens_compare(const type_char8* str1, const type_char8* str2)
+int una_utf8_casesens_compare(const type_char8* str1, const type_char8* str2)
 {
     size_t len1 = internal_strlen(str1);
     size_t len2 = internal_strlen(str2);
 
     return impl_case_compare_utf8(str1, str1 + len1, str2, str2 + len2, false);
 }
-int uni_caseless_compare_utf8(const type_char8* str1, const type_char8* str2)
+int una_caseless_compare_utf8(const type_char8* str1, const type_char8* str2)
 {
     size_t len1 = internal_strlen(str1);
     size_t len2 = internal_strlen(str2);
@@ -337,14 +337,14 @@ int uni_caseless_compare_utf8(const type_char8* str1, const type_char8* str2)
 }
 
 #ifndef UNI_ALGO_DISABLE_COLLATION
-int uni_casesens_collate_utf8(const type_char8* str1, const type_char8* str2)
+int una_casesens_collate_utf8(const type_char8* str1, const type_char8* str2)
 {
     size_t len1 = internal_strlen(str1);
     size_t len2 = internal_strlen(str2);
 
     return impl_case_collate_utf8(str1, str1 + len1, str2, str2 + len2, false);
 }
-int uni_caseless_collate_utf8(const type_char8* str1, const type_char8* str2)
+int una_caseless_collate_utf8(const type_char8* str1, const type_char8* str2)
 {
     size_t len1 = internal_strlen(str1);
     size_t len2 = internal_strlen(str2);
@@ -353,7 +353,7 @@ int uni_caseless_collate_utf8(const type_char8* str1, const type_char8* str2)
 }
 #endif
 
-size_t uni_casesens_search_utf8(const type_char8* str1, const type_char8* str2, size_t* pos, size_t *end)
+size_t una_casesens_search_utf8(const type_char8* str1, const type_char8* str2, size_t* pos, size_t *end)
 {
     size_t len1 = internal_strlen(str1);
     size_t len2 = internal_strlen(str2);
@@ -364,7 +364,7 @@ size_t uni_casesens_search_utf8(const type_char8* str1, const type_char8* str2, 
 
     return impl_case_search_utf8(str1, str1 + len1, str2, str2 + len2, false, pos, end);
 }
-size_t uni_caseless_search_utf8(const type_char8* str1, const type_char8* str2, size_t* pos, size_t *end)
+size_t una_caseless_search_utf8(const type_char8* str1, const type_char8* str2, size_t* pos, size_t *end)
 {
     size_t len1 = internal_strlen(str1);
     size_t len2 = internal_strlen(str2);
@@ -376,14 +376,14 @@ size_t uni_caseless_search_utf8(const type_char8* str1, const type_char8* str2, 
 }
 
 #ifndef UNI_ALGO_DISABLE_UTF16
-int uni_casesens_compare_utf16(const type_char16* str1, const type_char16* str2)
+int una_casesens_compare_utf16(const type_char16* str1, const type_char16* str2)
 {
     size_t len1 = internal_strlen16(str1);
     size_t len2 = internal_strlen16(str2);
 
     return impl_case_compare_utf16(str1, str1 + len1, str2, str2 + len2, false);
 }
-int uni_caseless_compare_utf16(const type_char16* str1, const type_char16* str2)
+int una_caseless_compare_utf16(const type_char16* str1, const type_char16* str2)
 {
     size_t len1 = internal_strlen16(str1);
     size_t len2 = internal_strlen16(str2);
@@ -392,14 +392,14 @@ int uni_caseless_compare_utf16(const type_char16* str1, const type_char16* str2)
 }
 
 #ifndef UNI_ALGO_DISABLE_COLLATION
-int uni_casesens_collate_utf16(const type_char16* str1, const type_char16* str2)
+int una_casesens_collate_utf16(const type_char16* str1, const type_char16* str2)
 {
     size_t len1 = internal_strlen16(str1);
     size_t len2 = internal_strlen16(str2);
 
     return impl_case_collate_utf16(str1, str1 + len1, str2, str2 + len2, false);
 }
-int uni_caseless_collate_utf16(const type_char16* str1, const type_char16* str2)
+int una_caseless_collate_utf16(const type_char16* str1, const type_char16* str2)
 {
     size_t len1 = internal_strlen16(str1);
     size_t len2 = internal_strlen16(str2);
@@ -408,7 +408,7 @@ int uni_caseless_collate_utf16(const type_char16* str1, const type_char16* str2)
 }
 #endif
 
-size_t uni_casesens_search_utf16(const type_char16* str1, const type_char16* str2, size_t* pos, size_t *end)
+size_t una_casesens_search_utf16(const type_char16* str1, const type_char16* str2, size_t* pos, size_t *end)
 {
     size_t len1 = internal_strlen16(str1);
     size_t len2 = internal_strlen16(str2);
@@ -418,7 +418,7 @@ size_t uni_casesens_search_utf16(const type_char16* str1, const type_char16* str
 
     return impl_case_search_utf16(str1, str1 + len1, str2, str2 + len2, false, pos, end);
 }
-size_t uni_caseless_search_utf16(const type_char16* str1, const type_char16* str2, size_t* pos, size_t *end)
+size_t una_caseless_search_utf16(const type_char16* str1, const type_char16* str2, size_t* pos, size_t *end)
 {
     size_t len1 = internal_strlen16(str1);
     size_t len2 = internal_strlen16(str2);
@@ -435,7 +435,7 @@ size_t uni_caseless_search_utf16(const type_char16* str1, const type_char16* str
 
 // Normalization functions can be implemented the same way as Unicode conversion functions
 
-type_char8* uni_norm_to_nfc_utf8(const type_char8* str)
+type_char8* una_norm_to_nfc_utf8(const type_char8* str)
 {
     size_t len = internal_strlen(str);
 
@@ -455,7 +455,7 @@ type_char8* uni_norm_to_nfc_utf8(const type_char8* str)
     return NULL;
 }
 
-type_char8* uni_norm_to_nfd_utf8(const type_char8* str)
+type_char8* una_norm_to_nfd_utf8(const type_char8* str)
 {
     size_t len = internal_strlen(str);
 
@@ -476,7 +476,7 @@ type_char8* uni_norm_to_nfd_utf8(const type_char8* str)
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-type_char8* uni_norm_to_nfkc_utf8(const type_char8* str)
+type_char8* una_norm_to_nfkc_utf8(const type_char8* str)
 {
     size_t len = internal_strlen(str);
 
@@ -496,7 +496,7 @@ type_char8* uni_norm_to_nfkc_utf8(const type_char8* str)
     return NULL;
 }
 
-type_char8* uni_norm_to_nfkd_utf8(const type_char8* str)
+type_char8* una_norm_to_nfkd_utf8(const type_char8* str)
 {
     size_t len = internal_strlen(str);
 
@@ -518,7 +518,7 @@ type_char8* uni_norm_to_nfkd_utf8(const type_char8* str)
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #ifndef UNI_ALGO_DISABLE_UTF16
-type_char16* uni_norm_to_nfc_utf16(const type_char16* str)
+type_char16* una_norm_to_nfc_utf16(const type_char16* str)
 {
     size_t len = internal_strlen16(str);
 
@@ -538,7 +538,7 @@ type_char16* uni_norm_to_nfc_utf16(const type_char16* str)
     return NULL;
 }
 
-type_char16* uni_norm_to_nfd_utf16(const type_char16* str)
+type_char16* una_norm_to_nfd_utf16(const type_char16* str)
 {
     size_t len = internal_strlen16(str);
 
@@ -559,7 +559,7 @@ type_char16* uni_norm_to_nfd_utf16(const type_char16* str)
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-type_char16* uni_norm_to_nfkc_utf16(const type_char16* str)
+type_char16* una_norm_to_nfkc_utf16(const type_char16* str)
 {
     size_t len = internal_strlen16(str);
 
@@ -579,7 +579,7 @@ type_char16* uni_norm_to_nfkc_utf16(const type_char16* str)
     return NULL;
 }
 
-type_char16* uni_norm_to_nfkd_utf16(const type_char16* str)
+type_char16* una_norm_to_nfkd_utf16(const type_char16* str)
 {
     size_t len = internal_strlen16(str);
 
@@ -603,14 +603,14 @@ type_char16* uni_norm_to_nfkd_utf16(const type_char16* str)
 
 // For normalization detection functions simple wrappers can be used
 
-bool uni_norm_is_nfc_utf8(const type_char8* str)
+bool una_norm_is_nfc_utf8(const type_char8* str)
 {
     size_t len = internal_strlen(str);
 
     return impl_norm_is_nfc_utf8(str, str + len) == impl_norm_is_yes;
 }
 
-bool uni_norm_is_nfd_utf8(const type_char8* str)
+bool una_norm_is_nfd_utf8(const type_char8* str)
 {
     size_t len = internal_strlen(str);
 
@@ -618,14 +618,14 @@ bool uni_norm_is_nfd_utf8(const type_char8* str)
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-bool uni_norm_is_nfkc_utf8(const type_char8* str)
+bool una_norm_is_nfkc_utf8(const type_char8* str)
 {
     size_t len = internal_strlen(str);
 
     return impl_norm_is_nfkc_utf8(str, str + len) == impl_norm_is_yes;
 }
 
-bool uni_norm_is_nfkd_utf8(const type_char8* str)
+bool una_norm_is_nfkd_utf8(const type_char8* str)
 {
     size_t len = internal_strlen(str);
 
@@ -634,14 +634,14 @@ bool uni_norm_is_nfkd_utf8(const type_char8* str)
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #ifndef UNI_ALGO_DISABLE_UTF16
-bool uni_norm_is_nfc_utf16(const type_char16* str)
+bool una_norm_is_nfc_utf16(const type_char16* str)
 {
     size_t len = internal_strlen16(str);
 
     return impl_norm_is_nfc_utf16(str, str + len) == impl_norm_is_yes;
 }
 
-bool uni_norm_is_nfd_utf16(const type_char16* str)
+bool una_norm_is_nfd_utf16(const type_char16* str)
 {
     size_t len = internal_strlen16(str);
 
@@ -649,14 +649,14 @@ bool uni_norm_is_nfd_utf16(const type_char16* str)
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-bool uni_norm_is_nfkc_utf16(const type_char16* str)
+bool una_norm_is_nfkc_utf16(const type_char16* str)
 {
     size_t len = internal_strlen16(str);
 
     return impl_norm_is_nfkc_utf16(str, str + len) == impl_norm_is_yes;
 }
 
-bool uni_norm_is_nfkd_utf16(const type_char16* str)
+bool una_norm_is_nfkd_utf16(const type_char16* str)
 {
     size_t len = internal_strlen16(str);
 

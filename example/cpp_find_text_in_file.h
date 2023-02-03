@@ -28,14 +28,14 @@ void find_whole_word_in_file(const std::string& file, std::string_view word)
         while (!line_view.empty() && line_view.back() == '\r')
             line_view.remove_suffix(1);
 
-        // In this example we use uni::views::word_only::utf8 and uni::caseless::compare_utf8
+        // In this example we use una::views::word_only::utf8 and una::caseless::compare_utf8
         // to find all occurrences of the whole word in the line
 
-        auto word_view = line_view | uni::views::word_only::utf8;
+        auto word_view = line_view | una::views::word_only::utf8;
 
-        for (auto it = word_view.begin(); it != uni::sentinel; ++it)
+        for (auto it = word_view.begin(); it != una::sentinel; ++it)
         {
-            if (uni::caseless::compare_utf8(*it, word) == 0)
+            if (una::caseless::compare_utf8(*it, word) == 0)
                 std::cout << "Found word at " << line_number << ':' << it.begin() - line_view.begin() << '\n';
         }
     }
@@ -61,13 +61,13 @@ void find_string_in_file(const std::string& file, std::string_view string)
         while (!line_view.empty() && line_view.back() == '\r')
             line_view.remove_suffix(1);
 
-        // In this example we use uni::caseless::search_utf8
+        // In this example we use una::caseless::search_utf8
         // to find all occurrences of the string in the line
 
         std::size_t start = 0;
         while (true)
         {
-            uni::search found = uni::caseless::search_utf8(line_view.substr(start), string);
+            una::search found = una::caseless::search_utf8(line_view.substr(start), string);
             if (!found || string.empty())
                 break;
 

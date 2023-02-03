@@ -1,4 +1,4 @@
-﻿/* Example for Unicode Algorithms Implementation.
+/* Example for Unicode Algorithms Implementation.
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
@@ -23,11 +23,11 @@ std::string rejoin_words1(std::string_view str)
     std::string_view utf8_new_delimiter = ";";
 
     return str
-            | uni::views::word_only::utf8
+            | una::views::word_only::utf8
             | std::views::join_with(utf8_new_delimiter)
-            | uni::views::utf8
-            | uni::views::norm::nfc
-            | uni::ranges::to_utf8<std::string>();
+            | una::views::utf8
+            | una::views::norm::nfc
+            | una::ranges::to_utf8<std::string>();
 }
 
 // But it has some problems:
@@ -46,17 +46,17 @@ std::string rejoin_words2(std::string_view str)
 
     std::string utf8_result;
 
-    auto view = str | uni::views::word_only::utf8;
+    auto view = str | una::views::word_only::utf8;
 
-    for (auto it = view.begin(); it != uni::sentinel; ++it)
+    for (auto it = view.begin(); it != una::sentinel; ++it)
     {
         if (it != view.begin()) // if not the first word
             utf8_result.append(utf8_new_delimiter);
 
-        if (uni::norm::is_nfc_utf8(*it))
+        if (una::norm::is_nfc_utf8(*it))
             utf8_result.append(*it);
         else // normalize only if not in NFC form
-            utf8_result.append(uni::norm::to_nfc_utf8(*it));
+            utf8_result.append(una::norm::to_nfc_utf8(*it));
     }
 
     return  utf8_result;
@@ -75,7 +75,7 @@ std::string rejoin_words2(std::string_view str)
 // -----------------------------
 
 // For example you need to check two strings for canonical equivalence
-// it can be done using functions like this: uni::norm::utf8_nfc(str1) == uni::norm::utf8_nfc(str2)
+// it can be done using functions like this: una::norm::utf8_nfc(str1) == una::norm::utf8_nfc(str2)
 // but it will allocate memory for both strings then normalize them and only then compare them with a binary
 // comparison even if only the first code point is different so it will be slow especially for long strings
 // but you can use ranges to implement the algorithm and as a bonus it will never allocate memory too.
@@ -83,21 +83,21 @@ std::string rejoin_words2(std::string_view str)
 bool canonical_equivalence(std::string_view str1, std::string_view str2)
 {
     // UTF-8 -> NFC for both strings
-    auto view1 = uni::ranges::norm::nfc_view{uni::ranges::utf8_view{str1}};
-    auto view2 = uni::ranges::norm::nfc_view{uni::ranges::utf8_view{str2}};
+    auto view1 = una::ranges::norm::nfc_view{una::ranges::utf8_view{str1}};
+    auto view2 = una::ranges::norm::nfc_view{una::ranges::utf8_view{str2}};
 
     auto it1 = view1.begin();
     auto it2 = view2.begin();
 
     // Compare the strings by code points
-    for (; it1 != uni::sentinel && it2 != uni::sentinel; ++it1, ++it2)
+    for (; it1 != una::sentinel && it2 != una::sentinel; ++it1, ++it2)
     {
         if (*it1 != *it2)
             return false;
     }
 
     // Reached the end in both strings then the strings are equal
-    if (it1 == uni::sentinel && it2 == uni::sentinel)
+    if (it1 == una::sentinel && it2 == una::sentinel)
         return true;
 
     return false;
@@ -141,18 +141,18 @@ std::basic_string<T> remove_grave_and_acute_accents(std::basic_string_view<T> st
     static_assert(std::is_same_v<T, char> || std::is_same_v<T, char8_t> || std::is_same_v<T, char16_t>);
 
     using utf_view = std::conditional_t<std::is_same_v<T, char16_t>,
-        uni::ranges::utf16_view<std::basic_string_view<T>>,
-        uni::ranges::utf8_view<std::basic_string_view<T>>>;
+        una::ranges::utf16_view<std::basic_string_view<T>>,
+        una::ranges::utf8_view<std::basic_string_view<T>>>;
 
     auto result_view = utf_view{str}
-            | uni::views::norm::nfd
-            | uni::views::filter([](char32_t c) { return c != 0x0300 && c != 0x0301; })
-            | uni::views::norm::nfc;
+            | una::views::norm::nfd
+            | una::views::filter([](char32_t c) { return c != 0x0300 && c != 0x0301; })
+            | una::views::norm::nfc;
 
     if constexpr (std::is_same_v<T, char16_t>)
-        return uni::ranges::to_utf16<std::basic_string<T>>(result_view);
+        return una::ranges::to_utf16<std::basic_string<T>>(result_view);
     else
-        return uni::ranges::to_utf8<std::basic_string<T>>(result_view);
+        return una::ranges::to_utf8<std::basic_string<T>>(result_view);
 }
 
 // assert(remove_grave_and_acute_accents<char>("bótte bòtte") == "botte botte")
