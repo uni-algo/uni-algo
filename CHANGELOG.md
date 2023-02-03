@@ -3,6 +3,7 @@ Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
 ## v0.7.0 (TBD)
+- Renamed main namespace from `uni::` to `una::`
 - Splitted .h files with ranges and functions:
   - Added files: `uni_algo/ranges_norm.h` and `uni_algo/ranges_conv.h`
   - Renamed file `uni_algo/break_grapheme.h` to `uni_algo/ranges_grapheme.h`
