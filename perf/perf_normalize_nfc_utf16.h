@@ -110,7 +110,7 @@ void fill_1()
             str += s1 + s2 + s3 + s4 + s5 + s6 + s7;
             //str += sx + sx + sx + sx + sx + sx;
         }
-        strs.emplace_back(uni::utf32to16<char32_t, char16_t>(str));
+        strs.emplace_back(una::utf32to16<char32_t, char16_t>(str));
     }
 }
 
@@ -137,7 +137,7 @@ void fill_2()
     std::string str(std::istreambuf_iterator<char>(stream), eos);
 
     for (size_t i = 0; i < number_of_passes; i++)
-        strs.emplace_back(uni::utf8to16<char, char16_t>(str));
+        strs.emplace_back(una::utf8to16<char, char16_t>(str));
 }
 
 void fill_3()
@@ -160,7 +160,7 @@ void fill_3()
             //str[j] = rand() % 10000 + 1; // 3-byte sequence
             //str[j] = rand() % 0x10FFF0 + 1; // 4-byte sequence
         }
-        strs.emplace_back(uni::utf32to16<char32_t, char16_t>(str));
+        strs.emplace_back(una::utf32to16<char32_t, char16_t>(str));
     }
 }
 
@@ -189,7 +189,7 @@ void test_performance()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                std::u16string result = uni::norm::to_nfc_utf16<char16_t>(strs[i]);
+                std::u16string result = una::norm::to_nfc_utf16<char16_t>(strs[i]);
                 //std::u16string result = norm_WinAPI(strs[i]);
                 //std::u16string result = norm_ICU(strs[i]);
 
@@ -222,7 +222,7 @@ void generate_table()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                std::u16string result = uni::norm::to_nfc_utf16<char16_t>(strs[i]);
+                std::u16string result = una::norm::to_nfc_utf16<char16_t>(strs[i]);
                 nothing += result.back();
             }
             auto time2 = std::chrono::steady_clock::now();

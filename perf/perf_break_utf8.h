@@ -23,9 +23,9 @@
 //__attribute__((flatten))
 int break_uni(std::string_view str)
 {
-    auto view = uni::ranges::grapheme::utf8_view(str);
-    //auto view = uni::ranges::word::utf8_view(str);
-    //auto view = uni::ranges::word_only::utf8_view(str);
+    auto view = una::ranges::grapheme::utf8_view(str);
+    //auto view = una::ranges::word::utf8_view(str);
+    //auto view = una::ranges::word_only::utf8_view(str);
 
     int count = std::distance(view.begin(), view.end());
 
@@ -59,7 +59,7 @@ void fill_1()
         {
             str += s1 + s2 + s3 + s4 + s5 + s6 + s7;
         }
-        strs.emplace_back(uni::utf32to8<char32_t, char>(str));
+        strs.emplace_back(una::utf32to8<char32_t, char>(str));
     }
 }
 

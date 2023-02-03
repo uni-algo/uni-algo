@@ -98,7 +98,7 @@ void fill_1()
             str += s1 + s2 + s3 + s4 + s5 + s6 + s7;
             //str += sx + sx + sx + sx + sx + sx;
         }
-        strs.emplace_back(uni::utf32to8<char32_t, char>(str));
+        strs.emplace_back(una::utf32to8<char32_t, char>(str));
     }
 }
 
@@ -148,7 +148,7 @@ void fill_3()
             //str[j] = rand() % 10000 + 1; // 3-byte sequence
             //str[j] = rand() % 0x10FFF0 + 1; // 4-byte sequence
         }
-        strs.emplace_back(uni::utf32to8<char32_t, char>(str));
+        strs.emplace_back(una::utf32to8<char32_t, char>(str));
     }
 }
 
@@ -177,7 +177,7 @@ void test_performance()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                std::string result = uni::norm::to_nfc_utf8<char>(strs[i]);
+                std::string result = una::norm::to_nfc_utf8<char>(strs[i]);
                 //std::string result = norm_utf8proc(strs2[i]);
                 //std::string result = norm_ICU(strs2[i]);
 
@@ -210,7 +210,7 @@ void generate_table()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                std::string result = uni::norm::to_nfc_utf8<char>(strs[i]);
+                std::string result = una::norm::to_nfc_utf8<char>(strs[i]);
                 nothing += result.back();
             }
             auto time2 = std::chrono::steady_clock::now();

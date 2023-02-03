@@ -87,12 +87,12 @@ std::u16string utf8to16_KEWB(std::string_view str)
 
 #if !defined(__cpp_lib_string_resize_and_overwrite)
     utf16.resize(size);
-    //utf16.resize(uni::detail::kewb_utf8to16(str.data(), str.data() + str.size(), &utf16[0], nullptr));
-    utf16.resize(uni::detail::kewb_utf8to16(str.cbegin(), str.cend(), utf16.begin(), nullptr));
+    //utf16.resize(una::detail::kewb_utf8to16(str.data(), str.data() + str.size(), &utf16[0], nullptr));
+    utf16.resize(una::detail::kewb_utf8to16(str.cbegin(), str.cend(), utf16.begin(), nullptr));
 #else
     utf16.resize_and_overwrite(size, [str](char16_t *p, std::size_t) noexcept -> std::size_t {
-        //return uni::detail::kewb_utf8to16(str.data(), str.data() + str.size(), p, nullptr);
-        return uni::detail::kewb_utf8to16(str.cbegin(), str.cend(), p, nullptr);
+        //return una::detail::kewb_utf8to16(str.data(), str.data() + str.size(), p, nullptr);
+        return una::detail::kewb_utf8to16(str.cbegin(), str.cend(), p, nullptr);
     });
 #endif
 
@@ -130,7 +130,7 @@ void fill_1()
         {
             str += s1 + s2 + s3 + s4 + s5 + s6 + s7;
         }
-        strs.emplace_back(uni::utf32to8<char32_t, char>(str));
+        strs.emplace_back(una::utf32to8<char32_t, char>(str));
     }
 }
 
@@ -180,7 +180,7 @@ void fill_3()
             //str[j] = rand() % 10000 + 1; // 3-byte sequence
             //str[j] = rand() % 0x10FFF0 + 1; // 4-byte sequence
         }
-        strs.emplace_back(uni::utf32to8<char32_t, char>(str));
+        strs.emplace_back(una::utf32to8<char32_t, char>(str));
     }
 }
 
@@ -209,7 +209,7 @@ void test_performance()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                std::u16string result = uni::utf8to16<char, char16_t>(strs[i]);
+                std::u16string result = una::utf8to16<char, char16_t>(strs[i]);
                 //std::u16string result = utf8to16_WinAPI(strs[i]);
                 //std::u16string result = utf8to16_ICU(strs[i]);
 
@@ -243,7 +243,7 @@ void generate_table()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                std::u16string result = uni::utf8to16<char, char16_t>(strs[i]);
+                std::u16string result = una::utf8to16<char, char16_t>(strs[i]);
                 nothing += result.back();
             }
             auto time2 = std::chrono::steady_clock::now();

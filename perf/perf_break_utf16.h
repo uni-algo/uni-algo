@@ -32,9 +32,9 @@
 //__attribute__((flatten))
 int break_uni(std::u16string_view str)
 {
-    auto view = uni::views::grapheme::utf16(str);
-    //auto view = uni::views::word::utf16(str);
-    //auto view = uni::views::word_only::utf16(str);
+    auto view = una::views::grapheme::utf16(str);
+    //auto view = una::views::word::utf16(str);
+    //auto view = una::views::word_only::utf16(str);
 
     int count = std::distance(view.begin(), view.end());
 
@@ -90,7 +90,7 @@ void fill_1()
         {
             str += s1 + s2 + s3 + s4 + s5 + s6 + s7;
         }
-        strs.emplace_back(uni::utf32to16<char32_t, char16_t>(str));
+        strs.emplace_back(una::utf32to16<char32_t, char16_t>(str));
     }
 }
 
@@ -117,7 +117,7 @@ void fill_2()
     std::string str(std::istreambuf_iterator<char>(stream), eos);
 
     for (size_t i = 0; i < number_of_passes; i++)
-        strs.emplace_back(uni::utf8to16<char, char16_t>(str));
+        strs.emplace_back(una::utf8to16<char, char16_t>(str));
 }
 
 void test_performance();

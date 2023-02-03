@@ -35,12 +35,12 @@
 std::u16string trans_uni(std::u16string_view str)
 {
     return str
-         | uni::views::utf16
-         | uni::views::norm::nfd
-         | uni::views::filter([](char32_t c) { return c != 0x0300 && c != 0x0301; })
-         //| uni::views::filter([](char32_t c) { return !uni::codepoint::prop{c}.General_Category_Mn(); }) // Unaccent
-         | uni::views::norm::nfc
-         | uni::ranges::to_utf16<std::u16string>();
+         | una::views::utf16
+         | una::views::norm::nfd
+         | una::views::filter([](char32_t c) { return c != 0x0300 && c != 0x0301; })
+         //| una::views::filter([](char32_t c) { return !una::codepoint::prop{c}.General_Category_Mn(); }) // Unaccent
+         | una::views::norm::nfc
+         | una::ranges::to_utf16<std::u16string>();
 }
 
 #ifdef ENABLE_ICU_TEST
@@ -87,7 +87,7 @@ void fill_1()
         {
             str += s1 + s2 + s3 + s4 + s5 + s6 + s7;
         }
-        strs.emplace_back(uni::utf32to16<char32_t, char16_t>(str));
+        strs.emplace_back(una::utf32to16<char32_t, char16_t>(str));
     }
 }
 
@@ -114,7 +114,7 @@ void fill_2()
     std::string str(std::istreambuf_iterator<char>(stream), eos);
 
     for (size_t i = 0; i < number_of_passes; i++)
-        strs.emplace_back(uni::utf8to16<char, char16_t>(str));
+        strs.emplace_back(una::utf8to16<char, char16_t>(str));
 }
 
 void test_performance();
