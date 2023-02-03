@@ -15,7 +15,7 @@
 
 #include "impl/impl_iter.h"
 
-namespace uni {
+namespace una {
 
 namespace ranges {
 
@@ -533,7 +533,7 @@ inline constexpr detail::rng::adaptor_to_utf16_reserve<Result> to_utf16_reserve{
 
 namespace views = ranges::views;
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_RANGES_CONV_H_UAIH
 

@@ -22,7 +22,7 @@
 // They are constexpr so it's possible to use them in all places
 // where enum classes can be used for example in switch case.
 
-namespace uni {
+namespace una {
 
 // Forward declaration for system locale stuff
 #ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
@@ -305,7 +305,7 @@ public:
     friend constexpr bool operator!=(const locale& x, const script& y) { return x.scpt != y; }
 };
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_LOCALE_H_UAIH
 

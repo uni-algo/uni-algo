@@ -11,7 +11,7 @@
 
 #include "ranges_core.h"
 
-namespace uni {
+namespace una {
 
 namespace detail::translit {
 
@@ -341,7 +341,7 @@ translit_view(Range&&, Func, std::size_t) -> translit_view<views::all_t<Range>, 
 
 } // namespace detail::rng
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_INTERNAL_RANGES_TRANSLIT_H_UAIH
 

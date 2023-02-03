@@ -48,8 +48,8 @@ inline constexpr const std::array<unsigned char, 128> data_collate_nocase = {{
 
 } // namespace una::detail::ascii
 
-// REMINDER: to move everything to namespace uni
-// rename namespace unx to uni and remove all "using namespace uni;" below.
+// REMINDER: to move everything to namespace una
+// rename namespace unx to uni and remove all "using namespace una;" below.
 
 namespace unx {
 
@@ -161,7 +161,7 @@ uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::
 template<typename T>
 uaiw_constexpr int collate_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
-    using namespace uni; // NOLINT(google-build-using-namespace)
+    using namespace una; // NOLINT(google-build-using-namespace)
 
     static_assert(std::is_integral_v<T>);
 
@@ -289,7 +289,7 @@ uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::
 template<typename T>
 uaiw_constexpr int collate_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
-    using namespace uni; // NOLINT(google-build-using-namespace)
+    using namespace una; // NOLINT(google-build-using-namespace)
 
     static_assert(std::is_integral_v<T>);
 
@@ -359,7 +359,7 @@ inline uaiw_constexpr bool is_valid_ascii(std::string_view view)
 template<typename T>
 uaiw_constexpr std::basic_string_view<T> trim_ascii(std::basic_string_view<T> view)
 {
-    using namespace uni; // NOLINT(google-build-using-namespace)
+    using namespace una; // NOLINT(google-build-using-namespace)
 
     static_assert(std::is_integral_v<T>);
 
@@ -375,7 +375,7 @@ uaiw_constexpr std::basic_string_view<T> trim_ascii(std::basic_string_view<T> vi
 template<typename T>
 uaiw_constexpr std::basic_string_view<T> trim_start_ascii(std::basic_string_view<T> view)
 {
-    using namespace uni; // NOLINT(google-build-using-namespace)
+    using namespace una; // NOLINT(google-build-using-namespace)
 
     static_assert(std::is_integral_v<T>);
 
@@ -389,7 +389,7 @@ uaiw_constexpr std::basic_string_view<T> trim_start_ascii(std::basic_string_view
 template<typename T>
 uaiw_constexpr std::basic_string_view<T> trim_end_ascii(std::basic_string_view<T> view)
 {
-    using namespace uni; // NOLINT(google-build-using-namespace)
+    using namespace una; // NOLINT(google-build-using-namespace)
 
     static_assert(std::is_integral_v<T>);
 

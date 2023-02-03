@@ -20,7 +20,7 @@
 #include "impl/impl_iter.h"
 #include "impl/impl_break_word.h"
 
-namespace uni {
+namespace una {
 
 namespace ranges {
 
@@ -780,7 +780,7 @@ inline constexpr detail::rng::adaptor_word_only_utf16 utf16;
 
 namespace views = ranges::views;
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_RANGES_WORD_H_UAIH
 

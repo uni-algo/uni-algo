@@ -269,7 +269,7 @@ template<typename UTF8, typename Alloc = std::allocator<UTF8>>
 uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 japanese_kana_to_romaji_hepburn_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
-    using namespace uni; // NOLINT(google-build-using-namespace)
+    using namespace una; // NOLINT(google-build-using-namespace)
 
     using tr = detail::translit::japanese_kana_to_romaji_hepburn;
 
@@ -288,7 +288,7 @@ template<typename UTF16, typename Alloc = std::allocator<UTF16>>
 uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 japanese_kana_to_romaji_hepburn_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
-    using namespace uni; // NOLINT(google-build-using-namespace)
+    using namespace una; // NOLINT(google-build-using-namespace)
 
     using tr = detail::translit::japanese_kana_to_romaji_hepburn;
 

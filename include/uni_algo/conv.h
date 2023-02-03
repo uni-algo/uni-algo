@@ -16,7 +16,7 @@
 
 #include "impl/impl_conv.h"
 
-namespace uni {
+namespace una {
 
 namespace detail {
 
@@ -635,7 +635,7 @@ inline uaiw_constexpr std::u8string utf32to8u(std::wstring_view source, una::err
 
 #endif // __cpp_lib_char8_t
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_CONV_H_UAIH
 

@@ -9,7 +9,7 @@
 
 #include "../config.h"
 
-namespace uni {
+namespace una {
 
 class error
 {
@@ -25,6 +25,6 @@ private:
     std::size_t position = detail::impl_npos;
 };
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_INTERNAL_ERROR_H_UAIH

@@ -20,7 +20,7 @@
 #include "impl/impl_iter.h"
 #include "impl/impl_break_grapheme.h"
 
-namespace uni {
+namespace una {
 
 namespace ranges::grapheme {
 
@@ -365,7 +365,7 @@ inline constexpr detail::rng::adaptor_grapheme_utf16 utf16;
 
 namespace views = ranges::views;
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_RANGES_GRAPHEME_H_UAIH
 

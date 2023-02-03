@@ -191,7 +191,7 @@ template<typename UTF8, typename Alloc = std::allocator<UTF8>>
 uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 macedonian_to_latin_docs_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
 {
-    using namespace uni; // NOLINT(google-build-using-namespace)
+    using namespace una; // NOLINT(google-build-using-namespace)
 
     // Note that we use views from una::ranges instead of adaptors from una::views
     // because translit view is internal and doesn't have view adaptor
@@ -211,7 +211,7 @@ template<typename UTF16, typename Alloc = std::allocator<UTF16>>
 uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
 macedonian_to_latin_docs_utf16(std::basic_string_view<UTF16> source, const Alloc& alloc = Alloc())
 {
-    using namespace uni; // NOLINT(google-build-using-namespace)
+    using namespace una; // NOLINT(google-build-using-namespace)
 
     using tr = detail::translit::macedonian_to_latin_docs;
 

@@ -9,7 +9,7 @@
 
 #include "../config.h"
 
-namespace uni {
+namespace una {
 
 class search
 {
@@ -27,6 +27,6 @@ private:
     std::size_t end_position = detail::impl_npos;
 };
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_INTERNAL_SEARCH_H_UAIH

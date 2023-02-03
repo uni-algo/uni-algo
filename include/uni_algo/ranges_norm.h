@@ -16,7 +16,7 @@
 #error "Normalization module is disabled via define UNI_ALGO_DISABLE_NORM"
 #endif
 
-namespace uni {
+namespace una {
 
 namespace ranges::norm {
 
@@ -474,7 +474,7 @@ inline constexpr detail::rng::adaptor_nfkd nfkd;
 
 namespace views = ranges::views;
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_RANGES_NORM_H_UAIH
 

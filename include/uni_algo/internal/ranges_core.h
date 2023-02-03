@@ -32,7 +32,7 @@
 #include "../config.h"
 #include "../version.h"
 
-namespace uni {
+namespace una {
 
 struct sentinel_t {};
 inline constexpr sentinel_t sentinel;
@@ -294,7 +294,7 @@ using all_t = std::views::all_t<Range>;
 
 namespace views = ranges::views;
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_INTERNAL_RANGES_CORE_H_UAIH
 

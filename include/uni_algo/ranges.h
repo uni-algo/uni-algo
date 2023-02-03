@@ -12,7 +12,7 @@
 #include "version.h"
 #include "internal/ranges_core.h"
 
-namespace uni {
+namespace una {
 
 namespace ranges {
 
@@ -731,7 +731,7 @@ take_view(Range&&, std::size_t) -> take_view<views::all_t<Range>>;
 
 namespace views = ranges::views;
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_RANGES_H_UAIH
 

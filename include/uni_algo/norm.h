@@ -19,7 +19,7 @@
 
 #include "impl/impl_norm.h"
 
-namespace uni {
+namespace una {
 
 namespace detail {
 
@@ -698,7 +698,7 @@ inline uaiw_constexpr std::u32string to_decompose_hangul_u32(char32_t c)
 
 } // namespace codepoint
 
-} // namespace uni
+} // namespace una
 
 #endif // UNI_ALGO_NORM_H_UAIH
 
