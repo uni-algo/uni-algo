@@ -155,10 +155,10 @@ private:
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
     public:
-        friend uaiw_constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf8& x, una::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf8& x, una::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -321,10 +321,10 @@ private:
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
     public:
-        friend uaiw_constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf16& x, una::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf16& x, una::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -494,10 +494,10 @@ private:
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const utf8& x) { return x.it_begin == std::end(x.parent->range); }
     public:
-        friend uaiw_constexpr bool operator==(const utf8& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(const utf8& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf8& x, una::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf8& x, una::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const utf8& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const utf8& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -664,10 +664,10 @@ private:
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const utf16& x) { return x.it_begin == std::end(x.parent->range); }
     public:
-        friend uaiw_constexpr bool operator==(const utf16& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(const utf16& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const utf16& x, una::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const utf16& x, una::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const utf16& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const utf16& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;

@@ -17,7 +17,7 @@
 // DESIGN:
 // Locale tags can contain too many values so using enum classes for them is no go.
 // So we use our own "enum strings" that are similar in usage:
-// uni::locale::language{"en"} instead of uni::locale::language::en
+// una::locale::language{"en"} instead of una::locale::language::en
 // That allow us to use them with all possible language/script/region tags.
 // They are constexpr so it's possible to use them in all places
 // where enum classes can be used for example in switch case.
@@ -31,9 +31,9 @@ class locale;
 
 namespace detail {
 
-UNI_ALGO_DLL const uni::locale& locale_system();
+UNI_ALGO_DLL const una::locale& locale_system();
 #ifdef UNI_ALGO_EXPERIMENTAL
-UNI_ALGO_DLL const uni::locale& locale_thread();
+UNI_ALGO_DLL const una::locale& locale_thread();
 UNI_ALGO_DLL void locale_thread_reinit();
 #endif // UNI_ALGO_EXPERIMENTAL
 

@@ -77,10 +77,10 @@ private:
         }
         friend uaiw_constexpr bool operator==(const nfc& x, const nfc& y) { return x.stream_end == y.stream_end; }
         friend uaiw_constexpr bool operator!=(const nfc& x, const nfc& y) { return x.stream_end != y.stream_end; }
-        friend uaiw_constexpr bool operator==(const nfc& x, uni::sentinel_t) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(const nfc& x, uni::sentinel_t) { return !x.stream_end; }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const nfc& x) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfc& x) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfc& x, una::sentinel_t) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfc& x, una::sentinel_t) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const nfc& x) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const nfc& x) { return !x.stream_end; }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -107,7 +107,7 @@ public:
     }
     uaiw_constexpr auto end()
     {
-        return uni::sentinel;
+        return una::sentinel;
     }
     //uaiw_constexpr bool empty() { return begin() == end(); }
     //explicit uaiw_constexpr operator bool() { return !empty(); }
@@ -170,10 +170,10 @@ private:
         }
         friend uaiw_constexpr bool operator==(const nfd& x, const nfd& y) { return x.stream_end == y.stream_end; }
         friend uaiw_constexpr bool operator!=(const nfd& x, const nfd& y) { return x.stream_end != y.stream_end; }
-        friend uaiw_constexpr bool operator==(const nfd& x, uni::sentinel_t) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(const nfd& x, uni::sentinel_t) { return !x.stream_end; }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const nfd& x) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfd& x) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfd& x, una::sentinel_t) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfd& x, una::sentinel_t) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const nfd& x) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const nfd& x) { return !x.stream_end; }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -200,7 +200,7 @@ public:
     }
     uaiw_constexpr auto end()
     {
-        return uni::sentinel;
+        return una::sentinel;
     }
     //uaiw_constexpr bool empty() { return begin() == end(); }
     //explicit uaiw_constexpr operator bool() { return !empty(); }
@@ -265,10 +265,10 @@ private:
         }
         friend uaiw_constexpr bool operator==(const nfkc& x, const nfkc& y) { return x.stream_end == y.stream_end; }
         friend uaiw_constexpr bool operator!=(const nfkc& x, const nfkc& y) { return x.stream_end != y.stream_end; }
-        friend uaiw_constexpr bool operator==(const nfkc& x, uni::sentinel_t) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(const nfkc& x, uni::sentinel_t) { return !x.stream_end; }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const nfkc& x) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfkc& x) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfkc& x, una::sentinel_t) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfkc& x, una::sentinel_t) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const nfkc& x) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const nfkc& x) { return !x.stream_end; }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -295,7 +295,7 @@ public:
     }
     uaiw_constexpr auto end()
     {
-        return uni::sentinel;
+        return una::sentinel;
     }
     //uaiw_constexpr bool empty() { return begin() == end(); }
     //explicit uaiw_constexpr operator bool() { return !empty(); }
@@ -358,10 +358,10 @@ private:
         }
         friend uaiw_constexpr bool operator==(const nfkd& x, const nfkd& y) { return x.stream_end == y.stream_end; }
         friend uaiw_constexpr bool operator!=(const nfkd& x, const nfkd& y) { return x.stream_end != y.stream_end; }
-        friend uaiw_constexpr bool operator==(const nfkd& x, uni::sentinel_t) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(const nfkd& x, uni::sentinel_t) { return !x.stream_end; }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const nfkd& x) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const nfkd& x) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(const nfkd& x, una::sentinel_t) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(const nfkd& x, una::sentinel_t) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const nfkd& x) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const nfkd& x) { return !x.stream_end; }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -388,7 +388,7 @@ public:
     }
     uaiw_constexpr auto end()
     {
-        return uni::sentinel;
+        return una::sentinel;
     }
     //uaiw_constexpr bool empty() { return begin() == end(); }
     //explicit uaiw_constexpr operator bool() { return !empty(); }

@@ -12,7 +12,7 @@
 #include "../../ranges_conv.h"
 #include "../../internal/ranges_translit.h"
 
-namespace uni::detail::translit {
+namespace una::detail::translit {
 
 class japanese_kana_to_romaji_hepburn
 {
@@ -261,7 +261,7 @@ public:
     }
 };
 
-} // namespace uni::detail::translit
+} // namespace una::detail::translit
 
 namespace unx::translit {
 
@@ -324,7 +324,7 @@ inline uaiw_constexpr std::u8string utf8_japanese_kana_to_romaji_hepburn(std::u8
 }
 #endif // __cpp_lib_char8_t
 
-} // namespace uni::translit
+} // namespace una::translit
 
 #endif // UNI_ALGO_JAPANESE_KANA_TO_ROMAJI_HEPBURN_H_UAIH
 

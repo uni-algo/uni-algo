@@ -149,7 +149,7 @@ constexpr StringViewResult to_string_view(const Range&, Iter it_begin, Iter it_p
 
 namespace ranges {
 
-// For C++17 we implement very simple ref_view that will be used together with uni::views::all_t/uni::views::all
+// For C++17 we implement very simple ref_view that will be used together with una::views::all_t/una::views::all
 // It has the similar design as std::views::ref_view so in C++20 we just use that
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class Range>
@@ -229,9 +229,9 @@ namespace detail::rng {
 // https://stackoverflow.com/questions/71689137/what-is-the-best-way-to-drop-last-element-using-c20-ranges
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2387r3.html
 // Our adaptors support this:
-// auto range = str | uni::views::utf8 | uni::views::filter(f)
+// auto range = str | una::views::utf8 | una::views::filter(f)
 // But do not support this:
-// auto range = uni::views::utf8 | uni::views::filter(f)
+// auto range = una::views::utf8 | una::views::filter(f)
 
 /* ALL_VIEW */
 

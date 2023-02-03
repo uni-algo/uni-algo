@@ -101,10 +101,10 @@ private:
         { return x.it_pos == y.it_pos && x.past_begin == y.past_begin; }
         friend uaiw_constexpr bool operator!=(const reverse& x, const reverse& y)
         { return x.it_pos != y.it_pos || x.past_begin != y.past_begin; }
-        friend uaiw_constexpr bool operator==(const reverse& x, uni::sentinel_t) { return x.past_begin; }
-        friend uaiw_constexpr bool operator!=(const reverse& x, uni::sentinel_t) { return !x.past_begin; }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const reverse& x) { return x.past_begin; }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const reverse& x) { return !x.past_begin; }
+        friend uaiw_constexpr bool operator==(const reverse& x, una::sentinel_t) { return x.past_begin; }
+        friend uaiw_constexpr bool operator!=(const reverse& x, una::sentinel_t) { return !x.past_begin; }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const reverse& x) { return x.past_begin; }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const reverse& x) { return !x.past_begin; }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -129,16 +129,16 @@ public:
         else
         {
             // This is to handle case when Range is bidirectional and not std::ranges::common_range
-            // for example std::views::take(x) produces such range and our uni::views::take(x) too
+            // for example std::views::take(x) produces such range and our una::views::take(x) too
             // this is the same how std::ranges handles such case
             // auto it = std::ranges::next(std::ranges::begin(range), std::ranges::end(range));
             auto it = std::begin(range);
             for (auto end = std::end(range); it != end; ++it);
             cached_begin_value = reverse<iter_t, iter_t>{*this, std::begin(range), it};
 
-            // std::string_view{"12345678900"} | uni::views::utf8
-            // | uni::views::reverse | std::views::take(7) | uni::views::reverse
-            // | uni::views::drop(2) | uni::views::reverse -> 00987 (48 48 57 56 55)
+            // std::string_view{"12345678900"} | una::views::utf8
+            // | una::views::reverse | std::views::take(7) | una::views::reverse
+            // | una::views::drop(2) | una::views::reverse -> 00987 (48 48 57 56 55)
         }
         cached_begin = true;
 
@@ -224,10 +224,10 @@ private:
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const filter& x) { return x.it_pos == std::end(x.parent->range); }
     public:
-        friend uaiw_constexpr bool operator==(const filter& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(const filter& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const filter& x) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const filter& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const filter& x, una::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const filter& x, una::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const filter& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const filter& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -259,7 +259,7 @@ public:
         if constexpr (std::is_same_v<iter_t, sent_t>)
             return filter<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
-            return uni::sentinel;
+            return una::sentinel;
     }
 };
 
@@ -334,10 +334,10 @@ private:
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const transform& x) { return x.it_pos == std::end(x.parent->range); }
     public:
-        friend uaiw_constexpr bool operator==(const transform& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(const transform& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const transform& x) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const transform& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const transform& x, una::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const transform& x, una::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const transform& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const transform& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -360,7 +360,7 @@ public:
         if constexpr (std::is_same_v<iter_t, sent_t>)
             return transform<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
-            return uni::sentinel;
+            return una::sentinel;
     }
 };
 
@@ -443,10 +443,10 @@ private:
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const take& x) { return x.count == 0 || x.it_pos == std::end(x.parent->range); }
     public:
-        friend uaiw_constexpr bool operator==(const take& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(const take& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const take& x) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const take& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const take& x, una::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const take& x, una::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const take& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const take& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -466,7 +466,7 @@ public:
     }
     uaiw_constexpr auto end()
     {
-        return uni::sentinel;
+        return una::sentinel;
     }
 };
 
@@ -545,10 +545,10 @@ private:
     private:
         static uaiw_constexpr bool friend_compare_sentinel(const drop& x) { return x.it_pos == std::end(x.parent->range); }
     public:
-        friend uaiw_constexpr bool operator==(const drop& x, uni::sentinel_t) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(const drop& x, uni::sentinel_t) { return !friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const drop& x) { return friend_compare_sentinel(x); }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const drop& x) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(const drop& x, una::sentinel_t) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(const drop& x, una::sentinel_t) { return !friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const drop& x) { return friend_compare_sentinel(x); }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const drop& x) { return !friend_compare_sentinel(x); }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -579,7 +579,7 @@ public:
         if constexpr (std::is_same_v<iter_t, sent_t>)
             return drop<iter_t, sent_t>{*this, std::end(range), std::end(range)};
         else
-            return uni::sentinel;
+            return una::sentinel;
     }
 };
 

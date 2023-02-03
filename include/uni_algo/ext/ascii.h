@@ -13,7 +13,7 @@
 #include "../version.h"
 #include "../internal/search.h"
 
-namespace uni::detail::ascii {
+namespace una::detail::ascii {
 
 template<typename T>
 inline constexpr std::array<T, 6> data_trim = {{' ','\t','\r','\n','\f','\v'}};
@@ -46,7 +46,7 @@ inline constexpr const std::array<unsigned char, 128> data_collate_nocase = {{
 
 #endif // UNI_ALGO_IMPL_DISABLE_COLLATE
 
-} // namespace uni::detail::ascii
+} // namespace una::detail::ascii
 
 // REMINDER: to move everything to namespace uni
 // rename namespace unx to uni and remove all "using namespace uni;" below.
@@ -142,7 +142,7 @@ uaiw_constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic_s
 }
 
 template<typename T>
-uaiw_constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     static_assert(std::is_integral_v<T>);
 
@@ -151,9 +151,9 @@ uaiw_constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::
     std::size_t pos = string1.find(string2);
 
     if (pos == std::string_view::npos)
-        return uni::search{};
+        return una::search{};
 
-    return uni::search{true, pos, pos + string2.size()};
+    return una::search{true, pos, pos + string2.size()};
 }
 
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
@@ -205,7 +205,7 @@ inline uaiw_constexpr int collate_ascii(std::string_view string1, std::string_vi
     return collate_ascii<char>(string1, string2);
 }
 #endif // UNI_ALGO_IMPL_DISABLE_COLLATE
-inline uaiw_constexpr uni::search search_ascii(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr una::search search_ascii(std::string_view string1, std::string_view string2)
 {
     return search_ascii<char>(string1, string2);
 }
@@ -245,7 +245,7 @@ uaiw_constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic_s
 }
 
 template<typename T>
-uaiw_constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     static_assert(std::is_integral_v<T>);
 
@@ -256,7 +256,7 @@ uaiw_constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::
     std::size_t n = string1.size();
 
     if (m > n)
-        return uni::search{};
+        return una::search{};
 
     for (std::size_t i = 0; i <= n - m; ++i)
     {
@@ -278,10 +278,10 @@ uaiw_constexpr uni::search search_ascii(std::basic_string_view<T> string1, std::
         }
 
         if (j == m)
-            return uni::search{true, i, i + m};
+            return una::search{true, i, i + m};
     }
 
-    return uni::search{};
+    return una::search{};
 }
 
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
@@ -330,7 +330,7 @@ inline uaiw_constexpr int collate_ascii(std::string_view string1, std::string_vi
     return collate_ascii<char>(string1, string2);
 }
 #endif // UNI_ALGO_IMPL_DISABLE_COLLATE
-inline uaiw_constexpr uni::search search_ascii(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr una::search search_ascii(std::string_view string1, std::string_view string2)
 {
     return search_ascii<char>(string1, string2);
 }

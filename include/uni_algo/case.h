@@ -188,7 +188,7 @@ inline uaiw_constexpr std::wstring to_casefold_utf16(std::wstring_view source)
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
 uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
-to_lowercase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale, const Alloc& alloc = Alloc())
+to_lowercase_utf8(std::basic_string_view<UTF8> source, const una::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -198,7 +198,7 @@ to_lowercase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale
 }
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
 uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
-to_lowercase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale, const Alloc& alloc = Alloc())
+to_lowercase_utf16(std::basic_string_view<UTF16> source, const una::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -208,7 +208,7 @@ to_lowercase_utf16(std::basic_string_view<UTF16> source, const uni::locale& loca
 }
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
 uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
-to_uppercase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale, const Alloc& alloc = Alloc())
+to_uppercase_utf8(std::basic_string_view<UTF8> source, const una::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -218,7 +218,7 @@ to_uppercase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale
 }
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
 uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
-to_uppercase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale, const Alloc& alloc = Alloc())
+to_uppercase_utf16(std::basic_string_view<UTF16> source, const una::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -226,28 +226,28 @@ to_uppercase_utf16(std::basic_string_view<UTF16> source, const uni::locale& loca
             detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(alloc, source,
             detail::impl_case_map_mode_uppercase, static_cast<char32_t>(locale.get_language()));
 }
-inline uaiw_constexpr std::string to_lowercase_utf8(std::string_view source, const uni::locale& locale)
+inline uaiw_constexpr std::string to_lowercase_utf8(std::string_view source, const una::locale& locale)
 {
     return to_lowercase_utf8<char>(source, locale);
 }
-inline uaiw_constexpr std::string to_uppercase_utf8(std::string_view source, const uni::locale& locale)
+inline uaiw_constexpr std::string to_uppercase_utf8(std::string_view source, const una::locale& locale)
 {
     return to_uppercase_utf8<char>(source, locale);
 }
-inline uaiw_constexpr std::u16string to_lowercase_utf16(std::u16string_view source, const uni::locale& locale)
+inline uaiw_constexpr std::u16string to_lowercase_utf16(std::u16string_view source, const una::locale& locale)
 {
     return to_lowercase_utf16<char16_t>(source, locale);
 }
-inline uaiw_constexpr std::u16string to_uppercase_utf16(std::u16string_view source, const uni::locale& locale)
+inline uaiw_constexpr std::u16string to_uppercase_utf16(std::u16string_view source, const una::locale& locale)
 {
     return to_uppercase_utf16<char16_t>(source, locale);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline uaiw_constexpr std::wstring to_lowercase_utf16(std::wstring_view source, const uni::locale& locale)
+inline uaiw_constexpr std::wstring to_lowercase_utf16(std::wstring_view source, const una::locale& locale)
 {
     return to_lowercase_utf16<wchar_t>(source, locale);
 }
-inline uaiw_constexpr std::wstring to_uppercase_utf16(std::wstring_view source, const uni::locale& locale)
+inline uaiw_constexpr std::wstring to_uppercase_utf16(std::wstring_view source, const una::locale& locale)
 {
     return to_uppercase_utf16<wchar_t>(source, locale);
 }
@@ -292,7 +292,7 @@ inline uaiw_constexpr std::wstring to_titlecase_utf16(std::wstring_view source)
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
 uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
-to_titlecase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale, const Alloc& alloc = Alloc())
+to_titlecase_utf8(std::basic_string_view<UTF8> source, const una::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -302,7 +302,7 @@ to_titlecase_utf8(std::basic_string_view<UTF8> source, const uni::locale& locale
 }
 template<typename UTF16, typename Alloc = std::allocator<UTF16>>
 uaiw_constexpr std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>
-to_titlecase_utf16(std::basic_string_view<UTF16> source, const uni::locale& locale, const Alloc& alloc = Alloc())
+to_titlecase_utf16(std::basic_string_view<UTF16> source, const una::locale& locale, const Alloc& alloc = Alloc())
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -310,16 +310,16 @@ to_titlecase_utf16(std::basic_string_view<UTF16> source, const uni::locale& loca
             detail::impl_x_case_map_utf16, detail::impl_case_map_locale_utf16>(alloc, source,
             detail::impl_case_map_mode_titlecase, static_cast<char32_t>(locale.get_language()));
 }
-inline uaiw_constexpr std::string to_titlecase_utf8(std::string_view source, const uni::locale& locale)
+inline uaiw_constexpr std::string to_titlecase_utf8(std::string_view source, const una::locale& locale)
 {
     return to_titlecase_utf8<char>(source, locale);
 }
-inline uaiw_constexpr std::u16string to_titlecase_utf16(std::u16string_view source, const uni::locale& locale)
+inline uaiw_constexpr std::u16string to_titlecase_utf16(std::u16string_view source, const una::locale& locale)
 {
     return to_titlecase_utf16<char16_t>(source, locale);
 }
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-inline uaiw_constexpr std::wstring to_titlecase_utf16(std::wstring_view source, const uni::locale& locale)
+inline uaiw_constexpr std::wstring to_titlecase_utf16(std::wstring_view source, const una::locale& locale)
 {
     return to_titlecase_utf16<wchar_t>(source, locale);
 }
@@ -406,7 +406,7 @@ uaiw_constexpr int collate_utf16(std::basic_string_view<UTF16> string1, std::bas
 #endif // UNI_ALGO_DISABLE_COLLATE
 
 template<typename UTF8>
-uaiw_constexpr uni::search search_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
+uaiw_constexpr una::search search_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -423,11 +423,11 @@ uaiw_constexpr uni::search search_utf8(std::basic_string_view<UTF8> string1, std
                                              safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, false, &pos, &end);
 #endif
 
-    return uni::search{ret, pos, end};
+    return una::search{ret, pos, end};
 }
 
 template<typename UTF16>
-uaiw_constexpr uni::search search_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
+uaiw_constexpr una::search search_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -444,7 +444,7 @@ uaiw_constexpr uni::search search_utf16(std::basic_string_view<UTF16> string1, s
                                               safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, false, &pos, &end);
 #endif
 
-    return uni::search{ret, pos, end};
+    return una::search{ret, pos, end};
 }
 
 inline uaiw_constexpr int compare_utf8(std::string_view string1, std::string_view string2)
@@ -457,7 +457,7 @@ inline uaiw_constexpr int collate_utf8(std::string_view string1, std::string_vie
     return collate_utf8<char>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uaiw_constexpr uni::search search_utf8(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr una::search search_utf8(std::string_view string1, std::string_view string2)
 {
     return search_utf8<char>(string1, string2);
 }
@@ -471,7 +471,7 @@ inline uaiw_constexpr int collate_utf16(std::u16string_view string1, std::u16str
     return collate_utf16<char16_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uaiw_constexpr uni::search search_utf16(std::u16string_view string1, std::u16string_view string2)
+inline uaiw_constexpr una::search search_utf16(std::u16string_view string1, std::u16string_view string2)
 {
     return search_utf16<char16_t>(string1, string2);
 }
@@ -486,7 +486,7 @@ inline uaiw_constexpr int collate_utf16(std::wstring_view string1, std::wstring_
     return collate_utf16<wchar_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uaiw_constexpr uni::search search_utf16(std::wstring_view string1, std::wstring_view string2)
+inline uaiw_constexpr una::search search_utf16(std::wstring_view string1, std::wstring_view string2)
 {
     return search_utf16<wchar_t>(string1, string2);
 }
@@ -606,7 +606,7 @@ uaiw_constexpr int collate_utf16(std::basic_string_view<UTF16> string1, std::bas
 #endif // UNI_ALGO_DISABLE_COLLATE
 
 template<typename UTF8>
-uaiw_constexpr uni::search search_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
+uaiw_constexpr una::search search_utf8(std::basic_string_view<UTF8> string1, std::basic_string_view<UTF8> string2)
 {
     static_assert(std::is_integral_v<UTF8>);
 
@@ -623,11 +623,11 @@ uaiw_constexpr uni::search search_utf8(std::basic_string_view<UTF8> string1, std
                                              safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true, &pos, &end);
 #endif
 
-    return uni::search{ret, pos, end};
+    return una::search{ret, pos, end};
 }
 
 template<typename UTF16>
-uaiw_constexpr uni::search search_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
+uaiw_constexpr una::search search_utf16(std::basic_string_view<UTF16> string1, std::basic_string_view<UTF16> string2)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
@@ -644,7 +644,7 @@ uaiw_constexpr uni::search search_utf16(std::basic_string_view<UTF16> string1, s
                                               safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true, &pos, &end);
 #endif
 
-    return uni::search{ret, pos, end};
+    return una::search{ret, pos, end};
 }
 
 inline uaiw_constexpr int compare_utf8(std::string_view string1, std::string_view string2)
@@ -657,7 +657,7 @@ inline uaiw_constexpr int collate_utf8(std::string_view string1, std::string_vie
     return collate_utf8<char>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uaiw_constexpr uni::search search_utf8(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr una::search search_utf8(std::string_view string1, std::string_view string2)
 {
     return search_utf8<char>(string1, string2);
 }
@@ -671,7 +671,7 @@ inline uaiw_constexpr int collate_utf16(std::u16string_view string1, std::u16str
     return collate_utf16<char16_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uaiw_constexpr uni::search search_utf16(std::u16string_view string1, std::u16string_view string2)
+inline uaiw_constexpr una::search search_utf16(std::u16string_view string1, std::u16string_view string2)
 {
     return search_utf16<char16_t>(string1, string2);
 }
@@ -686,7 +686,7 @@ inline uaiw_constexpr int collate_utf16(std::wstring_view string1, std::wstring_
     return collate_utf16<wchar_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uaiw_constexpr uni::search search_utf16(std::wstring_view string1, std::wstring_view string2)
+inline uaiw_constexpr una::search search_utf16(std::wstring_view string1, std::wstring_view string2)
 {
     return search_utf16<wchar_t>(string1, string2);
 }
@@ -767,11 +767,11 @@ inline uaiw_constexpr std::u8string to_casefold_utf8(std::u8string_view source)
 {
     return to_casefold_utf8<char8_t>(source);
 }
-inline uaiw_constexpr std::u8string to_lowercase_utf8(std::u8string_view source, const uni::locale& locale)
+inline uaiw_constexpr std::u8string to_lowercase_utf8(std::u8string_view source, const una::locale& locale)
 {
     return to_lowercase_utf8<char8_t>(source, locale);
 }
-inline uaiw_constexpr std::u8string to_uppercase_utf8(std::u8string_view source, const uni::locale& locale)
+inline uaiw_constexpr std::u8string to_uppercase_utf8(std::u8string_view source, const una::locale& locale)
 {
     return to_uppercase_utf8<char8_t>(source, locale);
 }
@@ -781,7 +781,7 @@ inline uaiw_constexpr std::u8string to_titlecase_utf8(std::u8string_view source)
 {
     return to_titlecase_utf8<char8_t>(source);
 }
-inline uaiw_constexpr std::u8string to_titlecase_utf8(std::u8string_view source, const uni::locale& locale)
+inline uaiw_constexpr std::u8string to_titlecase_utf8(std::u8string_view source, const una::locale& locale)
 {
     return to_titlecase_utf8<char8_t>(source, locale);
 }
@@ -802,7 +802,7 @@ inline uaiw_constexpr int collate_utf8(std::u8string_view string1, std::u8string
     return collate_utf8<char8_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uaiw_constexpr uni::search search_utf8(std::u8string_view string1, std::u8string_view string2)
+inline uaiw_constexpr una::search search_utf8(std::u8string_view string1, std::u8string_view string2)
 {
     return search_utf8<char8_t>(string1, string2);
 }
@@ -821,7 +821,7 @@ inline uaiw_constexpr int collate_utf8(std::u8string_view string1, std::u8string
     return collate_utf8<char8_t>(string1, string2);
 }
 #endif // UNI_ALGO_DISABLE_COLLATE
-inline uaiw_constexpr uni::search search_utf8(std::u8string_view string1, std::u8string_view string2)
+inline uaiw_constexpr una::search search_utf8(std::u8string_view string1, std::u8string_view string2)
 {
     return search_utf8<char8_t>(string1, string2);
 }

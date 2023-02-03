@@ -15,7 +15,7 @@
 
 #include "impl/impl_prop.h"
 
-namespace uni::codepoint {
+namespace una::codepoint {
 
 // REPLACEMENT CHARACTER U+FFFD
 inline constexpr char32_t replacement_char = detail::impl_prop_replacement_char;
@@ -328,7 +328,7 @@ inline uaiw_constexpr bool is_control(const prop& p) noexcept
     return p.Control();
 }
 
-} // namespace uni::codepoint
+} // namespace una::codepoint
 
 #endif // UNI_ALGO_PROP_H_UAIH
 

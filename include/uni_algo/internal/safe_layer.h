@@ -10,7 +10,7 @@
 #include <array>
 #endif
 
-namespace uni::detail {
+namespace una::detail {
 
 namespace safe {
 
@@ -203,6 +203,6 @@ template<typename T, std::size_t N>
 using type_array = std::array<T, N>;
 #endif
 
-} // namespace uni::detail
+} // namespace una::detail
 
 #endif // UNI_ALGO_INTERNAL_SAFE_LAYER_H_UAIH

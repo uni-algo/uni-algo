@@ -17,7 +17,7 @@
 // (VERSION / 1000 % 1000) is the minor version 0..255,
 // (VERSION / 1000000) is the major version 1..255.
 
-// Note that uni::version namespace can be used to get these values.
+// Note that una::version namespace can be used to get these values.
 
 // Note that you can just add the following defines to your project
 // instead of uncommenting the defines here.
@@ -61,13 +61,13 @@
 // Force to enable safe layer even in release (enabled in debug by default).
 
 //#define UNI_ALGO_DISABLE_SYSTEM_LOCALE
-// Disable system locale facilities: uni::locale::system() function etc.
+// Disable system locale facilities: una::locale::system() function etc.
 
 //#define UNI_ALGO_DISABLE_SHRINK_TO_FIT
 // Most of functions do shrink_to_fit() call at the end of a function by default
 // but if you use a custom allocator or want to maximize the performance of the library
 // it might be better to disable it and do the call manually only when needed.
-// Note that ranges (uni::ranges::to_utf8/to_utf16 and such) never do shring_to_fit() call.
+// Note that ranges (una::ranges::to_utf8/to_utf16 and such) never do shring_to_fit() call.
 
 //#define UNI_ALGO_DISABLE_FULL_CASE
 // Note that this define can be deprecated in the future.
@@ -105,7 +105,7 @@
 #error "C++17 or better is required"
 #endif
 
-namespace uni::detail {
+namespace una::detail {
 // Never change these types except for tests.
 using type_codept = char32_t;
 using type_char8  = unsigned char;
@@ -128,7 +128,7 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 }
 
 // Define namespace that low-level will use
-#define UNI_ALGO_IMPL_NAMESPACE_BEGIN namespace uni::detail {
+#define UNI_ALGO_IMPL_NAMESPACE_BEGIN namespace una::detail {
 #define UNI_ALGO_IMPL_NAMESPACE_END }
 
 // Enable safe layer if it is forced with this define and in debug

@@ -299,10 +299,10 @@ private:
         }
         friend uaiw_constexpr bool operator==(const translit& x, const translit& y) { return x.stream_end == y.stream_end; }
         friend uaiw_constexpr bool operator!=(const translit& x, const translit& y) { return x.stream_end != y.stream_end; }
-        friend uaiw_constexpr bool operator==(const translit& x, uni::sentinel_t) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(const translit& x, uni::sentinel_t) { return !x.stream_end; }
-        friend uaiw_constexpr bool operator==(uni::sentinel_t, const translit& x) { return x.stream_end; }
-        friend uaiw_constexpr bool operator!=(uni::sentinel_t, const translit& x) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(const translit& x, una::sentinel_t) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(const translit& x, una::sentinel_t) { return !x.stream_end; }
+        friend uaiw_constexpr bool operator==(una::sentinel_t, const translit& x) { return x.stream_end; }
+        friend uaiw_constexpr bool operator!=(una::sentinel_t, const translit& x) { return !x.stream_end; }
     };
 
     using iter_t = detail::rng::iterator_t<Range>;
@@ -332,7 +332,7 @@ public:
     }
     uaiw_constexpr auto end()
     {
-        return uni::sentinel;
+        return una::sentinel;
     }
 };
 

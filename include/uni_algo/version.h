@@ -8,7 +8,7 @@
 #include "impl/impl_cpp_lib_version.h"
 #include "impl/impl_unicode_version.h"
 
-namespace uni::version {
+namespace una::version {
 namespace library {
     inline constexpr int patch = (UNI_ALGO_CPP_LIB_VERSION % 1000);
     inline constexpr int minor = (UNI_ALGO_CPP_LIB_VERSION / 1000 % 1000);

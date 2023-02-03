@@ -12,7 +12,7 @@
 #include "../../ranges_conv.h"
 #include "../../internal/ranges_translit.h"
 
-namespace uni::detail::translit {
+namespace una::detail::translit {
 
 // This translit class must be static and internal, use the same desigh for all transliterators.
 class macedonian_to_latin_docs
@@ -80,7 +80,7 @@ public:
 
     // The function below is used by the translit view.
     // Translit view is very powerfull it can do everything that
-    // uni::ranges::filter_view and uni::ranges::transform_view can do
+    // una::ranges::filter_view and una::ranges::transform_view can do
     // and much more but it can be dangerous for example it's possible
     // to cause an endless loop when it used improperly so it's important
     // what value must be returned in the function below.
@@ -181,7 +181,7 @@ public:
     }
 };
 
-} // namespace uni::detail::translit
+} // namespace una::detail::translit
 
 // Expose translit functions that use the translit view with the translit class above.
 
@@ -193,7 +193,7 @@ macedonian_to_latin_docs_utf8(std::basic_string_view<UTF8> source, const Alloc& 
 {
     using namespace uni; // NOLINT(google-build-using-namespace)
 
-    // Note that we use views from uni::ranges instead of adaptors from uni::views
+    // Note that we use views from una::ranges instead of adaptors from una::views
     // because translit view is internal and doesn't have view adaptor
     // and we want to maximize the compilation speed.
 
@@ -244,7 +244,7 @@ inline uaiw_constexpr std::u8string macedonian_to_latin_docs_utf8(std::u8string_
 }
 #endif // __cpp_lib_char8_t
 
-} // namespace uni::translit
+} // namespace una::translit
 
 #endif // UNI_ALGO_MACEDONIAN_TO_LATIN_DOCS_H_UAIH
 
