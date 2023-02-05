@@ -14,7 +14,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "${PROJECT_SOURCE_DIR}/standalone/ranges_conv.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/ranges_norm.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/ranges_grapheme.cpp"
-    "${PROJECT_SOURCE_DIR}/standalone/ranges_norm.cpp"
+    "${PROJECT_SOURCE_DIR}/standalone/ranges_word.cpp"
     # Extensions
     "${PROJECT_SOURCE_DIR}/standalone/ext/ascii.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/ext/translit/macedonian_to_latin_docs.cpp"
