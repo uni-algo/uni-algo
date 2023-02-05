@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.12...3.20)
 
 # NOTE: This file is used by GitHub Actions workflows edit with care
 
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/default-build-type.cmake")
+
 project(uni-algo-test LANGUAGES CXX)
 
 option(DOWNLOAD_UNICODE_TEST_FILES "Download Unicode test files and test with them" OFF)
