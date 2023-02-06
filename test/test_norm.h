@@ -576,6 +576,9 @@ test_constexpr bool test_norm_stream_safe()
 
     // Same as first but produce 2 CGJ
 
+    // NOTE: Use std::u32string(1, 0x0F77) instead of U"\x0F77" here to dodge GCC 12 bug
+    // For details see commit: f739534d96a91ac01f32057f34e72abf06d6648c
+
     NFC  = std::u32string(1, 0x0F77) + std::u32string(70, 0x0300);
     NFD  = U"\x0F77" + std::u32string(70, 0x0300);
     NFKC = U"\x0FB2\x0F71\x0F80" + std::u32string(70, 0x0300);

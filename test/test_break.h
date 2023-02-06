@@ -108,6 +108,10 @@ bool test_break_grapheme()
             vec.push_back(string_with_breaks_utf16.size());
 
             // Insert brakes
+
+            // NOTE: Use (... 1, 0x00F7) instead of (... u"\x00F7") here and below to dodge GCC 12 bug
+            // For details see commit: 4acb1d447e883855fb3af691247780b6c8f6e30d
+
             for (std::size_t i = 0, expand = 0; i < vec.size(); ++i, expand += 1)
                 string_with_breaks_utf16.insert(vec[i] + expand, 1, 0x00F7);
 
