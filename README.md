@@ -153,14 +153,17 @@ Add to your CMakeLists.txt
 include(FetchContent)
 
 FetchContent_Declare(uni-algo
-  URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.6.0.tar.gz)
+  URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.6.0.tar.gz
+  FIND_PACKAGE_ARGS 0.6) # Download only if find_library(uni-algo 0.6)
+                         # is unsuccessful (requires CMake 3.24 or higher)
 
-# Or if you have Git installed
+# Or if you have Git installed (but it's always better to use the URL approach above)
 # FetchContent_Declare(uni-algo
 #   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
 #   GIT_SHALLOW ON  # Download the branch without its history
 #   GIT_TAG v0.6.0) # The version you want to download
 
+# Be aware that FetchContent_MakeAvailable requires CMake 3.14 or higher
 FetchContent_MakeAvailable(uni-algo)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
