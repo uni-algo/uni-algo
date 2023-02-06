@@ -576,7 +576,7 @@ test_constexpr bool test_norm_stream_safe()
 
     // Same as first but produce 2 CGJ
 
-    NFC  = U"\x0F77" + std::u32string(70, 0x0300);
+    NFC  = std::u32string(1, 0x0F77) + std::u32string(70, 0x0300);
     NFD  = U"\x0F77" + std::u32string(70, 0x0300);
     NFKC = U"\x0FB2\x0F71\x0F80" + std::u32string(70, 0x0300);
     NFKD = U"\x0FB2\x0F71\x0F80" + std::u32string(70, 0x0300);
