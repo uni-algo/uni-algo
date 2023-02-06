@@ -141,6 +141,11 @@ endif() # DOWNLOAD_UNICODE_TEST_FILES
 enable_testing()
 add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})
 
+# On Windows add path with shared library to environment PATH
+if(WIN32 AND BUILD_UNI_ALGO AND BUILD_SHARED_LIBS AND NOT UNI_ALGO_HEADER_ONLY)
+    set_tests_properties(${PROJECT_NAME} PROPERTIES ENVIRONMENT "PATH=%PATH%\;$<TARGET_FILE_DIR:uni-algo::uni-algo>")
+endif()
+
 # Test that every file can be compiled as standalone include
 if(TEST_STANDALONE)
     include("${PROJECT_SOURCE_DIR}/standalone/standalone.cmake")
