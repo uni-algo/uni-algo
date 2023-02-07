@@ -98,11 +98,12 @@
 // Low-level requires <cstddef> for size_t and such, static asserts here require <type_traits>
 // Note that most low-level modules also need type_array to be defined it's located in safe layer
 // that need to be included after config.h (this file) for such low-level modules.
+// Note that one extra include <version> below may be used in C++20 for proper constexpr detection.
 #include <cstddef> // size_t, nullptr_t
 #include <type_traits> // std::is_unsigned
 
 #if (__cplusplus < 201703L && !defined(_MSVC_LANG)) || (defined(_MSVC_LANG) && _MSVC_LANG < 201703L)
-#error "C++17 or better is required"
+#error "C++17 or higher is required"
 #endif
 
 namespace una::detail {
@@ -162,12 +163,17 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 #define UNI_ALGO_DLL
 #endif
 
-// C++20 or higher and header-only version is required for constexpr
-#if (__cpp_constexpr >= 201907L) && defined(__cpp_lib_constexpr_string) && defined(UNI_ALGO_STATIC_DATA) \
+// C++20 or higher and header-only version is required for constexpr library
+#if defined(UNI_ALGO_STATIC_DATA) && ((__cplusplus >= 202002L) || (_MSVC_LANG >= 202002L))
+// NOTE: This include is needed for __cpp_lib_constexpr_string below
+#include <version>
+#if (__cpp_constexpr >= 201907L) && defined(__cpp_lib_constexpr_string) \
     && !(defined(__clang__) && defined(__GLIBCXX__)) // constexpr standard lib is broken in Clang with libstdc++
 #define UNI_ALGO_CONSTEXPR
 #define uaiw_constexpr constexpr
-#else
+#endif
+#endif
+#ifndef UNI_ALGO_CONSTEXPR
 #define uaiw_constexpr
 #endif
 
