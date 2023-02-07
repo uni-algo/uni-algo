@@ -2,7 +2,7 @@
 Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
-## v0.7.0 (TBD)
+## [v0.7.0](https://github.com/uni-algo/uni-algo/tree/v0.7.0) (07.02.2023)
 - Renamed main namespace from `uni::` to `una::`
 - Splitted .h files with ranges and functions:
   - Added files: `uni_algo/ranges_norm.h` and `uni_algo/ranges_conv.h`
