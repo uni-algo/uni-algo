@@ -198,8 +198,9 @@ cd build_test
 ctest --verbose --build-config Release
 ```
 
-For constexpr tests use -DTEST_CONSTEXPR=ON without -DDOWNLOAD_UNICODE_TEST_FILES=ON<br>
-For other options see test/CMakeLists.txt
+For constexpr tests use `-DTEST_CONSTEXPR=ON` without `-DDOWNLOAD_UNICODE_TEST_FILES=ON`<br>
+and Clang compiler is preferred for better testing because GCC/MSVC are less strict.<br>
+For other options see `test/CMakeLists.txt`
 </p></details>
 
 ## Examples
