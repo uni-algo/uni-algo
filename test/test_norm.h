@@ -298,7 +298,7 @@ bool test_norm_impl(size_t& count_lines, bool with_part2 = true, size_t with_pre
     }
 
     if (!with_part2)
-        return count_lines;
+        return true;
 
     /* From: NormalizationTest.txt
     # 2. For every code point X assigned in this version of Unicode that is not specifically
