@@ -164,7 +164,7 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 #endif
 
 // C++20 or higher and header-only version is required for constexpr library
-#if defined(UNI_ALGO_STATIC_DATA) && ((__cplusplus >= 202002L) || (_MSVC_LANG >= 202002L))
+#if defined(UNI_ALGO_STATIC_DATA) && (__cplusplus >= 202002L || _MSVC_LANG >= 202002L)
 // NOTE: This include is needed for __cpp_lib_constexpr_string below
 #include <version>
 #if (__cpp_constexpr >= 201907L) && defined(__cpp_lib_constexpr_string) \
