@@ -174,6 +174,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 
 Include a header file you want to use from `include/uni_algo` directory and compile one file `src/data.cpp`
 
+For header-only (and constexpr in C++20 or higher) version, add define `UNI_ALGO_STATIC_DATA`
+to your project and ignore `src/data.cpp` file.
+
 </p></details>
 
 <details><summary><b>Testing</b></summary><p>
