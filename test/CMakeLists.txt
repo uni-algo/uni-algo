@@ -14,13 +14,11 @@ option(TEST_SINGLE_INCLUDE "Test with single include library (copy uni_algo.h to
 option(TEST_STANDALONE "Test that every file can be compiled as standalone include" OFF)
 
 if(TEST_CONSTEXPR AND DOWNLOAD_UNICODE_TEST_FILES)
-    message(WARNING "TEST_CONSTEXPR and DOWNLOAD_UNICODE_TEST_FILES should not be used together")
-    set(DOWNLOAD_UNICODE_TEST_FILES OFF CACHE BOOL "" FORCE)
+    message(FATAL_ERROR "TEST_CONSTEXPR and DOWNLOAD_UNICODE_TEST_FILES must not be used together")
 endif()
 
 if(TEST_SINGLE_INCLUDE AND BUILD_UNI_ALGO)
-    message(WARNING "TEST_SINGLE_INCLUDE and BUILD_UNI_ALGO should not be used together")
-    set(BUILD_UNI_ALGO OFF CACHE BOOL "" FORCE)
+    message(FATAL_ERROR "TEST_SINGLE_INCLUDE and BUILD_UNI_ALGO must not be used together")
 endif()
 
 add_executable(${PROJECT_NAME})
