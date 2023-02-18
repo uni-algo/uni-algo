@@ -181,12 +181,6 @@ void amalgam()
     output << "#ifndef UNI_ALGO_H_AMALGAMATION" << '\n';
     output << "#define UNI_ALGO_H_AMALGAMATION" << '\n' << '\n';
 
-    // Config needs these includes
-    output << "#include <type_traits>" << '\n';
-    output << "#include <cstddef>" << '\n' << '\n';
-    // Safe layer needs these includes
-    output << "#include <array>" << '\n' << '\n';
-
     // Enable header-only (make all data tables inline constexpr)
     output << "#define UNI_ALGO_STATIC_DATA" << '\n';
 
