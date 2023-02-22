@@ -98,7 +98,7 @@ See this repository: https://github.com/uni-algo/uni-algo-single-include
 
 <details><summary><b>vcpkg</b></summary><p>
 
-In vcpkg classic mode you can install the library with `vcpkg install uni-algo` or `vcpkg install uni-algo[header-only]` and then handle it the way you prefer.
+In vcpkg classic mode you can install the library with `vcpkg install uni-algo` and then handle it the way you prefer.
 
 In vcpkg manifest mode you can add the library to your project's vcpkg.json file as a dependency:
 
@@ -109,21 +109,6 @@ In vcpkg manifest mode you can add the library to your project's vcpkg.json file
   "dependencies": [
     {
       "name": "uni-algo"
-    }
-  ]
-}
-```
-
-Or for header-only version:
-
-```json
-{
-  "name": "your-app-name",
-  "version": "0.1.0",
-  "dependencies": [
-    {
-      "name": "uni-algo",
-      "features": ["header-only"]
     }
   ]
 }
