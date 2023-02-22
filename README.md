@@ -96,6 +96,58 @@ See this repository: https://github.com/uni-algo/uni-algo-single-include
 
 </p></details>
 
+<details><summary><b>vcpkg</b></summary><p>
+
+In vcpkg classic mode you can install the library with `vcpkg install uni-algo` or `vcpkg install uni-algo[header-only]` and then handle it the way you prefer.
+
+In vcpkg manifest mode you can add the library to your project's vcpkg.json file as a dependency:
+
+```json
+{
+  "name": "your-app-name",
+  "version": "0.1.0",
+  "dependencies": [
+    {
+      "name": "uni-algo"
+    }
+  ]
+}
+```
+
+Or for header-only version:
+
+```json
+{
+  "name": "your-app-name",
+  "version": "0.1.0",
+  "dependencies": [
+    {
+      "name": "uni-algo",
+      "features": ["header-only"]
+    }
+  ]
+}
+```
+
+Then add to your project's CMakeLists.txt
+
+```cmake
+find_package(uni-algo CONFIG REQUIRED)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
+```
+
+And then build your project with vcpkg toolchain:
+
+```
+cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=path_to_vcpkg/scripts/buildsystems/vcpkg.cmake
+cmake --build build
+```
+
+For reference: https://learn.microsoft.com/en-us/vcpkg/examples/manifest-mode-cmake
+
+</p></details>
+
 <details><summary><b>CMake add_subdirectory</b></summary><p>
 
 Add to your CMakeLists.txt
