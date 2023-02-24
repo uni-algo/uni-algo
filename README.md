@@ -499,10 +499,10 @@ una::views::take
 // because std::views::reverse is not good enought for Unicode.
 
 // You use these ranges the same way you use C++20 ranges
-assert(std::string_view{"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ"}
+assert((std::string_view{"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ"}
         | una::views::utf8
         | una::views::reverse | una::views::drop(3) | una::views::take(5)
-        | una::views::reverse | una::ranges::to_utf8<std::string>()
+        | una::views::reverse | una::ranges::to_utf8<std::string>())
         == "ⅢⅣⅤⅥⅦ");
 ```
 ## Conversion Ranges
