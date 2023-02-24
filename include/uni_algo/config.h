@@ -82,7 +82,10 @@
 
 //#define UNI_ALGO_STATIC_DATA
 // Note that with CMake use UNI_ALGO_HEADER_ONLY=ON option instead.
-// The define can be used to build header-only version of the library.
+// The define can be used for header-only version of the library.
+// Also even when the library was built and installed with
+// CMake option UNI_ALGO_HEADER_ONLY=OFF the define can be used to
+// force header-only version, but treat it as a workaround in this case.
 
 //#define UNI_ALGO_DLL_EXPORT
 //#define UNI_ALGO_DLL_IMPORT
