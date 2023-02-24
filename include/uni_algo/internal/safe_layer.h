@@ -10,6 +10,8 @@
 #include <array>
 #endif
 
+#include "../config.h" // detail::type_codept
+
 namespace una::detail {
 
 namespace safe {
@@ -40,7 +42,7 @@ struct array
                   std::is_same_v<T, char>           ||
                   std::is_same_v<T, unsigned char>  ||
                   std::is_same_v<T, unsigned short> ||
-                  std::is_same_v<T, char32_t>,
+                  std::is_same_v<T, detail::type_codept>,
                  "Low-level must never use disallowed types for arrays");
 
     using value_type      = T;
