@@ -499,12 +499,6 @@ inline constexpr detail::rng::adaptor_utf16 utf16;
 
 namespace ranges {
 
-// These user-defined CTAD guides are important
-// the problem the code compiles in most cases and works perfectly fine
-// even if there is a mistake here but there will be extra move/copy operations
-// for the object we are viewing so the performance will be much worse
-// It is handled by test/test_ranges.h -> test_ranges_ctad()
-
 template<class Range>
 utf8_view(Range&&) -> utf8_view<views::all_t<Range>>;
 
