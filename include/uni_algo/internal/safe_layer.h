@@ -121,23 +121,18 @@ public:
         ++it;
         return *this;
     }
-    uaiw_constexpr in operator++(int)
-    {
-        in tmp = *this;
-        ++it;
-        return tmp;
-    }
+    // NOTE: Never ever use postfix operator++ for low-level iterators
+    // because it may cause problems with input iterators.
+    // https://github.com/uni-algo/uni-algo/issues/22
+    //uaiw_constexpr in operator++(int)
     uaiw_constexpr in& operator--()
     {
         --it;
         return *this;
     }
-    uaiw_constexpr in operator--(int)
-    {
-        in tmp = *this;
-        --it;
-        return tmp;
-    }
+    // NOTE: Postfix operator-- is not implemented for consistency with
+    // the previous NOTE but it should not be needed anyway.
+    //uaiw_constexpr in operator--(int)
     uaiw_constexpr in& operator+=(std::ptrdiff_t n)
     {
         it += n;
