@@ -343,8 +343,8 @@ assert(found && found.pos() == 9 && found.end_pos() == 12);
 
 // The module provides a very simple collation function too.
 
-// Use the Makedonian alphabet for example
-std::u32string str32 = U"абвгдѓежзѕијклљмнњопрстќуфхцчџшАБВГДЃЕЖЗЅИЈКЛЉМНЊОПРСТЌУФХЦЧЏШ";
+// Use the Ukrainian alphabet for example
+std::u32string str32 = U"абвгґдеєжзиіїйклмнопрстуфхцчшщьюяАБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
 
 std::vector<std::string> vec8;
 for (char32_t c : str32) // Convert the code points to a vector of UTF-8 code units
@@ -354,7 +354,7 @@ std::shuffle(vec8.begin(), vec8.end(), std::mt19937(42)); // Shuffle them just i
 // For example sort them with the binary comparison first
 std::sort(vec8.begin(), vec8.end());
 
-// Output: ЃЅЈЉЊЌЏАБВГДЕЖЗИКЛМНОПРСТУФХЦЧШабвгдежзиклмнопрстуфхцчшѓѕјљњќџ
+// Output: ЄІЇАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгдежзийклмнопрстуфхцчшщьюяєіїҐґ
 // Everything is out of place
 
 // Sort them with una::casesens::utf8_collate
@@ -365,8 +365,8 @@ std::sort(vec8.begin(), vec8.end(), [](auto a, auto b) {
 std::for_each(vec8.begin(), vec8.end(), [](auto s) { std::cout << s; });
 std::cout << '\n';
 
-// Output: аАбБвВгГдДѓЃеЕжЖзЗѕЅиИјЈкКлЛљЉмМнНњЊоОпПрРсСтТќЌуУфФхХцЦчЧџЏшШ
-// This is the correct order for the Makedonian alphabet
+// Output: аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхХцЦчЧшШщЩьЬюЮяЯ
+// This is the correct order for the Ukrainian alphabet
 
 // Group them too
 auto it = std::unique(vec8.begin(), vec8.end(), [](auto a, auto b) {
@@ -374,7 +374,7 @@ auto it = std::unique(vec8.begin(), vec8.end(), [](auto a, auto b) {
 });
 vec8.erase(it, vec8.end());
 
-// Output: абвгдѓежзѕијклљмнњопрстќуфхцчџш
+// Output: абвгґдеєжзиіїйклмнопрстуфхцчшщьюя
 ```
 ## Normalization Functions
 ```cpp
