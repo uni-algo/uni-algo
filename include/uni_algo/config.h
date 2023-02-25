@@ -19,6 +19,12 @@
 
 // Note that una::version namespace can be used to get these values.
 
+// TODO: Rename:
+// UNI_ALGO_DISABLE_BREAK_GRAPHEME -> UNI_ALGO_DISABLE_SEGMENT_GRAPHEME
+// UNI_ALGO_DISABLE_BREAK_WORD -> UNI_ALGO_DISABLE_SEGMENT_WORD
+// UNI_ALGO_DISABLE_SHRINK_TO_FIT -> UNI_ALGO_NO_SHRINK_TO_FIT
+// UNI_ALGO_ENABLE_SAFE_LAYER -> UNI_ALGO_SAFE_LAYER (Not sure about this one)
+
 // Note that you can just add the following defines to your project
 // instead of uncommenting the defines here.
 
