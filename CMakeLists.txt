@@ -102,7 +102,9 @@ install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
 
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/uni_algo"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-        FILES_MATCHING PATTERN "*.h")
+        FILES_MATCHING PATTERN "*.h"
+        PATTERN "example" EXCLUDE # include/uni_algo/impl/example
+        PATTERN "doc" EXCLUDE) # include/uni_algo/impl/doc
 
 endif() # UNI_ALGO_INSTALL
 
