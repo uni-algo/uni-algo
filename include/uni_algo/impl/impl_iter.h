@@ -142,7 +142,8 @@ uaix_static it_in_utf16 iter_utf16(it_in_utf16 first, it_end_utf16 last, type_co
 
     it_in_utf16 src = first;
 
-    type_codept h = (*src++ & 0xFFFF);
+    type_codept h = (*src & 0xFFFF);
+    ++src;
 
     if (uaix_unlikely(h >= 0xD800 && h <= 0xDFFF)) // Surrogate pair
     {
@@ -156,7 +157,7 @@ uaix_static it_in_utf16 iter_utf16(it_in_utf16 first, it_end_utf16 last, type_co
                 {
                     type_codept c = ((h - 0xD800) << 10) + (l - 0xDC00) + 0x10000;
                     *codepoint = c;
-                    src++;
+                    ++src;
                     return src;
                 }
             }

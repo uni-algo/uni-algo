@@ -203,7 +203,8 @@ uaix_static size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_ut
 
     while (src != last)
     {
-        type_codept h = (*src++ & 0xFFFF);
+        type_codept h = (*src & 0xFFFF);
+        ++src;
 
         if (h <= 0x7F)
         {
@@ -235,7 +236,7 @@ uaix_static size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_ut
                         *dst++ = (type_char8)(0x80 | ((c >> 6)  & 0x3F));
                         *dst++ = (type_char8)(0x80 |  (c        & 0x3F));
 
-                        src++;
+                        ++src;
                         continue;
                     }
                 }
@@ -409,7 +410,8 @@ uaix_static size_t impl_utf32to8(it_in_utf32 first, it_end_utf32 last, it_out_ut
 
     while (src != last)
     {
-        type_codept c = ((type_codept)*src++ & 0xFFFFFFFF);
+        type_codept c = ((type_codept)*src & 0xFFFFFFFF);
+        ++src;
 
         if (c <= 0x7F)
         {
@@ -473,7 +475,8 @@ uaix_static size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_u
 
     while (src != last)
     {
-        type_codept h = (*src++ & 0xFFFF);
+        type_codept h = (*src & 0xFFFF);
+        ++src;
 
         if (h >= 0xD800 && h <= 0xDFFF) // Surrogate pair
         {
@@ -489,7 +492,7 @@ uaix_static size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_u
 
                         *dst++ = (type_char32)c;
 
-                        src++;
+                        ++src;
                         continue;
                     }
                 }
@@ -527,7 +530,8 @@ uaix_static size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_u
 
     while (src != last)
     {
-        type_codept c = ((type_codept)*src++ & 0xFFFFFFFF);
+        type_codept c = ((type_codept)*src & 0xFFFFFFFF);
+        ++src;
 
         if (c <= 0xFFFF)
         {
@@ -683,7 +687,8 @@ uaix_static bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_
 
     while (src != last)
     {
-        type_codept h = (*src++ & 0xFFFF);
+        type_codept h = (*src & 0xFFFF);
+        ++src;
 
         if (h <= 0x7F)
         { // NOLINT(bugprone-branch-clone)
@@ -703,7 +708,7 @@ uaix_static bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_
 
                     if (l >= 0xDC00 && l <= 0xDFFF) // Low surrogate is in range
                     {
-                        src++;
+                        ++src;
                         continue;
                     }
                 }
@@ -736,7 +741,8 @@ uaix_static bool impl_is_valid_utf32(it_in_utf32 first, it_end_utf32 last, size_
 
     while (src != last)
     {
-        type_codept c = ((type_codept)*src++ & 0xFFFFFFFF);
+        type_codept c = ((type_codept)*src & 0xFFFFFFFF);
+        ++src;
 
         if (c <= 0x7F)
         { // NOLINT(bugprone-branch-clone)
