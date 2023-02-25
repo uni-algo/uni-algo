@@ -43,7 +43,10 @@ private:
         uaiw_constexpr void iter_func_norm_nfc()
         {
             if (!detail::inline_norm_iter_ready(&state))
-                while (it_pos != std::end(parent->range) && !detail::inline_norm_iter_nfc(&state, *it_pos++));
+            {
+                for (bool stop = false; !stop && it_pos != std::end(parent->range); ++it_pos)
+                    stop = detail::inline_norm_iter_nfc(&state, *it_pos);
+            }
             if (!detail::inline_norm_iter_next_comp(&state, &codepoint))
                 stream_end = true;
         }
@@ -136,7 +139,10 @@ private:
         uaiw_constexpr void iter_func_norm_nfd()
         {
             if (!detail::inline_norm_iter_ready(&state))
-                while (it_pos != std::end(parent->range) && !detail::inline_norm_iter_nfd(&state, *it_pos++));
+            {
+                for (bool stop = false; !stop && it_pos != std::end(parent->range); ++it_pos)
+                    stop = detail::inline_norm_iter_nfd(&state, *it_pos);
+            }
             if (!detail::inline_norm_iter_next_decomp(&state, &codepoint))
                 stream_end = true;
         }
@@ -231,7 +237,10 @@ private:
         uaiw_constexpr void iter_func_norm_nfkc()
         {
             if (!detail::inline_norm_iter_ready(&state))
-                while (it_pos != std::end(parent->range) && !detail::inline_norm_iter_nfkc(&state, *it_pos++));
+            {
+                for (bool stop = false; !stop && it_pos != std::end(parent->range); ++it_pos)
+                    stop = detail::inline_norm_iter_nfkc(&state, *it_pos);
+            }
             if (!detail::inline_norm_iter_next_comp(&state, &codepoint))
                 stream_end = true;
         }
@@ -324,7 +333,10 @@ private:
         uaiw_constexpr void iter_func_norm_nfkd()
         {
             if (!detail::inline_norm_iter_ready(&state))
-                while (it_pos != std::end(parent->range) && !detail::inline_norm_iter_nfkd(&state, *it_pos++));
+            {
+                for (bool stop = false; !stop && it_pos != std::end(parent->range); ++it_pos)
+                    stop = detail::inline_norm_iter_nfkd(&state, *it_pos);
+            }
             if (!detail::inline_norm_iter_next_decomp(&state, &codepoint))
                 stream_end = true;
         }
