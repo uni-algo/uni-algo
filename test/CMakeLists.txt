@@ -12,6 +12,7 @@ option(TEST_CONSTEXPR "Test in constexpr mode (implies header-only and requeries
 option(TEST_HEADER_ONLY "Test with header-only library" OFF)
 option(TEST_SINGLE_INCLUDE "Test with single include library (copy uni_algo.h to test folder)" OFF)
 option(TEST_STANDALONE "Test that every file can be compiled as standalone include" OFF)
+option(TEST_EXPERIMENTAL "Test experimental stuff" OFF)
 
 if(TEST_CONSTEXPR AND DOWNLOAD_UNICODE_TEST_FILES)
     message(FATAL_ERROR "TEST_CONSTEXPR and DOWNLOAD_UNICODE_TEST_FILES must not be used together")
@@ -74,6 +75,10 @@ endif()
 
 if(TEST_SINGLE_INCLUDE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE TEST_MODE_SINGLE_INCLUDE)
+endif()
+
+if(TEST_EXPERIMENTAL)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE UNI_ALGO_EXPERIMENTAL)
 endif()
 
 # NOTE: By default tests compile together with uni-algo library (manual use) without building it first
