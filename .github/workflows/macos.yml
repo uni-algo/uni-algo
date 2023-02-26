@@ -1,5 +1,5 @@
 name: macOS
-on: workflow_dispatch
+on: [workflow_dispatch, pull_request]
 
 jobs:
   macOS-Xcode:
@@ -21,4 +21,4 @@ jobs:
       - name: Run tests
         run: |
           cd build
-          ctest --verbose
+          ctest --verbose --output-on-failure
