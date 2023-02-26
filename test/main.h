@@ -39,10 +39,6 @@
 #include <chrono>
 #include <random>
 
-//#ifndef UNI_ALGO_EXPERIMENTAL
-//#error "Don't forget to test experimental stuff"
-//#endif
-
 #ifdef TEST_MODE_CONSTEXPR
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
 #define TEST_MODE_WITHOUT_UNICODE_TEST_FILES
