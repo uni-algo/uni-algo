@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12...3.25)
 
-project("uni-algo" VERSION 0.7.0 LANGUAGES CXX)
+project("uni-algo" VERSION 0.7.1 LANGUAGES CXX)
 
 option(BUILD_SHARED_LIBS "Build shared libs" OFF)
 option(UNI_ALGO_HEADER_ONLY "Header-only" OFF)
