@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Version-0.7.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.7.0)
+[![Version](https://img.shields.io/badge/Version-0.7.1-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.7.0)
 [![Unicode](https://img.shields.io/badge/Unicode-15.0.0-blue)](https://www.unicode.org/versions/Unicode15.0.0/)
 [![Language](https://img.shields.io/badge/C%2B%2B-17/20/23-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
 [![License](https://img.shields.io/badge/License-Unlicense/MIT-darkorchid.svg)](https://opensource.org/licenses/MIT)
@@ -190,7 +190,7 @@ Add to your CMakeLists.txt
 include(FetchContent)
 
 FetchContent_Declare(uni-algo
-  URL https://github.com/uni-algo/uni-algo/archive/refs/tags/v0.7.0.tar.gz
+  URL https://github.com/uni-algo/uni-algo/archive/v0.7.1.tar.gz
   FIND_PACKAGE_ARGS 0.7) # Download only if find_package(uni-algo 0.7)
                          # is unsuccessful (requires CMake 3.24 or higher)
 
@@ -198,7 +198,7 @@ FetchContent_Declare(uni-algo
 # FetchContent_Declare(uni-algo
 #   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
 #   GIT_SHALLOW ON  # Download the branch without its history
-#   GIT_TAG v0.7.0) # The version you want to download
+#   GIT_TAG v0.7.1) # The version you want to download
 
 # Be aware that FetchContent_MakeAvailable requires CMake 3.14 or higher
 FetchContent_MakeAvailable(uni-algo)
