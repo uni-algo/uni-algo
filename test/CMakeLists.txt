@@ -46,12 +46,12 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Cl
         "-Wshadow;-Wmissing-braces")
 
     # Hidden option GCC extra strict (may produce false positives especially with constexpr tests)
-    if(TEST_GCC_EXTRA_STRICT)
+    if(TEST_GCC_EXTRA_STRICT AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_compile_options(${PROJECT_NAME} PRIVATE "-Wstrict-overflow=2;-Warray-bounds=2;-Wstack-usage=3000")
     endif()
 endif()
 
-# Compile constexpr limit
+# Increase compile constexpr limit
 
 if(TEST_CONSTEXPR)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
