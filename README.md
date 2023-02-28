@@ -176,7 +176,7 @@ cmake --install build --config Release
 Then add to your CMakeLists.txt
 
 ```cmake
-find_package(uni-algo)
+find_package(uni-algo CONFIG REQUIRED)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE uni-algo::uni-algo)
 ```
@@ -191,8 +191,8 @@ include(FetchContent)
 
 FetchContent_Declare(uni-algo
   URL https://github.com/uni-algo/uni-algo/archive/v0.7.1.tar.gz
-  FIND_PACKAGE_ARGS 0.7) # Download only if find_package(uni-algo 0.7)
-                         # is unsuccessful (requires CMake 3.24 or higher)
+  FIND_PACKAGE_ARGS 0.7 CONFIG) # Download only if find_package(uni-algo 0.7 CONFIG)
+                                # is unsuccessful (requires CMake 3.24 or higher)
 
 # Or if you have Git installed (but it's always better to use the URL approach above)
 # FetchContent_Declare(uni-algo
