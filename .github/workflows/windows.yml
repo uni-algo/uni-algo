@@ -1,13 +1,19 @@
 name: Windows
-on: [workflow_dispatch, pull_request]
+on:
+  workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - '**/doc/**'
+      - '**.md'
 
 jobs:
   Windows-VS2022:
-    name: Windows VS2022
     runs-on: windows-2022
     strategy:
       matrix:
         std: [20, 17]
+
+    name: Windows VS2022 C++${{matrix.std}}
 
     steps:
       - name: Checkout
