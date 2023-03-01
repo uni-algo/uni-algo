@@ -26,6 +26,11 @@
 #include "data/data_prop.h"
 #endif
 
+#ifndef UNI_ALGO_DISABLE_SCRIPT
+#include "data/extern_script.h"
+#include "data/data_script.h"
+#endif
+
 #ifndef UNI_ALGO_DISABLE_BREAK_GRAPHEME
 #include "data/extern_break_grapheme.h"
 #include "data/data_break_grapheme.h"
