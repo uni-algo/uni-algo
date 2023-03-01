@@ -472,10 +472,12 @@ static void new_generator_special_casing(const std::string& file1, const std::st
     new_generator_output1(file3, vec);
 }
 
-static void new_generator_output2(const std::string& file, const std::vector<uint32_t>& vec)
+static void new_generator_output2(const std::string& file, const std::vector<uint32_t>& vec, int stage_bits = 24)
 {
     std::ofstream output(file);
     ASSERTX(output.is_open());
+
+    ASSERTX(stage_bits == 24 || stage_bits == 32);
 
     output << vec.size() << '\n';
 
@@ -484,10 +486,14 @@ static void new_generator_output2(const std::string& file, const std::vector<uin
         if (i != 0 && i % 8 == 0)
             output << '\n';
 
-        ASSERTX(vec[i] <= 0x10FFFF); // 32 bit (but max code point size)
+        if (stage_bits == 24)
+            ASSERTX(vec[i] <= 0x10FFFF); // 32 bit (but max code point size)
 
         char str[64] = {};
-        snprintf(str, 64, COMPACT ? "%u," : "0x%.6X, ", vec[i]);
+        if (stage_bits == 24)
+            snprintf(str, 64, COMPACT ? "%u," : "0x%.6X, ", vec[i]);
+        else
+            snprintf(str, 64, COMPACT ? "%u," : "0x%.8X, ", vec[i]);
 
         output << str;
     }
@@ -1776,6 +1782,99 @@ static void new_generator_case_locale(const std::string& file1, const std::strin
     new_generator_output(file1, file2, 8, 8, true, map);
 }
 
+void new_generator_script(const std::string& file1, const std::string& file2, const std::string& file3)
+{
+    // Scripts.txt uses aliases so first we need to make a map with aliases from PropertyValueAliases.txt
+
+    // https://www.unicode.org/reports/tr44/#PropertyValueAliases.txt
+    std::ifstream input("PropertyValueAliases.txt", std::ios::binary);
+    ASSERTX(input.is_open());
+
+    std::map<std::string, std::string> map_alias;
+
+    std::string line;
+    while (std::getline(input, line))
+    {
+        if (line.size() > 10 && line[0] != '#' && line.substr(0, 5) == "sc ; ")
+        {
+            std::size_t semicolon = line.find(';', 5);
+
+            if (semicolon != std::string::npos)
+            {
+                semicolon += 2;
+
+                std::size_t end = line.find_first_of(" ;\r\n\t", semicolon);
+                if (end == std::string::npos)
+                    end = line.size();
+
+                ASSERTX(line[5] >= 'A' && line[5] <= 'Z');
+
+                map_alias[line.substr(semicolon, end - semicolon)] = line.substr(5, 4);
+            }
+        }
+    }
+
+    input.close();
+    line.clear();
+
+    // https://www.unicode.org/reports/tr44/#Scripts.txt
+    input.open("Scripts.txt", std::ios::binary);
+    ASSERTX(input.is_open());
+
+    const uint32_t maxmap = 0x10FFFF; // Do not change!
+
+    std::map<uint32_t, uint32_t> map;
+
+    for (uint32_t i = 0; i <= maxmap; ++i)
+        map[i] = 0;
+
+    std::vector<uint32_t> vec(1, 0);
+
+    std::string script;
+    std::size_t script_index = 0;
+
+    while (std::getline(input, line))
+    {
+        std::size_t semicolon = line.find(';');
+
+        if (line.size() > 15 && line[0] != '#' && semicolon != std::string::npos)
+        {
+            semicolon += 2;
+
+            std::size_t end = line.find('#', semicolon);
+            if (end == std::string::npos)
+                end = line.size();
+
+            std::string s = map_alias.at(line.substr(semicolon, end - semicolon - 1));
+            if (s != script)
+            {
+                script = s;
+                // Store scripts in the same format as our locale::script uses
+                vec.push_back(((s[0] & 0xFF) << 24) | ((s[1] & 0xFF) << 16) | ((s[2] & 0xFF) << 8) | (s[3] & 0xFF));
+                script_index = vec.size() - 1;
+            }
+
+            uint32_t c1 = (uint32_t)strtoul(line.c_str(), 0, 16);
+            uint32_t c2 = c1;
+            std::size_t dots = line.find("..");
+            if (dots != std::string::npos)
+                c2 = (uint32_t)strtoul(line.c_str()+dots+2, 0, 16);
+
+            for (uint32_t i = c1; i <= c2; ++i)
+            {
+                map.at(i) = script_index;
+            }
+        }
+    }
+
+    // NOTE: The size of vec must be the number of scripts in the current
+    // Unicode version + 3 special scripts: Unknown (Zzzz), Common (Zyyy), Inherited (Zinh)
+    // For example for Unicode 15.0.0 it's 164 (161 scripts + 3 special scripts)
+
+    new_generator_output(file1, file2, 8, 8, true, map); // stage1/2
+    new_generator_output2(file3, vec, 32); // stage3
+}
+
 static void new_generator()
 {
     // List of files that are needed for the generator:
@@ -1828,6 +1927,8 @@ static void new_generator()
 
     new_generator_break_grapheme("new_stage1_break_grapheme.txt", "new_stage2_break_grapheme.txt");
     new_generator_break_word("new_stage1_break_word.txt", "new_stage2_break_word.txt");
+
+    new_generator_script("new_stage1_script.txt", "new_stage2_script.txt", "new_stage3_script.txt");
 }
 
 static void new_merger_replace_string_impl(std::string& data, const std::string& from, const std::string& to)
@@ -2000,6 +2101,26 @@ static void new_merger()
 
     output1.open("data_prop.h");
     output2.open("extern_prop.h");
+    ASSERTX(output1.is_open() && output2.is_open());
+    output1 << data1;
+    output2 << data2;
+
+    input1.close(); output1.close();
+    input2.close(); output2.close();
+
+    input1.open("data_script.h_blank");
+    input2.open("extern_script.h_blank");
+    ASSERTX(input1.is_open() && input2.is_open());
+
+    data1 = std::string(std::istreambuf_iterator<char>(input1), std::istreambuf_iterator<char>());
+    data2 = std::string(std::istreambuf_iterator<char>(input2), std::istreambuf_iterator<char>());
+
+    new_merger_replace_string(data1, data2, "new_stage1_script.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_script.txt");
+    new_merger_replace_string(data1, data2, "new_stage3_script.txt");
+
+    output1.open("data_script.h");
+    output2.open("extern_script.h");
     ASSERTX(output1.is_open() && output2.is_open());
     output1 << data1;
     output2 << data2;
