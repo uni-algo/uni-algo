@@ -24,6 +24,10 @@
 #include "prop.h"
 #endif
 
+#ifndef UNI_ALGO_DISABLE_SCRIPT
+#include "script.h"
+#endif
+
 #ifndef UNI_ALGO_DISABLE_BREAK_GRAPHEME
 #include "ranges_grapheme.h"
 #endif
