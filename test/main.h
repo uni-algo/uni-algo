@@ -14,6 +14,7 @@
 #include "../include/uni_algo/case.h"
 #include "../include/uni_algo/norm.h"
 #include "../include/uni_algo/prop.h"
+#include "../include/uni_algo/script.h"
 #include "../include/uni_algo/ranges.h"
 #include "../include/uni_algo/ranges_conv.h"
 #include "../include/uni_algo/ranges_norm.h"
@@ -100,6 +101,7 @@
 #include "test_norm_unaccent.h"
 #include "test_break.h"
 #include "test_prop.h"
+#include "test_script.h"
 
 #include "test_ascii.h"
 #include "test_translit.h"
@@ -272,6 +274,10 @@ int main7()
     STATIC_TESTX(test_prop_norm());
 
     std::cout << "DONE: Code Point Properties" << '\n';
+
+    STATIC_TESTX(test_script());
+
+    std::cout << "DONE: Scripts" << '\n';
 
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
     test_break_grapheme();
