@@ -1,0 +1,14 @@
+// Unicode 15.0.0
+
+UNI_ALGO_IMPL_NAMESPACE_BEGIN
+
+uaix_const_data uaix_data_array(unsigned char, stage1_script, new_stage1_script.111) = {
+new_stage1_script.txt};
+
+uaix_const_data uaix_data_array(unsigned char, stage2_script, new_stage2_script.111) = {
+new_stage2_script.txt};
+
+uaix_const_data uaix_data_array(type_codept, stage3_script, new_stage3_script.111) = {
+new_stage3_script.txt};
+
+UNI_ALGO_IMPL_NAMESPACE_END
