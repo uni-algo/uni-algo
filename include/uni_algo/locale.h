@@ -41,6 +41,11 @@ UNI_ALGO_DLL void locale_thread_reinit();
 #endif // UNI_ALGO_STATIC_DATA
 #endif // UNI_ALGO_DISABLE_SYSTEM_LOCALE
 
+// Forward declaration for locale friend helper
+namespace detail {
+class locale_friend;
+} // namespace detail
+
 class locale
 {
 public:
@@ -115,6 +120,7 @@ public:
     class script
     {
         friend class locale;
+        friend class detail::locale_friend;
     private:
         char32_t value = 0;
         constexpr explicit script(char32_t v) : value{v} {}
@@ -304,6 +310,15 @@ public:
     friend constexpr bool operator==(const locale& x, const script& y) { return x.scpt == y; }
     friend constexpr bool operator!=(const locale& x, const script& y) { return x.scpt != y; }
 };
+
+// Locale friend helper
+namespace detail {
+class locale_friend
+{
+public:
+    static constexpr una::locale::script script_from_value(char32_t v) noexcept { return una::locale::script{v}; }
+};
+} // namespace detail
 
 } // namespace una
 
