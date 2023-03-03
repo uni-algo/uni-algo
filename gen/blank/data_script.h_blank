@@ -11,4 +11,13 @@ new_stage2_script.txt};
 uaix_const_data uaix_data_array(type_codept, stage3_script, new_stage3_script.111) = {
 new_stage3_script.txt};
 
+uaix_const_data uaix_data_array(unsigned char, stage1_script_ext, new_stage1_script_ext.111) = {
+new_stage1_script_ext.txt};
+
+uaix_const_data uaix_data_array(unsigned short, stage2_script_ext, new_stage2_script_ext.111) = {
+new_stage2_script_ext.txt};
+
+uaix_const_data uaix_data_array(type_codept, stage3_script_ext, new_stage3_script_ext.111) = {
+new_stage3_script_ext.txt};
+
 UNI_ALGO_IMPL_NAMESPACE_END
