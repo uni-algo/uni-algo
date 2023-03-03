@@ -31,6 +31,37 @@ uaix_static type_codept impl_script_get_script(type_codept c)
     return stage3_script[index];
 }
 
+uaix_always_inline
+uaix_static bool impl_script_has_script(type_codept c, type_codept script)
+{
+    // Treat all invalid as replacement character (U+FFFD)
+    if (c > 0x10FFFF)
+        return (script == 0x5A797979) ? true : false; // Zyyy (Common script)
+
+    // First try ScriptExtensions Unicode data
+    size_t index = stages(c, stage1_script_ext, stage2_script_ext);
+
+    if (index != 0)
+    {
+        // Linear search here, there are very few code points
+        // with more than 5 scripts so no point to use binary search.
+        size_t size = stage3_script_ext[index];
+        for (size_t i = 0; i < size; ++i)
+        {
+            if (script == stage3_script_ext[index + i + 1])
+                return true;
+        }
+    }
+
+    // Then try Scripts Unicode data
+    index = stages(c, stage1_script, stage2_script);
+
+    if (index == 0)
+        return (script == 0x5A7A7A7A) ? true : false; // Zzzz (Unknown script)
+
+    return (script == stage3_script[index]) ? true : false;
+}
+
 UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"

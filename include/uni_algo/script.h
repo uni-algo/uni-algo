@@ -26,6 +26,11 @@ inline uaiw_constexpr una::locale::script get_script(char32_t c) noexcept
     return detail::locale_friend::script_from_value(detail::impl_script_get_script(c));
 }
 
+inline uaiw_constexpr bool has_script(char32_t c, una::locale::script script) noexcept
+{
+    return detail::impl_script_has_script(c, static_cast<char32_t>(script));
+}
+
 } // namespace una::codepoint
 
 #endif // UNI_ALGO_SCRIPT_H_UAIH
