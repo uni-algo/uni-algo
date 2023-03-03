@@ -10,6 +10,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "${PROJECT_SOURCE_DIR}/standalone/case.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/norm.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/prop.cpp"
+    "${PROJECT_SOURCE_DIR}/standalone/script.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/ranges.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/ranges_conv.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/ranges_norm.cpp"
@@ -27,6 +28,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "${PROJECT_SOURCE_DIR}/standalone/impl/impl_case_locale.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/impl/impl_norm.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/impl/impl_prop.cpp"
+    "${PROJECT_SOURCE_DIR}/standalone/impl/impl_script.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/impl/impl_break_grapheme.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/impl/impl_break_word.cpp"
 )
