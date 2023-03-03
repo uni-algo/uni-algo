@@ -1875,6 +1875,64 @@ void new_generator_script(const std::string& file1, const std::string& file2, co
     new_generator_output2(file3, vec, 32); // stage3
 }
 
+void new_generator_script_ext(const std::string& file1, const std::string& file2, const std::string& file3)
+{
+    // https://www.unicode.org/reports/tr44/#ScriptExtensions.txt
+    std::ifstream input("ScriptExtensions.txt", std::ios::binary);
+    ASSERTX(input.is_open());
+
+    const uint32_t maxmap = 0x10FFFF; // Do not change!
+
+    std::map<uint32_t, uint32_t> map;
+
+    for (uint32_t i = 0; i <= maxmap; ++i)
+        map[i] = 0;
+
+    std::vector<uint32_t> vec(1, 0);
+    std::size_t vec_index = 0;
+
+    std::string line;
+    while (std::getline(input, line))
+    {
+        std::size_t semicolon = line.find(';');
+
+        if (line.size() > 15 && line[0] != '#' && semicolon != std::string::npos)
+        {
+            semicolon += 2;
+
+            vec_index = vec.size();
+            vec.push_back(0);
+            std::size_t count = 0;
+
+            ASSERTX(line[semicolon] >= 'A' && line[semicolon] <= 'Z');
+
+            for (std::size_t i = semicolon; line[i] != '#'; i += 5, ++count)
+            {
+                // Store scripts in the same format as our locale::script uses
+                vec.push_back(((line[i] & 0xFF) << 24) | ((line[i+1] & 0xFF) << 16) | ((line[i+2] & 0xFF) << 8) | (line[i+3] & 0xFF));
+            }
+
+            ASSERTX(count != 0);
+
+            vec[vec_index] = count;
+
+            uint32_t c1 = (uint32_t)strtoul(line.c_str(), 0, 16);
+            uint32_t c2 = c1;
+            std::size_t dots = line.find("..");
+            if (dots != std::string::npos)
+                c2 = (uint32_t)strtoul(line.c_str()+dots+2, 0, 16);
+
+            for (uint32_t i = c1; i <= c2; ++i)
+            {
+                map.at(i) = vec_index;
+            }
+        }
+    }
+
+    new_generator_output(file1, file2, 8, 16, true, map); // stage1/2
+    new_generator_output2(file3, vec, 32); // stage3
+}
+
 static void new_generator()
 {
     // List of files that are needed for the generator:
@@ -1929,6 +1987,7 @@ static void new_generator()
     new_generator_break_word("new_stage1_break_word.txt", "new_stage2_break_word.txt");
 
     new_generator_script("new_stage1_script.txt", "new_stage2_script.txt", "new_stage3_script.txt");
+    new_generator_script_ext("new_stage1_script_ext.txt", "new_stage2_script_ext.txt", "new_stage3_script_ext.txt");
 }
 
 static void new_merger_replace_string_impl(std::string& data, const std::string& from, const std::string& to)
@@ -2118,6 +2177,9 @@ static void new_merger()
     new_merger_replace_string(data1, data2, "new_stage1_script.txt");
     new_merger_replace_string(data1, data2, "new_stage2_script.txt");
     new_merger_replace_string(data1, data2, "new_stage3_script.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_script_ext.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_script_ext.txt");
+    new_merger_replace_string(data1, data2, "new_stage3_script_ext.txt");
 
     output1.open("data_script.h");
     output2.open("extern_script.h");
