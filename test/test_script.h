@@ -273,3 +273,173 @@ test_constexpr bool test_script()
 
     return true;
 }
+
+test_constexpr bool test_script_ext()
+{
+    // PART 1
+
+    // First redo PART 1 tests from previous test_script function
+    // but with codepoint::has_script function instead of codepoint::get_script
+
+    // The value of "unknown" script (ISO 15924 code Zzzz) is given to unassigned, private-use, noncharacter, and surrogate code points.
+
+    char32_t unassigned = 0x0A7777; // Random unassigned code point (change to something else if it will be assigned)
+
+    // Unassigned must be Unknown (Zzzz) script
+    TESTX(una::codepoint::has_script(unassigned, una::locale::script{"Zzzz"}));
+
+    // Surrogates must be Unknown (Zzzz) script
+    TESTX(una::codepoint::has_script(0xD800, una::locale::script{"Zzzz"}));
+    TESTX(una::codepoint::has_script(0xDBFF, una::locale::script{"Zzzz"}));
+    TESTX(una::codepoint::has_script(0xDC00, una::locale::script{"Zzzz"}));
+    TESTX(una::codepoint::has_script(0xDFFF, una::locale::script{"Zzzz"}));
+
+    // Private-use must be Unknown (Zzzz) script
+    TESTX(una::codepoint::has_script(0xE000, una::locale::script{"Zzzz"}));
+    TESTX(una::codepoint::has_script(0xF0000, una::locale::script{"Zzzz"}));
+    TESTX(una::codepoint::has_script(0x100000, una::locale::script{"Zzzz"}));
+
+    // Noncharacters must be Unknown (Zzzz) script
+    TESTX(una::codepoint::has_script(0xFDD0, una::locale::script{"Zzzz"}));
+    TESTX(una::codepoint::has_script(0xFDEF, una::locale::script{"Zzzz"}));
+    TESTX(una::codepoint::has_script(0xFFFE, una::locale::script{"Zzzz"}));
+    TESTX(una::codepoint::has_script(0xFFFF, una::locale::script{"Zzzz"}));
+    TESTX(una::codepoint::has_script(0x10FFFE, una::locale::script{"Zzzz"}));
+    TESTX(una::codepoint::has_script(0x10FFFF, una::locale::script{"Zzzz"}));
+
+    // REPLACEMENT CHARACTER U+FFFD must be Common (Zyyy) script
+    TESTX(una::codepoint::has_script(0xFFFD, una::locale::script{"Zyyy"}));
+    TESTX(!una::codepoint::has_script(0xFFFD, una::locale::script{"Zzzz"}));
+
+    // Ill-formed must be the same as U+FFFD so Common (Zyyy) script
+    TESTX(una::codepoint::has_script(0x110000, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0xFFFFFFFF, una::locale::script{"Zyyy"}));
+    TESTX(!una::codepoint::has_script(0x110000, una::locale::script{"Zzzz"}));
+    TESTX(!una::codepoint::has_script(0xFFFFFFFF, una::locale::script{"Zzzz"}));
+
+    // Common (Zyyy) script
+    TESTX(una::codepoint::has_script(0, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0x0020, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0x0E0001, una::locale::script{"Zyyy"}));
+    TESTX(!una::codepoint::has_script(0, una::locale::script{"Zzzz"}));
+    TESTX(!una::codepoint::has_script(0x0020, una::locale::script{"Zzzz"}));
+    TESTX(!una::codepoint::has_script(0x0E0001, una::locale::script{"Zzzz"}));
+
+    // PART 2
+
+    // Some code points from the Unicode Standard -> ScriptExtensions.txt
+    // for other tests. All sorted the same as in that file.
+
+    // U+1CF7
+    TESTX(una::codepoint::get_script(0x1CF7) == una::locale::script{"Zyyy"});
+    TESTX(una::codepoint::has_script(0x1CF7, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0x1CF7, una::locale::script{"Beng"}));
+    TESTX(!una::codepoint::has_script(0x1CF7, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0x1CF7, una::locale::script{"Zzzz"}));
+
+    // U+1CD1
+    TESTX(una::codepoint::get_script(0x1CD1) == una::locale::script{"Zinh"});
+    TESTX(una::codepoint::has_script(0x1CD1, una::locale::script{"Zinh"}));
+    TESTX(una::codepoint::has_script(0x1CD1, una::locale::script{"Deva"}));
+    TESTX(!una::codepoint::has_script(0x1CD1, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0x1CD1, una::locale::script{"Zyyy"}));
+
+    // U+1BCA0
+    TESTX(una::codepoint::get_script(0x1BCA0) == una::locale::script{"Zyyy"});
+    TESTX(una::codepoint::has_script(0x1BCA0, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0x1BCA0, una::locale::script{"Dupl"}));
+    TESTX(!una::codepoint::has_script(0x1BCA0, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0x1BCA0, una::locale::script{"Zzzz"}));
+
+    // U+102E0
+    TESTX(una::codepoint::get_script(0x102E0) == una::locale::script{"Zinh"});
+    TESTX(una::codepoint::has_script(0x102E0, una::locale::script{"Zinh"}));
+    TESTX(una::codepoint::has_script(0x102E0, una::locale::script{"Arab"}));
+    TESTX(una::codepoint::has_script(0x102E0, una::locale::script{"Copt"}));
+    TESTX(!una::codepoint::has_script(0x102E0, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0x102E0, una::locale::script{"Zyyy"}));
+
+    // U+A700
+    TESTX(una::codepoint::get_script(0xA700) == una::locale::script{"Zyyy"});
+    TESTX(una::codepoint::has_script(0xA700, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0xA700, una::locale::script{"Hani"}));
+    TESTX(una::codepoint::has_script(0xA700, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0xA700, una::locale::script{"Zzzz"}));
+
+    // U+3031
+    TESTX(una::codepoint::get_script(0x3031) == una::locale::script{"Zyyy"});
+    TESTX(una::codepoint::has_script(0x3031, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0x3031, una::locale::script{"Hira"}));
+    TESTX(una::codepoint::has_script(0x3031, una::locale::script{"Kana"}));
+    TESTX(!una::codepoint::has_script(0x3031, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0x3031, una::locale::script{"Zzzz"}));
+
+    // U+061C
+    TESTX(una::codepoint::get_script(0x061C) == una::locale::script{"Arab"});
+    TESTX(una::codepoint::has_script(0x061C, una::locale::script{"Arab"}));
+    // NOTE: Arab for U+061C is duplicated in Scripts.txt and ScriptExtensions.txt for some reason
+    TESTX(una::codepoint::has_script(0x061C, una::locale::script{"Arab"}));
+    TESTX(una::codepoint::has_script(0x061C, una::locale::script{"Syrc"}));
+    TESTX(una::codepoint::has_script(0x061C, una::locale::script{"Thaa"}));
+    TESTX(!una::codepoint::has_script(0x061C, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0x061C, una::locale::script{"Zyyy"}));
+
+    // U+10100
+    TESTX(una::codepoint::get_script(0x10100) == una::locale::script{"Zyyy"});
+    TESTX(una::codepoint::has_script(0x10100, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0x10100, una::locale::script{"Cpmn"}));
+    TESTX(una::codepoint::has_script(0x10100, una::locale::script{"Cprt"}));
+    TESTX(una::codepoint::has_script(0x10100, una::locale::script{"Linb"}));
+    TESTX(!una::codepoint::has_script(0x10100, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0x10100, una::locale::script{"Zzzz"}));
+
+    // U+303C
+    TESTX(una::codepoint::get_script(0x303C) == una::locale::script{"Zyyy"});
+    TESTX(una::codepoint::has_script(0x303C, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0x303C, una::locale::script{"Hani"}));
+    TESTX(una::codepoint::has_script(0x303C, una::locale::script{"Hira"}));
+    TESTX(una::codepoint::has_script(0x303C, una::locale::script{"Kana"}));
+    TESTX(!una::codepoint::has_script(0x303C, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0x303C, una::locale::script{"Zzzz"}));
+
+    // U+3001
+    TESTX(una::codepoint::get_script(0x3001) == una::locale::script{"Zyyy"});
+    TESTX(una::codepoint::has_script(0x3001, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0x3001, una::locale::script{"Bopo"}));
+    TESTX(una::codepoint::has_script(0x3001, una::locale::script{"Hang"}));
+    TESTX(una::codepoint::has_script(0x3001, una::locale::script{"Hani"}));
+    TESTX(una::codepoint::has_script(0x3001, una::locale::script{"Hira"}));
+    TESTX(una::codepoint::has_script(0x3001, una::locale::script{"Kana"}));
+    TESTX(una::codepoint::has_script(0x3001, una::locale::script{"Yiii"}));
+    TESTX(!una::codepoint::has_script(0x3001, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0x3001, una::locale::script{"Zzzz"}));
+
+    // U+0965
+    TESTX(una::codepoint::get_script(0x0965) == una::locale::script{"Zyyy"});
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Zyyy"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Beng"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Deva"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Dogr"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Gong"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Gonm"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Gran"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Gujr"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Guru"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Knda"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Limb"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Mahj"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Mlym"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Nand"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Orya"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Sind"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Sinh"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Sylo"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Takr"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Taml"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Telu"}));
+    TESTX(una::codepoint::has_script(0x0965, una::locale::script{"Tirh"}));
+    TESTX(!una::codepoint::has_script(0x0965, una::locale::script{"Latn"}));
+    TESTX(!una::codepoint::has_script(0x0965, una::locale::script{"Zzzz"}));
+
+    return true;
+}

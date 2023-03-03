@@ -276,6 +276,7 @@ int main7()
     std::cout << "DONE: Code Point Properties" << '\n';
 
     STATIC_TESTX(test_script());
+    STATIC_TESTX(test_script_ext());
 
     std::cout << "DONE: Scripts" << '\n';
 
