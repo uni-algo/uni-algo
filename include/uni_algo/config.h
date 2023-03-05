@@ -42,6 +42,10 @@
 // Note that if this module is disabled unaccent functions
 // in Normalization module will be disabled too.
 
+//#define UNI_ALGO_DISABLE_SCRIPT
+// Disable Script module.
+// Reduces Unicode data size by ~70 KB.
+
 //#define UNI_ALGO_DISABLE_BREAK_GRAPHEME
 // Disable Break Grapheme module.
 // Reduces Unicode data size by ~25 KB.
