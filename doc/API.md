@@ -14,6 +14,7 @@ The uni-algo library API consists of the following parts:
 - [**uni_algo/ranges_norm.h**](#anchor-ranges-norm) - normalization ranges
 - [**uni_algo/ranges_grapheme.h**](#anchor-ranges-grapheme) - grapheme ranges
 - [**uni_algo/ranges_word.h**](#anchor-ranges-word) - word ranges
+- [**uni_algo/script.h**](#anchor-script) - code point script property
 - [**uni_algo/prop.h**](#anchor-prop) - code point properties
 - [**other classes**](#anchor-other)
 
@@ -179,7 +180,7 @@ una::views::norm::nfkd
 ```
 una::views::grapheme::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges of graphemes
 ```
-Uses [UAX #29: Unicode Text Segmentation -> Grapheme Cluster Boundary Rules](https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries)
+The algorithm uses [UAX #29: Unicode Text Segmentation -> Grapheme Cluster Boundary Rules](https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries)
 
 ---
 
@@ -201,8 +202,22 @@ is_punctuation      - includes only punctuation
 is_segspace         - includes only spaces
 is_newline          - includes only new lines
 ```
-Uses [UAX #29: Unicode Text Segmentation -> Word Boundary Rules](https://unicode.org/reports/tr29/#Word_Boundaries)<br>
+The algorithm uses [UAX #29: Unicode Text Segmentation -> Word Boundary Rules](https://unicode.org/reports/tr29/#Word_Boundaries)<br>
 `word_only` is a special case of UAX #29 that takes only words and skips all punctuation and such.
+
+---
+
+<a id="anchor-script"></a>
+**`uni_algo/script.h`** - code point script property (requeries src/data.cpp)
+
+```
+una::codepoint::get_script - get code point script property
+una::codepoint::has_script - check if a code point has script extensions property
+```
+The functions use `una::locale::script` class for script property and `char32_t` for code point.<br>
+Example: `assert(una::codepoint::get_script(U'W') == una::locale::script{"Latn"})`<br>
+The algorithm uses [UAX #24: Unicode Script Property](https://www.unicode.org/reports/tr24)<br>
+List of all scripts: https://en.wikipedia.org/wiki/Script_(Unicode)
 
 ---
 
