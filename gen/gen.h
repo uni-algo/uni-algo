@@ -10,6 +10,11 @@
 #include <vector>
 #include <algorithm>
 
+// This header will be added to all generated files
+const std::string gen_header =
+        "// GENERATED. DO NOT EDIT.\n\n"
+        "// Unicode 15.0.0\n\n";
+
 // How to use: just copy paste this file into your Hello World or whatever and download Unicode data files.
 // Check generator() function at the end of the file for a list of the files that are needed for the generator.
 
@@ -2037,6 +2042,12 @@ static void new_merger_replace_string(std::string& data1, std::string& data2, co
     new_merger_replace_string_impl(data1, file, new_str);
 }
 
+static void new_merger_add_header(std::string& data1, std::string& data2)
+{
+    data1.insert(0, gen_header);
+    data2.insert(0, gen_header);
+}
+
 static void new_merger()
 {
     std::ifstream input1("data_case.h_blank");
@@ -2070,6 +2081,7 @@ static void new_merger()
     new_merger_replace_string(data1, data2, "new_stage1_special_title.txt");
     new_merger_replace_string(data1, data2, "new_stage2_special_title.txt");
     new_merger_replace_string(data1, data2, "new_stage3_special_title.txt", 2);
+    new_merger_add_header(data1, data2);
 
     std::ofstream output1("data_case.h");
     std::ofstream output2("extern_case.h");
@@ -2100,6 +2112,7 @@ static void new_merger()
     new_merger_replace_string(data1, data2, "new_stage1_comp_cp2.txt");
     new_merger_replace_string(data1, data2, "new_stage2_comp_cp2.txt");
     new_merger_replace_string(data1, data2, "new_stage3_comp.txt", 2);
+    new_merger_add_header(data1, data2);
 
     output1.open("data_norm.h");
     output2.open("extern_norm.h");
@@ -2119,6 +2132,7 @@ static void new_merger()
 
     new_merger_replace_string(data1, data2, "new_stage1_break_grapheme.txt");
     new_merger_replace_string(data1, data2, "new_stage2_break_grapheme.txt");
+    new_merger_add_header(data1, data2);
 
     output1.open("data_break_grapheme.h");
     output2.open("extern_break_grapheme.h");
@@ -2138,6 +2152,7 @@ static void new_merger()
 
     new_merger_replace_string(data1, data2, "new_stage1_break_word.txt");
     new_merger_replace_string(data1, data2, "new_stage2_break_word.txt");
+    new_merger_add_header(data1, data2);
 
     output1.open("data_break_word.h");
     output2.open("extern_break_word.h");
@@ -2157,6 +2172,7 @@ static void new_merger()
 
     new_merger_replace_string(data1, data2, "new_stage1_prop.txt");
     new_merger_replace_string(data1, data2, "new_stage2_prop.txt");
+    new_merger_add_header(data1, data2);
 
     output1.open("data_prop.h");
     output2.open("extern_prop.h");
@@ -2180,6 +2196,7 @@ static void new_merger()
     new_merger_replace_string(data1, data2, "new_stage1_script_ext.txt");
     new_merger_replace_string(data1, data2, "new_stage2_script_ext.txt");
     new_merger_replace_string(data1, data2, "new_stage3_script_ext.txt");
+    new_merger_add_header(data1, data2);
 
     output1.open("data_script.h");
     output2.open("extern_script.h");
