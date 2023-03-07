@@ -8,44 +8,35 @@
 #include "impl/impl_cpp_lib_version.h"
 #include "impl/impl_unicode_version.h"
 
-namespace una {
-
-namespace detail::version {
-// Helper class that converts unsigned char/short to int
-template<int ID, typename T>
-class value
-{
-private:
-    T val = 0;
-public:
-    constexpr value(int v) noexcept : val{static_cast<T>(v)} {}
-    constexpr operator int() const noexcept { return val; }
-};
-} // detail::version
-
-namespace version {
+namespace una::version {
 
 class library_v
 {
+private:
+    const unsigned short ver_major = static_cast<unsigned short>(UNI_ALGO_CPP_LIB_VERSION / 1000000);
+    const unsigned char ver_minor = static_cast<unsigned char>(UNI_ALGO_CPP_LIB_VERSION / 1000 % 1000);
+    const unsigned char ver_patch = static_cast<unsigned char>(UNI_ALGO_CPP_LIB_VERSION % 1000);
 public:
-    const detail::version::value<0, unsigned short> major = (UNI_ALGO_CPP_LIB_VERSION / 1000000);
-    const detail::version::value<1, unsigned char> minor = (UNI_ALGO_CPP_LIB_VERSION / 1000 % 1000);
-    const detail::version::value<2, unsigned char> patch = (UNI_ALGO_CPP_LIB_VERSION % 1000);
-
     constexpr library_v() noexcept = default;
-    constexpr library_v(int ma, int mi, int pa) noexcept : major{ma}, minor{mi}, patch{pa} {}
+    constexpr library_v(int major, int minor, int patch) noexcept
+        : ver_major{static_cast<unsigned short>(major)},
+          ver_minor{static_cast<unsigned char>(minor)},
+          ver_patch{static_cast<unsigned char>(patch)} {}
+    constexpr int major() const noexcept { return ver_major; }
+    constexpr int minor() const noexcept { return ver_minor; }
+    constexpr int patch() const noexcept { return ver_patch; }
     friend constexpr bool operator==(const library_v& x, const library_v& y) noexcept
     {
-        return x.major == y.major &&
-               x.minor == y.minor &&
-               x.patch == y.patch;
+        return x.major() == y.major() &&
+               x.minor() == y.minor() &&
+               x.patch() == y.patch();
     }
     friend constexpr bool operator!=(const library_v& x, const library_v& y) noexcept { return !(x == y); }
     friend constexpr bool operator<(const library_v& x, const library_v& y) noexcept
     {
-        return x.major != y.major ? x.major < y.major :
-               x.minor != y.minor ? x.minor < y.minor :
-               x.patch != y.patch ? x.patch < y.patch : false;
+        return x.major() != y.major() ? x.major() < y.major() :
+               x.minor() != y.minor() ? x.minor() < y.minor() :
+               x.patch() != y.patch() ? x.patch() < y.patch() : false;
     }
     friend constexpr bool operator>(const library_v& x, const library_v& y) noexcept { return y < x; }
     friend constexpr bool operator<=(const library_v& x, const library_v& y) noexcept { return !(x > y); }
@@ -54,25 +45,31 @@ public:
 
 class unicode_v
 {
+private:
+    const unsigned short ver_major = static_cast<unsigned short>(UNI_ALGO_UNICODE_VERSION / 1000000);
+    const unsigned char ver_minor = static_cast<unsigned char>(UNI_ALGO_UNICODE_VERSION / 1000 % 1000);
+    const unsigned char ver_update = static_cast<unsigned char>(UNI_ALGO_UNICODE_VERSION % 1000);
 public:
-    const detail::version::value<10, unsigned short> major = (UNI_ALGO_UNICODE_VERSION / 1000000);
-    const detail::version::value<11, unsigned char> minor = (UNI_ALGO_UNICODE_VERSION / 1000 % 1000);
-    const detail::version::value<12, unsigned char> update = (UNI_ALGO_UNICODE_VERSION % 1000);
-
     constexpr unicode_v() noexcept = default;
-    constexpr unicode_v(int ma, int mi, int up) noexcept : major{ma}, minor{mi}, update{up} {}
+    constexpr unicode_v(int major, int minor, int update) noexcept
+        : ver_major{static_cast<unsigned short>(major)},
+          ver_minor{static_cast<unsigned char>(minor)},
+          ver_update{static_cast<unsigned char>(update)} {}
+    constexpr int major() const noexcept { return ver_major; }
+    constexpr int minor() const noexcept { return ver_minor; }
+    constexpr int update() const noexcept { return ver_update; }
     friend constexpr bool operator==(const unicode_v& x, const unicode_v& y) noexcept
     {
-        return x.major == y.major &&
-               x.minor == y.minor &&
-               x.update == y.update;
+        return x.major() == y.major() &&
+               x.minor() == y.minor() &&
+               x.update() == y.update();
     }
     friend constexpr bool operator!=(const unicode_v& x, const unicode_v& y) noexcept { return !(x == y); }
     friend constexpr bool operator<(const unicode_v& x, const unicode_v& y) noexcept
     {
-        return x.major != y.major ? x.major < y.major :
-               x.minor != y.minor ? x.minor < y.minor :
-               x.update != y.update ? x.update < y.update : false;
+        return x.major() != y.major() ? x.major() < y.major() :
+               x.minor() != y.minor() ? x.minor() < y.minor() :
+               x.update() != y.update() ? x.update() < y.update() : false;
     }
     friend constexpr bool operator>(const unicode_v& x, const unicode_v& y) noexcept { return y < x; }
     friend constexpr bool operator<=(const unicode_v& x, const unicode_v& y) noexcept { return !(x > y); }
@@ -82,7 +79,6 @@ public:
 inline constexpr library_v library; // Library version
 inline constexpr unicode_v unicode; // Unicode version
 
-} // namespace version
-} // namespace una
+} // namespace una::version
 
 #endif // UNI_ALGO_VERSION_H_UAIH
