@@ -130,13 +130,13 @@ int main7()
 #endif
 
     std::cout << "Library  Version: " <<
-        una::version::library::major << '.' <<
-        una::version::library::minor << '.' <<
-        una::version::library::patch << '\n';
+        una::version::library.major << '.' <<
+        una::version::library.minor << '.' <<
+        una::version::library.patch << '\n';
     std::cout << "Unicode  Version: " <<
-        una::version::unicode::major << '.' <<
-        una::version::unicode::minor << '.' <<
-        una::version::unicode::update << '\n';
+        una::version::unicode.major << '.' <<
+        una::version::unicode.minor << '.' <<
+        una::version::unicode.update << '\n';
 
 #if defined(UNI_ALGO_DISABLE_SYSTEM_LOCALE)
     std::cout << "System    Locale: DISABLED" << '\n';
@@ -149,13 +149,13 @@ int main7()
         std::cout << "System    Locale: " << una::locale::system().to_string() << '\n';
 #endif
 
-    static_assert(una::version::library::major >= 0 && una::version::library::major <= 255);
-    static_assert(una::version::library::minor >= 0 && una::version::library::minor <= 255);
-    static_assert(una::version::library::patch >= 0 && una::version::library::patch <= 255);
+    static_assert(una::version::library.major >= 0 && una::version::library.major <= 255);
+    static_assert(una::version::library.minor >= 0 && una::version::library.minor <= 255);
+    static_assert(una::version::library.patch >= 0 && una::version::library.patch <= 255);
 
-    static_assert(una::version::unicode::major >= 1 && una::version::unicode::major <= 255);
-    static_assert(una::version::unicode::minor >= 0 && una::version::unicode::minor <= 255);
-    static_assert(una::version::unicode::update >= 0 && una::version::unicode::update <= 255);
+    static_assert(una::version::unicode.major >= 1 && una::version::unicode.major <= 255);
+    static_assert(una::version::unicode.minor >= 0 && una::version::unicode.minor <= 255);
+    static_assert(una::version::unicode.update >= 0 && una::version::unicode.update <= 255);
 
     std::cout << "C++      Version: " << test_version_cpp() << '\n';
     std::cout << "Ranges   Version: " << test_version_ranges() << '\n';
