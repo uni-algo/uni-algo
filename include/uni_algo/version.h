@@ -13,9 +13,9 @@ namespace una::version {
 class library_v
 {
 private:
-    const unsigned short ver_major = static_cast<unsigned short>(UNI_ALGO_CPP_LIB_VERSION / 1000000);
-    const unsigned char ver_minor = static_cast<unsigned char>(UNI_ALGO_CPP_LIB_VERSION / 1000 % 1000);
-    const unsigned char ver_patch = static_cast<unsigned char>(UNI_ALGO_CPP_LIB_VERSION % 1000);
+    const unsigned short ver_major = 0;
+    const unsigned char ver_minor = 0;
+    const unsigned char ver_patch = 0;
 public:
     constexpr library_v() noexcept = default;
     constexpr library_v(int major, int minor, int patch) noexcept
@@ -46,9 +46,9 @@ public:
 class unicode_v
 {
 private:
-    const unsigned short ver_major = static_cast<unsigned short>(UNI_ALGO_UNICODE_VERSION / 1000000);
-    const unsigned char ver_minor = static_cast<unsigned char>(UNI_ALGO_UNICODE_VERSION / 1000 % 1000);
-    const unsigned char ver_update = static_cast<unsigned char>(UNI_ALGO_UNICODE_VERSION % 1000);
+    const unsigned short ver_major = 0;
+    const unsigned char ver_minor = 0;
+    const unsigned char ver_update = 0;
 public:
     constexpr unicode_v() noexcept = default;
     constexpr unicode_v(int major, int minor, int update) noexcept
@@ -76,8 +76,13 @@ public:
     friend constexpr bool operator>=(const unicode_v& x, const unicode_v& y) noexcept { return !(x < y); }
 };
 
-inline constexpr library_v library; // Library version
-inline constexpr unicode_v unicode; // Unicode version
+inline constexpr library_v library{UNI_ALGO_CPP_LIB_VERSION / 1000000,
+                                   UNI_ALGO_CPP_LIB_VERSION / 1000 % 1000,
+                                   UNI_ALGO_CPP_LIB_VERSION % 1000};
+
+inline constexpr unicode_v unicode{UNI_ALGO_UNICODE_VERSION / 1000000,
+                                   UNI_ALGO_UNICODE_VERSION / 1000 % 1000,
+                                   UNI_ALGO_UNICODE_VERSION % 1000};
 
 } // namespace una::version
 
