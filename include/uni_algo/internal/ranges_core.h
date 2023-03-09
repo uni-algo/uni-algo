@@ -30,7 +30,6 @@
 #endif
 
 #include "../config.h"
-#include "../version.h"
 
 namespace una {
 

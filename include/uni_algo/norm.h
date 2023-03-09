@@ -14,7 +14,6 @@
 #include <iterator> // std::back_insert_iterator
 
 #include "config.h"
-#include "version.h"
 #include "internal/safe_layer.h"
 
 #include "impl/impl_norm.h"

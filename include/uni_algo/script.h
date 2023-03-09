@@ -10,7 +10,6 @@
 #endif
 
 #include "config.h"
-#include "version.h"
 #include "internal/safe_layer.h"
 
 // Clang-Tidy thinks that locale.h form C is included here

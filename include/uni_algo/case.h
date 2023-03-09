@@ -14,7 +14,6 @@
 #include <cassert>
 
 #include "config.h"
-#include "version.h"
 #include "internal/safe_layer.h"
 #include "internal/search.h"
 

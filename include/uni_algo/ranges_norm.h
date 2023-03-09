@@ -6,7 +6,6 @@
 #define UNI_ALGO_RANGES_NORM_H_UAIH
 
 #include "config.h"
-#include "version.h"
 #include "internal/safe_layer.h"
 #include "internal/ranges_core.h"
 

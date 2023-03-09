@@ -10,7 +10,6 @@
 #include <cassert>
 
 #include "config.h"
-#include "version.h"
 
 #include "impl/impl_locale.h"
 

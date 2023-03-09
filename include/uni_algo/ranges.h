@@ -9,7 +9,6 @@
 #include <cassert>
 
 #include "config.h"
-#include "version.h"
 #include "internal/ranges_core.h"
 
 namespace una {
