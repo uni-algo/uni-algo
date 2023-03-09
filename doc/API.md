@@ -44,7 +44,7 @@ Includes all enabled modules.
 **`uni_algo/version.h`** - version (header-only)
 
 Provides information about the library version and Unicode version.<br>
-Other files always include this file.
+See comments inside the file for more info.
 
 ---
 
