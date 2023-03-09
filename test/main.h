@@ -9,6 +9,7 @@
 //#define TEST_MODE_GENERATE_VISUAL_FILES
 
 #ifndef TEST_MODE_SINGLE_INCLUDE
+#include "../include/uni_algo/version.h"
 #include "../include/uni_algo/conv.h"
 #include "../include/uni_algo/locale.h"
 #include "../include/uni_algo/case.h"
