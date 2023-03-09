@@ -17,7 +17,7 @@ private:
     const unsigned char ver_minor = 0;
     const unsigned char ver_patch = 0;
 public:
-    constexpr library_v() noexcept = default;
+    constexpr library_v() = delete;
     constexpr library_v(int major, int minor, int patch) noexcept
         : ver_major{static_cast<unsigned short>(major)},
           ver_minor{static_cast<unsigned char>(minor)},
@@ -50,7 +50,7 @@ private:
     const unsigned char ver_minor = 0;
     const unsigned char ver_update = 0;
 public:
-    constexpr unicode_v() noexcept = default;
+    constexpr unicode_v() = delete;
     constexpr unicode_v(int major, int minor, int update) noexcept
         : ver_major{static_cast<unsigned short>(major)},
           ver_minor{static_cast<unsigned char>(minor)},
