@@ -7,6 +7,8 @@
 #ifndef UNI_ALGO_ALL_H_UAIH
 #define UNI_ALGO_ALL_H_UAIH
 
+#include "version.h"
+
 #include "conv.h"
 #include "ranges.h"
 #include "ranges_conv.h"
