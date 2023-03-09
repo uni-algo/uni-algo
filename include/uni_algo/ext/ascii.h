@@ -10,7 +10,6 @@
 #include <string_view>
 
 #include "../config.h"
-#include "../version.h"
 #include "../internal/search.h"
 
 namespace una::detail::ascii {
