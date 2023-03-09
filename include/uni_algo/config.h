@@ -5,20 +5,6 @@
 #ifndef UNI_ALGO_CONFIG_H_UAIH
 #define UNI_ALGO_CONFIG_H_UAIH
 
-// UNI_ALGO_CPP_LIB_VERSION
-// Describes the library version number in XYYYZZZ format such that:
-// (VERSION % 1000) is the patch version 0..255,
-// (VERSION / 1000 % 1000) is the minor version 0..255,
-// (VERSION / 1000000) is the major version 0..255.
-
-// UNI_ALGO_UNICODE_VERSION
-// Describes Unicode version number in XYYYZZZ format such that:
-// (VERSION % 1000) is the update version 0..255,
-// (VERSION / 1000 % 1000) is the minor version 0..255,
-// (VERSION / 1000000) is the major version 1..255.
-
-// Note that una::version namespace can be used to get these values.
-
 // TODO: Rename:
 // UNI_ALGO_DISABLE_BREAK_GRAPHEME -> UNI_ALGO_DISABLE_SEGMENT_GRAPHEME
 // UNI_ALGO_DISABLE_BREAK_WORD -> UNI_ALGO_DISABLE_SEGMENT_WORD

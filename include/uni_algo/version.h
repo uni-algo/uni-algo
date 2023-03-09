@@ -5,6 +5,24 @@
 #ifndef UNI_ALGO_VERSION_H_UAIH
 #define UNI_ALGO_VERSION_H_UAIH
 
+// UNI_ALGO_CPP_LIB_VERSION
+// Describes the library version number in XYYYZZZ format such that:
+// (VERSION % 1000) is the patch version 0..255,
+// (VERSION / 1000 % 1000) is the minor version 0..255,
+// (VERSION / 1000000) is the major version 0..255.
+
+// UNI_ALGO_UNICODE_VERSION
+// Describes Unicode version number in XYYYZZZ format such that:
+// (VERSION % 1000) is the update version 0..255,
+// (VERSION / 1000 % 1000) is the minor version 0..255,
+// (VERSION / 1000000) is the major version 1..255.
+
+// Note that una::version namespace can be used to get these values.
+
+// For example to make your program compile only with the library version 1.2.3 or higher use:
+// static_assert(una::version::library >= una::version::library_v{1, 2, 3});
+// And to get version components use: una::version::library.major()/minor()/patch()
+
 #include "impl/impl_cpp_lib_version.h"
 #include "impl/impl_unicode_version.h"
 
