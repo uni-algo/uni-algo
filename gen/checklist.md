@@ -1,6 +1,6 @@
 New Unicode version checklist:
 
-1. Change Unicode version in: gen/blank/*.h_blank files
+1. Change Unicode version in gen_header variable in gen/gen.h file
 2. Generate data files using gen/main.cpp and gen/blank files
 3. Copy and replace generated files to include/uni_algo/impl/data
 5. Generate gen/nm_result.txt (x86 Release with UNI_ALGO_DISABLE_SYSTEM_LOCALE define)
