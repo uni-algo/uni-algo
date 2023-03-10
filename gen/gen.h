@@ -1953,6 +1953,8 @@ static void new_generator()
     // emoji-data.txt
     // PropList.txt
     // Scripts.txt
+    // ScriptExtensions.txt
+    // PropertyValueAliases.txt
 
     // Download from:
     // Latest Unicode version:
