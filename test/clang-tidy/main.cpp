@@ -8,11 +8,13 @@
 //
 // REMINDER: https://stackoverflow.com/questions/52710180/how-to-use-and-configure-clang-tidy-on-windows
 
+#include "../../include/uni_algo/version.h"
 #include "../../include/uni_algo/conv.h"
 #include "../../include/uni_algo/locale.h"
 #include "../../include/uni_algo/case.h"
 #include "../../include/uni_algo/norm.h"
 #include "../../include/uni_algo/prop.h"
+#include "../../include/uni_algo/script.h"
 #include "../../include/uni_algo/ranges.h"
 #include "../../include/uni_algo/ranges_conv.h"
 #include "../../include/uni_algo/ranges_norm.h"
