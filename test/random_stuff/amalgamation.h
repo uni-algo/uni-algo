@@ -206,6 +206,7 @@ void amalgam()
     output << amalgam_data("uni_algo/impl/data/data_case.h");
     output << amalgam_data("uni_algo/impl/data/data_norm.h");
     output << amalgam_data("uni_algo/impl/data/data_prop.h");
+    output << amalgam_data("uni_algo/impl/data/data_script.h");
     output << amalgam_data("uni_algo/impl/data/data_break_grapheme.h");
     output << amalgam_data("uni_algo/impl/data/data_break_word.h");
 
@@ -219,6 +220,7 @@ void amalgam()
     output << amalgam_part("uni_algo/impl/impl_locale.h"); // Must be before case
     output << amalgam_part("uni_algo/impl/impl_case.h");
     output << amalgam_part("uni_algo/impl/impl_case_locale.h"); // Must be after case
+    output << amalgam_part("uni_algo/impl/impl_script.h");
     output << amalgam_part("uni_algo/impl/impl_prop.h"); // Must be before norm
     output << amalgam_part("uni_algo/impl/impl_norm.h");
 
@@ -240,6 +242,7 @@ void amalgam()
     output << amalgam_part("uni_algo/conv.h");
     output << amalgam_part("uni_algo/locale.h");
     output << amalgam_part("uni_algo/case.h");
+    output << amalgam_part("uni_algo/script.h");
     output << amalgam_part("uni_algo/prop.h");
     output << amalgam_part("uni_algo/norm.h");
     output << amalgam_part("uni_algo/ranges.h");
