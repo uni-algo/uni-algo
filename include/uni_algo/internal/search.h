@@ -18,7 +18,7 @@ public:
     constexpr explicit search(bool f, std::size_t p, std::size_t e) noexcept
         : found(f), position(p), end_position(e) {}
     constexpr explicit operator bool() const noexcept { return found; }
-    constexpr void reset() { found = false; position = detail::impl_npos; end_position = detail::impl_npos; }
+    constexpr void reset() noexcept { found = false; position = detail::impl_npos; end_position = detail::impl_npos; }
     constexpr std::size_t pos() const noexcept { assert(found); return position; }
     constexpr std::size_t end_pos() const noexcept { assert(found); return end_position; }
 private:
