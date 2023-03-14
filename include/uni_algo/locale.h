@@ -54,21 +54,21 @@ public:
     private:
         // Use char32_t for value because that is what low-level uses
         char32_t value = 0;
-        constexpr explicit language(char32_t v) : value{v} {}
-        constexpr void set_value(char32_t v) { value = v; }
-        constexpr char32_t get_value() const { return value; }
+        constexpr explicit language(char32_t v) noexcept : value{v} {}
+        constexpr void set_value(char32_t v) noexcept { value = v; }
+        constexpr char32_t get_value() const noexcept { return value; }
     public:
-        constexpr language() = default;
+        constexpr language() noexcept = default;
         template <std::size_t N> // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
-        constexpr explicit language(const char (&s)[N]) : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
-        uaiw_constexpr explicit language(std::string_view s) : value{detail::impl_locate_from_tag(s, s.size())} {}
+        constexpr explicit language(const char (&s)[N]) noexcept : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
+        uaiw_constexpr explicit language(std::string_view s) noexcept : value{detail::impl_locate_from_tag(s, s.size())} {}
 
         // Enable emplicit conversion to make this class work in switch case
         // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
-        constexpr operator char32_t() const { return value; }
+        constexpr operator char32_t() const noexcept { return value; }
 
-        friend constexpr bool operator==(const language& x, const language& y) { return x.value == y.value; }
-        friend constexpr bool operator!=(const language& x, const language& y) { return x.value != y.value; }
+        friend constexpr bool operator==(const language& x, const language& y) noexcept { return x.value == y.value; }
+        friend constexpr bool operator!=(const language& x, const language& y) noexcept { return x.value != y.value; }
 
         // Remove comparison operators because implicit conversion made them
         friend bool operator==(const language&, char32_t) = delete;
@@ -89,19 +89,19 @@ public:
         friend class locale;
     private:
         char32_t value = 0;
-        constexpr explicit region(char32_t v) : value{v} {}
-        constexpr void set_value(char32_t v) { value = v; }
-        constexpr char32_t get_value() const { return value; }
+        constexpr explicit region(char32_t v) noexcept : value{v} {}
+        constexpr void set_value(char32_t v) noexcept { value = v; }
+        constexpr char32_t get_value() const noexcept { return value; }
     public:
-        constexpr region() = default;
+        constexpr region() noexcept = default;
         template <std::size_t N> // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
-        constexpr explicit region(const char (&s)[N]) : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
-        uaiw_constexpr explicit region(std::string_view s) : value{detail::impl_locate_from_tag(s, s.size())} {}
+        constexpr explicit region(const char (&s)[N]) noexcept : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
+        uaiw_constexpr explicit region(std::string_view s) noexcept : value{detail::impl_locate_from_tag(s, s.size())} {}
         // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
-        constexpr operator char32_t() const { return value; }
+        constexpr operator char32_t() const noexcept { return value; }
 
-        friend constexpr bool operator==(const region& x, const region& y) { return x.value == y.value; }
-        friend constexpr bool operator!=(const region& x, const region& y) { return x.value != y.value; }
+        friend constexpr bool operator==(const region& x, const region& y) noexcept { return x.value == y.value; }
+        friend constexpr bool operator!=(const region& x, const region& y) noexcept { return x.value != y.value; }
 
         friend bool operator==(const region&, char32_t) = delete;
         friend bool operator==(char32_t, const region&) = delete;
@@ -122,19 +122,19 @@ public:
         friend class detail::locale_friend;
     private:
         char32_t value = 0;
-        constexpr explicit script(char32_t v) : value{v} {}
-        constexpr void set_value(char32_t v) { value = v; }
-        constexpr char32_t get_value() const { return value; }
+        constexpr explicit script(char32_t v) noexcept : value{v} {}
+        constexpr void set_value(char32_t v) noexcept { value = v; }
+        constexpr char32_t get_value() const noexcept { return value; }
     public:
-        constexpr script() = default;
+        constexpr script() noexcept = default;
         template <std::size_t N> // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
-        constexpr explicit script(const char (&s)[N]) : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
-        uaiw_constexpr explicit script(std::string_view s) : value{detail::impl_locate_from_tag(s, s.size())} {}
+        constexpr explicit script(const char (&s)[N]) noexcept : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
+        uaiw_constexpr explicit script(std::string_view s) noexcept : value{detail::impl_locate_from_tag(s, s.size())} {}
         // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
-        constexpr operator char32_t() const { return value; }
+        constexpr operator char32_t() const noexcept { return value; }
 
-        friend constexpr bool operator==(const script& x, const script& y) { return x.value == y.value; }
-        friend constexpr bool operator!=(const script& x, const script& y) { return x.value != y.value; }
+        friend constexpr bool operator==(const script& x, const script& y) noexcept { return x.value == y.value; }
+        friend constexpr bool operator!=(const script& x, const script& y) noexcept { return x.value != y.value; }
 
         friend bool operator==(const script&, char32_t) = delete;
         friend bool operator==(char32_t, const script&) = delete;
@@ -155,16 +155,16 @@ private:
     region regn; //{detail::impl_locale_region_ZZ};
 
 public:
-    constexpr locale() = default;
+    constexpr locale() noexcept = default;
     // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
-    constexpr locale(language l) : lang{l} {}
-    constexpr locale(language l, region r) : lang{l}, regn{r} {}
-    constexpr locale(language l, script s) : lang{l}, scpt{s} {}
-    constexpr locale(language l, script s, region r) : lang{l}, scpt{s}, regn{r} {}
-    constexpr language get_language() const { return lang; }
-    constexpr script get_script() const { return scpt; }
-    constexpr region get_region() const { return regn; }
-    constexpr bool is_empty() const
+    constexpr locale(language l) noexcept : lang{l} {}
+    constexpr locale(language l, region r) noexcept : lang{l}, regn{r} {}
+    constexpr locale(language l, script s) noexcept : lang{l}, scpt{s} {}
+    constexpr locale(language l, script s, region r) noexcept : lang{l}, scpt{s}, regn{r} {}
+    constexpr language get_language() const noexcept { return lang; }
+    constexpr script get_script() const noexcept { return scpt; }
+    constexpr region get_region() const noexcept { return regn; }
+    constexpr bool is_empty() const noexcept
     {
         return lang.get_value() == 0 &&
                scpt.get_value() == 0 &&
@@ -180,7 +180,7 @@ public:
 #endif // UNI_ALGO_STATIC_DATA
 #endif // UNI_ALGO_DISABLE_SYSTEM_LOCALE
 #ifdef UNI_ALGO_EXPERIMENTAL
-    uaiw_constexpr void normalize()
+    uaiw_constexpr void normalize() noexcept
     {
         lang.set_value(detail::impl_locale_norm_language(lang.get_value(), 0));
         if (lang.get_value() == 0)
@@ -288,7 +288,7 @@ public:
 
     // NOTE: Comparison of locale objects is incorrect usage in most cases
 #ifdef UNI_ALGO_EXPERIMENTAL
-    friend constexpr bool operator==(const locale& x, const locale& y)
+    friend constexpr bool operator==(const locale& x, const locale& y) noexcept
     {
         return x.lang == y.lang &&
                x.scpt == y.scpt &&
@@ -296,18 +296,18 @@ public:
     }
     friend constexpr bool operator!=(const locale& x, const locale& y) noexcept { return !(x == y); }
 #endif // UNI_ALGO_EXPERIMENTAL
-    friend constexpr bool operator==(const language& x, const locale& y) { return x == y.lang; }
-    friend constexpr bool operator!=(const language& x, const locale& y) { return x != y.lang; }
-    friend constexpr bool operator==(const locale& x, const language& y) { return x.lang == y; }
-    friend constexpr bool operator!=(const locale& x, const language& y) { return x.lang != y; }
-    friend constexpr bool operator==(const region& x, const locale& y) { return x == y.regn; }
-    friend constexpr bool operator!=(const region& x, const locale& y) { return x != y.regn; }
-    friend constexpr bool operator==(const locale& x, const region& y) { return x.regn == y; }
-    friend constexpr bool operator!=(const locale& x, const region& y) { return x.regn != y; }
-    friend constexpr bool operator==(const script& x, const locale& y) { return x == y.scpt; }
-    friend constexpr bool operator!=(const script& x, const locale& y) { return x != y.scpt; }
-    friend constexpr bool operator==(const locale& x, const script& y) { return x.scpt == y; }
-    friend constexpr bool operator!=(const locale& x, const script& y) { return x.scpt != y; }
+    friend constexpr bool operator==(const language& x, const locale& y) noexcept { return x == y.lang; }
+    friend constexpr bool operator!=(const language& x, const locale& y) noexcept { return x != y.lang; }
+    friend constexpr bool operator==(const locale& x, const language& y) noexcept { return x.lang == y; }
+    friend constexpr bool operator!=(const locale& x, const language& y) noexcept { return x.lang != y; }
+    friend constexpr bool operator==(const region& x, const locale& y) noexcept { return x == y.regn; }
+    friend constexpr bool operator!=(const region& x, const locale& y) noexcept { return x != y.regn; }
+    friend constexpr bool operator==(const locale& x, const region& y) noexcept { return x.regn == y; }
+    friend constexpr bool operator!=(const locale& x, const region& y) noexcept { return x.regn != y; }
+    friend constexpr bool operator==(const script& x, const locale& y) noexcept { return x == y.scpt; }
+    friend constexpr bool operator!=(const script& x, const locale& y) noexcept { return x != y.scpt; }
+    friend constexpr bool operator==(const locale& x, const script& y) noexcept { return x.scpt == y; }
+    friend constexpr bool operator!=(const locale& x, const script& y) noexcept { return x.scpt != y; }
 };
 
 // Locale friend helper
