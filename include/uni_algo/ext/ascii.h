@@ -152,7 +152,7 @@ uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::
     if (pos == std::string_view::npos)
         return una::search{};
 
-    return una::search{true, pos, pos + string2.size()};
+    return una::search{pos, pos + string2.size()};
 }
 
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
@@ -277,7 +277,7 @@ uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::
         }
 
         if (j == m)
-            return una::search{true, i, i + m};
+            return una::search{i, i + m};
     }
 
     return una::search{};

@@ -422,7 +422,7 @@ uaiw_constexpr una::search search_utf8(std::basic_string_view<UTF8> string1, std
                                              safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, false, &pos, &end);
 #endif
 
-    return una::search{ret, pos, end};
+    return ret ? una::search{pos, end} : una::search{};
 }
 
 template<typename UTF16>
@@ -443,7 +443,7 @@ uaiw_constexpr una::search search_utf16(std::basic_string_view<UTF16> string1, s
                                               safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, false, &pos, &end);
 #endif
 
-    return una::search{ret, pos, end};
+    return ret ? una::search{pos, end} : una::search{};
 }
 
 inline uaiw_constexpr int compare_utf8(std::string_view string1, std::string_view string2)
@@ -622,7 +622,7 @@ uaiw_constexpr una::search search_utf8(std::basic_string_view<UTF8> string1, std
                                              safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true, &pos, &end);
 #endif
 
-    return una::search{ret, pos, end};
+    return ret ? una::search{pos, end} : una::search{};
 }
 
 template<typename UTF16>
@@ -643,7 +643,7 @@ uaiw_constexpr una::search search_utf16(std::basic_string_view<UTF16> string1, s
                                               safe::in{string2.data(), string2.size()}, safe::end{string2.data() + string2.size()}, true, &pos, &end);
 #endif
 
-    return una::search{ret, pos, end};
+    return ret ? una::search{pos, end} : una::search{};
 }
 
 inline uaiw_constexpr int compare_utf8(std::string_view string1, std::string_view string2)
