@@ -127,7 +127,7 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src, una::error& error)
         else
         {
             dst.clear();
-            error = una::error{true, err};
+            error = una::error{una::error::code::ill_formed_utf, err};
         }
 
 #ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
@@ -455,7 +455,7 @@ uaiw_constexpr bool is_valid_utf8(std::basic_string_view<UTF8> source, una::erro
     namespace safe = detail::safe;
     bool ret = detail::impl_is_valid_utf8(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
 #endif
-    error = una::error{!ret, err};
+    error = ret ? una::error{} : una::error{una::error::code::ill_formed_utf, err};
 
     return ret;
 }
@@ -474,7 +474,7 @@ uaiw_constexpr bool is_valid_utf16(std::basic_string_view<UTF16> source, una::er
     namespace safe = detail::safe;
     bool ret = detail::impl_is_valid_utf16(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
 #endif
-    error = una::error{!ret, err};
+    error = ret ? una::error{} : una::error{una::error::code::ill_formed_utf, err};
 
     return ret;
 }
@@ -493,7 +493,7 @@ uaiw_constexpr bool is_valid_utf32(std::basic_string_view<UTF32> source, una::er
     namespace safe = detail::safe;
     bool ret = detail::impl_is_valid_utf32(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
 #endif
-    error = una::error{!ret, err};
+    error = ret ? una::error{} : una::error{una::error::code::ill_formed_utf, err};
 
     return ret;
 }

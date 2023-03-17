@@ -14,15 +14,19 @@ namespace una {
 class error
 {
 public:
+    enum class code : unsigned short {success = 0, ill_formed_utf};
+public:
     constexpr error() noexcept = default;
-    constexpr error(bool f, std::size_t p) noexcept : fail(f), position(p) {}
-    constexpr explicit operator bool() const noexcept { return fail; }
-    constexpr void reset() noexcept { fail = false; position = detail::impl_npos; }
+    constexpr error(error::code ec) noexcept : error_code{ec} {}
+    constexpr error(error::code ec, std::size_t p) noexcept : position{p}, error_code{ec} {}
+    constexpr explicit operator bool() const noexcept { return error_code != error::code::success; }
+    constexpr void reset() noexcept { error_code = error::code::success; position = detail::impl_npos; }
     constexpr bool has_pos() const noexcept { return position != detail::impl_npos; }
-    constexpr std::size_t pos() const noexcept { assert(fail); assert(has_pos()); return position; }
+    constexpr std::size_t pos() const noexcept { assert(operator bool()); assert(has_pos()); return position; }
+    constexpr error::code get_code() const noexcept { return error_code; }
 private:
-    bool fail = false;
     std::size_t position = detail::impl_npos;
+    error::code error_code = error::code::success;
 };
 
 } // namespace una
