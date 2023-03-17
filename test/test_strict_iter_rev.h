@@ -14,7 +14,7 @@ test_constexpr std::u16string iter_rev_utf8to16(std::string_view str, una::error
         --it;
         if (*it == una::detail::impl_iter_error)
         {
-            error = una::error(true, static_cast<std::size_t>(it.begin() - str.begin()));
+            error = una::error{una::error::code::ill_formed_utf, static_cast<std::size_t>(it.begin() - str.begin())};
             return std::u16string{};
         }
         codepoints.push_back(*it);
@@ -42,7 +42,7 @@ test_constexpr std::string iter_rev_utf16to8(std::u16string_view str, una::error
         --it;
         if (*it == una::detail::impl_iter_error)
         {
-            error = una::error(true, static_cast<std::size_t>(it.begin() - str.begin()));
+            error = una::error{una::error::code::ill_formed_utf, static_cast<std::size_t>(it.begin() - str.begin())};
             return std::string{};
         }
         codepoints.push_back(*it);
