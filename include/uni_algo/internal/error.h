@@ -6,6 +6,9 @@
 #define UNI_ALGO_INTERNAL_ERROR_H_UAIH
 
 #include <cassert>
+#ifdef UNI_ALGO_EXPERIMENTAL
+#include <string_view>
+#endif
 
 #include "../config.h"
 
@@ -28,6 +31,17 @@ public:
     friend constexpr bool operator!=(const error& x, const error::code& y) noexcept { return x.error_code != y; }
     friend constexpr bool operator==(const error::code& x, const error& y) noexcept { return x == y.error_code; }
     friend constexpr bool operator!=(const error::code& x, const error& y) noexcept { return x != y.error_code; }
+#ifdef UNI_ALGO_EXPERIMENTAL
+    std::string_view to_string_view() const noexcept
+    {
+        switch(error_code)
+        {
+            case code::success: return "success";
+            case code::ill_formed_utf: return "ill-formed UTF";
+            default: return "invalid error code";
+        }
+    }
+#endif // UNI_ALGO_EXPERIMENTAL
 private:
     std::size_t position = detail::impl_npos;
     error::code error_code = error::code::success;
