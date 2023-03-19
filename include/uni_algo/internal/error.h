@@ -24,6 +24,10 @@ public:
     constexpr bool has_pos() const noexcept { return position != detail::impl_npos; }
     constexpr std::size_t pos() const noexcept { assert(operator bool()); assert(has_pos()); return position; }
     constexpr error::code get_code() const noexcept { return error_code; }
+    friend constexpr bool operator==(const error& x, const error::code& y) noexcept { return x.error_code == y; }
+    friend constexpr bool operator!=(const error& x, const error::code& y) noexcept { return x.error_code != y; }
+    friend constexpr bool operator==(const error::code& x, const error& y) noexcept { return x == y.error_code; }
+    friend constexpr bool operator!=(const error::code& x, const error& y) noexcept { return x != y.error_code; }
 private:
     std::size_t position = detail::impl_npos;
     error::code error_code = error::code::success;
