@@ -18,14 +18,17 @@ class error
 {
 public:
     enum class code : unsigned short {success = 0, ill_formed_utf};
+private:
+    std::size_t error_pos = detail::impl_npos;
+    error::code error_code = error::code::success;
 public:
     constexpr error() noexcept = default;
     constexpr explicit error(error::code ec) noexcept : error_code{ec} {}
-    constexpr explicit error(error::code ec, std::size_t p) noexcept : position{p}, error_code{ec} {}
+    constexpr explicit error(error::code ec, std::size_t pos) noexcept : error_pos{pos}, error_code{ec} {}
     constexpr explicit operator bool() const noexcept { return error_code != error::code::success; }
-    constexpr void reset() noexcept { error_code = error::code::success; position = detail::impl_npos; }
-    constexpr bool has_pos() const noexcept { return position != detail::impl_npos; }
-    constexpr std::size_t pos() const noexcept { assert(operator bool()); assert(has_pos()); return position; }
+    constexpr void reset() noexcept { error_code = error::code::success; error_pos = detail::impl_npos; }
+    constexpr bool has_pos() const noexcept { return error_pos != detail::impl_npos; }
+    constexpr std::size_t pos() const noexcept { assert(operator bool()); assert(has_pos()); return error_pos; }
     constexpr error::code get_code() const noexcept { return error_code; }
     friend constexpr bool operator==(const error& x, const error::code& y) noexcept { return x.error_code == y; }
     friend constexpr bool operator!=(const error& x, const error::code& y) noexcept { return x.error_code != y; }
@@ -42,9 +45,6 @@ public:
         }
     }
 #endif // UNI_ALGO_EXPERIMENTAL
-private:
-    std::size_t position = detail::impl_npos;
-    error::code error_code = error::code::success;
 };
 
 } // namespace una
