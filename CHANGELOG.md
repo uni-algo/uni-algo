@@ -6,6 +6,7 @@ See commit history between tags for details.
 - Added scripts and script extensions support ([UAX #24: Unicode Script Property](https://www.unicode.org/reports/tr24))
 - Changed versions in namespace `una::version` to classes ([#18](https://github.com/uni-algo/uni-algo/issues/18))
 - File `uni_algo/version.h` is not included by other files anymore
+- Improved `una::error` class added `una::error::code`
 
 ## [v0.7.1](https://github.com/uni-algo/uni-algo/tree/v0.7.1) (27.02.2023)
 - Fixed bug when normalization and UTF-16 views are used with input ranges ([#22](https://github.com/uni-algo/uni-algo/issues/22)). Thanks [@tocic](https://github.com/tocic).
