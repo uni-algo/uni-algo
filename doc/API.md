@@ -99,7 +99,8 @@ una::casesens::search_utf8  - search
 ```
 Lower, upper, title case support `una::locale`<br>
 Case folding is always locale-independent and<br>
-others are based on Default Case Matching and always locale-independent too.
+others are based on Default Case Matching and always locale-independent too.<br>
+Search functions return result in `una::search` class.
 
 ---
 
