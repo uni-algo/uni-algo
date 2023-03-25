@@ -1,0 +1,23 @@
+name: Cppcheck
+on: workflow_dispatch
+
+jobs:
+  Cppcheck:
+    name: Cppcheck 2.10
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Cppcheck
+        run: |
+          # Use Ubuntu Lunar repo for Cppcheck 2.10
+          sudo apt-add-repository 'deb http://azure.archive.ubuntu.com/ubuntu/ lunar universe'
+          sudo apt-get update
+          sudo apt-get install -y cppcheck
+      - name: Run Cppcheck
+        run: |
+          cppcheck --version
+          # Do not --enable=style because it produces false positives
+          cppcheck test/clang-tidy/main.cpp --error-exitcode=1 --max-configs=1 --std=c++17 --enable=warning,performance,portability,information,unusedFunction,missingInclude --suppress=missingIncludeSystem --suppress=toomanyconfigs
+
