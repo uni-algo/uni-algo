@@ -2,11 +2,23 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-// Include all modules to check them with Clang-Tidy
+// Include all modules to check them with Clang-Tidy or Cppcheck
 //
-// Command line: clang-tidy test/clang-tidy/main.cpp -header-filter=.* -extra-arg=-std=c++17 --
+// Command line for Clang-Tidy and Cppcheck:
+//
+// clang-tidy test/clang-tidy/main.cpp -header-filter=.* -extra-arg=-std=c++17 --
+//
+// cppcheck test/clang-tidy/main.cpp --error-exitcode=1 --max-configs=1 --std=c++17
+//          --enable=warning,performance,portability,information,unusedFunction,missingInclude
+//          --suppress=missingIncludeSystem --suppress=toomanyconfigs
+//
+// NOTE: Replace c++17 with c++20 to check C++20 or higher specific things
 //
 // REMINDER: https://stackoverflow.com/questions/52710180/how-to-use-and-configure-clang-tidy-on-windows
+
+// NOTE: No point to use the define to include data files
+// it just makes the test slower and achieves nothing
+//#define UNI_ALGO_STATIC_DATA
 
 #include "../../include/uni_algo/version.h"
 #include "../../include/uni_algo/conv.h"
