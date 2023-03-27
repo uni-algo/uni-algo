@@ -203,7 +203,7 @@ uaix_static size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_ut
 
     while (src != last)
     {
-        type_codept h = (*src & 0xFFFF);
+        const type_codept h = (*src & 0xFFFF);
         ++src;
 
         if (h <= 0x7F)
@@ -225,11 +225,11 @@ uaix_static size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_ut
             {
                 if (src != last) // Unpaired high surrogate if reached the end here
                 {
-                    type_codept l = (*src & 0xFFFF);
+                    const type_codept l = (*src & 0xFFFF);
 
                     if (l >= 0xDC00 && l <= 0xDFFF) // Low surrogate is in range
                     {
-                        type_codept c = ((h - 0xD800) << 10) + (l - 0xDC00) + 0x10000;
+                        const type_codept c = ((h - 0xD800) << 10) + (l - 0xDC00) + 0x10000;
 
                         *dst++ = (type_char8)(0xF0 |  (c >> 18));
                         *dst++ = (type_char8)(0x80 | ((c >> 12) & 0x3F));
@@ -410,7 +410,7 @@ uaix_static size_t impl_utf32to8(it_in_utf32 first, it_end_utf32 last, it_out_ut
 
     while (src != last)
     {
-        type_codept c = ((type_codept)*src & 0xFFFFFFFF);
+        const type_codept c = ((type_codept)*src & 0xFFFFFFFF);
         ++src;
 
         if (c <= 0x7F)
@@ -475,7 +475,7 @@ uaix_static size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_u
 
     while (src != last)
     {
-        type_codept h = (*src & 0xFFFF);
+        const type_codept h = (*src & 0xFFFF);
         ++src;
 
         if (h >= 0xD800 && h <= 0xDFFF) // Surrogate pair
@@ -484,11 +484,11 @@ uaix_static size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_u
             {
                 if (src != last) // Unpaired high surrogate if reached the end here
                 {
-                    type_codept l = (*src & 0xFFFF);
+                    const type_codept l = (*src & 0xFFFF);
 
                     if (l >= 0xDC00 && l <= 0xDFFF) // Low surrogate is in range
                     {
-                        type_codept c = ((h - 0xD800) << 10) + (l - 0xDC00) + 0x10000;
+                        const type_codept c = ((h - 0xD800) << 10) + (l - 0xDC00) + 0x10000;
 
                         *dst++ = (type_char32)c;
 
@@ -530,7 +530,7 @@ uaix_static size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_u
 
     while (src != last)
     {
-        type_codept c = ((type_codept)*src & 0xFFFFFFFF);
+        const type_codept c = ((type_codept)*src & 0xFFFFFFFF);
         ++src;
 
         if (c <= 0xFFFF)
@@ -687,7 +687,7 @@ uaix_static bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_
 
     while (src != last)
     {
-        type_codept h = (*src & 0xFFFF);
+        const type_codept h = (*src & 0xFFFF);
         ++src;
 
         if (h <= 0x7F)
@@ -704,7 +704,7 @@ uaix_static bool impl_is_valid_utf16(it_in_utf16 first, it_end_utf16 last, size_
             {
                 if (src != last) // Unpaired high surrogate if reached the end here
                 {
-                    type_codept l = (*src & 0xFFFF);
+                    const type_codept l = (*src & 0xFFFF);
 
                     if (l >= 0xDC00 && l <= 0xDFFF) // Low surrogate is in range
                     {
@@ -741,7 +741,7 @@ uaix_static bool impl_is_valid_utf32(it_in_utf32 first, it_end_utf32 last, size_
 
     while (src != last)
     {
-        type_codept c = ((type_codept)*src & 0xFFFFFFFF);
+        const type_codept c = ((type_codept)*src & 0xFFFFFFFF);
         ++src;
 
         if (c <= 0x7F)

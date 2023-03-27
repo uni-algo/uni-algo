@@ -96,8 +96,8 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* const state, t
     // See state table above.
     // Compared the performance with ICU it's already much faster so it can wait.
 
-    type_codept c_prop = stages_break_grapheme_prop(c);
-    type_codept p_prop = state->prev_cp_prop;
+    const type_codept c_prop = stages_break_grapheme_prop(c);
+    const type_codept p_prop = state->prev_cp_prop;
 
     bool result = false; // tag_can_be_uninitialized
 
@@ -185,7 +185,7 @@ uaix_static bool break_grapheme_rev_EP_utf8(it_in_utf8 first, it_in_utf8 last)
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        type_codept prop = stages_break_grapheme_prop(c);
+        const type_codept prop = stages_break_grapheme_prop(c);
 
         if (prop == prop_GB_Extend)
             continue;
@@ -210,7 +210,7 @@ uaix_static bool break_grapheme_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        type_codept prop = stages_break_grapheme_prop(c);
+        const type_codept prop = stages_break_grapheme_prop(c);
 
         if (prop == prop_GB_Regional_Indicator)
             ++count_RI;
@@ -227,8 +227,8 @@ uaix_always_inline_tmpl
 uaix_static bool break_grapheme_rev_utf8(struct impl_break_grapheme_state* const state, type_codept c,
                                          it_in_utf8 first, it_in_utf8 last)
 {
-    type_codept c_prop = stages_break_grapheme_prop(c);
-    type_codept p_prop = state->prev_cp_prop;
+    const type_codept c_prop = stages_break_grapheme_prop(c);
+    const type_codept p_prop = state->prev_cp_prop;
 
     bool result = false; // tag_can_be_uninitialized
 
@@ -302,7 +302,7 @@ uaix_static bool break_grapheme_rev_EP_utf16(it_in_utf16 first, it_in_utf16 last
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        type_codept prop = stages_break_grapheme_prop(c);
+        const type_codept prop = stages_break_grapheme_prop(c);
 
         if (prop == prop_GB_Extend)
             continue;
@@ -327,7 +327,7 @@ uaix_static bool break_grapheme_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        type_codept prop = stages_break_grapheme_prop(c);
+        const type_codept prop = stages_break_grapheme_prop(c);
 
         if (prop == prop_GB_Regional_Indicator)
             ++count_RI;
@@ -344,8 +344,8 @@ uaix_always_inline_tmpl
 uaix_static bool break_grapheme_rev_utf16(struct impl_break_grapheme_state* const state, type_codept c,
                                           it_in_utf16 first, it_in_utf16 last)
 {
-    type_codept c_prop = stages_break_grapheme_prop(c);
-    type_codept p_prop = state->prev_cp_prop;
+    const type_codept c_prop = stages_break_grapheme_prop(c);
+    const type_codept p_prop = state->prev_cp_prop;
 
     bool result = false; // tag_can_be_uninitialized
 

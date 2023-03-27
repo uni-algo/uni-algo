@@ -37,7 +37,7 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src)
 {
     Dst dst{alloc};
 
-    std::size_t length = src.size();
+    const std::size_t length = src.size();
 
     if (length)
     {
@@ -89,7 +89,7 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src, una::error& error)
 
     Dst dst{alloc};
 
-    std::size_t length = src.size();
+    const std::size_t length = src.size();
 
     if (length)
     {
@@ -106,14 +106,14 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src, una::error& error)
 
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
         dst.resize(length * SizeX);
-        std::size_t size = FnUTF(src.cbegin(), src.cend(), dst.begin(), &err);
+        const std::size_t size = FnUTF(src.cbegin(), src.cend(), dst.begin(), &err);
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
         dst.resize(length * SizeX);
-        std::size_t size = FnUTF(src.data(), src.data() + src.size(), dst.data(), &err);
+        const std::size_t size = FnUTF(src.data(), src.data() + src.size(), dst.data(), &err);
 #else // Safe layer
 #  if !defined(__cpp_lib_string_resize_and_overwrite)
         dst.resize(length * SizeX);
-        std::size_t size = FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, &err);
+        const std::size_t size = FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, &err);
 #  else
         std::size_t size = 0;
         dst.resize_and_overwrite(length * SizeX, [&src, &size, &err](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
@@ -448,12 +448,12 @@ uaiw_constexpr bool is_valid_utf8(std::basic_string_view<UTF8> source, una::erro
 
     size_t err = detail::impl_npos;
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    bool ret = detail::impl_is_valid_utf8(source.cbegin(), source.cend(), &err);
+    const bool ret = detail::impl_is_valid_utf8(source.cbegin(), source.cend(), &err);
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    bool ret = detail::impl_is_valid_utf8(source.data(), source.data() + source.size(), &err);
+    const bool ret = detail::impl_is_valid_utf8(source.data(), source.data() + source.size(), &err);
 #else // Safe layer
     namespace safe = detail::safe;
-    bool ret = detail::impl_is_valid_utf8(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
+    const bool ret = detail::impl_is_valid_utf8(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
 #endif
     error = ret ? una::error{} : una::error{una::error::code::ill_formed_utf, err};
 
@@ -467,12 +467,12 @@ uaiw_constexpr bool is_valid_utf16(std::basic_string_view<UTF16> source, una::er
 
     size_t err = detail::impl_npos;
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    bool ret = detail::impl_is_valid_utf16(source.cbegin(), source.cend(), &err);
+    const bool ret = detail::impl_is_valid_utf16(source.cbegin(), source.cend(), &err);
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    bool ret = detail::impl_is_valid_utf16(source.data(), source.data() + source.size(), &err);
+    const bool ret = detail::impl_is_valid_utf16(source.data(), source.data() + source.size(), &err);
 #else // Safe layer
     namespace safe = detail::safe;
-    bool ret = detail::impl_is_valid_utf16(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
+    const bool ret = detail::impl_is_valid_utf16(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
 #endif
     error = ret ? una::error{} : una::error{una::error::code::ill_formed_utf, err};
 
@@ -486,12 +486,12 @@ uaiw_constexpr bool is_valid_utf32(std::basic_string_view<UTF32> source, una::er
 
     size_t err = detail::impl_npos;
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    bool ret = detail::impl_is_valid_utf32(source.cbegin(), source.cend(), &err);
+    const bool ret = detail::impl_is_valid_utf32(source.cbegin(), source.cend(), &err);
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    bool ret = detail::impl_is_valid_utf32(source.data(), source.data() + source.size(), &err);
+    const bool ret = detail::impl_is_valid_utf32(source.data(), source.data() + source.size(), &err);
 #else // Safe layer
     namespace safe = detail::safe;
-    bool ret = detail::impl_is_valid_utf32(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
+    const bool ret = detail::impl_is_valid_utf32(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
 #endif
     error = ret ? una::error{} : una::error{una::error::code::ill_formed_utf, err};
 

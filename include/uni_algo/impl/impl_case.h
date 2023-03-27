@@ -70,21 +70,21 @@ struct case_special_pair
 uaix_always_inline
 uaix_static type_codept stages_lower(type_codept c)
 {
-    type_codept v = stages(c, stage1_lower, stage2_lower);
+    const type_codept v = stages(c, stage1_lower, stage2_lower);
     return v ? v : c;
 }
 
 uaix_always_inline
 uaix_static type_codept stages_upper(type_codept c)
 {
-    type_codept v = stages(c, stage1_upper, stage2_upper);
+    const type_codept v = stages(c, stage1_upper, stage2_upper);
     return v ? v : c;
 }
 
 uaix_always_inline
 uaix_static type_codept stages_fold(type_codept c)
 {
-    type_codept v = stages(c, stage1_fold, stage2_fold);
+    const type_codept v = stages(c, stage1_fold, stage2_fold);
     return v ? v : c;
 }
 
@@ -93,7 +93,7 @@ uaix_static type_codept stages_fold(type_codept c)
 uaix_always_inline
 uaix_static type_codept stages_title(type_codept c)
 {
-    type_codept v = stages(c, stage1_title, stage2_title);
+    const type_codept v = stages(c, stage1_title, stage2_title);
     return v ? v : c;
 }
 
@@ -104,7 +104,7 @@ uaix_static type_codept stages_title(type_codept c)
 uaix_always_inline
 uaix_static type_codept stages_order(type_codept c)
 {
-    type_codept v = stages(c, stage1_order, stage2_order);
+    const type_codept v = stages(c, stage1_order, stage2_order);
     return v ? v : c + 0x110000;
     // Sort code points that are not in DUCET in code point order
     // The result must never be > 0x3FBFFF or it will break our experimental sort keys
@@ -125,7 +125,7 @@ uaix_static size_t stages_special_fold(type_codept c, struct case_special_buffer
 {
     if (c <= 0xFFFF)
     {
-        size_t n = stages(c, stage1_special_fold, stage2_special_fold);
+        const size_t n = stages(c, stage1_special_fold, stage2_special_fold);
         buffer->cps[0] = stage3_special_fold[n][1];
         buffer->cps[1] = stage3_special_fold[n][2];
         buffer->cps[2] = stage3_special_fold[n][3];
@@ -141,7 +141,7 @@ uaix_static bool stages_special_fold_check(type_codept c)
 
     if (c <= 0xFFFF)
     {
-        size_t n = stages(c, stage1_special_fold, stage2_special_fold);
+        const size_t n = stages(c, stage1_special_fold, stage2_special_fold);
         return n ? true : false;
     }
     return false;
@@ -152,7 +152,7 @@ uaix_static size_t stages_special_upper(type_codept c, struct case_special_buffe
 {
     if (c <= 0xFFFF)
     {
-        size_t n = stages(c, stage1_special_upper, stage2_special_upper);
+        const size_t n = stages(c, stage1_special_upper, stage2_special_upper);
         buffer->cps[0] = stage3_special_upper[n][1];
         buffer->cps[1] = stage3_special_upper[n][2];
         buffer->cps[2] = stage3_special_upper[n][3];
@@ -168,7 +168,7 @@ uaix_static bool stages_special_upper_check(type_codept c)
 
     if (c <= 0xFFFF)
     {
-        size_t n = stages(c, stage1_special_upper, stage2_special_upper);
+        const size_t n = stages(c, stage1_special_upper, stage2_special_upper);
         return n ? true : false;
     }
     return false;
@@ -181,7 +181,7 @@ uaix_static size_t stages_special_title(type_codept c, struct case_special_buffe
 {
     if (c <= 0xFFFF)
     {
-        size_t n = stages(c, stage1_special_title, stage2_special_title);
+        const size_t n = stages(c, stage1_special_title, stage2_special_title);
         buffer->cps[0] = stage3_special_title[n][1];
         buffer->cps[1] = stage3_special_title[n][2];
         buffer->cps[2] = stage3_special_title[n][3];
@@ -197,7 +197,7 @@ uaix_static bool stages_special_title_check(type_codept c)
 
     if (c <= 0xFFFF)
     {
-        size_t n = stages(c, stage1_special_title, stage2_special_title);
+        const size_t n = stages(c, stage1_special_title, stage2_special_title);
         return n ? true : false;
     }
     return false;
@@ -229,7 +229,7 @@ uaix_static bool case_final_sigma_fwd_utf8(it_in_utf8 first, it_end_utf8 last)
     {
         src = iter_utf8(src, last, &c, iter_replacement);
 
-        type_codept prop = stages_case_prop(c);
+        const type_codept prop = stages_case_prop(c);
 
         if (prop & prop_Cased_Ignorable)
             continue;
@@ -251,7 +251,7 @@ uaix_static bool case_final_sigma_rev_utf8(it_in_utf8 first, it_in_utf8 last)
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        type_codept prop = stages_case_prop(c);
+        const type_codept prop = stages_case_prop(c);
 
         if (prop & prop_Cased_Ignorable)
             continue;
@@ -273,7 +273,7 @@ uaix_static bool case_final_sigma_fwd_utf16(it_in_utf16 first, it_end_utf16 last
     {
         src = iter_utf16(src, last, &c, iter_replacement);
 
-        type_codept prop = stages_case_prop(c);
+        const type_codept prop = stages_case_prop(c);
 
         if (prop & prop_Cased_Ignorable)
             continue;
@@ -295,7 +295,7 @@ uaix_static bool case_final_sigma_rev_utf16(it_in_utf16 first, it_in_utf16 last)
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        type_codept prop = stages_case_prop(c);
+        const type_codept prop = stages_case_prop(c);
 
         if (prop & prop_Cased_Ignorable)
             continue;
@@ -378,7 +378,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
             if (stages_special_upper_check(c))
             {
                 struct case_special_buffer buffer = {{0}}; // tag_can_be_uninitialized
-                size_t size = stages_special_upper(c, &buffer);
+                const size_t size = stages_special_upper(c, &buffer);
 
                 for (size_t i = 0; i < size; ++i)
                     dst = codepoint_to_utf8(buffer.cps[i], dst);
@@ -401,7 +401,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
             if (stages_special_fold_check(c))
             {
                 struct case_special_buffer buffer = {{0}}; // tag_can_be_uninitialized
-                size_t size = stages_special_fold(c, &buffer);
+                const size_t size = stages_special_fold(c, &buffer);
 
                 for (size_t i = 0; i < size; ++i)
                     dst = codepoint_to_utf8(buffer.cps[i], dst);
@@ -475,7 +475,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
             if (stages_special_upper_check(c))
             {
                 struct case_special_buffer buffer = {{0}}; // tag_can_be_uninitialized
-                size_t size = stages_special_upper(c, &buffer);
+                const size_t size = stages_special_upper(c, &buffer);
 
                 for (size_t i = 0; i < size; ++i)
                     dst = codepoint_to_utf16(buffer.cps[i], dst);
@@ -498,7 +498,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
             if (stages_special_fold_check(c))
             {
                 struct case_special_buffer buffer = {{0}}; // tag_can_be_uninitialized
-                size_t size = stages_special_fold(c, &buffer);
+                const size_t size = stages_special_fold(c, &buffer);
 
                 for (size_t i = 0; i < size; ++i)
                     dst = codepoint_to_utf16(buffer.cps[i], dst);
@@ -1308,7 +1308,7 @@ uaix_static size_t case_title_utf8(it_in_utf8 first, it_end_utf8 last, it_out_ut
                 if (stages_special_title_check(c))
                 {
                     struct case_special_buffer buffer = {{0}};
-                    size_t size = stages_special_title(c, &buffer);
+                    const size_t size = stages_special_title(c, &buffer);
 
                     for (size_t i = 0; i < size; ++i)
                         dst = codepoint_to_utf8(buffer.cps[i], dst);
@@ -1406,7 +1406,7 @@ uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out
                 if (stages_special_title_check(c))
                 {
                     struct case_special_buffer buffer = {{0}};
-                    size_t size = stages_special_title(c, &buffer);
+                    const size_t size = stages_special_title(c, &buffer);
 
                     for (size_t i = 0; i < size; ++i)
                         dst = codepoint_to_utf16(buffer.cps[i], dst);
@@ -1725,7 +1725,7 @@ template<typename it_out_utf32>
 uaix_always_inline_tmpl
 uaix_static size_t impl_case_to_uppercase(type_codept c, it_out_utf32 dst)
 {
-    size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_upper, stage2_special_upper) : 0;
+    const size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_upper, stage2_special_upper) : 0;
     if (n)
     {
         *dst++ = stage3_special_upper[n][1];
@@ -1743,7 +1743,7 @@ template<typename it_out_utf32>
 uaix_always_inline_tmpl
 uaix_static size_t impl_case_to_casefold(type_codept c, it_out_utf32 dst)
 {
-    size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_fold, stage2_special_fold) : 0;
+    const size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_fold, stage2_special_fold) : 0;
     if (n)
     {
         *dst++ = stage3_special_fold[n][1];
@@ -1762,7 +1762,7 @@ template<typename it_out_utf32>
 uaix_always_inline_tmpl
 uaix_static size_t impl_case_to_titlecase(type_codept c, it_out_utf32 dst)
 {
-    size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_title, stage2_special_title) : 0;
+    const size_t n = (c <= 0xFFFF) ? stages(c, stage1_special_title, stage2_special_title) : 0;
     if (n)
     {
         *dst++ = stage3_special_title[n][1];

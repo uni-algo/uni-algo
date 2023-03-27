@@ -132,7 +132,7 @@ uaix_static bool impl_prop_is_graphic_prop(type_codept prop)
 {
     // https://www.unicode.org/glossary/#graphic_character
 
-    type_codept gc = impl_prop_get_gc_prop(prop);
+    const type_codept gc = impl_prop_get_gc_prop(prop);
 
     if (gc >= impl_General_Category_Lu &&
         gc <= impl_General_Category_Zs)
@@ -147,7 +147,7 @@ uaix_static bool impl_prop_is_format_prop(type_codept prop)
     // https://www.unicode.org/glossary/#format_character
     // https://www.unicode.org/versions/Unicode14.0.0/ch02.pdf#M9.61673.TableTitle.Table.22.Types.of.Code.Points
 
-    type_codept gc = impl_prop_get_gc_prop(prop);
+    const type_codept gc = impl_prop_get_gc_prop(prop);
 
     if (gc == impl_General_Category_Zl ||
         gc == impl_General_Category_Zp ||

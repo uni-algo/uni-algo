@@ -147,7 +147,7 @@ uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::
 
     // The same as binary find
 
-    std::size_t pos = string1.find(string2);
+    const std::size_t pos = string1.find(string2);
 
     if (pos == std::string_view::npos)
         return una::search{};
@@ -251,8 +251,8 @@ uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::
     // TODO: Maybe move to low-level
     // See comment in casesens::collate_ascii above
 
-    std::size_t m = string2.size();
-    std::size_t n = string1.size();
+    const std::size_t m = string2.size();
+    const std::size_t n = string1.size();
 
     if (m > n)
         return una::search{};
@@ -362,8 +362,8 @@ uaiw_constexpr std::basic_string_view<T> trim_ascii(std::basic_string_view<T> vi
 
     static_assert(std::is_integral_v<T>);
 
-    std::size_t pos = view.find_first_not_of(detail::ascii::data_trim_view<T>);
-    std::size_t end = view.find_last_not_of(detail::ascii::data_trim_view<T>);
+    const std::size_t pos = view.find_first_not_of(detail::ascii::data_trim_view<T>);
+    const std::size_t end = view.find_last_not_of(detail::ascii::data_trim_view<T>);
 
     view.remove_prefix(pos == std::string_view::npos ? 0 : pos);
     view.remove_suffix(end == std::string_view::npos ? 0 : view.size() + pos - end - 1);
@@ -378,7 +378,7 @@ uaiw_constexpr std::basic_string_view<T> trim_start_ascii(std::basic_string_view
 
     static_assert(std::is_integral_v<T>);
 
-    std::size_t pos = view.find_first_not_of(detail::ascii::data_trim_view<T>);
+    const std::size_t pos = view.find_first_not_of(detail::ascii::data_trim_view<T>);
 
     view.remove_prefix(pos == std::string_view::npos ? 0 : pos);
 
@@ -392,7 +392,7 @@ uaiw_constexpr std::basic_string_view<T> trim_end_ascii(std::basic_string_view<T
 
     static_assert(std::is_integral_v<T>);
 
-    std::size_t end = view.find_last_not_of(detail::ascii::data_trim_view<T>);
+    const std::size_t end = view.find_last_not_of(detail::ascii::data_trim_view<T>);
 
     view.remove_suffix(end == std::string_view::npos ? 0 : view.size() - end - 1);
 

@@ -88,11 +88,11 @@ private:
 
         if (view[0] >= 0x3040 && view[0] <= 0x309F) // Hiragana
         {
-            std::size_t m = view[0] - 0x3040;
+            const std::size_t m = view[0] - 0x3040;
             if (complex_map[m][0])
             {
                 // HIRAGANA LETTER SMALL YA/YU/YO
-                char32_t v = (view[1] == 0x3083) ? U'a' : (view[1] == 0x3085) ? U'u' : (view[1] == 0x3087) ? U'o' : 0;
+                const char32_t v = (view[1] == 0x3083) ? U'a' : (view[1] == 0x3085) ? U'u' : (view[1] == 0x3087) ? U'o' : 0;
                 if (v)
                 {
                     if (complex_map[m][1])
@@ -112,11 +112,11 @@ private:
         }
         else if (view[0] >= 0x30A0 && view[0] <= 0x30FF) // Katakana
         {
-            std::size_t m = view[0] - 0x30A0;
+            const std::size_t m = view[0] - 0x30A0;
             if (complex_map[m][0])
             {
                 // KATAKANA LETTER SMALL YA/YU/YO
-                char32_t v = (view[1] == 0x30E3) ? U'a' : (view[1] == 0x30E5) ? U'u' : (view[1] == 0x30E7) ? U'o' : 0;
+                const char32_t v = (view[1] == 0x30E3) ? U'a' : (view[1] == 0x30E5) ? U'u' : (view[1] == 0x30E7) ? U'o' : 0;
                 if (v)
                 {
                     if (complex_map[m][1])
@@ -147,7 +147,7 @@ public:
     // so a proxy function is required to use it with translit view
     static constexpr std::size_t buf_func(detail::translit::buffer& buf, bool& prev)
     {
-        std::u32string_view view = buf;
+        const std::u32string_view view = buf;
 
         // Syllabic n (prev is only needed for n) or Long consonants
         if ((prev && buf[0] == U'n') || buf[0] == 0x3063 || buf[0] == 0x30C3) // HIRAGANA/KATAKANA LETTER SMALL TU
@@ -182,7 +182,7 @@ public:
         {
             if (buf.size() > 1)
             {
-                std::size_t size = complex_fn(buf, view.substr(0, 2), 0);
+                const std::size_t size = complex_fn(buf, view.substr(0, 2), 0);
                 if (size)
                 {
                     prev = true;
@@ -190,7 +190,7 @@ public:
                     // -1 to leave the last code point in the buffer for long vowels etc.
                 }
             }
-            std::size_t size = simple_fn(buf, buf[0], 0);
+            const std::size_t size = simple_fn(buf, buf[0], 0);
             if (size)
             {
                 prev = true;
@@ -201,7 +201,7 @@ public:
         {
             if (buf.size() > 2)
             {
-                std::size_t size = complex_fn(buf, view.substr(1, 2), 1);
+                const std::size_t size = complex_fn(buf, view.substr(1, 2), 1);
                 if (size)
                 {
                     prev = true;
@@ -211,7 +211,7 @@ public:
             // Long vowels
             if (buf.size() > 1 && buf[1] != 0x3063 && buf[1] != 0x30C3) // HIRAGANA/KATAKANA LETTER SMALL TU
             {
-                std::size_t size = simple_fn(buf, buf[1], 1);
+                const std::size_t size = simple_fn(buf, buf[1], 1);
                 if (size)
                 {
                     prev = false;

@@ -195,7 +195,7 @@ uaix_static type_codept break_word_skip_utf8(it_in_utf8 first, it_end_utf8 last)
     {
         src = iter_utf8(src, last, &c, iter_replacement);
 
-        type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = break_word_prop(stages_break_word_prop(c));
 
         if (break_word_skip(prop))
             continue;
@@ -220,14 +220,14 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
     // with the state table so it's not even worth it probably.
     // Compared the performance with ICU it's already much faster so it can wait.
 
-    type_codept raw_prop = stages_break_word_prop(c);
+    const type_codept raw_prop = stages_break_word_prop(c);
 
-    type_codept c_prop = break_word_prop(raw_prop);
-    type_codept p_prop = break_word_prop(state->prev_cp_prop);
+    const type_codept c_prop = break_word_prop(raw_prop);
+    const type_codept p_prop = break_word_prop(state->prev_cp_prop);
 
     // Previous values of code points with WB4 rules
-    type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
-    type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
+    const type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
+    const type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
@@ -371,7 +371,7 @@ uaix_static type_codept break_word_skip_rev_utf8(it_in_utf8 first, it_in_utf8 la
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = break_word_prop(stages_break_word_prop(c));
 
         if (break_word_skip(prop))
             continue;
@@ -394,7 +394,7 @@ uaix_static it_in_utf8 break_word_skip_rev2_utf8(it_in_utf8 first, it_in_utf8 la
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = break_word_prop(stages_break_word_prop(c));
 
         if (break_word_skip(prop))
             continue;
@@ -418,7 +418,7 @@ uaix_static bool break_word_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = break_word_prop(stages_break_word_prop(c));
 
         if (break_word_skip(prop))
             continue;
@@ -440,14 +440,14 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
 {
     // word_prop property must be used only with impl_break_is_word* functions
 
-    type_codept raw_prop = stages_break_word_prop(c);
+    const type_codept raw_prop = stages_break_word_prop(c);
 
-    type_codept c_prop = break_word_prop(raw_prop);
-    type_codept p_prop = break_word_prop(state->prev_cp_prop);
+    const type_codept c_prop = break_word_prop(raw_prop);
+    const type_codept p_prop = break_word_prop(state->prev_cp_prop);
 
     // Previous values of code points with WB4 rules
-    type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
-    type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
+    const type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
+    const type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
@@ -588,7 +588,7 @@ uaix_static type_codept break_word_skip_utf16(it_in_utf16 first, it_end_utf16 la
     {
         src = iter_utf16(src, last, &c, iter_replacement);
 
-        type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = break_word_prop(stages_break_word_prop(c));
 
         if (break_word_skip(prop))
             continue;
@@ -607,14 +607,14 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
 {
     // word_prop property must be used only with impl_break_is_word* functions
 
-    type_codept raw_prop = stages_break_word_prop(c);
+    const type_codept raw_prop = stages_break_word_prop(c);
 
-    type_codept c_prop = break_word_prop(raw_prop);
-    type_codept p_prop = break_word_prop(state->prev_cp_prop);
+    const type_codept c_prop = break_word_prop(raw_prop);
+    const type_codept p_prop = break_word_prop(state->prev_cp_prop);
 
     // Previous values of code points with WB4 rules
-    type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
-    type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
+    const type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
+    const type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
@@ -754,7 +754,7 @@ uaix_static type_codept break_word_skip_rev_utf16(it_in_utf16 first, it_in_utf16
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = break_word_prop(stages_break_word_prop(c));
 
         if (break_word_skip(prop))
             continue;
@@ -777,7 +777,7 @@ uaix_static it_in_utf16 break_word_skip_rev2_utf16(it_in_utf16 first, it_in_utf1
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = break_word_prop(stages_break_word_prop(c));
 
         if (break_word_skip(prop))
             continue;
@@ -801,7 +801,7 @@ uaix_static bool break_word_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = break_word_prop(stages_break_word_prop(c));
 
         if (break_word_skip(prop))
             continue;
@@ -823,14 +823,14 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
 {
     // word_prop property must be used only with impl_break_is_word* functions
 
-    type_codept raw_prop = stages_break_word_prop(c);
+    const type_codept raw_prop = stages_break_word_prop(c);
 
-    type_codept c_prop = break_word_prop(raw_prop);
-    type_codept p_prop = break_word_prop(state->prev_cp_prop);
+    const type_codept c_prop = break_word_prop(raw_prop);
+    const type_codept p_prop = break_word_prop(state->prev_cp_prop);
 
     // Previous values of code points with WB4 rules
-    type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
-    type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
+    const type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
+    const type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 

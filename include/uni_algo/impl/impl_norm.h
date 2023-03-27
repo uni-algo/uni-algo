@@ -171,10 +171,10 @@ uaix_static type_codept stages_comp(type_codept c1, type_codept c2)
     // 14.1.2 Optimizing Tables for NFC Composition
     // https://unicode.org/reports/tr15/#Optimization_Strategies
 
-    size_t i1 = stages(c1, stage1_comp_cp1, stage2_comp_cp1);
+    const size_t i1 = stages(c1, stage1_comp_cp1, stage2_comp_cp1);
     if (i1)
     {
-        size_t i2 = stages(c2, stage1_comp_cp2, stage2_comp_cp2);
+        const size_t i2 = stages(c2, stage1_comp_cp2, stage2_comp_cp2);
         return stage3_comp[i1][i2];
     }
 
@@ -197,7 +197,7 @@ uaix_static unsigned char stages_ccc(type_codept c)
      * for initial/trailing non-starters, we don't need Maybe in this algorithm anyway
      */
 
-    type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+    const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
     return (unsigned char)(ccc_qc & 0xFF);
 }
 
@@ -257,7 +257,7 @@ uaix_static bool stages_qc_yes_ns_nfc(type_codept c, size_t* const count_ns)
 
     if (c >= 0x00A0) // NFKD lower bound
     {
-        type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
             return false;
         return stages_qc_yes_impl(ccc_qc, norm_bit_nfc);
@@ -271,7 +271,7 @@ uaix_static bool stages_qc_yes_ns_nfd(type_codept c, size_t* const count_ns)
 {
     if (c >= 0x00A0) // NFKD lower bound
     {
-        type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
             return false;
         return stages_qc_yes_impl(ccc_qc, norm_bit_nfd);
@@ -287,7 +287,7 @@ uaix_static bool stages_qc_yes_ns_nfkc(type_codept c, size_t* const count_ns)
 {
     if (c >= 0x00A0) // NFKD lower bound
     {
-        type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
             return false;
         return stages_qc_yes_impl(ccc_qc, norm_bit_nfkc);
@@ -301,7 +301,7 @@ uaix_static bool stages_qc_yes_ns_nfkd(type_codept c, size_t* const count_ns)
 {
     if (c >= 0x00A0) // NFKD lower bound
     {
-        type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
             return false;
         return stages_qc_yes_impl(ccc_qc, norm_bit_nfkd);
@@ -315,14 +315,14 @@ uaix_static bool stages_qc_yes_ns_nfkd(type_codept c, size_t* const count_ns)
 uaix_always_inline
 uaix_static bool stages_qc_yes_nfc(type_codept c)
 {
-    type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+    const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
     return stages_qc_yes_impl(ccc_qc, norm_bit_nfc);
 }
 
 uaix_always_inline
 uaix_static bool stages_qc_yes_nfd(type_codept c)
 {
-    type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+    const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
     return stages_qc_yes_impl(ccc_qc, norm_bit_nfd);
 }
 
@@ -331,14 +331,14 @@ uaix_static bool stages_qc_yes_nfd(type_codept c)
 uaix_always_inline
 uaix_static bool stages_qc_yes_nfkc(type_codept c)
 {
-    type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+    const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
     return stages_qc_yes_impl(ccc_qc, norm_bit_nfkc);
 }
 
 uaix_always_inline
 uaix_static bool stages_qc_yes_nfkd(type_codept c)
 {
-    type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+    const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
     return stages_qc_yes_impl(ccc_qc, norm_bit_nfkd);
 }
 
@@ -351,7 +351,7 @@ uaix_static bool stages_qc_yes_is_ccc_impl(type_codept ccc_qc, unsigned char* co
     // Note: "if (Character.isSupplementaryCodePoint(ch)) ++i;"
     // check is irrelevant it's because Java uses UTF-16 internally.
 
-    unsigned char ccc = (ccc_qc & 0xFF);
+    const unsigned char ccc = (ccc_qc & 0xFF);
 
     if (*last_ccc > ccc && ccc != 0)
     {
@@ -367,7 +367,7 @@ uaix_static bool stages_qc_yes_is_nfc(type_codept c, unsigned char* const last_c
 {
     if (c >= 0x0300) // NFC lower bound
     {
-        type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
             return false;
         return stages_qc_yes_is_impl(ccc_qc, norm_bit_nfc);
@@ -381,7 +381,7 @@ uaix_static bool stages_qc_yes_is_nfd(type_codept c, unsigned char* const last_c
 {
     if (c >= 0x00C0) // NFD lower bound
     {
-        type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
             return false;
         return stages_qc_yes_is_impl(ccc_qc, norm_bit_nfd);
@@ -397,7 +397,7 @@ uaix_static bool stages_qc_yes_is_nfkc(type_codept c, unsigned char* const last_
 {
     if (c >= 0x00A0) // NFKC lower bound
     {
-        type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
             return false;
         return stages_qc_yes_is_impl(ccc_qc, norm_bit_nfkc);
@@ -411,7 +411,7 @@ uaix_static bool stages_qc_yes_is_nfkd(type_codept c, unsigned char* const last_
 {
     if (c >= 0x00A0) // NFKD lower bound
     {
-        type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
+        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
             return false;
         return stages_qc_yes_is_impl(ccc_qc, norm_bit_nfkd);
@@ -437,15 +437,15 @@ uaix_static void norm_order(struct norm_buffer* const buffer, size_t size)
 
             for (; curr < last; ++curr, ++curr_ccc)
             {
-                size_t next = curr + 1;
-                size_t next_ccc = curr_ccc + 1;
+                const size_t next = curr + 1;
+                const size_t next_ccc = curr_ccc + 1;
 
                 if (buffer->ccc[next_ccc] > 0 && buffer->ccc[next_ccc] < buffer->ccc[curr_ccc])
                 {
                     // Swap
 
-                    type_codept   temp     = buffer->cps[curr];
-                    unsigned char temp_ccc = buffer->ccc[curr_ccc];
+                    const type_codept   temp     = buffer->cps[curr];
+                    const unsigned char temp_ccc = buffer->ccc[curr_ccc];
 
                     buffer->cps[curr] = buffer->cps[next];
                     buffer->cps[next] = temp;
@@ -474,10 +474,10 @@ uaix_static size_t norm_decomp_hangul(type_codept c, size_t i, struct norm_buffe
 
     if (c >= SBase && c < SBase + SCount)
     {
-        type_codept SIndex = c - SBase;
-        type_codept LPart = LBase + SIndex / NCount;
-        type_codept VPart = VBase + (SIndex % NCount) / TCount;
-        type_codept TPart = TBase + SIndex % TCount;
+        const type_codept SIndex = c - SBase;
+        const type_codept LPart = LBase + SIndex / NCount;
+        const type_codept VPart = VBase + (SIndex % NCount) / TCount;
+        const type_codept TPart = TBase + SIndex % TCount;
 
         buffer->cps[i] = LPart;
         buffer->ccc[i] = 0;
@@ -513,25 +513,25 @@ uaix_static size_t norm_comp_hangul(size_t i, struct norm_buffer* const buffer, 
     const type_codept TCount = 28;
     const type_codept SCount = 11172;
 
-    type_codept c1 = buffer->cps[i];
+    const type_codept c1 = buffer->cps[i];
 
     if (c1 >= LBase && c1 < LBase + LCount) // L+V+T
     {
         if (i + 1 < size)
         {
-            type_codept c2 = buffer->cps[i + 1];
+            const type_codept c2 = buffer->cps[i + 1];
 
             if (c2 >= VBase && c2 < VBase + VCount)
             {
-                type_codept LIndex = c1 - LBase;
-                type_codept VIndex = c2 - VBase;
+                const type_codept LIndex = c1 - LBase;
+                const type_codept VIndex = c2 - VBase;
 
                 buffer->cps[i] = SBase + (LIndex * VCount + VIndex) * TCount;
                 buffer->ccc[i + 1] = 255;
 
                 if (i + 2 < size)
                 {
-                    type_codept c3 = buffer->cps[i + 2];
+                    const type_codept c3 = buffer->cps[i + 2];
 
                     if (c3 > TBase && c3 < TBase + TCount)
                     {
@@ -550,7 +550,7 @@ uaix_static size_t norm_comp_hangul(size_t i, struct norm_buffer* const buffer, 
     {
         if (i + 1 < size)
         {
-            type_codept c2 = buffer->cps[i + 1];
+            const type_codept c2 = buffer->cps[i + 1];
 
             if (c2 > TBase && c2 < TBase + TCount)
             {
@@ -577,7 +577,7 @@ uaix_static void norm_comp(struct norm_buffer* const buffer, size_t size)
 
         for (size_t i = 0; i < size - 1; ++i)
         {
-            size_t hangul = norm_comp_hangul(i, buffer, size);
+            const size_t hangul = norm_comp_hangul(i, buffer, size);
             if (hangul)
             {
                 i += hangul;
@@ -590,7 +590,7 @@ uaix_static void norm_comp(struct norm_buffer* const buffer, size_t size)
             // If there is a starter and non-blocked non-starter
             if (starter == i || !(buffer->ccc[i] != 255 && buffer->ccc[i] >= buffer->ccc[i + 1]))
             {
-                type_codept c = stages_comp(buffer->cps[starter], buffer->cps[i + 1]);
+                const type_codept c = stages_comp(buffer->cps[starter], buffer->cps[i + 1]);
                 if (c != 0)
                 {
                     buffer->cps[starter] = c;
@@ -658,11 +658,11 @@ uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer
     // it can be still composed if we drop here from fast loop
     if (m->size == 1)
     {
-        size_t offset = stages_decomp_nfd(buffer->cps[0]);
+        const size_t offset = stages_decomp_nfd(buffer->cps[0]);
         if (offset)
         {
             m->size = 0;
-            size_t number = stages_decomp_nfd_number(offset);
+            const size_t number = stages_decomp_nfd_number(offset);
             for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
@@ -688,7 +688,7 @@ uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer
     }
     else
     {
-        size_t offset = stages_decomp_nfd(c);
+        const size_t offset = stages_decomp_nfd(c);
         if (offset == 0)
         {
             buffer->cps[m->size] = c;
@@ -699,7 +699,7 @@ uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer
         }
         else
         {
-            size_t number = stages_decomp_nfd_number(offset);
+            const size_t number = stages_decomp_nfd_number(offset);
             for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
@@ -720,7 +720,7 @@ uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* const buffer
 
     norm_decomp_count_ns(buffer, m);
 
-    size_t hangul = norm_decomp_hangul(c, m->size, buffer);
+    const size_t hangul = norm_decomp_hangul(c, m->size, buffer);
     if (hangul)
     {
         m->last_qc = m->size;
@@ -728,7 +728,7 @@ uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* const buffer
     }
     else
     {
-        size_t offset = stages_decomp_nfd(c);
+        const size_t offset = stages_decomp_nfd(c);
         if (offset == 0)
         {
             buffer->cps[m->size] = c;
@@ -739,7 +739,7 @@ uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* const buffer
         }
         else
         {
-            size_t number = stages_decomp_nfd_number(offset);
+            const size_t number = stages_decomp_nfd_number(offset);
             for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
@@ -764,11 +764,11 @@ uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* const buffe
 
     if (m->size == 1)
     {
-        size_t offset = stages_decomp_nfkd(buffer->cps[0]);
+        const size_t offset = stages_decomp_nfkd(buffer->cps[0]);
         if (offset)
         {
             m->size = 0;
-            size_t number = stages_decomp_nfkd_number(offset);
+            const size_t number = stages_decomp_nfkd_number(offset);
             for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
@@ -788,7 +788,7 @@ uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* const buffe
     }
     else
     {
-        size_t offset = stages_decomp_nfkd(c);
+        const size_t offset = stages_decomp_nfkd(c);
         if (offset == 0)
         {
             buffer->cps[m->size] = c;
@@ -799,7 +799,7 @@ uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* const buffe
         }
         else
         {
-            size_t number = stages_decomp_nfkd_number(offset);
+            const size_t number = stages_decomp_nfkd_number(offset);
             for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
@@ -820,7 +820,7 @@ uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* const buffe
 
     norm_decomp_count_ns(buffer, m);
 
-    size_t hangul = norm_decomp_hangul(c, m->size, buffer);
+    const size_t hangul = norm_decomp_hangul(c, m->size, buffer);
     if (hangul)
     {
         m->last_qc = m->size;
@@ -828,7 +828,7 @@ uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* const buffe
     }
     else
     {
-        size_t offset = stages_decomp_nfkd(c);
+        const size_t offset = stages_decomp_nfkd(c);
         if (offset == 0)
         {
             buffer->cps[m->size] = c;
@@ -839,7 +839,7 @@ uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* const buffe
         }
         else
         {
-            size_t number = stages_decomp_nfkd_number(offset);
+            const size_t number = stages_decomp_nfkd_number(offset);
             for (size_t i = 0; i < number; ++i, ++m->size)
             {
                 buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
@@ -865,7 +865,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, struct norm_buffer* const b
 
     norm_decomp_count_ns(buffer, m);
 
-    size_t offset = stages_decomp_nfd(c);
+    const size_t offset = stages_decomp_nfd(c);
     if (offset == 0)
     {
         if (impl_prop_get_gc_prop(impl_prop_get_prop(c)) != impl_General_Category_Mn)
@@ -879,10 +879,10 @@ uaix_static bool norm_decomp_unaccent(type_codept c, struct norm_buffer* const b
     }
     else
     {
-        size_t number = stages_decomp_nfd_number(offset);
+        const size_t number = stages_decomp_nfd_number(offset);
         for (size_t i = 0; i < number; ++i)
         {
-            type_codept cp = stages_decomp_nfd_cp(offset, i);
+            const type_codept cp = stages_decomp_nfd_cp(offset, i);
             if (impl_prop_get_gc_prop(impl_prop_get_prop(cp)) != impl_General_Category_Mn)
             {
                 buffer->cps[m->size] = cp;
@@ -1957,8 +1957,8 @@ uaix_static type_codept norm_to_comp_hangul(type_codept c1, type_codept c2)
     {
         if (c2 >= VBase && c2 < VBase + VCount)
         {
-            type_codept LIndex = c1 - LBase;
-            type_codept VIndex = c2 - VBase;
+            const type_codept LIndex = c1 - LBase;
+            const type_codept VIndex = c2 - VBase;
 
             return (SBase + (LIndex * VCount + VIndex) * TCount);
         }
@@ -2017,10 +2017,10 @@ uaix_static size_t norm_to_decomp_hangul(type_codept c, it_out_utf32 dst)
 
     if (c >= SBase && c < SBase + SCount)
     {
-        type_codept SIndex = c - SBase;
-        type_codept LPart = LBase + SIndex / NCount;
-        type_codept VPart = VBase + (SIndex % NCount) / TCount;
-        type_codept TPart = TBase + SIndex % TCount;
+        const type_codept SIndex = c - SBase;
+        const type_codept LPart = LBase + SIndex / NCount;
+        const type_codept VPart = VBase + (SIndex % NCount) / TCount;
+        const type_codept TPart = TBase + SIndex % TCount;
 
         *dst++ = (type_char32)LPart;
         *dst++ = (type_char32)VPart;
@@ -2063,14 +2063,14 @@ uaix_static size_t impl_norm_to_decompose(type_codept c, it_out_utf32 dst)
 {
     if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
     {
-        size_t hangul = norm_to_decomp_hangul(c, dst);
+        const size_t hangul = norm_to_decomp_hangul(c, dst);
         if (hangul)
             return hangul;
 
-        size_t offset = stages_decomp_nfd(c);
+        const size_t offset = stages_decomp_nfd(c);
         if (offset)
         {
-            size_t number = stages_decomp_nfd_number(offset);
+            const size_t number = stages_decomp_nfd_number(offset);
             for (size_t i = 0; i < number; ++i)
                 *dst++ = (type_char32)stages_decomp_nfd_cp(offset, i);
 
@@ -2095,14 +2095,14 @@ uaix_static size_t impl_norm_to_decompose_compat(type_codept c, it_out_utf32 dst
 {
     if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
     {
-        size_t hangul = norm_to_decomp_hangul(c, dst);
+        const size_t hangul = norm_to_decomp_hangul(c, dst);
         if (hangul)
             return hangul;
 
-        size_t offset = stages_decomp_nfkd(c);
+        const size_t offset = stages_decomp_nfkd(c);
         if (offset)
         {
-            size_t number = stages_decomp_nfkd_number(offset);
+            const size_t number = stages_decomp_nfkd_number(offset);
             for (size_t i = 0; i < number; ++i)
                 *dst++ = (type_char32)stages_decomp_nfkd_cp(offset, i);
 

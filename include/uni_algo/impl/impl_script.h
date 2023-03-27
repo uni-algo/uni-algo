@@ -23,7 +23,7 @@ uaix_static type_codept impl_script_get_script(type_codept c)
     if (c > 0x10FFFF)
         return 0x5A797979; // Zyyy (Common script)
 
-    size_t index = stages(c, stage1_script, stage2_script);
+    const size_t index = stages(c, stage1_script, stage2_script);
 
     if (index == 0)
         return 0x5A7A7A7A; // Zzzz (Unknown script)
@@ -45,7 +45,7 @@ uaix_static bool impl_script_has_script(type_codept c, type_codept script)
     {
         // Linear search here, there are very few code points
         // with more than 5 scripts so no point to use binary search.
-        size_t size = stage3_script_ext[index];
+        const size_t size = stage3_script_ext[index];
         for (size_t i = 0; i < size; ++i)
         {
             if (script == stage3_script_ext[index + i + 1])

@@ -244,7 +244,7 @@ private:
                 if (found) // Multiple -_
                     break;
 
-                std::basic_string_view<T> x = s.substr(prev, i - prev);
+                const std::basic_string_view<T> x = s.substr(prev, i - prev);
 
                 //std::cout << x << '\n'; // Test
 

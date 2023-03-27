@@ -148,14 +148,14 @@ public:
 
         if (count1 > count2)
         {
-            size_type count = count1 - count2;
+            const size_type count = count1 - count2;
             internal_size -= count;
             for (size_type i = pos; i < size(); ++i)
                 internal_array[i] = internal_array[i + count];
         }
         else if (count1 < count2)
         {
-            size_type count = count2 - count1;
+            const size_type count = count2 - count1;
             internal_size += count;
             for (size_type i = size() - 1; i >= pos + count; --i)
                 internal_array[i] = internal_array[i - count];
@@ -184,14 +184,14 @@ public:
 
         if (count1 > count2)
         {
-            size_type count = count1 - count2;
+            const size_type count = count1 - count2;
             internal_size -= count;
             for (size_type i = pos1; i < size(); ++i)
                 internal_array[i] = internal_array[i + count];
         }
         else if (count1 < count2)
         {
-            size_type count = count2 - count1;
+            const size_type count = count2 - count1;
             internal_size += count;
             for (size_type i = size() - 1; i >= pos1 + count; --i)
                 internal_array[i] = internal_array[i - count];

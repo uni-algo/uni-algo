@@ -34,7 +34,7 @@ uaiw_constexpr Dst t_norm(const Alloc& alloc, const Src& src)
 {
     Dst dst{alloc};
 
-    std::size_t length = src.size();
+    const std::size_t length = src.size();
 
     if (length)
     {
@@ -111,7 +111,7 @@ uaiw_constexpr Dst t_norm2(const Alloc& alloc, const Src& src)
 {
     Dst dst{alloc};
 
-    std::size_t length = src.size();
+    const std::size_t length = src.size();
 
     if (length)
     {
@@ -126,7 +126,7 @@ uaiw_constexpr Dst t_norm2(const Alloc& alloc, const Src& src)
 
         dst.reserve(length * 3 / 2);
 
-        proxy_it_out<std::back_insert_iterator<Dst>> it_out{std::back_inserter(dst)};
+        const proxy_it_out<std::back_insert_iterator<Dst>> it_out{std::back_inserter(dst)};
 
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
         FnNorm(src.cbegin(), src.cend(), it_out);

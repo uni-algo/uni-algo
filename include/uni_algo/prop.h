@@ -93,42 +93,42 @@ public:
 
     uaiw_constexpr bool General_Category_LC() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
+        const detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Lu && gc <= detail::impl_General_Category_Lt;
     }
     uaiw_constexpr bool General_Category_L() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
+        const detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Lu && gc <= detail::impl_General_Category_Lo;
     }
     uaiw_constexpr bool General_Category_M() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
+        const detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Mn && gc <= detail::impl_General_Category_Me;
     }
     uaiw_constexpr bool General_Category_N() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
+        const detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Nd && gc <= detail::impl_General_Category_No;
     }
     uaiw_constexpr bool General_Category_P() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
+        const detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Pc && gc <= detail::impl_General_Category_Po;
     }
     uaiw_constexpr bool General_Category_S() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
+        const detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Sm && gc <= detail::impl_General_Category_So;
     }
     uaiw_constexpr bool General_Category_Z() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
+        const detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return gc >= detail::impl_General_Category_Zs && gc <= detail::impl_General_Category_Zp;
     }
     uaiw_constexpr bool General_Category_C() const noexcept
     {
-        detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
+        const detail::type_codept gc = detail::impl_prop_get_gc_prop(data);
         return (gc >= detail::impl_General_Category_Cc && gc <= detail::impl_General_Category_Co) ||
                 gc == detail::impl_General_Category_Cn;
     }
@@ -229,7 +229,7 @@ inline uaiw_constexpr bool is_numeric(const prop& p) noexcept
 
 inline uaiw_constexpr bool is_alphanumeric(char32_t c) noexcept
 {
-    prop p{c};
+    const prop p{c};
 
     return p.Alphabetic() || p.Numeric();
 }
