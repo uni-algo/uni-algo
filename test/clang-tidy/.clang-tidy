@@ -18,7 +18,7 @@
 # -hicpp-named-parameter,
 # -bugprone-easily-swappable-parameters,
 # LLVM 15
-# -misc-const-correctness
+# -misc-const-correctness (FIXED: See GitHub issue #24)
 # -modernize-macro-to-enum (TODO: Silent in code)
 # -bugprone-assignment-in-if-condition (TODO: Silent in code)
 #
@@ -35,7 +35,6 @@ modernize-*,
 -modernize-use-trailing-return-type,
 -modernize-macro-to-enum,
 misc-*,
--misc-const-correctness,
 performance-*,
 bugprone-*,
 -bugprone-easily-swappable-parameters,
@@ -53,4 +52,6 @@ google-*,
 '
 CheckOptions:
   - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
-    value: '1'
+    value: true
+  - key: misc-const-correctness.WarnPointersAsValues
+    value: true
