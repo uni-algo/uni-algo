@@ -138,6 +138,50 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src, una::error& error)
     return dst;
 }
 
+// Validation
+
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
+template<typename Src, bool(*FnValid)(typename Src::const_iterator, typename Src::const_iterator, size_t*)>
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+template<typename Src, bool(*FnValid)(typename Src::const_pointer, typename Src::const_pointer, size_t*)>
+#else // Safe layer
+template<typename Src, bool(*FnValid)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, size_t*)>
+#endif
+uaiw_constexpr bool t_valid(const Src& src)
+{
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
+    return FnValid(src.cbegin(), src.cend(), nullptr);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    return FnValid(src.data(), src.data() + src.size(), nullptr);
+#else // Safe layer
+    return FnValid(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, nullptr);
+#endif
+}
+
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
+template<typename Src, bool(*FnValid)(typename Src::const_iterator, typename Src::const_iterator, size_t*)>
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+template<typename Src, bool(*FnValid)(typename Src::const_pointer, typename Src::const_pointer, size_t*)>
+#else // Safe layer
+template<typename Src, bool(*FnValid)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, size_t*)>
+#endif
+uaiw_constexpr bool t_valid(const Src& src, una::error& error)
+{
+    size_t err = detail::impl_npos;
+
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
+    const bool ret = FnValid(src.cbegin(), src.cend(), &err);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    const bool ret = FnValid(src.data(), src.data() + source.size(), &err);
+#else // Safe layer
+    const bool ret = FnValid(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, &err);
+#endif
+
+    error = ret ? una::error{} : una::error{una::error::code::ill_formed_utf, err};
+
+    return ret;
+}
+
 } // namespace detail
 
 // Template functions
@@ -401,14 +445,7 @@ uaiw_constexpr bool is_valid_utf8(std::basic_string_view<UTF8> source)
 {
     static_assert(std::is_integral_v<UTF8>);
 
-#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    return detail::impl_is_valid_utf8(source.cbegin(), source.cend(), nullptr);
-#elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    return detail::impl_is_valid_utf8(source.data(), source.data() + source.size(), nullptr);
-#else // Safe layer
-    namespace safe = detail::safe;
-    return detail::impl_is_valid_utf8(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, nullptr);
-#endif
+    return detail::t_valid<std::basic_string_view<UTF8>, detail::impl_is_valid_utf8>(source);
 }
 
 template<typename UTF16>
@@ -416,14 +453,7 @@ uaiw_constexpr bool is_valid_utf16(std::basic_string_view<UTF16> source)
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    return detail::impl_is_valid_utf16(source.cbegin(), source.cend(), nullptr);
-#elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    return detail::impl_is_valid_utf16(source.data(), source.data() + source.size(), nullptr);
-#else // Safe layer
-    namespace safe = detail::safe;
-    return detail::impl_is_valid_utf16(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, nullptr);
-#endif
+    return detail::t_valid<std::basic_string_view<UTF16>, detail::impl_is_valid_utf16>(source);
 }
 
 template<typename UTF32>
@@ -431,14 +461,7 @@ uaiw_constexpr bool is_valid_utf32(std::basic_string_view<UTF32> source)
 {
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    return detail::impl_is_valid_utf32(source.cbegin(), source.cend(), nullptr);
-#elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    return detail::impl_is_valid_utf32(source.data(), source.data() + source.size(), nullptr);
-#else // Safe layer
-    namespace safe = detail::safe;
-    return detail::impl_is_valid_utf32(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, nullptr);
-#endif
+    return detail::t_valid<std::basic_string_view<UTF32>, detail::impl_is_valid_utf32>(source);
 }
 
 template<typename UTF8>
@@ -446,18 +469,7 @@ uaiw_constexpr bool is_valid_utf8(std::basic_string_view<UTF8> source, una::erro
 {
     static_assert(std::is_integral_v<UTF8>);
 
-    size_t err = detail::impl_npos;
-#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    const bool ret = detail::impl_is_valid_utf8(source.cbegin(), source.cend(), &err);
-#elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    const bool ret = detail::impl_is_valid_utf8(source.data(), source.data() + source.size(), &err);
-#else // Safe layer
-    namespace safe = detail::safe;
-    const bool ret = detail::impl_is_valid_utf8(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
-#endif
-    error = ret ? una::error{} : una::error{una::error::code::ill_formed_utf, err};
-
-    return ret;
+    return detail::t_valid<std::basic_string_view<UTF8>, detail::impl_is_valid_utf8>(source, error);
 }
 
 template<typename UTF16>
@@ -465,18 +477,7 @@ uaiw_constexpr bool is_valid_utf16(std::basic_string_view<UTF16> source, una::er
 {
     static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
 
-    size_t err = detail::impl_npos;
-#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    const bool ret = detail::impl_is_valid_utf16(source.cbegin(), source.cend(), &err);
-#elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    const bool ret = detail::impl_is_valid_utf16(source.data(), source.data() + source.size(), &err);
-#else // Safe layer
-    namespace safe = detail::safe;
-    const bool ret = detail::impl_is_valid_utf16(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
-#endif
-    error = ret ? una::error{} : una::error{una::error::code::ill_formed_utf, err};
-
-    return ret;
+    return detail::t_valid<std::basic_string_view<UTF16>, detail::impl_is_valid_utf16>(source, error);
 }
 
 template<typename UTF32>
@@ -484,18 +485,7 @@ uaiw_constexpr bool is_valid_utf32(std::basic_string_view<UTF32> source, una::er
 {
     static_assert(std::is_integral_v<UTF32> && sizeof(UTF32) >= sizeof(char32_t));
 
-    size_t err = detail::impl_npos;
-#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    const bool ret = detail::impl_is_valid_utf32(source.cbegin(), source.cend(), &err);
-#elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    const bool ret = detail::impl_is_valid_utf32(source.data(), source.data() + source.size(), &err);
-#else // Safe layer
-    namespace safe = detail::safe;
-    const bool ret = detail::impl_is_valid_utf32(safe::in{source.data(), source.size()}, safe::end{source.data() + source.size()}, &err);
-#endif
-    error = ret ? una::error{} : una::error{una::error::code::ill_formed_utf, err};
-
-    return ret;
+    return detail::t_valid<std::basic_string_view<UTF32>, detail::impl_is_valid_utf32>(source, error);
 }
 
 inline uaiw_constexpr bool is_valid_utf8(std::string_view source)
