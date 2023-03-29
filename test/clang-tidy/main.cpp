@@ -20,6 +20,11 @@
 // it just makes the test slower and achieves nothing
 //#define UNI_ALGO_STATIC_DATA
 
+// Enable experimental stuff
+#ifndef UNI_ALGO_EXPERIMENTAL
+#define UNI_ALGO_EXPERIMENTAL
+#endif
+
 #include "../../include/uni_algo/version.h"
 #include "../../include/uni_algo/conv.h"
 #include "../../include/uni_algo/locale.h"
