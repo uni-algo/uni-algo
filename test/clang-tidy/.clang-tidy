@@ -1,5 +1,5 @@
 # For data files ignore this too: -misc-definitions-in-headers,
-# Never enable any readability crap
+# Do not enable most of readability crap
 #
 # LLVM 7
 # Everything else
@@ -46,6 +46,7 @@ cert-*,
 -cert-dcl21-cpp,
 google-*,
 -google-readability-*,
+google-readability-namespace-comments,
 -google-runtime-int,
 -google-runtime-references
 '
