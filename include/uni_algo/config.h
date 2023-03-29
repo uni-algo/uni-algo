@@ -125,7 +125,7 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 // Note that the the library supports CHAR_BIT more than 8-bit perfectly fine.
 // Such platforms are rare so it is just mentioned here.
 //static_assert(std::numeric_limits<unsigned char>::max() >= 255); // Always true
-}
+} // namespace una::detail
 
 // Define namespace that low-level will use
 #define UNI_ALGO_IMPL_NAMESPACE_BEGIN namespace una::detail {

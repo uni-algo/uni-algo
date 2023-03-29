@@ -126,7 +126,7 @@ inline uaiw_constexpr std::string to_uppercase_ascii(std::string_view source)
     return to_uppercase_ascii<char>(source);
 }
 
-} // namespace case
+} // namespace cases
 
 namespace casesens {
 

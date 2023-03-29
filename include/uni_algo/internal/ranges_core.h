@@ -273,7 +273,7 @@ template <class R>
 uaiw_constexpr auto operator|(R&& r, const adaptor_all& a) { return a(std::forward<R>(r)); }
 #endif
 
-} // namespase detail::rng
+} // namespace detail::rng
 
 namespace ranges::views {
 
@@ -289,7 +289,7 @@ template<class Range>
 using all_t = std::views::all_t<Range>;
 #endif
 
-} // namespace views
+} // namespace ranges::views
 
 namespace views = ranges::views;
 

@@ -244,7 +244,7 @@ inline uaiw_constexpr std::u8string macedonian_to_latin_docs_utf8(std::u8string_
 }
 #endif // __cpp_lib_char8_t
 
-} // namespace una::translit
+} // namespace unx::translit
 
 #endif // UNI_ALGO_MACEDONIAN_TO_LATIN_DOCS_H_UAIH
 
