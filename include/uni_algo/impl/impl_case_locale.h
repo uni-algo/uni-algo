@@ -62,7 +62,7 @@ uaix_static bool case_more_above_utf8(it_in_utf8 src, it_end_utf8 last)
      * C is followed by a character of combining class 230 (Above)
      * with no intervening character of combining class 0 or 230 (Above).
      * [^\p{ccc=230}\p{ccc=0}]* [\p{ccc=230}]
-     * Note: it seems the rule actually is [^\p{ccc=0}]* [\p{ccc=230}]
+     * NOTE: It seems the rule actually is [^\p{ccc=0}]* [\p{ccc=230}]
      * it passes all tests this way and the behaviour is the same as in ICU
      */
 
@@ -77,7 +77,7 @@ uaix_static bool case_more_above_utf8(it_in_utf8 src, it_end_utf8 last)
 
         if (prop & prop_CCC_230)
             return true;
-        if (!(prop & prop_CCC_NOT_0) || (prop & prop_CCC_230))
+        if (!(prop & prop_CCC_NOT_0))
             return false;
     }
 
@@ -187,7 +187,7 @@ uaix_static bool case_more_above_utf16(it_in_utf16 src, it_end_utf16 last)
 
         if (prop & prop_CCC_230)
             return true;
-        if (!(prop & prop_CCC_NOT_0) || (prop & prop_CCC_230))
+        if (!(prop & prop_CCC_NOT_0))
             return false;
     }
 
