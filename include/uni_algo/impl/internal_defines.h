@@ -37,6 +37,8 @@
 #  endif
 #endif
 
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
+
 // Must not be used without performance testing it can degrade performance in many cases
 #if defined(__GNUC__) || defined(__clang__)
 #  define uaix_likely(x)   __builtin_expect(!!(x),1)
@@ -45,6 +47,8 @@
 #  define uaix_likely(x)   (!!(x))
 #  define uaix_unlikely(x) (!!(x))
 #endif
+
+// NOLINTEND(cppcoreguidelines-macro-usage)
 
 // C implementation must be static because it will be included in .c file
 // Also add maybe unused to everything in C because a wrapper doesn't need to implement everything
@@ -92,6 +96,8 @@
 #  define uaix_const_data const
 #endif
 
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
+
 #if defined(__cplusplus) && !defined(UNI_ALGO_FORCE_C_ARRAYS)
 #define uaix_array(type, var, size) type_array<type, size> var
 #define uaix_array2(type, var, size1, size2) type_array<type_array<type, size2>, size1> var
@@ -104,6 +110,8 @@
 #endif
 #define uaix_data_array uaix_array
 #define uaix_data_array2 uaix_array2
+
+// NOLINTEND(cppcoreguidelines-macro-usage)
 
 // -Wsign-conversion is the only warning that cannot be suppressed in C++ by using other tools
 // because it's almost impossible to suppress it inside templates.
