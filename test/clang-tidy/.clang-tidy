@@ -7,7 +7,7 @@
 # -cppcoreguidelines-avoid-*,
 # -cppcoreguidelines-macro-usage, (FIXED: Commit 23888a6298296882e084c26177cdf4ac6a543501)
 # -modernize-avoid-*,
-# -modernize-use-nodiscard,
+# -modernize-use-nodiscard, (NOTE: Some of the proposals of the check is bad)
 # -hicpp-avoid-*,
 # LLVM 9
 # -modernize-use-trailing-return-type,
@@ -21,8 +21,6 @@
 # -misc-const-correctness (FIXED: See GitHub issue #24)
 # -modernize-macro-to-enum (FIXED: Commit 23888a6298296882e084c26177cdf4ac6a543501)
 # -bugprone-assignment-in-if-condition (FIXED: Commit b341ac0dabf4a52ca1c2bf4b03c640436baec00e)
-#
-# TODO: FIXME: modernize-use-nodiscard, -bugprone-easily-swappable-parameters, cppcoreguidelines-init-variables
 
 Checks: '-*,
 clang-analyzer-*,
@@ -45,8 +43,7 @@ cert-*,
 google-*,
 -google-readability-*,
 google-readability-namespace-comments,
--google-runtime-int,
--google-runtime-references
+-google-runtime-int
 '
 CheckOptions:
   - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
