@@ -1,22 +1,22 @@
-# For data files ignore this too: -misc-definitions-in-headers,
+# For data files ignore this too: -misc-definitions-in-headers
 # Do not enable most of readability crap
 #
 # LLVM 7
 # Everything else
 # LLVM 8
-# -cppcoreguidelines-avoid-*,
-# -cppcoreguidelines-macro-usage, (FIXED: Commit 23888a6298296882e084c26177cdf4ac6a543501)
-# -modernize-avoid-*,
-# -modernize-use-nodiscard, (NOTE: Some of the proposals of the check is bad)
-# -hicpp-avoid-*,
+# -cppcoreguidelines-avoid-* (FIXED)
+# -cppcoreguidelines-macro-usage (FIXED: Commit 23888a6298296882e084c26177cdf4ac6a543501)
+# -modernize-avoid-* (FIXED)
+# -modernize-use-nodiscard (NOTE: Some of the proposals of the check are bad)
+# -hicpp-avoid-* (FIXED)
 # LLVM 9
-# -modernize-use-trailing-return-type,
-# -bugprone-branch-clone,
+# -modernize-use-trailing-return-type (BAD CHECK)
+# -bugprone-branch-clone (FIXED)
 # LLVM 10
-# -cppcoreguidelines-init-variables,
+# -cppcoreguidelines-init-variables (FIXED)
 # LLVM 14
-# -hicpp-named-parameter,
-# -bugprone-easily-swappable-parameters,
+# -hicpp-named-parameter (BAD CHECK: Alias to readability-named-parameter)
+# -bugprone-easily-swappable-parameters (BAD CHECK)
 # LLVM 15
 # -misc-const-correctness (FIXED: See GitHub issue #24)
 # -modernize-macro-to-enum (FIXED: Commit 23888a6298296882e084c26177cdf4ac6a543501)
