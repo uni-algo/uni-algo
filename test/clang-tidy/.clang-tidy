@@ -20,7 +20,7 @@
 # LLVM 15
 # -misc-const-correctness (FIXED: See GitHub issue #24)
 # -modernize-macro-to-enum (TODO: Silent in code)
-# -bugprone-assignment-in-if-condition (TODO: Silent in code)
+# -bugprone-assignment-in-if-condition (FIXED: Commit b341ac0dabf4a52ca1c2bf4b03c640436baec00e)
 #
 # TODO: FIXME: modernize-use-nodiscard, -bugprone-easily-swappable-parameters, cppcoreguidelines-init-variables
 
@@ -38,7 +38,6 @@ misc-*,
 performance-*,
 bugprone-*,
 -bugprone-easily-swappable-parameters,
--bugprone-assignment-in-if-condition,
 hicpp-*,
 -hicpp-braces-around-statements,
 -hicpp-signed-bitwise,
