@@ -2043,7 +2043,7 @@ uaix_static size_t impl_norm_to_decompose_hangul(type_codept c, it_out_utf32 dst
 {
     if (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF))
     {
-        size_t hangul = norm_to_decomp_hangul(c, dst);
+        const size_t hangul = norm_to_decomp_hangul(c, dst);
         if (hangul)
             return hangul;
 
