@@ -1054,7 +1054,6 @@ uaix_const uaix_array(type_codept, case_locale_el_map_1F00_1FFF, 256) =
 };
 
 uaix_always_inline
-// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 uaix_static type_codept case_greek_upper(type_codept c, bool* const prev_vowel_with_accent, bool* const maybe_eta_with_tonos)
 {
     // The data and the algorithm is based on: http://site.icu-project.org/design/case/greek-upper
