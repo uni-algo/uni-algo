@@ -27,6 +27,8 @@ uaix_static it_in_utf8 iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept
 
     type_codept c = (*s & 0xFF), c2 = 0, c3 = 0, c4 = 0; // c2, c3, c4 tag_can_be_uninitialized
 
+    // NOLINTBEGIN(bugprone-assignment-in-if-condition)
+
     if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
     {
         *codepoint = c;
@@ -119,6 +121,8 @@ uaix_static it_in_utf8 iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept
         // invalid code unit
         ++s;
     }
+
+    // NOLINTEND(bugprone-assignment-in-if-condition)
 
     // Error: invalid code unit or overlong code point or truncated sequence in UTF-8
 

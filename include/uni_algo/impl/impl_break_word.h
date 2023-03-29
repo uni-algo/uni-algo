@@ -261,7 +261,7 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (c_prop == prop_WB_MidLetter || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             ((s_prop = break_word_skip_utf8(first, last)) != 0 &&
+             ((s_prop = break_word_skip_utf8(first, last)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB6
         result = false; // NOLINT
     else if ((p2_prop == prop_WB_ALetter || p2_prop == prop_WB_Hebrew_Letter) &&
@@ -493,7 +493,7 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (n_prop == prop_WB_MidLetter || n_prop == prop_WB_MidNumLet || n_prop == prop_WB_Single_Quote) &&
-             ((s_prop = break_word_skip_rev_utf8(first, src)) != 0 &&
+             ((s_prop = break_word_skip_rev_utf8(first, src)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB7
         result = false; // NOLINT
     else if (n_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Single_Quote) // WB7a
@@ -648,7 +648,7 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (c_prop == prop_WB_MidLetter || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             ((s_prop = break_word_skip_utf16(first, last)) != 0 &&
+             ((s_prop = break_word_skip_utf16(first, last)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB6
         result = false; // NOLINT
     else if ((p2_prop == prop_WB_ALetter || p2_prop == prop_WB_Hebrew_Letter) &&
@@ -872,7 +872,7 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (n_prop == prop_WB_MidLetter || n_prop == prop_WB_MidNumLet || n_prop == prop_WB_Single_Quote) &&
-             ((s_prop = break_word_skip_rev_utf16(first, src)) != 0 &&
+             ((s_prop = break_word_skip_rev_utf16(first, src)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB7
         result = false; // NOLINT
     else if (n_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Single_Quote) // WB7a

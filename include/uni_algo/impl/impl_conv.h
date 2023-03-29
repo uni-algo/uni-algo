@@ -60,6 +60,8 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
         type_codept c = (*s & 0xFF), c2 = 0, c3 = 0, c4 = 0; // c2, c3, c4 tag_can_be_uninitialized
         prev = s; // Save previous position for error
 
+        // NOLINTBEGIN(bugprone-assignment-in-if-condition)
+
         if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
         {
             *dst++ = (type_char16)c;
@@ -178,6 +180,8 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
             ++s;
         }
 
+        // NOLINTEND(bugprone-assignment-in-if-condition)
+
         // Error: invalid code unit or overlong code point or truncated sequence in UTF-8
 
         if (error)
@@ -283,6 +287,8 @@ uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf3
         type_codept c = (*s & 0xFF), c2 = 0, c3 = 0, c4 = 0; // c2, c3, c4 tag_can_be_uninitialized
         prev = s; // Save previous position for error
 
+        // NOLINTBEGIN(bugprone-assignment-in-if-condition)
+
         if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
         {
             *dst++ = (type_char32)c;
@@ -384,6 +390,8 @@ uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf3
             // invalid code unit
             ++s;
         }
+
+        // NOLINTEND(bugprone-assignment-in-if-condition)
 
         // Error: invalid code unit or overlong code point or truncated sequence in UTF-8
 
@@ -582,6 +590,8 @@ uaix_static bool impl_is_valid_utf8(it_in_utf8 first, it_end_utf8 last, size_t* 
         type_codept c = (*s & 0xFF), c2 = 0, c3 = 0, c4 = 0; // c2, c3, c4 tag_can_be_uninitialized
         prev = s; // Save previous position for error
 
+        // NOLINTBEGIN(bugprone-assignment-in-if-condition)
+
         if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
         {
             ++s;
@@ -666,6 +676,8 @@ uaix_static bool impl_is_valid_utf8(it_in_utf8 first, it_end_utf8 last, size_t* 
             // invalid code unit
             ++s;
         }
+
+        // NOLINTEND(bugprone-assignment-in-if-condition)
 
         // Error: invalid code unit or overlong code point or truncated sequence in UTF-8
 
