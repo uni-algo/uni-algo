@@ -237,8 +237,8 @@ int main7()
     std::cout << "DONE: Locale" << '\n';
 
     STATIC_TESTX(test_case_compare_collate());
-    STATIC_TESTX(test_case_search());
-    STATIC_TESTX(test_case_search_ex());
+    STATIC_TESTX(test_case_find());
+    STATIC_TESTX(test_case_find_ex());
     STATIC_TESTX(test_case_ill_formed());
     STATIC_TESTX(test_case_full_case());
     STATIC_TESTX(test_case_upper_lower_fold());
@@ -261,7 +261,7 @@ int main7()
 
     STATIC_TESTX(test_ascii_prop());
     STATIC_TESTX(test_ascii_upper_lower());
-    STATIC_TESTX(test_ascii_search());
+    STATIC_TESTX(test_ascii_find());
     STATIC_TESTX(test_ascii_trim());
     STATIC_TESTX(test_ascii_valid());
     STATIC_TESTX(test_ascii_collate());

@@ -46,45 +46,45 @@ test_constexpr bool test_case_compare_collate()
     return true;
 }
 
-test_constexpr bool test_case_search()
+test_constexpr bool test_case_find()
 {
-    una::search s;
+    una::found f;
 
-    TESTX((s = una::casesens::search_utf8("バババババババババカバ", "バカ")) && s.pos() == 24 && s.end_pos() == 30);
-    TESTX((s = una::caseless::search_utf8("бббббббббкбб", "ББК")) && s.pos() == 14 && s.end_pos() == 20);
-    TESTX((s = una::caseless::search_utf8("bbbbbbbbbkbb", "BBK")) && s.pos() == 7 && s.end_pos() == 10);
-    TESTX((s = una::casesens::search_utf8("バカ", "バカ")) && s.pos() == 0 && s.end_pos() == 6);
-    TESTX((s = una::caseless::search_utf8("бака", "БАКА")) && s.pos() == 0 && s.end_pos() == 8);
-    TESTX((s = una::caseless::search_utf8("baka", "BAKA")) && s.pos() == 0 && s.end_pos() == 4);
-    TESTX(!una::casesens::search_utf8("バ", "バカ"));
-    TESTX(!una::caseless::search_utf8("б", "БАКА"));
-    TESTX(!una::caseless::search_utf8("b", "BAKA"));
+    TESTX((f = una::casesens::find_utf8("バババババババババカバ", "バカ")) && f.pos() == 24 && f.end_pos() == 30);
+    TESTX((f = una::caseless::find_utf8("бббббббббкбб", "ББК")) && f.pos() == 14 && f.end_pos() == 20);
+    TESTX((f = una::caseless::find_utf8("bbbbbbbbbkbb", "BBK")) && f.pos() == 7 && f.end_pos() == 10);
+    TESTX((f = una::casesens::find_utf8("バカ", "バカ")) && f.pos() == 0 && f.end_pos() == 6);
+    TESTX((f = una::caseless::find_utf8("бака", "БАКА")) && f.pos() == 0 && f.end_pos() == 8);
+    TESTX((f = una::caseless::find_utf8("baka", "BAKA")) && f.pos() == 0 && f.end_pos() == 4);
+    TESTX(!una::casesens::find_utf8("バ", "バカ"));
+    TESTX(!una::caseless::find_utf8("б", "БАКА"));
+    TESTX(!una::caseless::find_utf8("b", "BAKA"));
 
-    TESTX((s = una::casesens::search_utf16(u"バババババババババカバ", u"バカ")) && s.pos() == 8 && s.end_pos() == 10);
-    TESTX((s = una::caseless::search_utf16(u"бббббббббкбб", u"ББК")) && s.pos() == 7 && s.end_pos() == 10);
-    TESTX((s = una::caseless::search_utf16(u"bbbbbbbbbkbb", u"BBK")) && s.pos() == 7 && s.end_pos() == 10);
-    TESTX((s = una::casesens::search_utf16(u"バカ", u"バカ")) && s.pos() == 0 && s.end_pos() == 2);
-    TESTX((s = una::caseless::search_utf16(u"бака", u"БАКА")) && s.pos() == 0 && s.end_pos() == 4);
-    TESTX((s = una::caseless::search_utf16(u"baka", u"BAKA")) && s.pos() == 0 && s.end_pos() == 4);
-    TESTX(!una::casesens::search_utf16(u"バ", u"バカ"));
-    TESTX(!una::caseless::search_utf16(u"б", u"БАКА"));
-    TESTX(!una::caseless::search_utf16(u"b", u"BAKA"));
+    TESTX((f = una::casesens::find_utf16(u"バババババババババカバ", u"バカ")) && f.pos() == 8 && f.end_pos() == 10);
+    TESTX((f = una::caseless::find_utf16(u"бббббббббкбб", u"ББК")) && f.pos() == 7 && f.end_pos() == 10);
+    TESTX((f = una::caseless::find_utf16(u"bbbbbbbbbkbb", u"BBK")) && f.pos() == 7 && f.end_pos() == 10);
+    TESTX((f = una::casesens::find_utf16(u"バカ", u"バカ")) && f.pos() == 0 && f.end_pos() == 2);
+    TESTX((f = una::caseless::find_utf16(u"бака", u"БАКА")) && f.pos() == 0 && f.end_pos() == 4);
+    TESTX((f = una::caseless::find_utf16(u"baka", u"BAKA")) && f.pos() == 0 && f.end_pos() == 4);
+    TESTX(!una::casesens::find_utf16(u"バ", u"バカ"));
+    TESTX(!una::caseless::find_utf16(u"б", u"БАКА"));
+    TESTX(!una::caseless::find_utf16(u"b", u"BAKA"));
 
     // Empty strings
 
-    TESTX((s = una::casesens::search_utf8("バカ", "")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX((s = una::caseless::search_utf8("バカ", "")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX((s = una::casesens::search_utf8("", "")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX((s = una::caseless::search_utf8("", "")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX(!una::casesens::search_utf8("", "バカ"));
-    TESTX(!una::caseless::search_utf8("", "バカ"));
+    TESTX((f = una::casesens::find_utf8("バカ", "")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX((f = una::caseless::find_utf8("バカ", "")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX((f = una::casesens::find_utf8("", "")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX((f = una::caseless::find_utf8("", "")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX(!una::casesens::find_utf8("", "バカ"));
+    TESTX(!una::caseless::find_utf8("", "バカ"));
 
-    TESTX((s = una::casesens::search_utf16(u"バカ", u"")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX((s = una::caseless::search_utf16(u"バカ", u"")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX((s = una::casesens::search_utf16(u"", u"")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX((s = una::caseless::search_utf16(u"", u"")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX(!una::casesens::search_utf16(u"", u"バカ"));
-    TESTX(!una::caseless::search_utf16(u"", u"バカ"));
+    TESTX((f = una::casesens::find_utf16(u"バカ", u"")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX((f = una::caseless::find_utf16(u"バカ", u"")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX((f = una::casesens::find_utf16(u"", u"")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX((f = una::caseless::find_utf16(u"", u"")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX(!una::casesens::find_utf16(u"", u"バカ"));
+    TESTX(!una::caseless::find_utf16(u"", u"バカ"));
 
     return true;
 }
@@ -94,7 +94,7 @@ test_constexpr bool test_case_ill_formed()
     // Ill-formed UTF must always produce replacement character U+FFFD
     // Check that all functions are consistent in this case
 
-    una::search s;
+    una::found f;
 
     // UTF-8 (Use 0x80 and 0x81 they are lone tails)
 
@@ -104,8 +104,8 @@ test_constexpr bool test_case_ill_formed()
     TESTX(una::casesens::collate_utf8("\x80", "\x81") == 0);
     TESTX(una::caseless::collate_utf8("\x80", "\x81") == 0);
 
-    TESTX((s = una::casesens::search_utf8("abc\x80", "\x81")) && s.pos() == 3 && s.end_pos() == 4);
-    TESTX((s = una::caseless::search_utf8("abc\x80", "\x81")) && s.pos() == 3 && s.end_pos() == 4);
+    TESTX((f = una::casesens::find_utf8("abc\x80", "\x81")) && f.pos() == 3 && f.end_pos() == 4);
+    TESTX((f = una::caseless::find_utf8("abc\x80", "\x81")) && f.pos() == 3 && f.end_pos() == 4);
 
     TESTX(una::cases::to_lowercase_utf8("\x80") == "\xEF\xBF\xBD");
     TESTX(una::cases::to_uppercase_utf8("\x80") == "\xEF\xBF\xBD");
@@ -119,8 +119,8 @@ test_constexpr bool test_case_ill_formed()
     TESTX(una::casesens::collate_utf16(u"\xDC00", u"\xDC01") == 0);
     TESTX(una::caseless::collate_utf16(u"\xDC00", u"\xDC01") == 0);
 
-    TESTX((s = una::casesens::search_utf16(u"abc\xDC00", u"\xDC01")) && s.pos() == 3 && s.end_pos() == 4);
-    TESTX((s = una::caseless::search_utf16(u"abc\xDC00", u"\xDC01")) && s.pos() == 3 && s.end_pos() == 4);
+    TESTX((f = una::casesens::find_utf16(u"abc\xDC00", u"\xDC01")) && f.pos() == 3 && f.end_pos() == 4);
+    TESTX((f = una::caseless::find_utf16(u"abc\xDC00", u"\xDC01")) && f.pos() == 3 && f.end_pos() == 4);
 
     TESTX(una::cases::to_lowercase_utf16(u"\xDC00") == u"\xFFFD");
     TESTX(una::cases::to_uppercase_utf16(u"\xDC00") == u"\xFFFD");
@@ -135,7 +135,7 @@ test_constexpr bool test_case_full_case()
 
     // Use ligature ﬁ (U+FB01) for testing
 
-    una::search s;
+    una::found f;
 
     // UTF-8
 
@@ -147,17 +147,17 @@ test_constexpr bool test_case_full_case()
     TESTX(una::caseless::collate_utf8("abcﬁ", "ABCF") > 0);
     TESTX(una::caseless::collate_utf8("abcﬁ", "ABCFX") < 0);
 
-    TESTX((s = una::caseless::search_utf8("abcﬁ", "FI")) && s.pos() == 3 && s.end_pos() == 6);
-    TESTX((s = una::caseless::search_utf8("ABCFI", "ﬁ")) && s.pos() == 3 && s.end_pos() == 5);
+    TESTX((f = una::caseless::find_utf8("abcﬁ", "FI")) && f.pos() == 3 && f.end_pos() == 6);
+    TESTX((f = una::caseless::find_utf8("ABCFI", "ﬁ")) && f.pos() == 3 && f.end_pos() == 5);
 
     // Complicated cases
-    TESTX(!una::caseless::search_utf8("f", "ﬁ"));
-    TESTX(!una::caseless::search_utf8("ﬁ", "f"));
-    TESTX(!una::caseless::search_utf8("ﬁ", "i"));
-    TESTX(!una::caseless::search_utf8("abcﬁ", "f"));
-    TESTX(!una::caseless::search_utf8("abcﬁ", "i"));
-    TESTX((s = una::caseless::search_utf8("abcﬁf", "f")) && s.pos() == 6 && s.end_pos() == 7);
-    TESTX((s = una::caseless::search_utf8("abcﬁ", "ﬁ")) && s.pos() == 3 && s.end_pos() == 6);
+    TESTX(!una::caseless::find_utf8("f", "ﬁ"));
+    TESTX(!una::caseless::find_utf8("ﬁ", "f"));
+    TESTX(!una::caseless::find_utf8("ﬁ", "i"));
+    TESTX(!una::caseless::find_utf8("abcﬁ", "f"));
+    TESTX(!una::caseless::find_utf8("abcﬁ", "i"));
+    TESTX((f = una::caseless::find_utf8("abcﬁf", "f")) && f.pos() == 6 && f.end_pos() == 7);
+    TESTX((f = una::caseless::find_utf8("abcﬁ", "ﬁ")) && f.pos() == 3 && f.end_pos() == 6);
 
     // UTF-16
 
@@ -169,17 +169,17 @@ test_constexpr bool test_case_full_case()
     TESTX(una::caseless::collate_utf16(u"abcﬁ", u"ABCF") > 0);
     TESTX(una::caseless::collate_utf16(u"abcﬁ", u"ABCFX") < 0);
 
-    TESTX((s = una::caseless::search_utf16(u"abcﬁ", u"FI")) && s.pos() == 3 && s.end_pos() == 4);
-    TESTX((s = una::caseless::search_utf16(u"ABCFI", u"ﬁ")) && s.pos() == 3 && s.end_pos() == 5);
+    TESTX((f = una::caseless::find_utf16(u"abcﬁ", u"FI")) && f.pos() == 3 && f.end_pos() == 4);
+    TESTX((f = una::caseless::find_utf16(u"ABCFI", u"ﬁ")) && f.pos() == 3 && f.end_pos() == 5);
 
     // Complicated cases
-    TESTX(!una::caseless::search_utf16(u"f", u"ﬁ"));
-    TESTX(!una::caseless::search_utf16(u"ﬁ", u"f"));
-    TESTX(!una::caseless::search_utf16(u"ﬁ", u"i"));
-    TESTX(!una::caseless::search_utf16(u"abcﬁ", u"f"));
-    TESTX(!una::caseless::search_utf16(u"abcﬁ", u"i"));
-    TESTX((s = una::caseless::search_utf16(u"abcﬁf", u"f")) && s.pos() == 4 && s.end_pos() == 5);
-    TESTX((s = una::caseless::search_utf16(u"abcﬁ", u"ﬁ")) && s.pos() == 3 && s.end_pos() == 4);
+    TESTX(!una::caseless::find_utf16(u"f", u"ﬁ"));
+    TESTX(!una::caseless::find_utf16(u"ﬁ", u"f"));
+    TESTX(!una::caseless::find_utf16(u"ﬁ", u"i"));
+    TESTX(!una::caseless::find_utf16(u"abcﬁ", u"f"));
+    TESTX(!una::caseless::find_utf16(u"abcﬁ", u"i"));
+    TESTX((f = una::caseless::find_utf16(u"abcﬁf", u"f")) && f.pos() == 4 && f.end_pos() == 5);
+    TESTX((f = una::caseless::find_utf16(u"abcﬁ", u"ﬁ")) && f.pos() == 3 && f.end_pos() == 4);
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 
@@ -604,23 +604,23 @@ test_constexpr bool test_case_title_locale()
     return true;
 }
 
-// Implement random algorithms using search function
+// Implement random algorithms using find function
 
 template<typename T>
 test_constexpr bool caseless_ends_with(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
-    // Search always returns true for empty string2 so we need this to avoid endless loop
+    // Find always returns true for empty string2 so we need this to avoid endless loop
     if (string2.empty())
         return true;
 
     std::size_t start = 0;
-    una::search found;
+    una::found found;
     while (true)
     {
         if constexpr (std::is_same_v<T, char>)
-            found = una::caseless::search_utf8(string1.substr(start), string2);
+            found = una::caseless::find_utf8(string1.substr(start), string2);
         else if constexpr (std::is_same_v<T, char16_t>)
-            found = una::caseless::search_utf16(string1.substr(start), string2);
+            found = una::caseless::find_utf16(string1.substr(start), string2);
         if (!found)
             break;
         if (start + found.end_pos() == string1.size())
@@ -634,12 +634,12 @@ test_constexpr bool caseless_ends_with(std::basic_string_view<T> string1, std::b
 template<typename T>
 test_constexpr bool caseless_starts_with(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
-    una::search found;
+    una::found found;
 
     if constexpr (std::is_same_v<T, char>)
-        found = una::caseless::search_utf8(string1, string2);
+        found = una::caseless::find_utf8(string1, string2);
     else if constexpr (std::is_same_v<T, char16_t>)
-        found = una::caseless::search_utf16(string1, string2);
+        found = una::caseless::find_utf16(string1, string2);
 
     return found && found.pos() == 0;
 }
@@ -656,13 +656,13 @@ caseless_find_all(std::basic_string_view<T> string1, std::basic_string_view<T> s
         return result;
 
     std::size_t start = 0;
-    una::search found;
+    una::found found;
     while (true)
     {
         if constexpr (std::is_same_v<T, char>)
-            found = una::caseless::search_utf8(string1.substr(start), string2);
+            found = una::caseless::find_utf8(string1.substr(start), string2);
         else if constexpr (std::is_same_v<T, char16_t>)
-            found = una::caseless::search_utf16(string1.substr(start), string2);
+            found = una::caseless::find_utf16(string1.substr(start), string2);
         if (!found)
             break;
         result.push_back({start + found.pos(), start + found.end_pos()});
@@ -675,7 +675,7 @@ caseless_find_all(std::basic_string_view<T> string1, std::basic_string_view<T> s
 
 // Test them
 
-test_constexpr bool test_case_search_ex()
+test_constexpr bool test_case_find_ex()
 {
     // UTF-8
 
@@ -767,16 +767,16 @@ test_constexpr bool test_case_search_ex()
 
     // TEST std::string::erase
 
-    una::search s;
+    una::found found;
 
     std::string str8 = "ABCﬁXYZ";
-    s = una::caseless::search_utf8(str8, "FI");
-    str8.erase(s.pos(), s.end_pos() - s.pos());
+    found = una::caseless::find_utf8(str8, "FI");
+    str8.erase(found.pos(), found.end_pos() - found.pos());
     TESTX(str8 == "ABCXYZ");
 
     std::u16string str16 = u"ABCﬁXYZ";
-    s = una::caseless::search_utf16(str16, u"FI");
-    str16.erase(s.pos(), s.end_pos() - s.pos());
+    found = una::caseless::find_utf16(str16, u"FI");
+    str16.erase(found.pos(), found.end_pos() - found.pos());
     TESTX(str16 == u"ABCXYZ");
 
     return true;

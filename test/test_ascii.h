@@ -69,26 +69,26 @@ test_constexpr bool test_ascii_upper_lower()
     return true;
 }
 
-test_constexpr bool test_ascii_search()
+test_constexpr bool test_ascii_find()
 {
-    una::search s;
+    una::found f;
 
-    TESTX((s = unx::caseless::search_ascii("bbbbbbbbbkbb", "BBK")) && s.pos() == 7 && s.end_pos() == 10);
-    TESTX((s = unx::caseless::search_ascii("bbk", "BBK")) && s.pos() == 0 && s.end_pos() == 3);
-    TESTX(!unx::caseless::search_ascii("b", "BBK"));
+    TESTX((f = unx::caseless::find_ascii("bbbbbbbbbkbb", "BBK")) && f.pos() == 7 && f.end_pos() == 10);
+    TESTX((f = unx::caseless::find_ascii("bbk", "BBK")) && f.pos() == 0 && f.end_pos() == 3);
+    TESTX(!unx::caseless::find_ascii("b", "BBK"));
 
-    TESTX((s = unx::casesens::search_ascii("bbbbbbbbbkbb", "bbk")) && s.pos() == 7 && s.end_pos() == 10);
-    TESTX((s = unx::casesens::search_ascii("bbk", "bbk")) && s.pos() == 0 && s.end_pos() == 3);
-    TESTX(!unx::casesens::search_ascii("b", "bbk"));
+    TESTX((f = unx::casesens::find_ascii("bbbbbbbbbkbb", "bbk")) && f.pos() == 7 && f.end_pos() == 10);
+    TESTX((f = unx::casesens::find_ascii("bbk", "bbk")) && f.pos() == 0 && f.end_pos() == 3);
+    TESTX(!unx::casesens::find_ascii("b", "bbk"));
 
     // Empty strings
 
-    TESTX((s = unx::casesens::search_ascii("bbk", "")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX((s = unx::caseless::search_ascii("bbk", "")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX((s = unx::casesens::search_ascii("", "")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX((s = unx::caseless::search_ascii("", "")) && s.pos() == 0 && s.end_pos() == 0);
-    TESTX(!unx::casesens::search_ascii("", "bbk"));
-    TESTX(!unx::caseless::search_ascii("", "bbk"));
+    TESTX((f = unx::casesens::find_ascii("bbk", "")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX((f = unx::caseless::find_ascii("bbk", "")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX((f = unx::casesens::find_ascii("", "")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX((f = unx::caseless::find_ascii("", "")) && f.pos() == 0 && f.end_pos() == 0);
+    TESTX(!unx::casesens::find_ascii("", "bbk"));
+    TESTX(!unx::caseless::find_ascii("", "bbk"));
 
     return true;
 }
@@ -158,8 +158,8 @@ test_constexpr bool test_ascii_short_func()
     TESTX(unx::caseless::compare_ascii(str, str) == 0);
     TESTX(unx::casesens::collate_ascii(str, str) == 0);
     TESTX(unx::caseless::collate_ascii(str, str) == 0);
-    TESTX(unx::casesens::search_ascii(str, str));
-    TESTX(unx::caseless::search_ascii(str, str));
+    TESTX(unx::casesens::find_ascii(str, str));
+    TESTX(unx::caseless::find_ascii(str, str));
 
     TESTX(unx::trim_ascii(str) == str);
     TESTX(unx::trim_start_ascii(str) == str);

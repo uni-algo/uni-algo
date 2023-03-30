@@ -161,8 +161,8 @@ test_constexpr bool test_short_func_case()
     TESTX(una::casesens::collate_utf8(str, str) == 0);
     TESTX(una::caseless::collate_utf8(str, str) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(una::casesens::search_utf8(str, str));
-    TESTX(una::caseless::search_utf8(str, str));
+    TESTX(una::casesens::find_utf8(str, str));
+    TESTX(una::caseless::find_utf8(str, str));
 
 // --------------
 // std::u16string
@@ -188,8 +188,8 @@ test_constexpr bool test_short_func_case()
     TESTX(una::casesens::collate_utf16(u16str, u16str) == 0);
     TESTX(una::caseless::collate_utf16(u16str, u16str) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(una::casesens::search_utf16(u16str, u16str));
-    TESTX(una::caseless::search_utf16(u16str, u16str));
+    TESTX(una::casesens::find_utf16(u16str, u16str));
+    TESTX(una::caseless::find_utf16(u16str, u16str));
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
 // ------------
@@ -216,8 +216,8 @@ test_constexpr bool test_short_func_case()
     TESTX(una::casesens::collate_utf16(wstr, wstr) == 0);
     TESTX(una::caseless::collate_utf16(wstr, wstr) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(una::casesens::search_utf16(wstr, wstr));
-    TESTX(una::caseless::search_utf16(wstr, wstr));
+    TESTX(una::casesens::find_utf16(wstr, wstr));
+    TESTX(una::caseless::find_utf16(wstr, wstr));
 
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
@@ -246,8 +246,8 @@ test_constexpr bool test_short_func_case()
     TESTX(una::casesens::collate_utf8(u8str, u8str) == 0);
     TESTX(una::caseless::collate_utf8(u8str, u8str) == 0);
 #endif // UNI_ALGO_DISABLE_COLLATE
-    TESTX(una::casesens::search_utf8(u8str, u8str));
-    TESTX(una::caseless::search_utf8(u8str, u8str));
+    TESTX(una::casesens::find_utf8(u8str, u8str));
+    TESTX(una::caseless::find_utf8(u8str, u8str));
 
 #endif // __cpp_lib_char8_t
 
