@@ -10,7 +10,7 @@
 #include <string_view>
 
 #include "../config.h"
-#include "../internal/search.h"
+#include "../internal/found.h"
 
 namespace una::detail::ascii {
 
@@ -141,7 +141,7 @@ uaiw_constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic_s
 }
 
 template<typename T>
-uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+uaiw_constexpr una::found find_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     static_assert(std::is_integral_v<T>);
 
@@ -150,9 +150,9 @@ uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::
     const std::size_t pos = string1.find(string2);
 
     if (pos == std::string_view::npos)
-        return una::search{};
+        return una::found{};
 
-    return una::search{pos, pos + string2.size()};
+    return una::found{pos, pos + string2.size()};
 }
 
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
@@ -204,9 +204,9 @@ inline uaiw_constexpr int collate_ascii(std::string_view string1, std::string_vi
     return collate_ascii<char>(string1, string2);
 }
 #endif // UNI_ALGO_IMPL_DISABLE_COLLATE
-inline uaiw_constexpr una::search search_ascii(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr una::found find_ascii(std::string_view string1, std::string_view string2)
 {
-    return search_ascii<char>(string1, string2);
+    return find_ascii<char>(string1, string2);
 }
 
 } // namespace casesens
@@ -244,7 +244,7 @@ uaiw_constexpr int compare_ascii(std::basic_string_view<T> string1, std::basic_s
 }
 
 template<typename T>
-uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
+uaiw_constexpr una::found find_ascii(std::basic_string_view<T> string1, std::basic_string_view<T> string2)
 {
     static_assert(std::is_integral_v<T>);
 
@@ -255,7 +255,7 @@ uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::
     const std::size_t n = string1.size();
 
     if (m > n)
-        return una::search{};
+        return una::found{};
 
     for (std::size_t i = 0; i <= n - m; ++i)
     {
@@ -277,10 +277,10 @@ uaiw_constexpr una::search search_ascii(std::basic_string_view<T> string1, std::
         }
 
         if (j == m)
-            return una::search{i, i + m};
+            return una::found{i, i + m};
     }
 
-    return una::search{};
+    return una::found{};
 }
 
 #ifndef UNI_ALGO_IMPL_DISABLE_COLLATE
@@ -329,9 +329,9 @@ inline uaiw_constexpr int collate_ascii(std::string_view string1, std::string_vi
     return collate_ascii<char>(string1, string2);
 }
 #endif // UNI_ALGO_IMPL_DISABLE_COLLATE
-inline uaiw_constexpr una::search search_ascii(std::string_view string1, std::string_view string2)
+inline uaiw_constexpr una::found find_ascii(std::string_view string1, std::string_view string2)
 {
-    return search_ascii<char>(string1, string2);
+    return find_ascii<char>(string1, string2);
 }
 
 } // namespace caseless

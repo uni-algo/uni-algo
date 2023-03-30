@@ -909,9 +909,9 @@ uaix_static int impl_case_collate_utf16(it_in_utf16 first1, it_end_utf16 last1,
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
-                                       it_in_utf8 first2, it_end_utf8 last2, bool caseless,
-                                       size_t* const pos, size_t* const end)
+uaix_static bool impl_case_find_utf8(it_in_utf8 first1, it_end_utf8 last1,
+                                     it_in_utf8 first2, it_end_utf8 last2, bool caseless,
+                                     size_t* const found_pos, size_t* const found_end)
 {
     it_in_utf8 src1 = first1;
     it_in_utf8 src2 = first2;
@@ -947,8 +947,8 @@ uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
 
         if (src2 == last2)
         {
-            *pos = (size_t)(prev - first1);
-            *end = (size_t)(src1 - first1);
+            *found_pos = (size_t)(prev - first1);
+            *found_end = (size_t)(src1 - first1);
             return true;
         }
 
@@ -997,8 +997,8 @@ uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
     if (src2 == last2)
 #endif
     {
-        *pos = (size_t)(prev - first1);
-        *end = (size_t)(src1 - first1);
+        *found_pos = (size_t)(prev - first1);
+        *found_end = (size_t)(src1 - first1);
         return true;
     }
 
@@ -1011,9 +1011,9 @@ uaix_static bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1,
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
-                                        it_in_utf16 first2, it_end_utf16 last2, bool caseless,
-                                        size_t* const pos, size_t* const end)
+uaix_static bool impl_case_find_utf16(it_in_utf16 first1, it_end_utf16 last1,
+                                      it_in_utf16 first2, it_end_utf16 last2, bool caseless,
+                                      size_t* const found_pos, size_t* const found_end)
 {
     it_in_utf16 src1 = first1;
     it_in_utf16 src2 = first2;
@@ -1049,8 +1049,8 @@ uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
 
         if (src2 == last2)
         {
-            *pos = (size_t)(prev - first1);
-            *end = (size_t)(src1 - first1);
+            *found_pos = (size_t)(prev - first1);
+            *found_end = (size_t)(src1 - first1);
             return true;
         }
 
@@ -1099,8 +1099,8 @@ uaix_static bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1,
     if (src2 == last2)
 #endif
     {
-        *pos = (size_t)(prev - first1);
-        *end = (size_t)(src1 - first1);
+        *found_pos = (size_t)(prev - first1);
+        *found_end = (size_t)(src1 - first1);
         return true;
     }
 
