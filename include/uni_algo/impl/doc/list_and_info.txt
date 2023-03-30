@@ -152,13 +152,13 @@ size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result
 size_t impl_case_map_loc_utf8(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result, int mode, type_codept language)
 int impl_case_compare_utf8(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless)
 int impl_case_collate_utf8(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless)
-bool impl_case_search_utf8(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless, size_t* const pos, size_t* const end)
+bool impl_case_find_utf8(it_in_utf8 first1, it_end_utf8 last1, it_in_utf8 first2, it_end_utf8 last2, bool caseless, size_t* const found_pos, size_t* const found_end)
 
 size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode)
 size_t impl_case_map_loc_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result, int mode, type_codept language)
 int impl_case_compare_utf16(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless)
 int impl_case_collate_utf16(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless)
-bool impl_case_search_utf16(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless, size_t* const pos, size_t* const end)
+bool impl_case_find_utf16(it_in_utf16 first1, it_end_utf16 last1, it_in_utf16 first2, it_end_utf16 last2, bool caseless, size_t* const found_pos, size_t* const found_end)
 
 // mode values:
 const int impl_case_map_mode_casefold

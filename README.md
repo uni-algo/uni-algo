@@ -338,7 +338,7 @@ std::cout << una::cases::to_titlecase_utf8("ijsland", una::locale("nl")) << '\n'
 
 assert(una::caseless::compare_utf8("ﬃ", "FFI") == 0);
 
-una::search found = una::caseless::search_utf8("Ligature ﬁ test", "FI");
+una::found found = una::caseless::find_utf8("Ligature ﬁ test", "FI");
 assert(found && found.pos() == 9 && found.end_pos() == 12);
 
 // The module provides a very simple collation function too.

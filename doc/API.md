@@ -91,16 +91,16 @@ una::cases::to_casefold_utf8  - case folding
 
 una::caseless::compare_utf8 - case insensitive comparison
 una::caseless::collate_utf8 - collation
-una::caseless::search_utf8  - search
+una::caseless::find_utf8    - search
 
 una::casesens::compare_utf8 - case sensitive comparison
 una::casesens::collate_utf8 - collation
-una::casesens::search_utf8  - search
+una::casesens::find_utf8    - search
 ```
 Lower, upper, title case support `una::locale`<br>
 Case folding is always locale-independent and<br>
 others are based on Default Case Matching and always locale-independent too.<br>
-Search functions return result in `una::search` class.
+Find functions return result in `una::found` class.
 
 ---
 
@@ -291,6 +291,6 @@ class una::codepoint::prop_norm         - provides <a href="https://www.unicode.
 **`other classes`**
 ```
 class una::error    - error status, used by validation functions
-class una::search   - search result, used by search functions
+class una::found    - search result, used by find functions
 class una::sentinel - sentinel, used by ranges
 ```
