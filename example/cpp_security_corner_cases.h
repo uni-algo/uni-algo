@@ -31,7 +31,7 @@ assert(una::casesens::compare_utf8("\x80", "\x81") == 0);
 assert(una::utf8to16u("\x80") == una::utf8to16u("\x81"));
 
 // The same with these 2 etc.
-assert(una::casesens::search_utf8("ABC\x80", "\x81").pos() == 3);
+assert(una::casesens::find_utf8("ABC\x80", "\x81").pos() == 3);
 assert(una::utf8to16u("ABC\x80").find(una::utf8to16u("\x81")) == 3);
 
 // Note that this is not a feature of this particular library this is how Unicode works,

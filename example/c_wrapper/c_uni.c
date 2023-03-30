@@ -26,7 +26,7 @@ int main(void)
 
     size_t pos = una_npos;
     size_t end = una_npos;
-    if (una_caseless_search_utf8("Find naïve string", "NAÏVE", &pos, &end) && pos == 5 && end == 11)
+    if (una_caseless_find_utf8("Find naïve string", "NAÏVE", &pos, &end) && pos == 5 && end == 11)
         printf("OK3\n");
 
     return 0;
@@ -319,7 +319,7 @@ type_char16* una_to_casefold_utf16(const type_char16* str)
 }
 #endif // UNI_ALGO_DISABLE_UTF16
 
-// For compare, collate and search functions simple wrappers can be used
+// For compare, collate and find functions simple wrappers can be used
 
 int una_utf8_casesens_compare(const type_char8* str1, const type_char8* str2)
 {
@@ -353,26 +353,26 @@ int una_caseless_collate_utf8(const type_char8* str1, const type_char8* str2)
 }
 #endif
 
-size_t una_casesens_search_utf8(const type_char8* str1, const type_char8* str2, size_t* pos, size_t *end)
+bool una_casesens_find_utf8(const type_char8* str1, const type_char8* str2, size_t* found_pos, size_t* found_end)
 {
     size_t len1 = internal_strlen(str1);
     size_t len2 = internal_strlen(str2);
 
     // Always set position to impl_npos before use a low-level function
-    *pos = impl_npos;
-    *end = impl_npos;
+    *found_pos = impl_npos;
+    *found_end = impl_npos;
 
-    return impl_case_search_utf8(str1, str1 + len1, str2, str2 + len2, false, pos, end);
+    return impl_case_find_utf8(str1, str1 + len1, str2, str2 + len2, false, found_pos, found_end);
 }
-size_t una_caseless_search_utf8(const type_char8* str1, const type_char8* str2, size_t* pos, size_t *end)
+bool una_caseless_find_utf8(const type_char8* str1, const type_char8* str2, size_t* found_pos, size_t *found_end)
 {
     size_t len1 = internal_strlen(str1);
     size_t len2 = internal_strlen(str2);
 
-    *pos = impl_npos;
-    *end = impl_npos;
+    *found_pos = impl_npos;
+    *found_end = impl_npos;
 
-    return impl_case_search_utf8(str1, str1 + len1, str2, str2 + len2, true, pos, end);
+    return impl_case_find_utf8(str1, str1 + len1, str2, str2 + len2, true, found_pos, found_end);
 }
 
 #ifndef UNI_ALGO_DISABLE_UTF16
@@ -408,25 +408,25 @@ int una_caseless_collate_utf16(const type_char16* str1, const type_char16* str2)
 }
 #endif
 
-size_t una_casesens_search_utf16(const type_char16* str1, const type_char16* str2, size_t* pos, size_t *end)
+bool una_casesens_find_utf16(const type_char16* str1, const type_char16* str2, size_t* found_pos, size_t* found_end)
 {
     size_t len1 = internal_strlen16(str1);
     size_t len2 = internal_strlen16(str2);
 
-    *pos = impl_npos;
-    *end = impl_npos;
+    *found_pos = impl_npos;
+    *found_end = impl_npos;
 
-    return impl_case_search_utf16(str1, str1 + len1, str2, str2 + len2, false, pos, end);
+    return impl_case_find_utf16(str1, str1 + len1, str2, str2 + len2, false, found_pos, found_end);
 }
-size_t una_caseless_search_utf16(const type_char16* str1, const type_char16* str2, size_t* pos, size_t *end)
+bool una_caseless_find_utf16(const type_char16* str1, const type_char16* str2, size_t* found_pos, size_t* found_end)
 {
     size_t len1 = internal_strlen16(str1);
     size_t len2 = internal_strlen16(str2);
 
-    *pos = impl_npos;
-    *end = impl_npos;
+    *found_pos = impl_npos;
+    *found_end = impl_npos;
 
-    return impl_case_search_utf16(str1, str1 + len1, str2, str2 + len2, true, pos, end);
+    return impl_case_find_utf16(str1, str1 + len1, str2, str2 + len2, true, found_pos, found_end);
 }
 #endif // UNI_ALGO_DISABLE_UTF16
 #endif // UNI_ALGO_DISABLE_CASE

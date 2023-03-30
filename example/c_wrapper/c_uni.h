@@ -63,8 +63,8 @@ int una_casesens_collate_utf8(const char* str1, const char* str2);
 int una_caseless_collate_utf8(const char* str1, const char* str2);
 #endif // UNI_ALGO_DISABLE_COLLATION
 
-size_t una_casesens_search_utf8(const char* str1, const char* str2, size_t* pos, size_t* end);
-size_t una_caseless_search_utf8(const char* str1, const char* str2, size_t* pos, size_t* end);
+bool una_casesens_find_utf8(const char* str1, const char* str2, size_t* found_pos, size_t* found_end);
+bool una_caseless_find_utf8(const char* str1, const char* str2, size_t* found_pos, size_t* found_end);
 
 #ifndef UNI_ALGO_DISABLE_UTF16
 
@@ -76,12 +76,12 @@ int una_casesens_collate_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2);
 int una_caseless_collate_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2);
 #endif // UNI_ALGO_DISABLE_COLLATION
 
-size_t una_casesens_search_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2, size_t* pos, size_t* end);
-size_t una_caseless_search_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2, size_t* pos, size_t* end);
+bool una_casesens_find_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2, size_t* found_pos, size_t* found_end);
+bool una_caseless_find_utf16(const UNI_CHAR16* str1, const UNI_CHAR16* str2, size_t* found_pos, size_t* found_end);
 
 #endif // UNI_ALGO_DISABLE_UTF16
 
-// Not found value for search functions
+// Not found value for find functions
 extern const size_t una_npos;
 
 #endif // UNI_ALGO_DISABLE_CASE

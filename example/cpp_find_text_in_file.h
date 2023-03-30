@@ -61,13 +61,13 @@ void find_string_in_file(const std::string& file, std::string_view string)
         while (!line_view.empty() && line_view.back() == '\r')
             line_view.remove_suffix(1);
 
-        // In this example we use una::caseless::search_utf8
+        // In this example we use una::caseless::find_utf8
         // to find all occurrences of the string in the line
 
         std::size_t start = 0;
         while (true)
         {
-            una::search found = una::caseless::search_utf8(line_view.substr(start), string);
+            una::found found = una::caseless::find_utf8(line_view.substr(start), string);
             if (!found || string.empty())
                 break;
 
