@@ -7,6 +7,8 @@ See commit history between tags for details.
 - Changed versions in namespace `una::version` to classes ([#18](https://github.com/uni-algo/uni-algo/issues/18))
 - File `uni_algo/version.h` is not included by other files anymore
 - Improved `una::error` class added `una::error::code`
+- Renamed `search` functions to `find` ([#23](https://github.com/uni-algo/uni-algo/issues/23))
+- Renamed `una::search` class to `una::found` ([#23](https://github.com/uni-algo/uni-algo/issues/23))
 
 ## [v0.7.1](https://github.com/uni-algo/uni-algo/tree/v0.7.1) (27.02.2023)
 - Fixed bug when normalization and UTF-16 views are used with input ranges ([#22](https://github.com/uni-algo/uni-algo/issues/22)). Thanks [@tocic](https://github.com/tocic).
