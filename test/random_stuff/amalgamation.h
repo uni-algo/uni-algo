@@ -234,7 +234,7 @@ void amalgam()
 
     // Internals must be first
     output << amalgam_part("uni_algo/internal/error.h");
-    output << amalgam_part("uni_algo/internal/search.h");
+    output << amalgam_part("uni_algo/internal/found.h");
     output << amalgam_part("uni_algo/internal/ranges_core.h");
     output << amalgam_part("uni_algo/internal/ranges_translit.h");
 
