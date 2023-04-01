@@ -75,7 +75,8 @@ void find_string_in_file(const std::string& file, std::string_view string)
 
             // Now we need to move start position for next search but we cannot do it like this:
             // start += found.pos() + string.size();
-            // It won't work properly with Unicode and can be dangerous. We must do it like this:
+            // It won't work properly in Unicode because the size of the string we found may not
+            // be the same as the size of the string we search for. So we must do it like this:
             start += found.end_pos();
         }
     }
