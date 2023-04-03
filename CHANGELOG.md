@@ -10,10 +10,10 @@ See commit history between tags for details.
 - Renamed `search` functions to `find` ([#23](https://github.com/uni-algo/uni-algo/issues/23))
 - Renamed `una::search` class to `una::found` ([#23](https://github.com/uni-algo/uni-algo/issues/23))
 
-## [v0.7.1](https://github.com/uni-algo/uni-algo/tree/v0.7.1) (27.02.2023)
+## [v0.7.1](https://github.com/uni-algo/uni-algo/tree/v0.7.1) (2023-02-27)
 - Fixed bug when normalization and UTF-16 views are used with input ranges ([#22](https://github.com/uni-algo/uni-algo/issues/22)). Thanks [@tocic](https://github.com/tocic).
 
-## [v0.7.0](https://github.com/uni-algo/uni-algo/tree/v0.7.0) (07.02.2023)
+## [v0.7.0](https://github.com/uni-algo/uni-algo/tree/v0.7.0) (2023-02-07)
 - Renamed main namespace from `uni::` to `una::`
 - Splitted .h files with ranges and functions:
   - Added files: `uni_algo/ranges_norm.h` and `uni_algo/ranges_conv.h`
@@ -25,7 +25,7 @@ See commit history between tags for details.
 - Added ASCII extension
 - Removed function uni::codepoint::to_decompose_hangul_u32
 
-## [v0.6.0](https://github.com/uni-algo/uni-algo/tree/v0.6.0) (07.11.2022)
+## [v0.6.0](https://github.com/uni-algo/uni-algo/tree/v0.6.0) (2022-11-07)
 - Added uni::is_valid_utf8/16/32 functions for strings
 - Added custom allocator support for template functions
 - Added custom allocator support for output ranges
@@ -35,7 +35,7 @@ See commit history between tags for details.
 - Lowered requirements for word/grapheme breaks to bidirectional range
 - Extensions now use unx namespace instead of uni
 
-## [v0.5.0](https://github.com/uni-algo/uni-algo/tree/v0.5.0) (01.10.2022)
+## [v0.5.0](https://github.com/uni-algo/uni-algo/tree/v0.5.0) (2022-10-01)
 - Updated to Unicode 15.0.0
 - Added single include version
 - Renamed files from cpp_uni_* to uni_algo/*
@@ -47,7 +47,7 @@ See commit history between tags for details.
 - Removed function uni::codepoint::is_same_category
 - Redesigned transliterators more than two times faster now
 
-## [v0.4.0](https://github.com/uni-algo/uni-algo/tree/v0.4.0) (30.08.2022)
+## [v0.4.0](https://github.com/uni-algo/uni-algo/tree/v0.4.0) (2022-08-30)
 - Added code point basic properties
 - Added code point case properties
 - Added code point case tranformations
@@ -55,7 +55,7 @@ See commit history between tags for details.
 - Added code point normalization tranformations
 - Added ranges to_utf8_reserve and to_utf16_reserve
 
-## [v0.3.0](https://github.com/uni-algo/uni-algo/tree/v0.3.0) (07.08.2022)
+## [v0.3.0](https://github.com/uni-algo/uni-algo/tree/v0.3.0) (2022-08-07)
 - Added support for char8_t strings
 - Switched from iterators to ranges
 - Switched to ranges in transliterators
@@ -69,8 +69,8 @@ See commit history between tags for details.
 - Removed break: grapheme, word iterators
 - Renamed function is_pos() to has_pos() in class error
 
-## [v0.2.0](https://github.com/uni-algo/uni-algo/tree/v0.2.0) (14.07.2022)
+## [v0.2.0](https://github.com/uni-algo/uni-algo/tree/v0.2.0) (2022-07-14)
 - Updated to Unicode 14.0.0
 
-## [v0.1.0](https://github.com/uni-algo/uni-algo/tree/v0.1.0) (07.07.2022)
+## [v0.1.0](https://github.com/uni-algo/uni-algo/tree/v0.1.0) (2022-07-07)
 - Initial commit
