@@ -622,6 +622,7 @@ uaix_static bool norm_decomp_return(struct norm_buffer* const buffer, struct nor
 
     // This must never happen so flush the buffer and stop to make it noticeable in tests.
     // 18 is max compatibility decomposition so the next turn can exhaust the buffer.
+    // NOTE: C++ safe layer can prevent this error even without this check.
     if (m->size + impl_max_norm_decomp_compat > norm_buffer_size)
     {
 #ifdef UNI_ALGO_TEST_ASSERT
