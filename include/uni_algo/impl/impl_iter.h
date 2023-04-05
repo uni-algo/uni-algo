@@ -126,10 +126,6 @@ uaix_static it_in_utf8 iter_utf8(it_in_utf8 first, it_end_utf8 last, type_codept
 
     // Error: invalid code unit or overlong code point or truncated sequence in UTF-8
 
-#ifdef UNI_ALGO_TEST_CPP_THROW_ON_ILL_FORMED
-    throw std::runtime_error("ill-formed UTF-8");
-#endif
-
     *codepoint = error;
 
     return s;
@@ -174,10 +170,6 @@ uaix_static it_in_utf16 iter_utf16(it_in_utf16 first, it_end_utf16 last, type_co
     }
 
     // Error: lone low surrogate or broken surrogate pair in UTF-16
-
-#ifdef UNI_ALGO_TEST_CPP_THROW_ON_ILL_FORMED
-    throw std::runtime_error("ill-formed UTF-16");
-#endif
 
     *codepoint = error;
     return src;

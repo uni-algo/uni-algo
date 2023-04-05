@@ -57,8 +57,6 @@ Test defines.
 UNI_ALGO_TEST_ASSERT - Enable self test ASSERTX must be defined
 UNI_ALGO_TEST_DISABLE_ALWAYS_INLINE_GLOBAL - See internal_defines.h
 UNI_ALGO_TEST_DISABLE_ALWAYS_INLINE_GLOBAL_EX - See internal_defines.h
-UNI_ALGO_TEST_CPP_THROW_ON_ILL_FORMED - Meow
-UNI_ALGO_TEST_CPP_THROW_ASSERT - Meow
 Note 1: don't test always inline defines with just a one function a compiler can
 decide to inline everything into this function even without always inline attribute
 use multiple functions in a row for the proper testing.

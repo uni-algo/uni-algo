@@ -190,8 +190,5 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 // Other test defines
 //#define UNI_ALGO_TEST_DISABLE_ALWAYS_INLINE_GLOBAL
 //#define UNI_ALGO_TEST_DISABLE_ALWAYS_INLINE_GLOBAL_EX
-//#include <stdexcept>
-//#define UNI_ALGO_TEST_CPP_THROW_ON_ILL_FORMED
-//#define UNI_ALGO_TEST_CPP_THROW_ASSERT
 
 #endif // UNI_ALGO_CONFIG_H_UAIH

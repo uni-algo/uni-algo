@@ -24,9 +24,6 @@ uaix_static type_codept stages(type_codept c, const T1& stage1, const T2& stage2
 #ifdef UNI_ALGO_TEST_ASSERT
     uaix_assert(c <= 0x10FFFF);
 #endif
-#ifdef UNI_ALGO_TEST_CPP_THROW_ASSERT
-    if (c > 0x10FFFF) throw std::runtime_error("assert stages");
-#endif
 
     return stage2[(stage1[c >> 7] << 7) + (c & 127)];
     // The same as: stage2[stage1[c / 128] * 128 + c % 128]
