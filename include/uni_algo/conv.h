@@ -67,7 +67,7 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src)
 #  endif
 #endif
 
-#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
+#ifndef UNI_ALGO_NO_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
     }
@@ -130,7 +130,7 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src, una::error& error)
             error = una::error{una::error::code::ill_formed_utf, err};
         }
 
-#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
+#ifndef UNI_ALGO_NO_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
     }

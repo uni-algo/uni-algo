@@ -72,7 +72,7 @@ uaiw_constexpr Dst t_map(const Alloc& alloc, const Src& src, int mode, type_code
 #  endif
 #endif
 
-#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
+#ifndef UNI_ALGO_NO_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
     }

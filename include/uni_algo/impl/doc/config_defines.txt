@@ -39,7 +39,7 @@ See examples/c_wrapper for an example how they can be implemented.
 UNI_ALGO_DISABLE_SYSTEM_LOCALE - Disable system locale.
 
 Reserved for C++ wrapper (see uni_algo/config.h).
-UNI_ALGO_DISABLE_SHRINK_TO_FIT
+UNI_ALGO_NO_SHRINK_TO_FIT
 UNI_ALGO_FORCE_CPP17_RANGES
 UNI_ALGO_FORCE_CPP_ITERATORS
 UNI_ALGO_FORCE_C_POINTERS

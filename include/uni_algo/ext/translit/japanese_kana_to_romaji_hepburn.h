@@ -279,7 +279,7 @@ japanese_kana_to_romaji_hepburn_utf8(std::basic_string_view<UTF8> source, const 
     auto result = detail::rng::translit_view{ranges::utf8_view{source}, func, tr::buf_size}
         | ranges::to_utf8_reserve<std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>>(source.size(), alloc);
 
-#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
+#ifndef UNI_ALGO_NO_SHRINK_TO_FIT
     result.shrink_to_fit();
 #endif
     return result;
@@ -298,7 +298,7 @@ japanese_kana_to_romaji_hepburn_utf16(std::basic_string_view<UTF16> source, cons
     auto result = detail::rng::translit_view{ranges::utf16_view{source}, func, tr::buf_size}
         | ranges::to_utf16_reserve<std::basic_string<UTF16, std::char_traits<UTF16>, Alloc>>(source.size(), alloc);
 
-#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
+#ifndef UNI_ALGO_NO_SHRINK_TO_FIT
     result.shrink_to_fit();
 #endif
     return result;

@@ -8,7 +8,6 @@
 // TODO: Rename:
 // UNI_ALGO_DISABLE_BREAK_GRAPHEME -> UNI_ALGO_DISABLE_SEGMENT_GRAPHEME
 // UNI_ALGO_DISABLE_BREAK_WORD -> UNI_ALGO_DISABLE_SEGMENT_WORD
-// UNI_ALGO_DISABLE_SHRINK_TO_FIT -> UNI_ALGO_NO_SHRINK_TO_FIT
 // UNI_ALGO_ENABLE_SAFE_LAYER -> UNI_ALGO_SAFE_LAYER (Not sure about this one)
 
 // Note that you can just add the following defines to your project
@@ -59,7 +58,7 @@
 //#define UNI_ALGO_DISABLE_SYSTEM_LOCALE
 // Disable system locale facilities: una::locale::system() function etc.
 
-//#define UNI_ALGO_DISABLE_SHRINK_TO_FIT
+//#define UNI_ALGO_NO_SHRINK_TO_FIT
 // Most of functions do shrink_to_fit() call at the end of a function by default
 // but if you use a custom allocator or want to maximize the performance of the library
 // it might be better to disable it and do the call manually only when needed.

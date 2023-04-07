@@ -64,7 +64,7 @@ uaiw_constexpr Dst t_norm(const Alloc& alloc, const Src& src)
 #  endif
 #endif
 
-#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
+#ifndef UNI_ALGO_NO_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
     }
@@ -136,7 +136,7 @@ uaiw_constexpr Dst t_norm2(const Alloc& alloc, const Src& src)
         FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, it_out);
 #endif
 
-#ifndef UNI_ALGO_DISABLE_SHRINK_TO_FIT
+#ifndef UNI_ALGO_NO_SHRINK_TO_FIT
         dst.shrink_to_fit();
 #endif
     }
