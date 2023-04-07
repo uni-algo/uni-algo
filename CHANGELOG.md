@@ -9,6 +9,8 @@ See commit history between tags for details.
 - Improved `una::error` class added `una::error::code`
 - Renamed `search` functions to `find` ([#23](https://github.com/uni-algo/uni-algo/issues/23))
 - Renamed `una::search` class to `una::found` ([#23](https://github.com/uni-algo/uni-algo/issues/23))
+- Renamed config defines:
+  - `UNI_ALGO_DISABLE_SHRINK_TO_FIT` to `UNI_ALGO_NO_SHRINK_TO_FIT`
 
 ## [v0.7.1](https://github.com/uni-algo/uni-algo/tree/v0.7.1) (2023-02-27)
 - Fixed bug when normalization and UTF-16 views are used with input ranges ([#22](https://github.com/uni-algo/uni-algo/issues/22)). Thanks [@tocic](https://github.com/tocic).
