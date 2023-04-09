@@ -207,16 +207,16 @@ void amalgam()
     output << amalgam_data("uni_algo/impl/data/data_norm.h");
     output << amalgam_data("uni_algo/impl/data/data_prop.h");
     output << amalgam_data("uni_algo/impl/data/data_script.h");
-    output << amalgam_data("uni_algo/impl/data/data_break_grapheme.h");
-    output << amalgam_data("uni_algo/impl/data/data_break_word.h");
+    output << amalgam_data("uni_algo/impl/data/data_segment_grapheme.h");
+    output << amalgam_data("uni_algo/impl/data/data_segment_word.h");
 
     output << amalgam_part("uni_algo/impl/internal_stages.h"); // Old full
 
     // The order for implementation files are important
     output << amalgam_part("uni_algo/impl/impl_iter.h"); // Must be first
     output << amalgam_part("uni_algo/impl/impl_conv.h");
-    output << amalgam_part("uni_algo/impl/impl_break_grapheme.h");
-    output << amalgam_part("uni_algo/impl/impl_break_word.h"); // Must be before case
+    output << amalgam_part("uni_algo/impl/impl_segment_grapheme.h");
+    output << amalgam_part("uni_algo/impl/impl_segment_word.h"); // Must be before case
     output << amalgam_part("uni_algo/impl/impl_locale.h"); // Must be before case
     output << amalgam_part("uni_algo/impl/impl_case.h");
     output << amalgam_part("uni_algo/impl/impl_case_locale.h"); // Must be after case
