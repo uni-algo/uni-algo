@@ -518,7 +518,7 @@ test_constexpr bool test_case_locale_el()
 
 test_constexpr bool test_case_title()
 {
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 
     TESTX(una::cases::to_titlecase_utf8("t") == "T");
     TESTX(una::cases::to_titlecase_utf8("tEsT") == "Test");
@@ -567,14 +567,14 @@ test_constexpr bool test_case_title()
 
     TESTX(una::cases::to_titlecase_utf16(u"\x0345\x0345\x0345") == u"\x0399\x0345\x0345");
 
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
     return true;
 }
 
 test_constexpr bool test_case_title_locale()
 {
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
     TESTX(una::cases::to_titlecase_utf8("ijtest ijTeSt ﬃtEsT", una::locale("nl")) == "IJtest IJtest Ffitest");
@@ -599,7 +599,7 @@ test_constexpr bool test_case_title_locale()
     TESTX(una::cases::to_titlecase_utf16(u"i\x0307tEsT", una::locale("lt")) == u"I\x0307test");
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
     return true;
 }

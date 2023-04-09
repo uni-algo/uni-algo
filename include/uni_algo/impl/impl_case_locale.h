@@ -1222,7 +1222,7 @@ uaix_static size_t case_upper_el_utf16(it_in_utf16 first, it_end_utf16 last, it_
     return (size_t)(dst - result);
 }
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
@@ -1507,7 +1507,7 @@ uaix_static size_t case_title_locale_utf16(it_in_utf16 first, it_end_utf16 last,
     return (size_t)(dst - result);
 }
 
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
@@ -1546,7 +1546,7 @@ uaix_static size_t impl_case_map_locale_utf8(it_in_utf8 first, it_end_utf8 last,
 
             return (size_t)(dst - result);
         }
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
         if (mode == impl_case_map_mode_titlecase)
             return case_title_locale_utf8(first, last, result, language);
 #endif
@@ -1577,7 +1577,7 @@ uaix_static size_t impl_case_map_locale_utf8(it_in_utf8 first, it_end_utf8 last,
 
             return (size_t)(dst - result);
         }
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
         if (mode == impl_case_map_mode_titlecase)
             return case_title_locale_utf8(first, last, result, language);
 #endif
@@ -1587,7 +1587,7 @@ uaix_static size_t impl_case_map_locale_utf8(it_in_utf8 first, it_end_utf8 last,
         if (mode == impl_case_map_mode_uppercase)
             return case_upper_el_utf8(first, last, result);
     }
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
     else if (language == case_map_language_nl)
     {
         if (mode == impl_case_map_mode_titlecase)
@@ -1635,7 +1635,7 @@ uaix_static size_t impl_case_map_locale_utf16(it_in_utf16 first, it_end_utf16 la
 
             return (size_t)(dst - result);
         }
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
         if (mode == impl_case_map_mode_titlecase)
             return case_title_locale_utf16(first, last, result, language);
 #endif
@@ -1666,7 +1666,7 @@ uaix_static size_t impl_case_map_locale_utf16(it_in_utf16 first, it_end_utf16 la
 
             return (size_t)(dst - result);
         }
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
         if (mode == impl_case_map_mode_titlecase)
             return case_title_locale_utf16(first, last, result, language);
 #endif
@@ -1676,7 +1676,7 @@ uaix_static size_t impl_case_map_locale_utf16(it_in_utf16 first, it_end_utf16 la
         if (mode == impl_case_map_mode_uppercase)
             return case_upper_el_utf16(first, last, result);
     }
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
     else if (language == case_map_language_nl)
     {
         if (mode == impl_case_map_mode_titlecase)

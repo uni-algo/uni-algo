@@ -57,7 +57,7 @@ typedef UNI_CHAR32    type_char32; // Can be 32-bit or more signed/unsigned
 // and unaccent functions (part of Normalization module) in this example
 // so we must disable these dependencies.
 // See impl/doc/config_defines.txt and look for word DEPENDENCY
-#define UNI_ALGO_DISABLE_BREAK_WORD
+#define UNI_ALGO_DISABLE_SEGMENT_WORD
 #define UNI_ALGO_DISABLE_PROP
 
 // Include Conversion module (doesn't need Unicode data tables)

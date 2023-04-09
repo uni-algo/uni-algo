@@ -15,7 +15,7 @@ UNI_ALGO_DISABLE_COLLATE - Disable collation functions and data.
 UNI_ALGO_DISABLE_FULL_CASE - Disable full case mapping, enable simple case mapping.
 The define mostly for documentation purposes to see how a function look with simple case mapping
 and test purposes to compare the performance of full case mapping and simple case mapping.
-DEPENDENCY: UNI_ALGO_DISABLE_BREAK_WORD - Disable title case functions and data.
+DEPENDENCY: UNI_ALGO_DISABLE_SEGMENT_WORD - Disable title case functions and data.
 
 impl_norm.h (impl_norm_data.h)
 UNI_ALGO_DISABLE_NORM - Reserved for a wrapper. Can be used to disable this module.
@@ -25,11 +25,11 @@ DEPENDENCY: UNI_ALGO_DISABLE_PROP - Disable unaccent functions.
 impl_prop.h (impl_prop_data.h)
 UNI_ALGO_DISABLE_PROP - Reserved for a wrapper. Can be used to disable this module.
 
-impl_break_grapheme.h (impl_break_grapheme_data.h)
-UNI_ALGO_DISABLE_BREAK_GRAPHEME - Reserved for a wrapper. Can be used to disable this module.
+impl_segment_grapheme.h (data_segment_grapheme.h)
+UNI_ALGO_DISABLE_SEGMENT_GRAPHEME - Reserved for a wrapper. Can be used to disable this module.
 
-impl_break_word.h (impl_break_word_data.h)
-UNI_ALGO_DISABLE_BREAK_WORD - Reserved for a wrapper. Can be used to disable this module.
+impl_segment_word.h (data_segment_word.h)
+UNI_ALGO_DISABLE_SEGMENT_WORD - Reserved for a wrapper. Can be used to disable this module.
 
 Other configuration defines that are reserved for a wrapper.
 Note that they are useful only for C wrapper because in C++ everything is template and won't be compiled if not used.

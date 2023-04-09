@@ -113,12 +113,12 @@ test_constexpr bool test_alloc_func_case()
     TESTX(una::cases::to_uppercase_utf8<char>(str, una::locale{}, alloc) == str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_casefold_utf8<char>(str, alloc) == str);
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_titlecase_utf8<char>(str, alloc) == str);
     TESTX(una::cases::to_titlecase_utf8<char>(str, una::locale{}, alloc) == str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
     TESTX(una::cases::to_lowercase_utf16<char16_t>(u16str, alloc16) == u16str);
     TESTX(una::cases::to_uppercase_utf16<char16_t>(u16str, alloc16) == u16str);
@@ -127,12 +127,12 @@ test_constexpr bool test_alloc_func_case()
     TESTX(una::cases::to_uppercase_utf16<char16_t>(u16str, una::locale{}, alloc16) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_casefold_utf16<char16_t>(u16str, alloc16) == u16str);
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_titlecase_utf16<char16_t>(u16str, alloc16) == u16str);
     TESTX(una::cases::to_titlecase_utf16<char16_t>(u16str, una::locale{}, alloc16) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
     return true;
 }

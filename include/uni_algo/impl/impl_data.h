@@ -31,12 +31,12 @@
 #include "data/data_script.h"
 #endif
 
-#ifndef UNI_ALGO_DISABLE_BREAK_GRAPHEME
+#ifndef UNI_ALGO_DISABLE_SEGMENT_GRAPHEME
 #include "data/extern_segment_grapheme.h"
 #include "data/data_segment_grapheme.h"
 #endif
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #include "data/extern_segment_word.h"
 #include "data/data_segment_word.h"
 #endif

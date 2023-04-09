@@ -148,12 +148,12 @@ test_constexpr bool test_short_func_case()
     TESTX(una::cases::to_uppercase_utf8(str, una::locale{}) == str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_casefold_utf8(str) == str);
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_titlecase_utf8(str) == str);
     TESTX(una::cases::to_titlecase_utf8(str, una::locale{}) == str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
     TESTX(una::casesens::compare_utf8(str, str) == 0);
     TESTX(una::caseless::compare_utf8(str, str) == 0);
@@ -175,12 +175,12 @@ test_constexpr bool test_short_func_case()
     TESTX(una::cases::to_uppercase_utf16(u16str, una::locale{}) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_casefold_utf16(u16str) == u16str);
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_titlecase_utf16(u16str) == u16str);
     TESTX(una::cases::to_titlecase_utf16(u16str, una::locale{}) == u16str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
     TESTX(una::casesens::compare_utf16(u16str, u16str) == 0);
     TESTX(una::caseless::compare_utf16(u16str, u16str) == 0);
@@ -203,12 +203,12 @@ test_constexpr bool test_short_func_case()
     TESTX(una::cases::to_uppercase_utf16(wstr, una::locale{}) == wstr);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_casefold_utf16(wstr) == wstr);
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_titlecase_utf16(wstr) == wstr);
     TESTX(una::cases::to_titlecase_utf16(wstr, una::locale{}) == wstr);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
     TESTX(una::casesens::compare_utf16(wstr, wstr) == 0);
     TESTX(una::caseless::compare_utf16(wstr, wstr) == 0);
@@ -233,12 +233,12 @@ test_constexpr bool test_short_func_case()
     TESTX(una::cases::to_uppercase_utf8(u8str, una::locale{}) == u8str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_casefold_utf8(u8str) == u8str);
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
     TESTX(una::cases::to_titlecase_utf8(u8str) == u8str);
     TESTX(una::cases::to_titlecase_utf8(u8str, una::locale{}) == u8str);
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
     TESTX(una::casesens::compare_utf8(u8str, u8str) == 0);
     TESTX(una::caseless::compare_utf8(u8str, u8str) == 0);

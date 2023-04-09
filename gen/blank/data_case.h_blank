@@ -18,7 +18,7 @@ new_stage1_fold.txt};
 uaix_const_data uaix_data_array(type_codept, stage2_fold, new_stage2_fold.111) = {
 new_stage2_fold.txt};
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 
 uaix_const_data uaix_data_array(unsigned char, stage1_title, new_stage1_title.111) = {
 new_stage1_title.txt};
@@ -26,7 +26,7 @@ new_stage1_title.txt};
 uaix_const_data uaix_data_array(type_codept, stage2_title, new_stage2_title.111) = {
 new_stage2_title.txt};
 
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #ifndef UNI_ALGO_DISABLE_COLLATE
 
@@ -66,7 +66,7 @@ uaix_const_data uaix_data_array2(unsigned short, stage3_special_fold, new_stage3
 uaix_array_brace_ellison(unsigned short, new_stage3_special_fold.222)
 new_stage3_special_fold.txt};
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 
 uaix_const_data uaix_data_array(unsigned char, stage1_special_title, new_stage1_special_title.111) = {
 new_stage1_special_title.txt};
@@ -78,7 +78,7 @@ uaix_const_data uaix_data_array2(unsigned short, stage3_special_title, new_stage
 uaix_array_brace_ellison(unsigned short, new_stage3_special_title.222)
 new_stage3_special_title.txt};
 
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 // This is handled in place
 #if 0

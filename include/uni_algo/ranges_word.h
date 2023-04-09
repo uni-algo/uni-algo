@@ -5,8 +5,8 @@
 #ifndef UNI_ALGO_RANGES_WORD_H_UAIH
 #define UNI_ALGO_RANGES_WORD_H_UAIH
 
-#ifdef UNI_ALGO_DISABLE_BREAK_WORD
-#error "Break Word module is disabled via define UNI_ALGO_DISABLE_BREAK_WORD"
+#ifdef UNI_ALGO_DISABLE_SEGMENT_WORD
+#error "Word segmentation module is disabled via define UNI_ALGO_DISABLE_SEGMENT_WORD"
 #endif
 
 #include <string_view>

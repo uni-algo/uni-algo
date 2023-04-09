@@ -5,8 +5,8 @@
 #ifndef UNI_ALGO_RANGES_GRAPHEME_H_UAIH
 #define UNI_ALGO_RANGES_GRAPHEME_H_UAIH
 
-#ifdef UNI_ALGO_DISABLE_BREAK_GRAPHEME
-#error "Break Grapheme module is disabled via define UNI_ALGO_DISABLE_BREAK_GRAPHEME"
+#ifdef UNI_ALGO_DISABLE_SEGMENT_GRAPHEME
+#error "Grapheme segmentation module is disabled via define UNI_ALGO_DISABLE_SEGMENT_GRAPHEME"
 #endif
 
 #include <string_view>

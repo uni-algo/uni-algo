@@ -6,9 +6,9 @@
 #define UNI_ALGO_IMPL_CASE_H_UAIH
 
 #include "impl_iter.h"
-// Note that title case has cross dependency with break word module
+// Note that title case has cross dependency with word segmentation module
 // and if it's disabled all title case functions must be disabled too
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #include "impl_segment_word.h"
 #endif
 
@@ -88,7 +88,7 @@ uaix_static type_codept stages_fold(type_codept c)
     return v ? v : c;
 }
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 
 uaix_always_inline
 uaix_static type_codept stages_title(type_codept c)
@@ -97,7 +97,7 @@ uaix_static type_codept stages_title(type_codept c)
     return v ? v : c;
 }
 
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #ifndef UNI_ALGO_DISABLE_COLLATE
 
@@ -174,7 +174,7 @@ uaix_static bool stages_special_upper_check(type_codept c)
     return false;
 }
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 
 uaix_always_inline
 uaix_static size_t stages_special_title(type_codept c, struct case_special_buffer* const buffer)
@@ -203,7 +203,7 @@ uaix_static bool stages_special_title_check(type_codept c)
     return false;
 }
 
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 
@@ -307,7 +307,7 @@ uaix_static bool case_final_sigma_rev_utf16(it_in_utf16 first, it_in_utf16 last)
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 
 // Forward declaration for title case functions
 
@@ -321,7 +321,7 @@ template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
 uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result);
 
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 // The Unicode Standard: 3.13 Default Case Algorithms:
 // Default Case Conversion (locale-independent)
@@ -414,7 +414,7 @@ uaix_static size_t impl_case_map_utf8(it_in_utf8 first, it_end_utf8 last, it_out
             dst = codepoint_to_utf8(c, dst);
         }
     }
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
     else if (mode == impl_case_map_mode_titlecase)
         return case_title_utf8(first, last, result);
 #endif
@@ -511,7 +511,7 @@ uaix_static size_t impl_case_map_utf16(it_in_utf16 first, it_end_utf16 last, it_
             dst = codepoint_to_utf16(c, dst);
         }
     }
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
     else if (mode == impl_case_map_mode_titlecase)
         return case_title_utf16(first, last, result);
 #endif
@@ -1242,7 +1242,7 @@ uaix_static bool impl_case_like_utf8(it_in_utf8 first1, it_end_utf8 last1,
     return false;
 }
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
@@ -1445,7 +1445,7 @@ uaix_static size_t case_title_utf16(it_in_utf16 first, it_end_utf16 last, it_out
     return (size_t)(dst - result);
 }
 
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 // This is just an example how sort keys can look with this simple collation algorithm.
 // They are not that usefull so these functions are disabled for now.
@@ -1692,13 +1692,13 @@ uaix_static type_codept impl_case_to_simple_casefold(type_codept c)
     return (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? stages_fold(c) : 0xFFFD;
 }
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 uaix_always_inline
 uaix_static type_codept impl_case_to_simple_titlecase(type_codept c)
 {
     return (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? stages_title(c) : 0xFFFD;
 }
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
@@ -1755,7 +1755,7 @@ uaix_static size_t impl_case_to_casefold(type_codept c, it_out_utf32 dst)
     return 1;
 }
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #ifdef __cplusplus
 template<typename it_out_utf32>
 #endif
@@ -1773,7 +1773,7 @@ uaix_static size_t impl_case_to_titlecase(type_codept c, it_out_utf32 dst)
     *dst = impl_case_to_simple_titlecase(c);
     return 1;
 }
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 

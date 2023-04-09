@@ -90,7 +90,7 @@ typedef type_codept    type_char32; // Can be 32-bit or more signed/unsigned
 #define UNI_ALGO_EXPERIMENTAL
 
 // TODO: title case
-#define UNI_ALGO_DISABLE_BREAK_WORD
+#define UNI_ALGO_DISABLE_SEGMENT_WORD
 
 // Include Unicode data in the same (this) file
 #define UNI_ALGO_STATIC_DATA

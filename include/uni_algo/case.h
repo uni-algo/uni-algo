@@ -306,7 +306,7 @@ inline uaiw_constexpr std::wstring to_uppercase_utf16(std::wstring_view source, 
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 template<typename UTF8, typename Alloc = std::allocator<UTF8>>
 uaiw_constexpr std::basic_string<UTF8, std::char_traits<UTF8>, Alloc>
 to_titlecase_utf8(std::basic_string_view<UTF8> source, const Alloc& alloc = Alloc())
@@ -377,7 +377,7 @@ inline uaiw_constexpr std::wstring to_titlecase_utf16(std::wstring_view source, 
 }
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 } // namespace cases
 
@@ -695,7 +695,7 @@ inline uaiw_constexpr std::u8string to_uppercase_utf8(std::u8string_view source,
 {
     return to_uppercase_utf8<char8_t>(source, locale);
 }
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 inline uaiw_constexpr std::u8string to_titlecase_utf8(std::u8string_view source)
 {
@@ -706,7 +706,7 @@ inline uaiw_constexpr std::u8string to_titlecase_utf8(std::u8string_view source,
     return to_titlecase_utf8<char8_t>(source, locale);
 }
 #endif // UNI_ALGO_DISABLE_FULL_CASE
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 } // namespace cases
 
@@ -827,12 +827,12 @@ inline uaiw_constexpr char32_t to_simple_casefold(char32_t c) noexcept
     return detail::impl_case_to_simple_casefold(c);
 }
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 inline uaiw_constexpr char32_t to_simple_titlecase(char32_t c) noexcept
 {
     return detail::impl_case_to_simple_titlecase(c);
 }
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
@@ -878,7 +878,7 @@ inline uaiw_constexpr std::u32string to_casefold_u32(char32_t c)
     return dst;
 }
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 inline uaiw_constexpr std::u32string to_titlecase_u32(char32_t c)
 {
     std::u32string dst;
@@ -892,7 +892,7 @@ inline uaiw_constexpr std::u32string to_titlecase_u32(char32_t c)
 #endif
     return dst;
 }
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 

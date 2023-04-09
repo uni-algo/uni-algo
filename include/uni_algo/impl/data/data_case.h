@@ -5252,7 +5252,7 @@ uaix_const_data uaix_data_array(type_codept, stage2_fold, 4864) = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 
 uaix_const_data uaix_data_array(unsigned char, stage1_title, 8704) = {
 0,1,2,3,4,5,6,7,
@@ -7043,7 +7043,7 @@ uaix_const_data uaix_data_array(type_codept, stage2_title, 5248) = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 #ifndef UNI_ALGO_DISABLE_COLLATE
 
@@ -18034,7 +18034,7 @@ uaix_array_brace_ellison(unsigned short, 4)
 {2,1406,1398,0},
 {2,1396,1389,0}};
 
-#ifndef UNI_ALGO_DISABLE_BREAK_WORD
+#ifndef UNI_ALGO_DISABLE_SEGMENT_WORD
 
 uaix_const_data uaix_data_array(unsigned char, stage1_special_title, 512) = {
 0,1,2,3,0,0,0,4,
@@ -18326,7 +18326,7 @@ uaix_array_brace_ellison(unsigned short, 4)
 {3,919,834,837},
 {3,937,834,837}};
 
-#endif // UNI_ALGO_DISABLE_BREAK_WORD
+#endif // UNI_ALGO_DISABLE_SEGMENT_WORD
 
 // This is handled in place
 #if 0
