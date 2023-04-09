@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - sign whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_IMPL_BREAK_GRAPHEME_H_UAIH
-#define UNI_ALGO_IMPL_BREAK_GRAPHEME_H_UAIH
+#ifndef UNI_ALGO_SEGMENT_GRAPHEME_H_UAIH
+#define UNI_ALGO_SEGMENT_GRAPHEME_H_UAIH
 
 #include "impl_iter.h"
 
@@ -18,7 +18,7 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-// See generator_break_grapheme in gen/gen.h
+// See generator_segment_grapheme in gen/gen.h
 
 uaix_const type_codept prop_GB_Prepend               = 1;
 uaix_const type_codept prop_GB_CR                    = 2;
@@ -35,20 +35,20 @@ uaix_const type_codept prop_GB_LVT                   = 12;
 uaix_const type_codept prop_GB_ZWJ                   = 13;
 uaix_const type_codept prop_GB_Extended_Pictographic = 14;
 
-uaix_const int state_break_grapheme_begin    = 0;
-uaix_const int state_break_grapheme_continue = 1;
-uaix_const int state_break_grapheme_RI       = 2;
-uaix_const int state_break_grapheme_RI_RI    = 3;
-uaix_const int state_break_grapheme_EP       = 4;
-uaix_const int state_break_grapheme_EP_ZWJ   = 5;
+uaix_const int state_segment_grapheme_begin    = 0;
+uaix_const int state_segment_grapheme_continue = 1;
+uaix_const int state_segment_grapheme_RI       = 2;
+uaix_const int state_segment_grapheme_RI_RI    = 3;
+uaix_const int state_segment_grapheme_EP       = 4;
+uaix_const int state_segment_grapheme_EP_ZWJ   = 5;
 
 uaix_always_inline
-uaix_static type_codept stages_break_grapheme_prop(type_codept c)
+uaix_static type_codept stages_segment_grapheme_prop(type_codept c)
 {
-    return stages(c, stage1_break_grapheme, stage2_break_grapheme);
+    return stages(c, stage1_segment_grapheme, stage2_segment_grapheme);
 }
 
-struct impl_break_grapheme_state
+struct impl_segment_grapheme_state
 {
     type_codept prev_cp;
     type_codept prev_cp_prop;
@@ -57,12 +57,12 @@ struct impl_break_grapheme_state
 };
 
 uaix_always_inline
-uaix_static void impl_break_grapheme_state_reset(struct impl_break_grapheme_state* const state)
+uaix_static void impl_segment_grapheme_state_reset(struct impl_segment_grapheme_state* const state)
 {
     state->prev_cp = 0;
     state->prev_cp_prop = 0;
 
-    state->state = state_break_grapheme_begin;
+    state->state = state_segment_grapheme_begin;
 }
 /*
 // TODO: see TODO below.
@@ -89,14 +89,14 @@ uaix_static const bool break_table_grapheme[15][15] =
 };
 */
 uaix_always_inline
-uaix_static bool break_grapheme(struct impl_break_grapheme_state* const state, type_codept c)
+uaix_static bool break_grapheme(struct impl_segment_grapheme_state* const state, type_codept c)
 {
     // TODO: https://unicode.org/reports/tr29/#State_Machines
     // ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.html
     // See state table above.
     // Compared the performance with ICU it's already much faster so it can wait.
 
-    const type_codept c_prop = stages_break_grapheme_prop(c);
+    const type_codept c_prop = stages_segment_grapheme_prop(c);
     const type_codept p_prop = state->prev_cp_prop;
 
     bool result = false; // tag_can_be_uninitialized
@@ -104,8 +104,8 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* const state, t
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
 
-    if (state->state == state_break_grapheme_begin)
-        state->state = state_break_grapheme_continue;
+    if (state->state == state_segment_grapheme_begin)
+        state->state = state_segment_grapheme_continue;
     else if (p_prop == prop_GB_CR && c_prop == prop_GB_LF) // GB3
         result = false; // NOLINT
     else if (p_prop == prop_GB_Control || p_prop == prop_GB_CR || p_prop == prop_GB_LF) // GB4
@@ -124,9 +124,9 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* const state, t
         result = false; // NOLINT
     else if (p_prop == prop_GB_Prepend) // GB9b
         result = false; // NOLINT
-    else if (state->state == state_break_grapheme_EP_ZWJ && c_prop == prop_GB_Extended_Pictographic) // GB11
+    else if (state->state == state_segment_grapheme_EP_ZWJ && c_prop == prop_GB_Extended_Pictographic) // GB11
         result = false; // NOLINT
-    else if (state->state == state_break_grapheme_RI && c_prop == prop_GB_Regional_Indicator) // GB12/GB13
+    else if (state->state == state_segment_grapheme_RI && c_prop == prop_GB_Regional_Indicator) // GB12/GB13
         result = false; // NOLINT
     else // GB999
         result = true; // NOLINT
@@ -134,20 +134,20 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* const state, t
     // GB12/GB13
     if (c_prop == prop_GB_Regional_Indicator)
     {
-        if (state->state == state_break_grapheme_RI)
-            state->state = state_break_grapheme_RI_RI;
+        if (state->state == state_segment_grapheme_RI)
+            state->state = state_segment_grapheme_RI_RI;
         else
-            state->state = state_break_grapheme_RI;
+            state->state = state_segment_grapheme_RI;
     }
     // GB11
     else if (c_prop == prop_GB_Extended_Pictographic)
-        state->state = state_break_grapheme_EP; // NOLINT
-    else if (state->state == state_break_grapheme_EP && c_prop == prop_GB_Extend)
-        state->state = state_break_grapheme_EP; // NOLINT
-    else if (state->state == state_break_grapheme_EP && c_prop == prop_GB_ZWJ)
-        state->state = state_break_grapheme_EP_ZWJ;
+        state->state = state_segment_grapheme_EP; // NOLINT
+    else if (state->state == state_segment_grapheme_EP && c_prop == prop_GB_Extend)
+        state->state = state_segment_grapheme_EP; // NOLINT
+    else if (state->state == state_segment_grapheme_EP && c_prop == prop_GB_ZWJ)
+        state->state = state_segment_grapheme_EP_ZWJ;
     else
-        state->state = state_break_grapheme_continue;
+        state->state = state_segment_grapheme_continue;
 
     state->prev_cp = c;
     state->prev_cp_prop = c_prop;
@@ -158,13 +158,13 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* const state, t
 #ifdef __cplusplus
 template<typename = void> // TODO: What is this? Why uaix_inline is not used here instead of this crap?
 #endif
-uaix_static bool impl_break_grapheme(struct impl_break_grapheme_state* const state, type_codept c)
+uaix_static bool impl_segment_grapheme(struct impl_segment_grapheme_state* const state, type_codept c)
 {
     return break_grapheme(state, c);
 }
 
 uaix_always_inline
-uaix_static bool inline_break_grapheme(struct impl_break_grapheme_state* const state, type_codept c)
+uaix_static bool inline_segment_grapheme(struct impl_segment_grapheme_state* const state, type_codept c)
 {
     return break_grapheme(state, c);
 }
@@ -176,7 +176,7 @@ uaix_static bool inline_break_grapheme(struct impl_break_grapheme_state* const s
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool break_grapheme_rev_EP_utf8(it_in_utf8 first, it_in_utf8 last)
+uaix_static bool segment_grapheme_rev_EP_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -185,7 +185,7 @@ uaix_static bool break_grapheme_rev_EP_utf8(it_in_utf8 first, it_in_utf8 last)
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        const type_codept prop = stages_break_grapheme_prop(c);
+        const type_codept prop = stages_segment_grapheme_prop(c);
 
         if (prop == prop_GB_Extend)
             continue;
@@ -200,7 +200,7 @@ uaix_static bool break_grapheme_rev_EP_utf8(it_in_utf8 first, it_in_utf8 last)
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool break_grapheme_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
+uaix_static bool segment_grapheme_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -210,7 +210,7 @@ uaix_static bool break_grapheme_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        const type_codept prop = stages_break_grapheme_prop(c);
+        const type_codept prop = stages_segment_grapheme_prop(c);
 
         if (prop == prop_GB_Regional_Indicator)
             ++count_RI;
@@ -224,10 +224,10 @@ uaix_static bool break_grapheme_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_grapheme_rev_utf8(struct impl_break_grapheme_state* const state, type_codept c,
-                                         it_in_utf8 first, it_in_utf8 last)
+uaix_static bool segment_grapheme_rev_utf8(struct impl_segment_grapheme_state* const state, type_codept c,
+                                           it_in_utf8 first, it_in_utf8 last)
 {
-    const type_codept c_prop = stages_break_grapheme_prop(c);
+    const type_codept c_prop = stages_segment_grapheme_prop(c);
     const type_codept p_prop = state->prev_cp_prop;
 
     bool result = false; // tag_can_be_uninitialized
@@ -235,8 +235,8 @@ uaix_static bool break_grapheme_rev_utf8(struct impl_break_grapheme_state* const
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
 
-    if (state->state == state_break_grapheme_begin)
-        state->state = state_break_grapheme_continue;
+    if (state->state == state_segment_grapheme_begin)
+        state->state = state_segment_grapheme_continue;
     else if (c_prop == prop_GB_CR && p_prop == prop_GB_LF) // GB3
         result = false; // NOLINT
     else if (c_prop == prop_GB_Control || c_prop == prop_GB_CR || c_prop == prop_GB_LF) // GB4
@@ -256,9 +256,9 @@ uaix_static bool break_grapheme_rev_utf8(struct impl_break_grapheme_state* const
     else if (c_prop == prop_GB_Prepend) // GB9b
         result = false; // NOLINT
     else if (c_prop == prop_GB_ZWJ && p_prop == prop_GB_Extended_Pictographic) // GB11
-        result = break_grapheme_rev_EP_utf8(first, last);
+        result = segment_grapheme_rev_EP_utf8(first, last);
     else if (c_prop == prop_GB_Regional_Indicator && p_prop == prop_GB_Regional_Indicator) // GB12/GB13
-        result = break_grapheme_rev_RI_utf8(first, last);
+        result = segment_grapheme_rev_RI_utf8(first, last);
     else // GB999
         result = true; // NOLINT
 
@@ -271,20 +271,20 @@ uaix_static bool break_grapheme_rev_utf8(struct impl_break_grapheme_state* const
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool impl_break_grapheme_rev_utf8(struct impl_break_grapheme_state* const state, type_codept c,
-                                              it_in_utf8 first, it_in_utf8 last)
+uaix_static bool impl_segment_grapheme_rev_utf8(struct impl_segment_grapheme_state* const state, type_codept c,
+                                                it_in_utf8 first, it_in_utf8 last)
 {
-    return break_grapheme_rev_utf8(state, c, first, last);
+    return segment_grapheme_rev_utf8(state, c, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_grapheme_rev_utf8(struct impl_break_grapheme_state* const state, type_codept c,
-                                                it_in_utf8 first, it_in_utf8 last)
+uaix_static bool inline_segment_grapheme_rev_utf8(struct impl_segment_grapheme_state* const state, type_codept c,
+                                                  it_in_utf8 first, it_in_utf8 last)
 {
-    return break_grapheme_rev_utf8(state, c, first, last);
+    return segment_grapheme_rev_utf8(state, c, first, last);
 }
 
 // BEGIN: GENERATED UTF-16 FUNCTIONS
@@ -293,7 +293,7 @@ uaix_static bool inline_break_grapheme_rev_utf8(struct impl_break_grapheme_state
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool break_grapheme_rev_EP_utf16(it_in_utf16 first, it_in_utf16 last)
+uaix_static bool segment_grapheme_rev_EP_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -302,7 +302,7 @@ uaix_static bool break_grapheme_rev_EP_utf16(it_in_utf16 first, it_in_utf16 last
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        const type_codept prop = stages_break_grapheme_prop(c);
+        const type_codept prop = stages_segment_grapheme_prop(c);
 
         if (prop == prop_GB_Extend)
             continue;
@@ -317,7 +317,7 @@ uaix_static bool break_grapheme_rev_EP_utf16(it_in_utf16 first, it_in_utf16 last
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool break_grapheme_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
+uaix_static bool segment_grapheme_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -327,7 +327,7 @@ uaix_static bool break_grapheme_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        const type_codept prop = stages_break_grapheme_prop(c);
+        const type_codept prop = stages_segment_grapheme_prop(c);
 
         if (prop == prop_GB_Regional_Indicator)
             ++count_RI;
@@ -341,10 +341,10 @@ uaix_static bool break_grapheme_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_grapheme_rev_utf16(struct impl_break_grapheme_state* const state, type_codept c,
-                                          it_in_utf16 first, it_in_utf16 last)
+uaix_static bool segment_grapheme_rev_utf16(struct impl_segment_grapheme_state* const state, type_codept c,
+                                            it_in_utf16 first, it_in_utf16 last)
 {
-    const type_codept c_prop = stages_break_grapheme_prop(c);
+    const type_codept c_prop = stages_segment_grapheme_prop(c);
     const type_codept p_prop = state->prev_cp_prop;
 
     bool result = false; // tag_can_be_uninitialized
@@ -352,8 +352,8 @@ uaix_static bool break_grapheme_rev_utf16(struct impl_break_grapheme_state* cons
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
 
-    if (state->state == state_break_grapheme_begin)
-        state->state = state_break_grapheme_continue;
+    if (state->state == state_segment_grapheme_begin)
+        state->state = state_segment_grapheme_continue;
     else if (c_prop == prop_GB_CR && p_prop == prop_GB_LF) // GB3
         result = false; // NOLINT
     else if (c_prop == prop_GB_Control || c_prop == prop_GB_CR || c_prop == prop_GB_LF) // GB4
@@ -373,9 +373,9 @@ uaix_static bool break_grapheme_rev_utf16(struct impl_break_grapheme_state* cons
     else if (c_prop == prop_GB_Prepend) // GB9b
         result = false; // NOLINT
     else if (c_prop == prop_GB_ZWJ && p_prop == prop_GB_Extended_Pictographic) // GB11
-        result = break_grapheme_rev_EP_utf16(first, last);
+        result = segment_grapheme_rev_EP_utf16(first, last);
     else if (c_prop == prop_GB_Regional_Indicator && p_prop == prop_GB_Regional_Indicator) // GB12/GB13
-        result = break_grapheme_rev_RI_utf16(first, last);
+        result = segment_grapheme_rev_RI_utf16(first, last);
     else // GB999
         result = true; // NOLINT
 
@@ -388,20 +388,20 @@ uaix_static bool break_grapheme_rev_utf16(struct impl_break_grapheme_state* cons
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool impl_break_grapheme_rev_utf16(struct impl_break_grapheme_state* const state, type_codept c,
-                                               it_in_utf16 first, it_in_utf16 last)
+uaix_static bool impl_segment_grapheme_rev_utf16(struct impl_segment_grapheme_state* const state, type_codept c,
+                                                 it_in_utf16 first, it_in_utf16 last)
 {
-    return break_grapheme_rev_utf16(state, c, first, last);
+    return segment_grapheme_rev_utf16(state, c, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_grapheme_rev_utf16(struct impl_break_grapheme_state* const state, type_codept c,
-                                                 it_in_utf16 first, it_in_utf16 last)
+uaix_static bool inline_segment_grapheme_rev_utf16(struct impl_segment_grapheme_state* const state, type_codept c,
+                                                   it_in_utf16 first, it_in_utf16 last)
 {
-    return break_grapheme_rev_utf16(state, c, first, last);
+    return segment_grapheme_rev_utf16(state, c, first, last);
 }
 
 #endif // UNI_ALGO_DOC_GENERATED_UTF16
@@ -412,7 +412,7 @@ UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"
 
-#endif // UNI_ALGO_IMPL_BREAK_GRAPHEME_H_UAIH
+#endif // UNI_ALGO_SEGMENT_GRAPHEME_H_UAIH
 
 /* Public Domain Contract
  *

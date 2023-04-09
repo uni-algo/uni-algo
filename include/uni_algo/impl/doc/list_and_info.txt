@@ -34,7 +34,7 @@ but some of them can have different restrictions.
 Note that everything that starts with impl_*, inline_*, type_*
 can be used by a wrapper everything else must not be used.
 inline_* are performance-critical versions of some functions
-for example iterator and break functions and if they are used in a loop
+for example iterator and segmentation functions and if they are used in a loop
 inline version can be used to achieve a better performance.
 Also only files that start with impl_* can be used by a wrapper.
 Note that in C++ there is no point to use type_char8, type_char16, type_char32
@@ -263,45 +263,45 @@ size_t impl_norm_to_decompose(type_codept c, it_out_utf32 dst)
 size_t impl_norm_to_decompose_compat(type_codept c, it_out_utf32 dst)
 
 -------
-impl_break_grapheme.h
+impl_segment_grapheme.h
 
-struct impl_break_grapheme_state
-void impl_break_grapheme_state_reset(struct impl_break_grapheme_state* const state)
+struct impl_segment_grapheme_state
+void impl_segment_grapheme_state_reset(struct impl_segment_grapheme_state* const state)
 
-bool impl_break_grapheme(struct impl_break_state* state, type_codept c)
-bool impl_break_grapheme_rev_utf8(struct impl_break_grapheme_state* const state, type_codept c, it_in_utf8 first, it_in_utf8 last)
-bool impl_break_grapheme_rev_utf16(struct impl_break_grapheme_state* const state, type_codept c, it_in_utf16 first, it_in_utf16 last)
+bool impl_segment_grapheme(struct impl_segment_grapheme_state* state, type_codept c)
+bool impl_segment_grapheme_rev_utf8(struct impl_segment_grapheme_state* const state, type_codept c, it_in_utf8 first, it_in_utf8 last)
+bool impl_segment_grapheme_rev_utf16(struct impl_segment_grapheme_state* const state, type_codept c, it_in_utf16 first, it_in_utf16 last)
 
-bool inline_break_grapheme(struct impl_break_state* state, type_codept c)
-bool inline_break_grapheme_rev_utf8(struct impl_break_grapheme_state* const state, type_codept c, it_in_utf8 first, it_in_utf8 last)
-bool inline_break_grapheme_rev_utf16(struct impl_break_grapheme_state* const state, type_codept c, it_in_utf16 first, it_in_utf16 last)
+bool inline_segment_grapheme(struct impl_segment_grapheme_state* state, type_codept c)
+bool inline_segment_grapheme_rev_utf8(struct impl_segment_grapheme_state* const state, type_codept c, it_in_utf8 first, it_in_utf8 last)
+bool inline_segment_grapheme_rev_utf16(struct impl_segment_grapheme_state* const state, type_codept c, it_in_utf16 first, it_in_utf16 last)
 
 ------
-impl_break_word.h
+impl_segment_word.h
 
-struct impl_break_word_state
-void impl_break_word_state_reset(struct impl_break_word_state* const state)
+struct impl_segment_word_state
+void impl_segment_word_state_reset(struct impl_segment_word_state* const state)
 
-bool impl_break_word_utf8(struct impl_break_state* const state, type_codept c, type_codept* const word_prop, it_in_utf8 first, it_end_utf8 last)
-bool impl_break_word_rev_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop, it_in_utf8 first, it_in_utf8 last)
-bool impl_break_word_utf16(struct impl_break_state* const state, type_codept c, type_codept* const word_prop, it_in_utf16 first, it_end_utf16 last)
-bool impl_break_word_rev_utf16(struct impl_break_state* const state, type_codept c, type_codept* const word_prop, it_in_utf16 first, it_end_utf16 last)
+bool impl_segment_word_utf8(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop, it_in_utf8 first, it_end_utf8 last)
+bool impl_segment_word_rev_utf8(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop, it_in_utf8 first, it_in_utf8 last)
+bool impl_segment_word_utf16(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop, it_in_utf16 first, it_end_utf16 last)
+bool impl_segment_word_rev_utf16(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop, it_in_utf16 first, it_end_utf16 last)
 
-bool inline_break_word_utf8(struct impl_break_state* const state, type_codept c, type_codept* const word_prop, it_in_utf8 first, it_end_utf8 last)
-bool inline_break_word_rev_utf8(struct impl_break_state* const state, type_codept c, type_codept* const word_prop, it_in_utf8 first, it_end_utf8 last)
-bool inline_break_word_utf16(struct impl_break_state* const state, type_codept c, type_codept* const word_prop, it_in_utf16 first, it_end_utf16 last)
-bool inline_break_word_rev_utf16(struct impl_break_state* const state, type_codept c, type_codept* const word_prop, it_in_utf16 first, it_end_utf16 last)
+bool inline_segment_word_utf8(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop, it_in_utf8 first, it_end_utf8 last)
+bool inline_segment_word_rev_utf8(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop, it_in_utf8 first, it_end_utf8 last)
+bool inline_segment_word_utf16(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop, it_in_utf16 first, it_end_utf16 last)
+bool inline_segment_word_rev_utf16(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop, it_in_utf16 first, it_end_utf16 last)
 
 // word properties:
-bool impl_break_is_word(type_codept word_prop)
-bool impl_break_is_word_number(type_codept word_prop)
-bool impl_break_is_word_letter(type_codept word_prop)
-bool impl_break_is_word_kana(type_codept word_prop)
-bool impl_break_is_word_ideo(type_codept word_prop)
-bool impl_break_is_word_emoji(type_codept word_prop)
-bool impl_break_is_word_punct(type_codept word_prop)
-bool impl_break_is_word_space(type_codept word_prop)
-bool impl_break_is_word_newline(type_codept word_prop)
+bool impl_segment_is_word(type_codept word_prop)
+bool impl_segment_is_word_number(type_codept word_prop)
+bool impl_segment_is_word_letter(type_codept word_prop)
+bool impl_segment_is_word_kana(type_codept word_prop)
+bool impl_segment_is_word_ideo(type_codept word_prop)
+bool impl_segment_is_word_emoji(type_codept word_prop)
+bool impl_segment_is_word_punct(type_codept word_prop)
+bool impl_segment_is_word_space(type_codept word_prop)
+bool impl_segment_is_word_newline(type_codept word_prop)
 
 ------
 impl_locale.h

@@ -2,8 +2,8 @@
  * License: Public Domain or MIT - sign whatever you want.
  * See notice at the end of this file. */
 
-#ifndef UNI_ALGO_IMPL_BREAK_WORD_H_UAIH
-#define UNI_ALGO_IMPL_BREAK_WORD_H_UAIH
+#ifndef UNI_ALGO_IMPL_SEGMENT_WORD_H_UAIH
+#define UNI_ALGO_IMPL_SEGMENT_WORD_H_UAIH
 
 #include "impl_iter.h"
 
@@ -18,7 +18,7 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-// See generator_break_word in gen/gen.h
+// See generator_segment_word in gen/gen.h
 
 uaix_const type_codept prop_WB_CR                    = 1;
 uaix_const type_codept prop_WB_LF                    = 2;
@@ -44,32 +44,32 @@ uaix_const type_codept prop_WX_Remaining_Hiragana    = 19;
 uaix_const type_codept prop_WX_Remaining_Ideographic = 20;
 uaix_const type_codept prop_WB_Regional_Indicator    = 21; // Must be the last
 
-uaix_const int state_break_word_begin    = 0;
-uaix_const int state_break_word_continue = 1;
-uaix_const int state_break_word_RI       = 2;
-uaix_const int state_break_word_RI_RI    = 3;
+uaix_const int state_segment_word_begin    = 0;
+uaix_const int state_segment_word_continue = 1;
+uaix_const int state_segment_word_RI       = 2;
+uaix_const int state_segment_word_RI_RI    = 3;
 
 uaix_always_inline
-uaix_static type_codept stages_break_word_prop(type_codept c)
+uaix_static type_codept stages_segment_word_prop(type_codept c)
 {
     // This function returns raw property that contains property with Extended_Pictographic
     // Two functions below must be used to get the real property and Extended_Pictographic
-    return stages(c, stage1_break_word, stage2_break_word);
+    return stages(c, stage1_segment_word, stage2_segment_word);
 }
 
 uaix_always_inline
-uaix_static type_codept break_word_prop(type_codept prop)
+uaix_static type_codept segment_word_prop(type_codept prop)
 {
     return (prop & 0x7F); // 7 right bits are used for properties
 }
 
 uaix_always_inline
-uaix_static bool break_word_prop_ext_pic(type_codept prop)
+uaix_static bool segment_word_prop_ext_pic(type_codept prop)
 {
     return (prop & 0x80) ? true : false; // First (left) bit is used for Extended_Pictographic
 }
 
-struct impl_break_word_state
+struct impl_segment_word_state
 {
     type_codept prev_cp;
     type_codept prev_cp_prop;
@@ -84,7 +84,7 @@ struct impl_break_word_state
 };
 
 uaix_always_inline
-uaix_static void impl_break_word_state_reset(struct impl_break_word_state* const state)
+uaix_static void impl_segment_word_state_reset(struct impl_segment_word_state* const state)
 {
     state->prev_cp = 0;
     state->prev_cp_prop = 0;
@@ -95,11 +95,11 @@ uaix_static void impl_break_word_state_reset(struct impl_break_word_state* const
     state->prev_cp2 = 0;
     state->prev_cp2_prop = 0;
 
-    state->state = state_break_word_begin;
+    state->state = state_segment_word_begin;
 }
 
 uaix_always_inline
-uaix_static bool impl_break_is_word(type_codept word_prop)
+uaix_static bool impl_segment_is_word(type_codept word_prop)
 {
     // ICU analog: !UBRK_WORD_NONE
     // Excludes spaces and most punctuation and emojis
@@ -111,7 +111,7 @@ uaix_static bool impl_break_is_word(type_codept word_prop)
 }
 
 uaix_always_inline
-uaix_static bool impl_break_is_word_number(type_codept word_prop)
+uaix_static bool impl_segment_is_word_number(type_codept word_prop)
 {
     // ICU analog: UBRK_WORD_NUMBER
     // Includes only numbers
@@ -119,7 +119,7 @@ uaix_static bool impl_break_is_word_number(type_codept word_prop)
 }
 
 uaix_always_inline
-uaix_static bool impl_break_is_word_letter(type_codept word_prop)
+uaix_static bool impl_segment_is_word_letter(type_codept word_prop)
 {
     // ICU analog: UBRK_WORD_LETTER
     // Includes words that contain letters
@@ -128,7 +128,7 @@ uaix_static bool impl_break_is_word_letter(type_codept word_prop)
 }
 
 uaix_always_inline
-uaix_static bool impl_break_is_word_kana(type_codept word_prop)
+uaix_static bool impl_segment_is_word_kana(type_codept word_prop)
 {
     // ICU analog: UBRK_WORD_KANA
     // Includes only kana
@@ -136,7 +136,7 @@ uaix_static bool impl_break_is_word_kana(type_codept word_prop)
 }
 
 uaix_always_inline
-uaix_static bool impl_break_is_word_ideo(type_codept word_prop)
+uaix_static bool impl_segment_is_word_ideo(type_codept word_prop)
 {
     // ICU analog: UBRK_WORD_IDEO
     // Includes only ideographic
@@ -144,35 +144,35 @@ uaix_static bool impl_break_is_word_ideo(type_codept word_prop)
 }
 
 uaix_always_inline
-uaix_static bool impl_break_is_word_emoji(type_codept word_prop)
+uaix_static bool impl_segment_is_word_emoji(type_codept word_prop)
 {
     // Includes only emojis
     return (word_prop >= prop_WB_Regional_Indicator); // Includes Extended_Pictographic
 }
 
 uaix_always_inline
-uaix_static bool impl_break_is_word_punct(type_codept word_prop)
+uaix_static bool impl_segment_is_word_punct(type_codept word_prop)
 {
     // Includes only punctuation
     return (word_prop > prop_WB_Format && word_prop < prop_WB_WSegSpace);
 }
 
 uaix_always_inline
-uaix_static bool impl_break_is_word_space(type_codept word_prop)
+uaix_static bool impl_segment_is_word_space(type_codept word_prop)
 {
     // Includes only spaces
     return (word_prop == prop_WB_WSegSpace);
 }
 
 uaix_always_inline
-uaix_static bool impl_break_is_word_newline(type_codept word_prop)
+uaix_static bool impl_segment_is_word_newline(type_codept word_prop)
 {
     // Includes only spaces
     return (word_prop == prop_WB_CR || word_prop == prop_WB_LF || word_prop == prop_WB_Newline);
 }
 
 uaix_always_inline
-uaix_static bool break_word_skip(type_codept prop)
+uaix_static bool segment_word_skip(type_codept prop)
 {
     return (prop == prop_WB_ZWJ || prop == prop_WB_Extend || prop == prop_WB_Format);
 }
@@ -180,7 +180,7 @@ uaix_static bool break_word_skip(type_codept prop)
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static type_codept break_word_skip_utf8(it_in_utf8 first, it_end_utf8 last)
+uaix_static type_codept segment_word_skip_utf8(it_in_utf8 first, it_end_utf8 last)
 {
     /* C++ Note: this function makes the word segmentation algorithm incompatible with input iterators.
      * This means Word Boundary Rules are not compatible with streams at all and require at least forward iterator.
@@ -195,9 +195,9 @@ uaix_static type_codept break_word_skip_utf8(it_in_utf8 first, it_end_utf8 last)
     {
         src = iter_utf8(src, last, &c, iter_replacement);
 
-        const type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = segment_word_prop(stages_segment_word_prop(c));
 
-        if (break_word_skip(prop))
+        if (segment_word_skip(prop))
             continue;
 
         return prop;
@@ -209,10 +209,10 @@ uaix_static type_codept break_word_skip_utf8(it_in_utf8 first, it_end_utf8 last)
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                 it_in_utf8 first, it_end_utf8 last)
+uaix_static bool segment_word_utf8(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                   it_in_utf8 first, it_end_utf8 last)
 {
-    // word_prop property must be used only with impl_break_is_word* functions
+    // word_prop property must be used only with impl_segment_is_word* functions
 
     // TODO: https://unicode.org/reports/tr29/#State_Machines
     // ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.html
@@ -220,14 +220,14 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
     // with the state table so it's not even worth it probably.
     // Compared the performance with ICU it's already much faster so it can wait.
 
-    const type_codept raw_prop = stages_break_word_prop(c);
+    const type_codept raw_prop = stages_segment_word_prop(c);
 
-    const type_codept c_prop = break_word_prop(raw_prop);
-    const type_codept p_prop = break_word_prop(state->prev_cp_prop);
+    const type_codept c_prop = segment_word_prop(raw_prop);
+    const type_codept p_prop = segment_word_prop(state->prev_cp_prop);
 
     // Previous values of code points with WB4 rules
-    const type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
-    const type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
+    const type_codept p1_prop = segment_word_prop(state->prev_cp1_prop);
+    const type_codept p2_prop = segment_word_prop(state->prev_cp2_prop);
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
@@ -236,9 +236,9 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
 
-    if (state->state == state_break_word_begin)
+    if (state->state == state_segment_word_begin)
     {
-        state->state = state_break_word_continue;
+        state->state = state_segment_word_continue;
         *word_prop = 0;
     }
     else if (p_prop == prop_WB_CR && c_prop == prop_WB_LF) // WB3
@@ -247,11 +247,11 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
         result = true; // NOLINT
     else if (c_prop == prop_WB_Newline || c_prop == prop_WB_CR || c_prop == prop_WB_LF) // WB3b
         result = true; // NOLINT
-    else if (p_prop == prop_WB_ZWJ && break_word_prop_ext_pic(raw_prop)) // WB3c
+    else if (p_prop == prop_WB_ZWJ && segment_word_prop_ext_pic(raw_prop)) // WB3c
         result = false; // NOLINT
     else if (p_prop == prop_WB_WSegSpace && c_prop == prop_WB_WSegSpace) // WB3d
         result = false; // NOLINT
-    else if (break_word_skip(c_prop)) // WB4
+    else if (segment_word_skip(c_prop)) // WB4
         result = false; // NOLINT
 
     // p and p_prop must not be used anymore because WB4 takes effect below this line
@@ -261,7 +261,7 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (c_prop == prop_WB_MidLetter || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             ((s_prop = break_word_skip_utf8(first, last)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
+             ((s_prop = segment_word_skip_utf8(first, last)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB6
         result = false; // NOLINT
     else if ((p2_prop == prop_WB_ALetter || p2_prop == prop_WB_Hebrew_Letter) &&
@@ -271,7 +271,7 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
     else if (p1_prop == prop_WB_Hebrew_Letter && c_prop == prop_WB_Single_Quote) // WB7a
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Hebrew_Letter && c_prop == prop_WB_Double_Quote &&
-             break_word_skip_utf8(first, last) == prop_WB_Hebrew_Letter) // WB7b
+             segment_word_skip_utf8(first, last) == prop_WB_Hebrew_Letter) // WB7b
         result = false; // NOLINT
     else if (p2_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Double_Quote && c_prop == prop_WB_Hebrew_Letter) // WB7c
         result = false; // NOLINT
@@ -287,7 +287,7 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Numeric &&
              (c_prop == prop_WB_MidNum || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             break_word_skip_utf8(first, last) == prop_WB_Numeric) // WB12
+             segment_word_skip_utf8(first, last) == prop_WB_Numeric) // WB12
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Katakana && c_prop == prop_WB_Katakana) // WB13
         result = false; // NOLINT
@@ -299,7 +299,7 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
              ((c_prop == prop_WB_ALetter || c_prop == prop_WB_Hebrew_Letter) ||
               c_prop == prop_WB_Numeric || c_prop == prop_WB_Katakana)) // WB13b
         result = false; // NOLINT
-    else if (state->state == state_break_word_RI && c_prop == prop_WB_Regional_Indicator) // WB15/WB16
+    else if (state->state == state_segment_word_RI && c_prop == prop_WB_Regional_Indicator) // WB15/WB16
         result = false; // NOLINT
     else // WB999
     {
@@ -310,19 +310,19 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
     state->prev_cp = c;
     state->prev_cp_prop = raw_prop;
 
-    if (break_word_skip(c_prop))
+    if (segment_word_skip(c_prop))
         return result;
 
     // WB15/WB16
     if (c_prop == prop_WB_Regional_Indicator)
     {
-        if (state->state == state_break_word_RI)
-            state->state = state_break_word_RI_RI;
+        if (state->state == state_segment_word_RI)
+            state->state = state_segment_word_RI_RI;
         else
-            state->state = state_break_word_RI;
+            state->state = state_segment_word_RI;
     }
     else
-        state->state = state_break_word_continue;
+        state->state = state_segment_word_continue;
 
     // Set previous values of codepoints with WB4 rules
     state->prev_cp2 = state->prev_cp1;
@@ -339,20 +339,20 @@ uaix_static bool break_word_utf8(struct impl_break_word_state* const state, type
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool impl_break_word_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                      it_in_utf8 first, it_end_utf8 last)
+uaix_static bool impl_segment_word_utf8(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                        it_in_utf8 first, it_end_utf8 last)
 {
-    return break_word_utf8(state, c, word_prop, first, last);
+    return segment_word_utf8(state, c, word_prop, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_word_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                        it_in_utf8 first, it_end_utf8 last)
+uaix_static bool inline_segment_word_utf8(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                          it_in_utf8 first, it_end_utf8 last)
 {
-    return break_word_utf8(state, c, word_prop, first, last);
+    return segment_word_utf8(state, c, word_prop, first, last);
 }
 
 // -------------
@@ -362,7 +362,7 @@ uaix_static bool inline_break_word_utf8(struct impl_break_word_state* const stat
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static type_codept break_word_skip_rev_utf8(it_in_utf8 first, it_in_utf8 last)
+uaix_static type_codept segment_word_skip_rev_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -371,9 +371,9 @@ uaix_static type_codept break_word_skip_rev_utf8(it_in_utf8 first, it_in_utf8 la
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        const type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = segment_word_prop(stages_segment_word_prop(c));
 
-        if (break_word_skip(prop))
+        if (segment_word_skip(prop))
             continue;
 
         return prop;
@@ -385,7 +385,7 @@ uaix_static type_codept break_word_skip_rev_utf8(it_in_utf8 first, it_in_utf8 la
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf8 break_word_skip_rev2_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* const new_prop)
+uaix_static it_in_utf8 segment_word_skip_rev2_utf8(it_in_utf8 first, it_in_utf8 last, type_codept* const new_prop)
 {
     it_in_utf8 src = last;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -394,9 +394,9 @@ uaix_static it_in_utf8 break_word_skip_rev2_utf8(it_in_utf8 first, it_in_utf8 la
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        const type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = segment_word_prop(stages_segment_word_prop(c));
 
-        if (break_word_skip(prop))
+        if (segment_word_skip(prop))
             continue;
 
         *new_prop = prop;
@@ -408,7 +408,7 @@ uaix_static it_in_utf8 break_word_skip_rev2_utf8(it_in_utf8 first, it_in_utf8 la
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool break_word_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
+uaix_static bool segment_word_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
 {
     it_in_utf8 src = last;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -418,9 +418,9 @@ uaix_static bool break_word_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        const type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = segment_word_prop(stages_segment_word_prop(c));
 
-        if (break_word_skip(prop))
+        if (segment_word_skip(prop))
             continue;
 
         if (prop == prop_WB_Regional_Indicator)
@@ -435,19 +435,19 @@ uaix_static bool break_word_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                     it_in_utf8 first, it_in_utf8 last)
+uaix_static bool segment_word_rev_utf8(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                       it_in_utf8 first, it_in_utf8 last)
 {
-    // word_prop property must be used only with impl_break_is_word* functions
+    // word_prop property must be used only with impl_segment_is_word* functions
 
-    const type_codept raw_prop = stages_break_word_prop(c);
+    const type_codept raw_prop = stages_segment_word_prop(c);
 
-    const type_codept c_prop = break_word_prop(raw_prop);
-    const type_codept p_prop = break_word_prop(state->prev_cp_prop);
+    const type_codept c_prop = segment_word_prop(raw_prop);
+    const type_codept p_prop = segment_word_prop(state->prev_cp_prop);
 
     // Previous values of code points with WB4 rules
-    const type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
-    const type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
+    const type_codept p1_prop = segment_word_prop(state->prev_cp1_prop);
+    const type_codept p2_prop = segment_word_prop(state->prev_cp2_prop);
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
@@ -456,9 +456,9 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
 
-    if (state->state == state_break_word_begin)
+    if (state->state == state_segment_word_begin)
     {
-        state->state = state_break_word_continue;
+        state->state = state_segment_word_continue;
         *word_prop = 0;
     }
     else if (c_prop == prop_WB_CR && p_prop == prop_WB_LF) // WB3
@@ -467,11 +467,11 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
         result = true; // NOLINT
     else if (p_prop == prop_WB_Newline || p_prop == prop_WB_CR || p_prop == prop_WB_LF) // WB3b
         result = true; // NOLINT
-    else if (c_prop == prop_WB_ZWJ && break_word_prop_ext_pic(state->prev_cp_prop)) // WB3c
+    else if (c_prop == prop_WB_ZWJ && segment_word_prop_ext_pic(state->prev_cp_prop)) // WB3c
         result = false; // NOLINT
     else if (c_prop == prop_WB_WSegSpace && p_prop == prop_WB_WSegSpace) // WB3d
         result = false; // NOLINT
-    else if (break_word_skip(p_prop)) // WB4 First Part
+    else if (segment_word_skip(p_prop)) // WB4 First Part
         result = false; // NOLINT
     else
     {
@@ -481,8 +481,8 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
         // p_prop also cannot be used anymore by the same reasons as in forward rules.
         it_in_utf8 src = last;
         type_codept n_prop = c_prop;
-        if (break_word_skip(c_prop))
-            src = break_word_skip_rev2_utf8(first, last, &n_prop);
+        if (segment_word_skip(c_prop))
+            src = segment_word_skip_rev2_utf8(first, last, &n_prop);
 
     if ((n_prop == prop_WB_ALetter || n_prop == prop_WB_Hebrew_Letter) &&
         (p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter)) // WB5
@@ -493,7 +493,7 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (n_prop == prop_WB_MidLetter || n_prop == prop_WB_MidNumLet || n_prop == prop_WB_Single_Quote) &&
-             ((s_prop = break_word_skip_rev_utf8(first, src)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
+             ((s_prop = segment_word_skip_rev_utf8(first, src)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB7
         result = false; // NOLINT
     else if (n_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Single_Quote) // WB7a
@@ -501,7 +501,7 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
     else if (n_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Double_Quote && p2_prop == prop_WB_Hebrew_Letter) // WB7b
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Hebrew_Letter && n_prop == prop_WB_Double_Quote &&
-             break_word_skip_rev_utf8(first, src) == prop_WB_Hebrew_Letter) // WB7c
+             segment_word_skip_rev_utf8(first, src) == prop_WB_Hebrew_Letter) // WB7c
         result = false; // NOLINT
     else if (n_prop == prop_WB_Numeric && p1_prop == prop_WB_Numeric) // WB8
         result = false; // NOLINT
@@ -511,7 +511,7 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Numeric &&
              (n_prop == prop_WB_MidNum || n_prop == prop_WB_MidNumLet || n_prop == prop_WB_Single_Quote) &&
-             break_word_skip_rev_utf8(first, src) == prop_WB_Numeric) // WB11
+             segment_word_skip_rev_utf8(first, src) == prop_WB_Numeric) // WB11
         result = false; // NOLINT
     else if (n_prop == prop_WB_Numeric &&
              (p1_prop == prop_WB_MidNum || p1_prop == prop_WB_MidNumLet || p1_prop == prop_WB_Single_Quote) &&
@@ -528,7 +528,7 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
               p1_prop == prop_WB_Numeric || p1_prop == prop_WB_Katakana)) // WB13b
         result = false; // NOLINT
     else if (n_prop == prop_WB_Regional_Indicator && p1_prop == prop_WB_Regional_Indicator) // WB15/WB16
-        result = break_word_rev_RI_utf8(first, src);
+        result = segment_word_rev_RI_utf8(first, src);
     else // WB999
         {
             result = true;
@@ -539,7 +539,7 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
     state->prev_cp = c;
     state->prev_cp_prop = raw_prop;
 
-    if (break_word_skip(c_prop))
+    if (segment_word_skip(c_prop))
         return result;
 
     // Set previous values of codepoints with WB4 rules
@@ -557,20 +557,20 @@ uaix_static bool break_word_rev_utf8(struct impl_break_word_state* const state, 
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool impl_break_word_rev_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                          it_in_utf8 first, it_in_utf8 last)
+uaix_static bool impl_segment_word_rev_utf8(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                            it_in_utf8 first, it_in_utf8 last)
 {
-    return break_word_rev_utf8(state, c, word_prop, first, last);
+    return segment_word_rev_utf8(state, c, word_prop, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_word_rev_utf8(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                            it_in_utf8 first, it_in_utf8 last)
+uaix_static bool inline_segment_word_rev_utf8(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                              it_in_utf8 first, it_in_utf8 last)
 {
-    return break_word_rev_utf8(state, c, word_prop, first, last);
+    return segment_word_rev_utf8(state, c, word_prop, first, last);
 }
 
 // BEGIN: GENERATED UTF-16 FUNCTIONS
@@ -579,7 +579,7 @@ uaix_static bool inline_break_word_rev_utf8(struct impl_break_word_state* const 
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static type_codept break_word_skip_utf16(it_in_utf16 first, it_end_utf16 last)
+uaix_static type_codept segment_word_skip_utf16(it_in_utf16 first, it_end_utf16 last)
 {
     it_in_utf16 src = first;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -588,9 +588,9 @@ uaix_static type_codept break_word_skip_utf16(it_in_utf16 first, it_end_utf16 la
     {
         src = iter_utf16(src, last, &c, iter_replacement);
 
-        const type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = segment_word_prop(stages_segment_word_prop(c));
 
-        if (break_word_skip(prop))
+        if (segment_word_skip(prop))
             continue;
 
         return prop;
@@ -602,19 +602,19 @@ uaix_static type_codept break_word_skip_utf16(it_in_utf16 first, it_end_utf16 la
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_word_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                  it_in_utf16 first, it_end_utf16 last)
+uaix_static bool segment_word_utf16(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                    it_in_utf16 first, it_end_utf16 last)
 {
-    // word_prop property must be used only with impl_break_is_word* functions
+    // word_prop property must be used only with impl_segment_is_word* functions
 
-    const type_codept raw_prop = stages_break_word_prop(c);
+    const type_codept raw_prop = stages_segment_word_prop(c);
 
-    const type_codept c_prop = break_word_prop(raw_prop);
-    const type_codept p_prop = break_word_prop(state->prev_cp_prop);
+    const type_codept c_prop = segment_word_prop(raw_prop);
+    const type_codept p_prop = segment_word_prop(state->prev_cp_prop);
 
     // Previous values of code points with WB4 rules
-    const type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
-    const type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
+    const type_codept p1_prop = segment_word_prop(state->prev_cp1_prop);
+    const type_codept p2_prop = segment_word_prop(state->prev_cp2_prop);
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
@@ -623,9 +623,9 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
 
-    if (state->state == state_break_word_begin)
+    if (state->state == state_segment_word_begin)
     {
-        state->state = state_break_word_continue;
+        state->state = state_segment_word_continue;
         *word_prop = 0;
     }
     else if (p_prop == prop_WB_CR && c_prop == prop_WB_LF) // WB3
@@ -634,11 +634,11 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
         result = true; // NOLINT
     else if (c_prop == prop_WB_Newline || c_prop == prop_WB_CR || c_prop == prop_WB_LF) // WB3b
         result = true; // NOLINT
-    else if (p_prop == prop_WB_ZWJ && break_word_prop_ext_pic(raw_prop)) // WB3c
+    else if (p_prop == prop_WB_ZWJ && segment_word_prop_ext_pic(raw_prop)) // WB3c
         result = false; // NOLINT
     else if (p_prop == prop_WB_WSegSpace && c_prop == prop_WB_WSegSpace) // WB3d
         result = false; // NOLINT
-    else if (break_word_skip(c_prop)) // WB4
+    else if (segment_word_skip(c_prop)) // WB4
         result = false; // NOLINT
 
     // p and p_prop must not be used anymore because WB4 takes effect below this line
@@ -648,7 +648,7 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (c_prop == prop_WB_MidLetter || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             ((s_prop = break_word_skip_utf16(first, last)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
+             ((s_prop = segment_word_skip_utf16(first, last)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB6
         result = false; // NOLINT
     else if ((p2_prop == prop_WB_ALetter || p2_prop == prop_WB_Hebrew_Letter) &&
@@ -658,7 +658,7 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
     else if (p1_prop == prop_WB_Hebrew_Letter && c_prop == prop_WB_Single_Quote) // WB7a
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Hebrew_Letter && c_prop == prop_WB_Double_Quote &&
-             break_word_skip_utf16(first, last) == prop_WB_Hebrew_Letter) // WB7b
+             segment_word_skip_utf16(first, last) == prop_WB_Hebrew_Letter) // WB7b
         result = false; // NOLINT
     else if (p2_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Double_Quote && c_prop == prop_WB_Hebrew_Letter) // WB7c
         result = false; // NOLINT
@@ -674,7 +674,7 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Numeric &&
              (c_prop == prop_WB_MidNum || c_prop == prop_WB_MidNumLet || c_prop == prop_WB_Single_Quote) &&
-             break_word_skip_utf16(first, last) == prop_WB_Numeric) // WB12
+             segment_word_skip_utf16(first, last) == prop_WB_Numeric) // WB12
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Katakana && c_prop == prop_WB_Katakana) // WB13
         result = false; // NOLINT
@@ -686,7 +686,7 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
              ((c_prop == prop_WB_ALetter || c_prop == prop_WB_Hebrew_Letter) ||
               c_prop == prop_WB_Numeric || c_prop == prop_WB_Katakana)) // WB13b
         result = false; // NOLINT
-    else if (state->state == state_break_word_RI && c_prop == prop_WB_Regional_Indicator) // WB15/WB16
+    else if (state->state == state_segment_word_RI && c_prop == prop_WB_Regional_Indicator) // WB15/WB16
         result = false; // NOLINT
     else // WB999
     {
@@ -697,19 +697,19 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
     state->prev_cp = c;
     state->prev_cp_prop = raw_prop;
 
-    if (break_word_skip(c_prop))
+    if (segment_word_skip(c_prop))
         return result;
 
     // WB15/WB16
     if (c_prop == prop_WB_Regional_Indicator)
     {
-        if (state->state == state_break_word_RI)
-            state->state = state_break_word_RI_RI;
+        if (state->state == state_segment_word_RI)
+            state->state = state_segment_word_RI_RI;
         else
-            state->state = state_break_word_RI;
+            state->state = state_segment_word_RI;
     }
     else
-        state->state = state_break_word_continue;
+        state->state = state_segment_word_continue;
 
     // Set previous values of codepoints with WB4 rules
     state->prev_cp2 = state->prev_cp1;
@@ -726,26 +726,26 @@ uaix_static bool break_word_utf16(struct impl_break_word_state* const state, typ
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
-uaix_static bool impl_break_word_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                       it_in_utf16 first, it_end_utf16 last)
+uaix_static bool impl_segment_word_utf16(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                         it_in_utf16 first, it_end_utf16 last)
 {
-    return break_word_utf16(state, c, word_prop, first, last);
+    return segment_word_utf16(state, c, word_prop, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_word_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                         it_in_utf16 first, it_end_utf16 last)
+uaix_static bool inline_segment_word_utf16(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                           it_in_utf16 first, it_end_utf16 last)
 {
-    return break_word_utf16(state, c, word_prop, first, last);
+    return segment_word_utf16(state, c, word_prop, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static type_codept break_word_skip_rev_utf16(it_in_utf16 first, it_in_utf16 last)
+uaix_static type_codept segment_word_skip_rev_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -754,9 +754,9 @@ uaix_static type_codept break_word_skip_rev_utf16(it_in_utf16 first, it_in_utf16
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        const type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = segment_word_prop(stages_segment_word_prop(c));
 
-        if (break_word_skip(prop))
+        if (segment_word_skip(prop))
             continue;
 
         return prop;
@@ -768,7 +768,7 @@ uaix_static type_codept break_word_skip_rev_utf16(it_in_utf16 first, it_in_utf16
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static it_in_utf16 break_word_skip_rev2_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* const new_prop)
+uaix_static it_in_utf16 segment_word_skip_rev2_utf16(it_in_utf16 first, it_in_utf16 last, type_codept* const new_prop)
 {
     it_in_utf16 src = last;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -777,9 +777,9 @@ uaix_static it_in_utf16 break_word_skip_rev2_utf16(it_in_utf16 first, it_in_utf1
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        const type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = segment_word_prop(stages_segment_word_prop(c));
 
-        if (break_word_skip(prop))
+        if (segment_word_skip(prop))
             continue;
 
         *new_prop = prop;
@@ -791,7 +791,7 @@ uaix_static it_in_utf16 break_word_skip_rev2_utf16(it_in_utf16 first, it_in_utf1
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool break_word_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
+uaix_static bool segment_word_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
 {
     it_in_utf16 src = last;
     type_codept c = 0; // tag_can_be_uninitialized
@@ -801,9 +801,9 @@ uaix_static bool break_word_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        const type_codept prop = break_word_prop(stages_break_word_prop(c));
+        const type_codept prop = segment_word_prop(stages_segment_word_prop(c));
 
-        if (break_word_skip(prop))
+        if (segment_word_skip(prop))
             continue;
 
         if (prop == prop_WB_Regional_Indicator)
@@ -818,19 +818,19 @@ uaix_static bool break_word_rev_RI_utf16(it_in_utf16 first, it_in_utf16 last)
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                      it_in_utf16 first, it_in_utf16 last)
+uaix_static bool segment_word_rev_utf16(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                        it_in_utf16 first, it_in_utf16 last)
 {
-    // word_prop property must be used only with impl_break_is_word* functions
+    // word_prop property must be used only with impl_segment_is_word* functions
 
-    const type_codept raw_prop = stages_break_word_prop(c);
+    const type_codept raw_prop = stages_segment_word_prop(c);
 
-    const type_codept c_prop = break_word_prop(raw_prop);
-    const type_codept p_prop = break_word_prop(state->prev_cp_prop);
+    const type_codept c_prop = segment_word_prop(raw_prop);
+    const type_codept p_prop = segment_word_prop(state->prev_cp_prop);
 
     // Previous values of code points with WB4 rules
-    const type_codept p1_prop = break_word_prop(state->prev_cp1_prop);
-    const type_codept p2_prop = break_word_prop(state->prev_cp2_prop);
+    const type_codept p1_prop = segment_word_prop(state->prev_cp1_prop);
+    const type_codept p2_prop = segment_word_prop(state->prev_cp2_prop);
 
     type_codept s_prop = 0; // tag_can_be_uninitialized
 
@@ -839,9 +839,9 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
     // https://www.unicode.org/reports/tr29/#Word_Boundary_Rules
     // Unicode 11.0 - 15.0 rules
 
-    if (state->state == state_break_word_begin)
+    if (state->state == state_segment_word_begin)
     {
-        state->state = state_break_word_continue;
+        state->state = state_segment_word_continue;
         *word_prop = 0;
     }
     else if (c_prop == prop_WB_CR && p_prop == prop_WB_LF) // WB3
@@ -850,18 +850,18 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
         result = true; // NOLINT
     else if (p_prop == prop_WB_Newline || p_prop == prop_WB_CR || p_prop == prop_WB_LF) // WB3b
         result = true; // NOLINT
-    else if (c_prop == prop_WB_ZWJ && break_word_prop_ext_pic(state->prev_cp_prop)) // WB3c
+    else if (c_prop == prop_WB_ZWJ && segment_word_prop_ext_pic(state->prev_cp_prop)) // WB3c
         result = false; // NOLINT
     else if (c_prop == prop_WB_WSegSpace && p_prop == prop_WB_WSegSpace) // WB3d
         result = false; // NOLINT
-    else if (break_word_skip(p_prop)) // WB4
+    else if (segment_word_skip(p_prop)) // WB4
         result = false; // NOLINT
     else
     {
         it_in_utf16 src = last;
         type_codept n_prop = c_prop;
-        if (break_word_skip(c_prop))
-            src = break_word_skip_rev2_utf16(first, last, &n_prop);
+        if (segment_word_skip(c_prop))
+            src = segment_word_skip_rev2_utf16(first, last, &n_prop);
 
     if ((n_prop == prop_WB_ALetter || n_prop == prop_WB_Hebrew_Letter) &&
         (p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter)) // WB5
@@ -872,7 +872,7 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
         result = false; // NOLINT
     else if ((p1_prop == prop_WB_ALetter || p1_prop == prop_WB_Hebrew_Letter) &&
              (n_prop == prop_WB_MidLetter || n_prop == prop_WB_MidNumLet || n_prop == prop_WB_Single_Quote) &&
-             ((s_prop = break_word_skip_rev_utf16(first, src)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
+             ((s_prop = segment_word_skip_rev_utf16(first, src)) != 0 && // NOLINT(bugprone-assignment-in-if-condition)
               (s_prop == prop_WB_ALetter || s_prop == prop_WB_Hebrew_Letter))) // WB7
         result = false; // NOLINT
     else if (n_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Single_Quote) // WB7a
@@ -880,7 +880,7 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
     else if (n_prop == prop_WB_Hebrew_Letter && p1_prop == prop_WB_Double_Quote && p2_prop == prop_WB_Hebrew_Letter) // WB7b
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Hebrew_Letter && n_prop == prop_WB_Double_Quote &&
-             break_word_skip_rev_utf16(first, src) == prop_WB_Hebrew_Letter) // WB7c
+             segment_word_skip_rev_utf16(first, src) == prop_WB_Hebrew_Letter) // WB7c
         result = false; // NOLINT
     else if (n_prop == prop_WB_Numeric && p1_prop == prop_WB_Numeric) // WB8
         result = false; // NOLINT
@@ -890,7 +890,7 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
         result = false; // NOLINT
     else if (p1_prop == prop_WB_Numeric &&
              (n_prop == prop_WB_MidNum || n_prop == prop_WB_MidNumLet || n_prop == prop_WB_Single_Quote) &&
-             break_word_skip_rev_utf16(first, src) == prop_WB_Numeric) // WB11
+             segment_word_skip_rev_utf16(first, src) == prop_WB_Numeric) // WB11
         result = false; // NOLINT
     else if (n_prop == prop_WB_Numeric &&
              (p1_prop == prop_WB_MidNum || p1_prop == prop_WB_MidNumLet || p1_prop == prop_WB_Single_Quote) &&
@@ -907,7 +907,7 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
               p1_prop == prop_WB_Numeric || p1_prop == prop_WB_Katakana)) // WB13b
         result = false; // NOLINT
     else if (n_prop == prop_WB_Regional_Indicator && p1_prop == prop_WB_Regional_Indicator) // WB15/WB16
-        result = break_word_rev_RI_utf16(first, src);
+        result = segment_word_rev_RI_utf16(first, src);
     else // WB999
         {
             result = true;
@@ -918,7 +918,7 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
     state->prev_cp = c;
     state->prev_cp_prop = raw_prop;
 
-    if (break_word_skip(c_prop))
+    if (segment_word_skip(c_prop))
         return result;
 
     // Set previous values of codepoints with WB4 rules
@@ -936,20 +936,20 @@ uaix_static bool break_word_rev_utf16(struct impl_break_word_state* const state,
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
-uaix_static bool impl_break_word_rev_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                           it_in_utf16 first, it_in_utf16 last)
+uaix_static bool impl_segment_word_rev_utf16(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                             it_in_utf16 first, it_in_utf16 last)
 {
-    return break_word_rev_utf16(state, c, word_prop, first, last);
+    return segment_word_rev_utf16(state, c, word_prop, first, last);
 }
 
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
 uaix_always_inline_tmpl
-uaix_static bool inline_break_word_rev_utf16(struct impl_break_word_state* const state, type_codept c, type_codept* const word_prop,
-                                             it_in_utf16 first, it_in_utf16 last)
+uaix_static bool inline_segment_word_rev_utf16(struct impl_segment_word_state* const state, type_codept c, type_codept* const word_prop,
+                                               it_in_utf16 first, it_in_utf16 last)
 {
-    return break_word_rev_utf16(state, c, word_prop, first, last);
+    return segment_word_rev_utf16(state, c, word_prop, first, last);
 }
 
 #endif // UNI_ALGO_DOC_GENERATED_UTF16
@@ -959,7 +959,7 @@ UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"
 
-#endif // UNI_ALGO_IMPL_BREAK_WORD_H_UAIH
+#endif // UNI_ALGO_IMPL_SEGMENT_WORD_H_UAIH
 
 /* Public Domain Contract
  *

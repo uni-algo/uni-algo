@@ -40,9 +40,9 @@ private:
         Iter it_pos = Iter{};
         Iter it_next = Iter{};
 
-        detail::impl_break_grapheme_state state{};
+        detail::impl_segment_grapheme_state state{};
 
-        uaiw_constexpr void iter_func_break_grapheme_utf8()
+        uaiw_constexpr void iter_func_segment_grapheme_utf8()
         {
             it_begin = it_pos;
 
@@ -51,16 +51,16 @@ private:
                 it_pos = it_next;
                 detail::type_codept codepoint = 0;
                 it_next = detail::inline_iter_utf8(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
-                if (detail::inline_break_grapheme(&state, codepoint))
+                if (detail::inline_segment_grapheme(&state, codepoint))
                     return;
             }
 
             if (it_next == std::end(parent->range))
                 it_pos = it_next;
         }
-        uaiw_constexpr void iter_func_break_grapheme_rev_utf8()
+        uaiw_constexpr void iter_func_segment_grapheme_rev_utf8()
         {
-            detail::impl_break_grapheme_state_reset(&state);
+            detail::impl_segment_grapheme_state_reset(&state);
             it_pos = it_begin;
 
             while (it_begin != std::begin(parent->range))
@@ -68,7 +68,7 @@ private:
                 it_next = it_begin;
                 detail::type_codept codepoint = 0;
                 it_begin = detail::inline_iter_rev_utf8(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
-                if (detail::inline_break_grapheme_rev_utf8(&state, codepoint, std::begin(parent->range), it_begin))
+                if (detail::inline_segment_grapheme_rev_utf8(&state, codepoint, std::begin(parent->range), it_begin))
                 {
                     it_begin = it_next;
                     break;
@@ -76,7 +76,7 @@ private:
             }
 
             it_next = it_pos;
-            detail::impl_break_grapheme_state_reset(&state);
+            detail::impl_segment_grapheme_state_reset(&state);
         }
 
         using is_contiguous = detail::rng::is_range_contiguous<Range>;
@@ -96,9 +96,9 @@ private:
             if (begin == end)
                 return;
 
-            detail::impl_break_grapheme_state_reset(&state);
+            detail::impl_segment_grapheme_state_reset(&state);
 
-            iter_func_break_grapheme_utf8();
+            iter_func_segment_grapheme_utf8();
         }
         template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
         uaiw_constexpr operator*() const
@@ -109,7 +109,7 @@ private:
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
         uaiw_constexpr utf8& operator++()
         {
-            iter_func_break_grapheme_utf8();
+            iter_func_segment_grapheme_utf8();
 
             return *this;
         }
@@ -121,7 +121,7 @@ private:
         }
         uaiw_constexpr utf8& operator--()
         {
-            iter_func_break_grapheme_rev_utf8();
+            iter_func_segment_grapheme_rev_utf8();
 
             return *this;
         }
@@ -190,9 +190,9 @@ private:
         Iter it_pos = Iter{};
         Iter it_next = Iter{};
 
-        detail::impl_break_grapheme_state state{};
+        detail::impl_segment_grapheme_state state{};
 
-        uaiw_constexpr void iter_func_break_grapheme_utf16()
+        uaiw_constexpr void iter_func_segment_grapheme_utf16()
         {
             it_begin = it_pos;
 
@@ -201,16 +201,16 @@ private:
                 it_pos = it_next;
                 detail::type_codept codepoint = 0;
                 it_next = detail::inline_iter_utf16(it_next, std::end(parent->range), &codepoint, detail::impl_iter_replacement);
-                if (detail::inline_break_grapheme(&state, codepoint))
+                if (detail::inline_segment_grapheme(&state, codepoint))
                     return;
             }
 
             if (it_next == std::end(parent->range))
                 it_pos = it_next;
         }
-        uaiw_constexpr void iter_func_break_grapheme_rev_utf16()
+        uaiw_constexpr void iter_func_segment_grapheme_rev_utf16()
         {
-            detail::impl_break_grapheme_state_reset(&state);
+            detail::impl_segment_grapheme_state_reset(&state);
             it_pos = it_begin;
 
             while (it_begin != std::begin(parent->range))
@@ -218,7 +218,7 @@ private:
                 it_next = it_begin;
                 detail::type_codept codepoint = 0;
                 it_begin = detail::inline_iter_rev_utf16(std::begin(parent->range), it_begin, &codepoint, detail::impl_iter_replacement);
-                if (detail::inline_break_grapheme_rev_utf16(&state, codepoint, std::begin(parent->range), it_begin))
+                if (detail::inline_segment_grapheme_rev_utf16(&state, codepoint, std::begin(parent->range), it_begin))
                 {
                     it_begin = it_next;
                     break;
@@ -226,7 +226,7 @@ private:
             }
 
             it_next = it_pos;
-            detail::impl_break_grapheme_state_reset(&state);
+            detail::impl_segment_grapheme_state_reset(&state);
         }
 
         using is_contiguous = detail::rng::is_range_contiguous<Range>;
@@ -246,9 +246,9 @@ private:
             if (begin == end)
                 return;
 
-            detail::impl_break_grapheme_state_reset(&state);
+            detail::impl_segment_grapheme_state_reset(&state);
 
-            iter_func_break_grapheme_utf16();
+            iter_func_segment_grapheme_utf16();
         }
         template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
         uaiw_constexpr operator*() const
@@ -259,7 +259,7 @@ private:
         uaiw_constexpr Iter end() const noexcept { return it_pos; }
         uaiw_constexpr utf16& operator++()
         {
-            iter_func_break_grapheme_utf16();
+            iter_func_segment_grapheme_utf16();
 
             return *this;
         }
@@ -271,7 +271,7 @@ private:
         }
         uaiw_constexpr utf16& operator--()
         {
-            iter_func_break_grapheme_rev_utf16();
+            iter_func_segment_grapheme_rev_utf16();
 
             return *this;
         }

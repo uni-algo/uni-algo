@@ -4,7 +4,7 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-uaix_const_data uaix_data_array(unsigned char, stage1_break_grapheme, 8704) = {
+uaix_const_data uaix_data_array(unsigned char, stage1_segment_grapheme, 8704) = {
 0,1,2,2,2,2,3,2,
 2,4,2,5,6,7,8,9,
 10,11,12,13,14,15,16,17,
@@ -1094,7 +1094,7 @@ uaix_const_data uaix_data_array(unsigned char, stage1_break_grapheme, 8704) = {
 2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2};
 
-uaix_const_data uaix_data_array(unsigned char, stage2_break_grapheme, 19456) = {
+uaix_const_data uaix_data_array(unsigned char, stage2_segment_grapheme, 19456) = {
 /* Block: 0 */
 4,4,4,4,4,4,4,4,
 4,4,3,4,4,2,4,4,

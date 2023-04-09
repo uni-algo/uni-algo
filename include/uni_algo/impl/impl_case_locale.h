@@ -1240,8 +1240,8 @@ uaix_static size_t case_title_locale_utf8(it_in_utf8 first, it_end_utf8 last, it
     bool make_lower = false; // tag_must_be_initialized
 
     type_codept word_prop = 0; // Not used here
-    struct impl_break_word_state state = {0,0,0,0,0,0,0}; // tag_can_be_uninitialized
-    impl_break_word_state_reset(&state);
+    struct impl_segment_word_state state = {0,0,0,0,0,0,0}; // tag_can_be_uninitialized
+    impl_segment_word_state_reset(&state);
 
     while (src != last)
     {
@@ -1251,7 +1251,7 @@ uaix_static size_t case_title_locale_utf8(it_in_utf8 first, it_end_utf8 last, it
         if (!found_break)
         {
             // Find break (if at the end then force break)
-            if (break_word_utf8(&state, c, &word_prop, src, last) || src == last)
+            if (segment_word_utf8(&state, c, &word_prop, src, last) || src == last)
             {
                 brk = src;
                 src = prev_brk;
@@ -1383,8 +1383,8 @@ uaix_static size_t case_title_locale_utf16(it_in_utf16 first, it_end_utf16 last,
     bool make_lower = false; // tag_must_be_initialized
 
     type_codept word_prop = 0; // Not used here
-    struct impl_break_word_state state = {0,0,0,0,0,0,0}; // tag_can_be_uninitialized
-    impl_break_word_state_reset(&state);
+    struct impl_segment_word_state state = {0,0,0,0,0,0,0}; // tag_can_be_uninitialized
+    impl_segment_word_state_reset(&state);
 
     while (src != last)
     {
@@ -1394,7 +1394,7 @@ uaix_static size_t case_title_locale_utf16(it_in_utf16 first, it_end_utf16 last,
         if (!found_break)
         {
             // Find break (if at the end then force break)
-            if (break_word_utf16(&state, c, &word_prop, src, last) || src == last)
+            if (segment_word_utf16(&state, c, &word_prop, src, last) || src == last)
             {
                 brk = src;
                 src = prev_brk;
