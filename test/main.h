@@ -100,7 +100,7 @@
 #include "test_case.h"
 #include "test_norm.h"
 #include "test_norm_unaccent.h"
-#include "test_break.h"
+#include "test_segment.h"
 #include "test_prop.h"
 #include "test_script.h"
 
@@ -282,16 +282,16 @@ int main7()
     std::cout << "DONE: Scripts" << '\n';
 
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
-    test_break_grapheme();
-    test_break_word();
+    test_segment_grapheme();
+    test_segment_word();
 #else
-    std::cout << "SKIP: Break Grapheme and Word with test files" << '\n';
+    std::cout << "SKIP: Segmentation with test files" << '\n';
 #endif
-    STATIC_TESTX(test_break_word_corner_cases());
-    STATIC_TESTX(test_break_word_prop());
-    STATIC_TESTX(test_break_bidi());
+    STATIC_TESTX(test_segment_word_corner_cases());
+    STATIC_TESTX(test_segment_word_prop());
+    STATIC_TESTX(test_segment_bidi());
 
-    std::cout << "DONE: Break Grapheme and Word" << '\n';
+    std::cout << "DONE: Segmentation" << '\n';
 
     // Skip constexpr test because takes too long and may exceed constexpr ops limit
 #ifndef TEST_MODE_CONSTEXPR

@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-bool test_break_grapheme()
+bool test_segment_grapheme()
 {
     std::ifstream input("GraphemeBreakTest.txt", std::ios::binary);
     TESTX(input.is_open());
@@ -144,7 +144,7 @@ bool test_break_grapheme()
     return true;
 }
 
-bool test_break_word()
+bool test_segment_word()
 {
     std::ifstream input("WordBreakTest.txt", std::ios::binary);
     TESTX(input.is_open());
@@ -282,87 +282,87 @@ bool test_break_word()
     return true;
 }
 
-test_constexpr std::size_t test_break_count_words(std::string_view str)
+test_constexpr std::size_t test_segment_count_words(std::string_view str)
 {
     auto view = una::ranges::word::utf8_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
-test_constexpr std::size_t test_break_count_only_words(std::string_view str)
+test_constexpr std::size_t test_segment_count_only_words(std::string_view str)
 {
     auto view = una::ranges::word_only::utf8_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
-test_constexpr std::size_t test_break_count_words16(std::u16string_view str)
+test_constexpr std::size_t test_segment_count_words16(std::u16string_view str)
 {
     auto view = una::ranges::word::utf16_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
-test_constexpr std::size_t test_break_count_only_words16(std::u16string_view str)
+test_constexpr std::size_t test_segment_count_only_words16(std::u16string_view str)
 {
     auto view = una::ranges::word_only::utf16_view{str};
 
     return static_cast<std::size_t>(std::distance(view.begin(), view.end()));
 }
 
-test_constexpr bool test_break_word_corner_cases()
+test_constexpr bool test_segment_word_corner_cases()
 {
     // Word indicator must work properly in all the cases.
     // The behavior is the same as in ICU.
     // Extend + ALetter + Extend
-    TESTX(test_break_count_words("\xCC\x82\x77\xCC\x82") == 2);
-    TESTX(test_break_count_only_words("\xCC\x82\x77\xCC\x82") == 1);
-    TESTX(test_break_count_words16(u"\x0302\x0077\x0302") == 2);
-    TESTX(test_break_count_only_words16(u"\x0302\x0077\x0302") == 1);
+    TESTX(test_segment_count_words("\xCC\x82\x77\xCC\x82") == 2);
+    TESTX(test_segment_count_only_words("\xCC\x82\x77\xCC\x82") == 1);
+    TESTX(test_segment_count_words16(u"\x0302\x0077\x0302") == 2);
+    TESTX(test_segment_count_only_words16(u"\x0302\x0077\x0302") == 1);
     // Hebrew_Letter + Single_Quote
-    TESTX(test_break_count_words("\xD7\x90\x27") == 1);
-    TESTX(test_break_count_only_words("\xD7\x90\x27") == 1);
-    TESTX(test_break_count_words16(u"\x05D0\x0027") == 1);
-    TESTX(test_break_count_only_words16(u"\x05D0\x0027") == 1);
+    TESTX(test_segment_count_words("\xD7\x90\x27") == 1);
+    TESTX(test_segment_count_only_words("\xD7\x90\x27") == 1);
+    TESTX(test_segment_count_words16(u"\x05D0\x0027") == 1);
+    TESTX(test_segment_count_only_words16(u"\x05D0\x0027") == 1);
     // AHLetter + ExtendNumLet
-    TESTX(test_break_count_words("\x77\x5F") == 1);
-    TESTX(test_break_count_only_words("\x77\x5F") == 1);
-    TESTX(test_break_count_words16(u"\x0077\x005F") == 1);
-    TESTX(test_break_count_only_words16(u"\x0077\x005F") == 1);
+    TESTX(test_segment_count_words("\x77\x5F") == 1);
+    TESTX(test_segment_count_only_words("\x77\x5F") == 1);
+    TESTX(test_segment_count_words16(u"\x0077\x005F") == 1);
+    TESTX(test_segment_count_only_words16(u"\x0077\x005F") == 1);
     // ExtendNumLet + AHLetter
-    TESTX(test_break_count_words("\x5F\x77") == 1);
-    TESTX(test_break_count_only_words("\x5F\x77") == 1);
-    TESTX(test_break_count_words16(u"\x005F\x0077") == 1);
-    TESTX(test_break_count_only_words16(u"\x005F\x0077") == 1);
+    TESTX(test_segment_count_words("\x5F\x77") == 1);
+    TESTX(test_segment_count_only_words("\x5F\x77") == 1);
+    TESTX(test_segment_count_words16(u"\x005F\x0077") == 1);
+    TESTX(test_segment_count_only_words16(u"\x005F\x0077") == 1);
 
     // Properly handle corner cases with Extended_Pictographic in word properties.
     // Extended_Pictographic intersects with ALetter with some code points in word properties.
     // Note that Extended_Pictographic never intersects with something in grapheme properties.
     // The behavior is the same as in ICU.
-    TESTX(test_break_count_words("\xE2\x80\x8D\xE2\x84\xB9\x77") == 1);
-    TESTX(test_break_count_words("\xE2\x84\xB9\xE2\x80\x8D\x77") == 1);
-    TESTX(test_break_count_words16(u"\x200D\x2139\x0077") == 1);
-    TESTX(test_break_count_words16(u"\x2139\x200D\x0077") == 1);
-    TESTX(test_break_count_words("\xE2\x80\x8D\xE2\x84\xB9") == 1);
-    TESTX(test_break_count_words("\xE2\x84\xB9\xE2\x80\x8D") == 1);
-    TESTX(test_break_count_words16(u"\x200D\x2139") == 1);
-    TESTX(test_break_count_words16(u"\x2139\x200D") == 1);
+    TESTX(test_segment_count_words("\xE2\x80\x8D\xE2\x84\xB9\x77") == 1);
+    TESTX(test_segment_count_words("\xE2\x84\xB9\xE2\x80\x8D\x77") == 1);
+    TESTX(test_segment_count_words16(u"\x200D\x2139\x0077") == 1);
+    TESTX(test_segment_count_words16(u"\x2139\x200D\x0077") == 1);
+    TESTX(test_segment_count_words("\xE2\x80\x8D\xE2\x84\xB9") == 1);
+    TESTX(test_segment_count_words("\xE2\x84\xB9\xE2\x80\x8D") == 1);
+    TESTX(test_segment_count_words16(u"\x200D\x2139") == 1);
+    TESTX(test_segment_count_words16(u"\x2139\x200D") == 1);
 
     // Repeat previous tests with count_only_words just in case.
     // If a word contains Extended_Pictographic it promotes to emoji and must be skipped.
-    TESTX(test_break_count_only_words("\xE2\x80\x8D\xE2\x84\xB9\x77") == 0);
-    TESTX(test_break_count_only_words("\xE2\x84\xB9\xE2\x80\x8D\x77") == 0);
-    TESTX(test_break_count_only_words16(u"\x200D\x2139\x0077") == 0);
-    TESTX(test_break_count_only_words16(u"\x2139\x200D\x0077") == 0);
-    TESTX(test_break_count_only_words("\xE2\x80\x8D\xE2\x84\xB9") == 0);
-    TESTX(test_break_count_only_words("\xE2\x84\xB9\xE2\x80\x8D") == 0);
-    TESTX(test_break_count_only_words16(u"\x200D\x2139") == 0);
-    TESTX(test_break_count_only_words16(u"\x2139\x200D") == 0);
+    TESTX(test_segment_count_only_words("\xE2\x80\x8D\xE2\x84\xB9\x77") == 0);
+    TESTX(test_segment_count_only_words("\xE2\x84\xB9\xE2\x80\x8D\x77") == 0);
+    TESTX(test_segment_count_only_words16(u"\x200D\x2139\x0077") == 0);
+    TESTX(test_segment_count_only_words16(u"\x2139\x200D\x0077") == 0);
+    TESTX(test_segment_count_only_words("\xE2\x80\x8D\xE2\x84\xB9") == 0);
+    TESTX(test_segment_count_only_words("\xE2\x84\xB9\xE2\x80\x8D") == 0);
+    TESTX(test_segment_count_only_words16(u"\x200D\x2139") == 0);
+    TESTX(test_segment_count_only_words16(u"\x2139\x200D") == 0);
 
     return true;
 }
 
-test_constexpr bool test_break_word_prop()
+test_constexpr bool test_segment_word_prop()
 {
     // FORWARD
 
@@ -549,7 +549,7 @@ test_constexpr bool test_break_word_prop()
     return true;
 }
 
-test_constexpr bool test_break_bidi()
+test_constexpr bool test_segment_bidi()
 {
     // Skip constexpr test because uses std::list
 #ifndef TEST_MODE_CONSTEXPR

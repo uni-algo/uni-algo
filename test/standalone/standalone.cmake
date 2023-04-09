@@ -29,6 +29,6 @@ target_sources(${PROJECT_NAME} PRIVATE
     "${PROJECT_SOURCE_DIR}/standalone/impl/impl_norm.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/impl/impl_prop.cpp"
     "${PROJECT_SOURCE_DIR}/standalone/impl/impl_script.cpp"
-    "${PROJECT_SOURCE_DIR}/standalone/impl/impl_break_grapheme.cpp"
-    "${PROJECT_SOURCE_DIR}/standalone/impl/impl_break_word.cpp"
+    "${PROJECT_SOURCE_DIR}/standalone/impl/impl_segment_grapheme.cpp"
+    "${PROJECT_SOURCE_DIR}/standalone/impl/impl_segment_word.cpp"
 )
