@@ -6,8 +6,6 @@
 #define UNI_ALGO_CONFIG_H_UAIH
 
 // TODO: Rename:
-// UNI_ALGO_DISABLE_BREAK_GRAPHEME -> UNI_ALGO_DISABLE_SEGMENT_GRAPHEME
-// UNI_ALGO_DISABLE_BREAK_WORD -> UNI_ALGO_DISABLE_SEGMENT_WORD
 // UNI_ALGO_ENABLE_SAFE_LAYER -> UNI_ALGO_SAFE_LAYER (Not sure about this one)
 
 // Note that you can just add the following defines to your project
@@ -31,12 +29,12 @@
 // Disable Script module.
 // Reduces Unicode data size by ~70 KB.
 
-//#define UNI_ALGO_DISABLE_BREAK_GRAPHEME
-// Disable Break Grapheme module.
+//#define UNI_ALGO_DISABLE_SEGMENT_GRAPHEME
+// Disable Grapheme segmentation module.
 // Reduces Unicode data size by ~25 KB.
 
-//#define UNI_ALGO_DISABLE_BREAK_WORD
-// Disable Break Word module.
+//#define UNI_ALGO_DISABLE_SEGMENT_WORD
+// Disable Word segmentation module.
 // Reduces Unicode data size by ~35 KB.
 // Note that if Break Word module is disabled title case functions
 // in Case module will be disabled too because it is needed for them.
