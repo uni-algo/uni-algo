@@ -9,7 +9,7 @@
 // Note that title case has cross dependency with break word module
 // and if it's disabled all title case functions must be disabled too
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-#include "impl_break_word.h"
+#include "impl_segment_word.h"
 #endif
 
 #include "internal_defines.h"

@@ -11,9 +11,9 @@
 #include "internal_stages.h"
 
 #ifndef UNI_ALGO_STATIC_DATA
-#include "data/extern_break_grapheme.h"
+#include "data/extern_segment_grapheme.h"
 #else
-#include "data/data_break_grapheme.h"
+#include "data/data_segment_grapheme.h"
 #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN

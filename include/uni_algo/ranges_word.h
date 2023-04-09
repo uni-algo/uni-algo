@@ -17,7 +17,7 @@
 #include "internal/ranges_core.h"
 
 #include "impl/impl_iter.h"
-#include "impl/impl_break_word.h"
+#include "impl/impl_segment_word.h"
 
 namespace una {
 

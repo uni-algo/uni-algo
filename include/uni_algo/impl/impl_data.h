@@ -32,13 +32,13 @@
 #endif
 
 #ifndef UNI_ALGO_DISABLE_BREAK_GRAPHEME
-#include "data/extern_break_grapheme.h"
-#include "data/data_break_grapheme.h"
+#include "data/extern_segment_grapheme.h"
+#include "data/data_segment_grapheme.h"
 #endif
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-#include "data/extern_break_word.h"
-#include "data/data_break_word.h"
+#include "data/extern_segment_word.h"
+#include "data/data_segment_word.h"
 #endif
 
 #include "internal_undefs.h"
