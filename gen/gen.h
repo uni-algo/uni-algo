@@ -25,7 +25,7 @@ const std::string gen_header =
 
 // The lowest Unicode version that the generator does work with is 6.0.0
 // because DerivedCoreProperties.txt doesn't have properties that we need in lower versions.
-// Note that the lowest version for break modules is Unicode 11.0.0 at the moment because break rules change very often.
+// Note that the lowest version for segmentation modules is Unicode 11.0.0 at the moment because segmentation rules change very often.
 
 // TODO: This define is very old and useless. So probably just clean this.
 // Uncomment it to use Tailored Casing for German Sharp S (Eszett)
@@ -1073,7 +1073,7 @@ static void new_generator_unicodedata_compose(const std::string& file1, const st
     new_generator_output3(file5, vec);
 }
 
-static void new_generator_break_grapheme(const std::string& file1, const std::string& file2)
+static void new_generator_segment_grapheme(const std::string& file1, const std::string& file2)
 {
     std::ifstream input("GraphemeBreakProperty.txt", std::ios::binary);
     ASSERTX(input.is_open());
@@ -1203,7 +1203,7 @@ static void new_generator_break_grapheme(const std::string& file1, const std::st
     new_generator_output(file1, file2, 8, 8, true, map);
 }
 
-static void new_generator_break_word(const std::string& file1, const std::string& file2)
+static void new_generator_segment_word(const std::string& file1, const std::string& file2)
 {
     std::ifstream input("WordBreakProperty.txt", std::ios::binary);
     ASSERTX(input.is_open());
@@ -1350,7 +1350,7 @@ static void new_generator_break_word(const std::string& file1, const std::string
                     // There are some code points that have ALetter property and Extended_Pictographic:
                     // Unicode 14.0.0: U+2139, U+24C2, U+1F170, U+1F171, U+1F17E, U+1F17F
                     // So we use first (left) bit to store Extended_Pictographic
-                    // See test_break_word_corner_cases in test/test_break.h
+                    // See test_segment_word_corner_cases in test/test_segment.h
 
                     if (Extended_Pictographic) map.at(i) = 0x80 | map.at(i);
                 }
@@ -1990,8 +1990,8 @@ static void new_generator()
     new_generator_unicodedata_decompose_ccc_qc("new_stage1_decomp_nfkd.txt", "new_stage2_decomp_nfkd.txt", "new_stage3_decomp_nfkd.txt", true,
                                                "new_stage1_ccc_qc.txt", "new_stage2_ccc_qc.txt");
 
-    new_generator_break_grapheme("new_stage1_break_grapheme.txt", "new_stage2_break_grapheme.txt");
-    new_generator_break_word("new_stage1_break_word.txt", "new_stage2_break_word.txt");
+    new_generator_segment_grapheme("new_stage1_segment_grapheme.txt", "new_stage2_segment_grapheme.txt");
+    new_generator_segment_word("new_stage1_segment_word.txt", "new_stage2_segment_word.txt");
 
     new_generator_script("new_stage1_script.txt", "new_stage2_script.txt", "new_stage3_script.txt");
     new_generator_script_ext("new_stage1_script_ext.txt", "new_stage2_script_ext.txt", "new_stage3_script_ext.txt");
@@ -2125,19 +2125,19 @@ static void new_merger()
     input1.close(); output1.close();
     input2.close(); output2.close();
 
-    input1.open("data_break_grapheme.h_blank");
-    input2.open("extern_break_grapheme.h_blank");
+    input1.open("data_segment_grapheme.h_blank");
+    input2.open("extern_segment_grapheme.h_blank");
     ASSERTX(input1.is_open() && input2.is_open());
 
     data1 = std::string(std::istreambuf_iterator<char>(input1), std::istreambuf_iterator<char>());
     data2 = std::string(std::istreambuf_iterator<char>(input2), std::istreambuf_iterator<char>());
 
-    new_merger_replace_string(data1, data2, "new_stage1_break_grapheme.txt");
-    new_merger_replace_string(data1, data2, "new_stage2_break_grapheme.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_segment_grapheme.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_segment_grapheme.txt");
     new_merger_add_header(data1, data2);
 
-    output1.open("data_break_grapheme.h");
-    output2.open("extern_break_grapheme.h");
+    output1.open("data_segment_grapheme.h");
+    output2.open("extern_segment_grapheme.h");
     ASSERTX(output1.is_open() && output2.is_open());
     output1 << data1;
     output2 << data2;
@@ -2145,19 +2145,19 @@ static void new_merger()
     input1.close(); output1.close();
     input2.close(); output2.close();
 
-    input1.open("data_break_word.h_blank");
-    input2.open("extern_break_word.h_blank");
+    input1.open("data_segment_word.h_blank");
+    input2.open("extern_segment_word.h_blank");
     ASSERTX(input1.is_open() && input2.is_open());
 
     data1 = std::string(std::istreambuf_iterator<char>(input1), std::istreambuf_iterator<char>());
     data2 = std::string(std::istreambuf_iterator<char>(input2), std::istreambuf_iterator<char>());
 
-    new_merger_replace_string(data1, data2, "new_stage1_break_word.txt");
-    new_merger_replace_string(data1, data2, "new_stage2_break_word.txt");
+    new_merger_replace_string(data1, data2, "new_stage1_segment_word.txt");
+    new_merger_replace_string(data1, data2, "new_stage2_segment_word.txt");
     new_merger_add_header(data1, data2);
 
-    output1.open("data_break_word.h");
-    output2.open("extern_break_word.h");
+    output1.open("data_segment_word.h");
+    output2.open("extern_segment_word.h");
     ASSERTX(output1.is_open() && output2.is_open());
     output1 << data1;
     output2 << data2;
