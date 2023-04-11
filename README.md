@@ -36,7 +36,7 @@ In the best case scenario you'll get an exception/error in the worst undefined b
 The biggest problem that in 99% cases everything will be fine.
 This is inappropriate for security reasons.<br>
 This library handles such problems (there are not only ill-formed sequences actually)
-properly and always according to Unicode Standard.
+properly and always according to The Unicode Standard.
 
 In C/C++ there isn't exist a safe type for UTF-8/UTF-16 that guarantees that a data will be
 well-formed like in some other programming languages this makes the problem even worse.
@@ -57,36 +57,35 @@ Security means:
 - None of the functions can ever produce ill-formed UTF-8/16/32 sequence even if an input was some random bytes,
 this also means that a data can never cause an undefined behavior.
 - All standards are followed exactly as written,
-this also means all Unicode algorithms are conformant with Unicode Standard.
-- Test files provided by Unicode are used with many other tests.
+this also means all Unicode algorithms are conformant with The Unicode Standard.
+- Test files provided by The Unicode Standard are used with many other tests.
 - The library never uses dangerous things like pointer casts etc.
 - The library uses two levels: the low-level where very few things are allowed the level is pure algorithms
 and the wrapper-level where template into template into a very easy to use function or a range.
 - The library does not use raw pointers or C arrays and uses safe iterators and arrays with bounds checks through
-safe layer in debug with ability to enable it in release.
-- GCC with -Wall and many extra warnings is used in the development and Clang-Tidy is used as a static analyzer.
+[safe layer](https://github.com/uni-algo/uni-algo/blob/main/doc/SAFE_LAYER.md) in debug with ability to enable it in release.
+- GCC with `-Wall` and many extra warnings is used in the development and Clang-Tidy is used as a static analyzer.
 
 Performance means:
-- The library is designed for the performance from the start.
+- The library is designed for the performance from the beginning.
 - The performance is at least the same as other implementations.
-- Most of optimization techniques that are mentioned in Unicode Standard are used.
+- Most of optimization techniques that are mentioned in The Unicode Standard are used.
 - The library uses low-level optimizations when it's possible.
 
 Usability means:
-- Most functions can be used in a single line. See examples below.
-- The library doesn't introduce new types for strings it uses std::string, std::u16string etc.
-- Ranges and views are compatible with C++ Standard Library.
-- The library doesn't use exceptions because there are no exceptional situations in
-Unicode algorithms. Unicode Standard always describes what need to be done if an issue occurs.
-Of course C++ Standard Library still can throw if -fno-exceptions isn't used.
 - The only dependency is C++ Standard Library.
+- Most functions can be used in a single line. See examples below.
+- The library doesn't introduce new types for strings it uses: `std::string`, `std::u16string` etc.
+- Ranges and views are compatible with C++ Standard Library.
+- The library doesn't use exceptions and RTTI so it can be compiled with `-fno-exceptions` and `-fno-rtti`.
 - The library itself is header-only but Unicode data (one .cpp file) must be compiled.
+Pure header-only version is also available.
 - You can disable modules or even a part of a module by using configuration defines
 that can drastically reduce the size of Unicode data that must be compiled.
 
 Portability means:
-- The library works even if all available types are 64-bit with sizeof == 1
-and/or fixed width types are unavailable and/or CHAR_BIT is not 8.
+- The library works even if all available types are 64-bit with `sizeof == 1`
+and/or fixed width types are unavailable and/or `CHAR_BIT` is not 8.
 
 ## Usage
 
@@ -569,7 +568,7 @@ for (auto it = view.end(); it != view.begin();)
 
 // Grapheme/Word ranges are similar to conversion ranges
 // but they return subranges in the form of std::string_view
-// They use default grapheme/word boundary rules from the Unicode Standard UAX #29
+// They use default grapheme/word boundary rules from The Unicode Standard UAX #29
 
 std::string str8 = "Άλμπερτ Αϊνστάιν";
 
@@ -662,7 +661,7 @@ Also this makes ranges are especially useful for streams where you have only one
 
 **Unicode algorithms that the library does implement:**
 
-Unicode Standard 3.4: Table 3-1. Named Unicode Algorithms:
+The Unicode Standard 3.4 Table 3-1. Named Unicode Algorithms:
 - Default Case Conversion (locale-independent and locale-dependent)
 - Default Case Folding
 - Default Caseless Matching
