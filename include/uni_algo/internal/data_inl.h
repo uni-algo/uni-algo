@@ -10,6 +10,11 @@
 #ifdef UNI_ALGO_STATIC_DATA
 #error "data.cpp file must not be compiled when header-only is enabled"
 #else
+
 #include "../impl/impl_data.h"
+
+#ifndef UNI_ALGO_DISABLE_SYSTEM_LOCALE
 #include "locale_inl.h"
-#endif
+#endif // UNI_ALGO_DISABLE_SYSTEM_LOCALE
+
+#endif // UNI_ALGO_STATIC_DATA
