@@ -11,4 +11,5 @@
 #error "data.cpp file must not be compiled when header-only is enabled"
 #else
 #include "../impl/impl_data.h"
+#include "locale_inl.h"
 #endif
