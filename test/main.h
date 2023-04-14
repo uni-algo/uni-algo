@@ -291,7 +291,7 @@ int main7()
     STATIC_TESTX(test_segment_word_prop());
     STATIC_TESTX(test_segment_bidi());
 
-    std::cout << "DONE: Segmentation" << '\n';
+    std::cout << "DONE: Text Segmentation" << '\n';
 
     // Skip constexpr test because takes too long and may exceed constexpr ops limit
 #ifndef TEST_MODE_CONSTEXPR
