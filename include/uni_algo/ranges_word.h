@@ -87,6 +87,26 @@ private:
             it_next = it_pos;
             detail::impl_segment_word_state_reset(&state);
         }
+        uaiw_constexpr void iter_func_segment_word_pos_utf8(Iter pos)
+        {
+            // Find UTF-8 boundary
+            for (std::size_t i = 0; i < 3 && pos != std::end(parent->range); ++i, ++pos)
+            {
+                if (((*pos & 0xFF) & 0xC0) != 0x80)
+                    break;
+            }
+
+            // NOTE: https://unicode.org/reports/tr29/#Random_Access
+
+            it_begin = pos;
+
+            iter_func_segment_word_rev_utf8();
+
+            it_pos = it_begin;
+            it_next = it_begin;
+
+            iter_func_segment_word_utf8();
+        }
 
         using is_contiguous = detail::rng::is_range_contiguous<Range>;
 
@@ -108,6 +128,11 @@ private:
             detail::impl_segment_word_state_reset(&state);
 
             iter_func_segment_word_utf8();
+        }
+        uaiw_constexpr explicit utf8(utf8_view& p, Iter begin, Sent, Iter pos)
+            : parent{std::addressof(p)}, it_begin{begin}, it_pos{begin}, it_next{begin}
+        {
+            iter_func_segment_word_pos_utf8(pos);
         }
         template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
         uaiw_constexpr operator*() const
@@ -186,6 +211,10 @@ public:
     {
         return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
+    uaiw_constexpr auto cursor(iter_t pos)
+    {
+        return utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range), pos};
+    }
     //uaiw_constexpr bool empty() { return begin() == end(); }
     //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
@@ -253,6 +282,26 @@ private:
             it_next = it_pos;
             detail::impl_segment_word_state_reset(&state);
         }
+        uaiw_constexpr void iter_func_segment_word_pos_utf16(Iter pos)
+        {
+            // Find UTF-16 boundary
+            for (std::size_t i = 0; i < 1 && pos != std::end(parent->range); ++i, ++pos)
+            {
+                if (!((*pos & 0xFFFF) >= 0xDC00 && (*pos & 0xFFFF) <= 0xDFFF))
+                    break;
+            }
+
+            // NOTE: https://unicode.org/reports/tr29/#Random_Access
+
+            it_begin = pos;
+
+            iter_func_segment_word_rev_utf16();
+
+            it_pos = it_begin;
+            it_next = it_begin;
+
+            iter_func_segment_word_utf16();
+        }
 
         using is_contiguous = detail::rng::is_range_contiguous<Range>;
 
@@ -274,6 +323,11 @@ private:
             detail::impl_segment_word_state_reset(&state);
 
             iter_func_segment_word_utf16();
+        }
+        uaiw_constexpr explicit utf16(utf16_view& p, Iter begin, Sent, Iter pos)
+            : parent{std::addressof(p)}, it_begin{begin}, it_pos{begin}, it_next{begin}
+        {
+            iter_func_segment_word_pos_utf16(pos);
         }
         template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
         uaiw_constexpr operator*() const
@@ -352,6 +406,10 @@ public:
     {
         return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
+    uaiw_constexpr auto cursor(iter_t pos)
+    {
+        return utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range), pos};
+    }
     //uaiw_constexpr bool empty() { return begin() == end(); }
     //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
@@ -409,7 +467,6 @@ private:
                     it_begin = it_next;
             }
         }
-
         uaiw_constexpr void iter_func_segment_word_only_rev_utf8()
         {
             detail::impl_segment_word_state_reset(&state);
@@ -435,6 +492,26 @@ private:
             it_next = it_pos;
             detail::impl_segment_word_state_reset(&state);
         }
+        uaiw_constexpr void iter_func_segment_word_only_pos_utf8(Iter pos)
+        {
+            // Find UTF-8 boundary
+            for (std::size_t i = 0; i < 3 && pos != std::end(parent->range); ++i, ++pos)
+            {
+                if (((*pos & 0xFF) & 0xC0) != 0x80)
+                    break;
+            }
+
+            // NOTE: https://unicode.org/reports/tr29/#Random_Access
+
+            it_begin = pos;
+
+            iter_func_segment_word_only_rev_utf8();
+
+            it_pos = it_begin;
+            it_next = it_begin;
+
+            iter_func_segment_word_only_utf8();
+        }
 
         using is_contiguous = detail::rng::is_range_contiguous<Range>;
 
@@ -456,6 +533,11 @@ private:
             detail::impl_segment_word_state_reset(&state);
 
             iter_func_segment_word_only_utf8();
+        }
+        uaiw_constexpr explicit utf8(utf8_view& p, Iter begin, Sent, Iter pos)
+            : parent{std::addressof(p)}, it_begin{begin}, it_pos{begin}, it_next{begin}
+        {
+            iter_func_segment_word_only_pos_utf8(pos);
         }
         template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
         uaiw_constexpr operator*() const
@@ -525,6 +607,10 @@ public:
     {
         return utf8<iter_t, sent_t>{*this, std::end(range), std::end(range)};
     }
+    uaiw_constexpr auto cursor(iter_t pos)
+    {
+        return utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range), pos};
+    }
     //uaiw_constexpr bool empty() { return begin() == end(); }
     //explicit uaiw_constexpr operator bool() { return !empty(); }
 };
@@ -579,7 +665,6 @@ private:
                     it_begin = it_next;
             }
         }
-
         uaiw_constexpr void iter_func_segment_word_only_rev_utf16()
         {
             detail::impl_segment_word_state_reset(&state);
@@ -605,6 +690,26 @@ private:
             it_next = it_pos;
             detail::impl_segment_word_state_reset(&state);
         }
+        uaiw_constexpr void iter_func_segment_word_only_pos_utf16(Iter pos)
+        {
+            // Find UTF-16 boundary
+            for (std::size_t i = 0; i < 1 && pos != std::end(parent->range); ++i, ++pos)
+            {
+                if (!((*pos & 0xFFFF) >= 0xDC00 && (*pos & 0xFFFF) <= 0xDFFF))
+                    break;
+            }
+
+            // NOTE: https://unicode.org/reports/tr29/#Random_Access
+
+            it_begin = pos;
+
+            iter_func_segment_word_only_rev_utf16();
+
+            it_pos = it_begin;
+            it_next = it_begin;
+
+            iter_func_segment_word_only_utf16();
+        }
 
         using is_contiguous = detail::rng::is_range_contiguous<Range>;
 
@@ -626,6 +731,11 @@ private:
             detail::impl_segment_word_state_reset(&state);
 
             iter_func_segment_word_only_utf16();
+        }
+        uaiw_constexpr explicit utf16(utf16_view& p, Iter begin, Sent, Iter pos)
+            : parent{std::addressof(p)}, it_begin{begin}, it_pos{begin}, it_next{begin}
+        {
+            iter_func_segment_word_only_pos_utf16(pos);
         }
         template<class T = reference> typename std::enable_if_t<is_contiguous::value, T>
         uaiw_constexpr operator*() const
@@ -694,6 +804,10 @@ public:
     uaiw_constexpr auto end()
     {
         return utf16<iter_t, sent_t>{*this, std::end(range), std::end(range)};
+    }
+    uaiw_constexpr auto cursor(iter_t pos)
+    {
+        return utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range), pos};
     }
     //uaiw_constexpr bool empty() { return begin() == end(); }
     //explicit uaiw_constexpr operator bool() { return !empty(); }
