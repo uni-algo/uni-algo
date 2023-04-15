@@ -101,6 +101,7 @@
 #include "test_norm.h"
 #include "test_norm_unaccent.h"
 #include "test_segment.h"
+#include "test_segment_cursor.h"
 #include "test_prop.h"
 #include "test_script.h"
 
@@ -290,6 +291,9 @@ int main7()
     STATIC_TESTX(test_segment_word_corner_cases());
     STATIC_TESTX(test_segment_word_prop());
     STATIC_TESTX(test_segment_bidi());
+    STATIC_TESTX(test_segment_cursor_grapheme());
+    STATIC_TESTX(test_segment_cursor_word());
+    STATIC_TESTX(test_segment_cursor_word_only());
 
     std::cout << "DONE: Text Segmentation" << '\n';
 
