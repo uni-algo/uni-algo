@@ -294,6 +294,9 @@ int main7()
     STATIC_TESTX(test_segment_cursor_grapheme());
     STATIC_TESTX(test_segment_cursor_word());
     STATIC_TESTX(test_segment_cursor_word_only());
+    STATIC_TESTX(test2_segment_cursor_grapheme());
+    STATIC_TESTX(test2_segment_cursor_word());
+    STATIC_TESTX(test2_segment_cursor_word_only());
 
     std::cout << "DONE: Text Segmentation" << '\n';
 
