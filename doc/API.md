@@ -181,7 +181,8 @@ una::views::norm::nfkd
 ```
 una::views::grapheme::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges of graphemes
 ```
-The algorithm uses [UAX #29: Unicode Text Segmentation -> Grapheme Cluster Boundary Rules](https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries)
+The algorithm uses [UAX #29: Unicode Text Segmentation -> Grapheme Cluster Boundary Rules](https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries)<br>
+The grapheme range supports cursor. For details see [doc/CURSOR.md](CURSOR.md)
 
 ---
 
@@ -204,7 +205,8 @@ is_segspace         - includes only spaces
 is_newline          - includes only new lines
 ```
 The algorithm uses [UAX #29: Unicode Text Segmentation -> Word Boundary Rules](https://unicode.org/reports/tr29/#Word_Boundaries)<br>
-`word_only` is a special case of UAX #29 that takes only words and skips all punctuation and such.
+`word_only` is a special case of UAX #29 that takes only words and skips all punctuation and such.<br>
+The word range supports cursor. For details see [doc/CURSOR.md](CURSOR.md)
 
 ---
 
