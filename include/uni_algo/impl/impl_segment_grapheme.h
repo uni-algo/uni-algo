@@ -68,7 +68,7 @@ uaix_static void impl_segment_grapheme_state_reset(struct impl_segment_grapheme_
 // TODO: see TODO below.
 // Extend_ExtCccZwj and ZWJ_ExtCccZwj should not be used.
 // ZWJ must be the same as Extend.
-uaix_static const bool break_table_grapheme[15][15] =
+uaix_static const bool segment_table_grapheme[15][15] =
 {
 //   Oth CR LF Con Ext RI Pre SpM L  V  T  LV LVT EP ZWJ
     {1,  1, 1, 1,  0,  1, 1,  0,  1, 1, 1, 1, 1,  1, 0}, // Other
@@ -89,7 +89,7 @@ uaix_static const bool break_table_grapheme[15][15] =
 };
 */
 uaix_always_inline
-uaix_static bool break_grapheme(struct impl_segment_grapheme_state* const state, type_codept c)
+uaix_static bool segment_grapheme(struct impl_segment_grapheme_state* const state, type_codept c)
 {
     // TODO: https://unicode.org/reports/tr29/#State_Machines
     // ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.html
@@ -160,13 +160,13 @@ template<typename = void> // TODO: What is this? Why uaix_inline is not used her
 #endif
 uaix_static bool impl_segment_grapheme(struct impl_segment_grapheme_state* const state, type_codept c)
 {
-    return break_grapheme(state, c);
+    return segment_grapheme(state, c);
 }
 
 uaix_always_inline
 uaix_static bool inline_segment_grapheme(struct impl_segment_grapheme_state* const state, type_codept c)
 {
-    return break_grapheme(state, c);
+    return segment_grapheme(state, c);
 }
 
 // -------------
