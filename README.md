@@ -566,13 +566,13 @@ for (auto it = view.end(); it != view.begin();)
 #include "uni_algo/ranges_grapheme.h"
 #include "uni_algo/ranges_word.h"
 
-// Grapheme/Word ranges are similar to conversion ranges
+// Grapheme/Word aka text segmentation ranges are similar to conversion ranges
 // but they return subranges in the form of std::string_view
 // They use default grapheme/word boundary rules from The Unicode Standard UAX #29
 
 std::string str8 = "Άλμπερτ Αϊνστάιν";
 
-// Replace it with una::views::grapheme::utf8 for grapheme breaks
+// Replace it with una::views::grapheme::utf8 for grapheme segmentation
 auto view = una::views::word::utf8(str8);
 
 // Count words/graphemes (note that a space/punctuation is a word too according to rules)
@@ -603,16 +603,16 @@ for (std::string_view word : una::views::word_only::utf8(str8))
 std::string str8 = "🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧🧙‍♀️"; // These emojis use multiple code points
 str8 += una::utf32to8(std::u32string{U'😺'}); // This emoji use 1 code point
 
-// But if you need to insert a code point you need break ranges too
+// But if you need to insert a code point you need text segmentation ranges too
 auto view = una::views::grapheme::utf8(str8);
 // Insert a code point after 2nd grapheme
 auto pos = std::next(view.begin(), 2).begin() - str8.begin();
 str8.insert(pos, una::utf32to8(std::u32string{U'😼'})); // This emoji use 1 code point
 
+// Output: 🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧😼🧙‍♀️😺
+
 // The same way a grapheme can be appended or inserted and of course you don't even need
 // Conversion module if your grapheme or a code point is already in UTF-8 encoding.
-
-// Output: 🏴󠁧󠁢󠁷󠁬󠁳󠁿👨‍👩‍👧😼🧙‍♀️😺
 ```
 ## Normalization Ranges
 ```cpp
