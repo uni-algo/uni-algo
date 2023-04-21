@@ -7,7 +7,7 @@
 #include "perf_convert_utf8to16.h"
 //#include "perf_normalize_nfc_utf16.h"
 //#include "perf_normalize_nfc_utf8.h"
-//#include "perf_break_utf16.h"
+//#include "perf_segment_utf16.h"
 //#include "perf_transform_utf16.h"
 
 int main()
