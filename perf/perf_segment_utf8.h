@@ -21,7 +21,7 @@
 
 // Use the attribute in GCC/CLang to force inline ranges for perf tests
 //__attribute__((flatten))
-int break_uni(std::string_view str)
+int segment_una(std::string_view str)
 {
     auto view = una::ranges::grapheme::utf8_view(str);
     //auto view = una::ranges::word::utf8_view(str);
@@ -114,7 +114,7 @@ void test_performance()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                nothing += break_uni(strs[i]);
+                nothing += segment_una(strs[i]);
             }
             auto time2 = std::chrono::steady_clock::now();
             duration1 = std::chrono::duration<double, std::milli>(time2 - time1).count();
@@ -141,7 +141,7 @@ void generate_table()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                nothing += break_uni(strs[i]);
+                nothing += segment_una(strs[i]);
             }
             auto time2 = std::chrono::steady_clock::now();
             duration1 = std::chrono::duration<double, std::milli>(time2 - time1).count();

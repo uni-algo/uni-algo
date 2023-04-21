@@ -32,7 +32,7 @@
 
 // Use the attribute in GCC/CLang to force inline ranges for perf tests
 //__attribute__((flatten))
-std::u16string trans_uni(std::u16string_view str)
+std::u16string transform_una(std::u16string_view str)
 {
     return str
          | una::views::utf16
@@ -47,7 +47,7 @@ std::u16string trans_uni(std::u16string_view str)
 UErrorCode icu_status = U_ZERO_ERROR;
 icu::Transliterator *accentsConverter =
     icu::Transliterator::createInstance(L"NFD; [[\u0300][\u0301]] Remove; NFC", UTRANS_FORWARD, icu_status);
-std::u16string trans_ICU(std::u16string_view str)
+std::u16string transform_ICU(std::u16string_view str)
 {
     int count = 0;
     icu::UnicodeString cs(str.data(), str.size());
@@ -143,8 +143,8 @@ void test_performance()
             for (size_t i = 0; i < number_of_passes; i++)
             {
 
-                std::u16string result = trans_uni(strs[i]);
-                //std::u16string result = trans_ICU(strs[i]);
+                std::u16string result = transform_una(strs[i]);
+                //std::u16string result = transform_ICU(strs[i]);
 
                 // Use it somehow just because
                 nothing += result.back();
@@ -174,7 +174,7 @@ void generate_table()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                std::u16string result = trans_uni(strs[i]);
+                std::u16string result = transform_una(strs[i]);
                 nothing += result.back();
             }
             auto time2 = std::chrono::steady_clock::now();
@@ -185,7 +185,7 @@ void generate_table()
             auto time1 = std::chrono::steady_clock::now();
             for (size_t i = 0; i < number_of_passes; i++)
             {
-                std::u16string result = trans_ICU(strs[i]);
+                std::u16string result = transform_ICU(strs[i]);
                 nothing += result.back();
             }
             auto time2 = std::chrono::steady_clock::now();
