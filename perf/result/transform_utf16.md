@@ -1,6 +1,6 @@
 All tests has been done 5 times in a row.
 
-UNI - This library<br />
+UNA - This library<br />
 ICU - International Components for Unicode<br />
 
 Note 1: ICU is tested only in MSVS because I'm too lazy to compile ICU in MinGW.<br />
@@ -12,7 +12,7 @@ Note 0: All other notes in this file are not for a user.<br />
 
 GCC 7.3 x64 -03
 ```
-UNI     ICU
+UNA     ICU
 4599.45 0
 4597.67 0
 4596.96 0
@@ -21,7 +21,7 @@ UNI     ICU
 ```
 GCC 7.3 x86 -03
 ```
-UNI     ICU
+UNA     ICU
 4716.02 0
 4718.63 0
 4717.75 0
@@ -30,7 +30,7 @@ UNI     ICU
 ```
 MSVC 19.12 x64 (MSVS 2017 15.5.5)
 ```
-UNI     ICU
+UNA     ICU
 10148.2 36262.1
 10138.2 36280.2
 10146   36284.7
@@ -45,7 +45,7 @@ but of course you pay for this with the performance.
 ```
 MSVC 19.12 x86 (MSVS 2017 15.5.5)
 ```
-UNI     ICU
+UNA     ICU
 13166   42713.9
 13165.6 42925.6
 13155.3 42619.1

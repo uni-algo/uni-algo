@@ -1,6 +1,6 @@
 All tests has been done 5 times in a row.
 
-UNI - This library<br />
+UNA - This library<br />
 ICU - International Components for Unicode<br />
 U8PROC - utf8proc library is used instead of WinAPI. This is the only library that I found that does UTF-8 normalization and passes all Unicode tests. Even though it's pretty slow. https://github.com/JuliaStrings/utf8proc
 
@@ -12,7 +12,7 @@ Note 0: All other notes in this file are not for a user.<br />
 
 GCC 7.3 x64 -03
 ```
-UNI     U8PROC  ICU
+UNA     U8PROC  ICU
 1231.84 8480.36 0
 1236.02 8494.4  0
 1235.23 8471.57 0
@@ -21,7 +21,7 @@ UNI     U8PROC  ICU
 ```
 GCC 7.3 x86 -03
 ```
-UNI     U8PROC  ICU
+UNA     U8PROC  ICU
 1665.09 9307.08 0
 1662.73 9274.79 0
 1661.77 9268.19 0
@@ -30,7 +30,7 @@ UNI     U8PROC  ICU
 ```
 MSVC 19.12 x64 (MSVS 2017 15.5.5)
 ```
-UNI     U8PROC  ICU
+UNA     U8PROC  ICU
 1291.52 7842.2  695.346
 1292.96 7843.95 695.374
 1293.54 7840.23 695.129
@@ -43,7 +43,7 @@ and it doesn't use many optimizations.
 ```
 MSVC 19.12 x86 (MSVS 2017 15.5.5)
 ```
-UNI     U8PROC  ICU
+UNA     U8PROC  ICU
 1384.07 9539.86 877.376
 1385.06 9539.76 877.95
 1381.94 9552.83 880.248
@@ -59,7 +59,7 @@ implementations so they are not much useful.<br />
 
 GCC 7.3 x64 -03
 ```
-UNI     U8PROC  ICU
+UNA     U8PROC  ICU
 545.3   1490.97 0
 545.393 1490.81 0
 545.353 1491.13 0
@@ -68,7 +68,7 @@ UNI     U8PROC  ICU
 ```
 GCC 7.3 x86 -03
 ```
-UNI     U8PROC  ICU
+UNA     U8PROC  ICU
 639.768 1681.89 0
 639.774 1698.06 0
 639.868 1697.84 0
@@ -77,7 +77,7 @@ UNI     U8PROC  ICU
 ```
 MSVC 19.12 x64 (MSVS 2017 15.5.5)
 ```
-UNI     U8PROC  ICU
+UNA     U8PROC  ICU
 466.636 1415.69 1446.18
 466.759 1434.46 1446.6
 467.243 1417.12 1445.91
@@ -91,7 +91,7 @@ for UTF-8 and UTF-16 for normalization.
 ```
 MSVC 19.12 x86 (MSVS 2017 15.5.5)
 ```
-UNI     U8PROC  ICU
+UNA     U8PROC  ICU
 577.512 1665.82 1515.16
 577.483 1663.58 1517
 577.435 1671.18 1518.45
