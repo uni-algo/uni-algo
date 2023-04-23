@@ -26,9 +26,11 @@
 #include <vector>
 #include <stdexcept>
 #include "../include/uni_algo/conv.h"
-#include "../include/uni_algo/ranges.h"
 #include "../include/uni_algo/norm.h"
 #include "../include/uni_algo/prop.h"
+#include "../include/uni_algo/ranges.h"
+#include "../include/uni_algo/ranges_conv.h"
+#include "../include/uni_algo/ranges_norm.h"
 
 // Use the attribute in GCC/CLang to force inline ranges for perf tests
 //__attribute__((flatten))
