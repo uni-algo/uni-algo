@@ -198,7 +198,7 @@ void generate_table()
 {
     unsigned int nothing = 0;
 
-    std::cout << "UNI" << '\t' << "U8PROC" << '\t' << "ICU" << '\n';
+    std::cout << "UNA" << '\t' << "U8PROC" << '\t' << "ICU" << '\n';
 
     for (size_t j = 0; j < 10; j++)
     {

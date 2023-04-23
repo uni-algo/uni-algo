@@ -130,7 +130,7 @@ void generate_table()
 {
     unsigned int nothing = 0;
 
-    std::cout << "UNI" << '\t'  << "ICU" << '\n';
+    std::cout << "UNA" << '\t'  << "ICU" << '\n';
 
     for (size_t j = 0; j < 10; j++)
     {

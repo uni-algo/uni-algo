@@ -230,7 +230,7 @@ void generate_table()
 {
     unsigned int nothing = 0;
 
-    std::cout << "UNI" << '\t' << "WINAPI" << '\t' << "ICU" << '\t' << "KEWB" << '\n';
+    std::cout << "UNA" << '\t' << "WINAPI" << '\t' << "ICU" << '\t' << "KEWB" << '\n';
 
     for (size_t j = 0; j < 10; j++)
     {
