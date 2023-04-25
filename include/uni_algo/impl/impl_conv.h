@@ -18,6 +18,13 @@ uaix_const size_t impl_x_utf32to8  = 4; // tag_unicode_stable_value
 uaix_const size_t impl_x_utf16to32 = 1; // tag_unicode_stable_value
 uaix_const size_t impl_x_utf32to16 = 2; // tag_unicode_stable_value
 
+// Forward declaration for fast ASCII functions
+#ifdef __cplusplus
+template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf16>
+#endif
+uaix_always_inline_tmpl
+uaix_static bool fast_ascii_utf8to16(it_in_utf8* s, it_end_utf8 last, it_out_utf16* dst);
+
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf16>
 #endif
@@ -55,6 +62,8 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
     it_in_utf8 prev = s;
     it_out_utf16 dst = result;
 
+    fast_ascii_utf8to16(&s, last, &dst);
+
     while (s != last)
     {
         type_codept c = (*s & 0xFF), c2 = 0, c3 = 0, c4 = 0; // c2, c3, c4 tag_can_be_uninitialized
@@ -64,6 +73,14 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
 
         if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
         {
+            // It is possible to use the fast ASCII function here instead of before the main loop
+            // but it can degrade the performance of UTF-8 convertion in some cases.
+            // Note that uaix_likely must be removed too for better performance.
+#if 0
+            if (fast_ascii_utf8to16(&s, last, &dst))
+                continue;
+#endif
+
             *dst++ = (type_char16)c;
             ++s;
             continue;
@@ -787,6 +804,68 @@ uaix_static bool impl_is_valid_utf32(it_in_utf32 first, it_end_utf32 last, size_
     }
 
     return true;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf16>
+#endif
+uaix_always_inline_tmpl
+uaix_static bool fast_ascii_utf8to16(it_in_utf8* s, it_end_utf8 last, it_out_utf16* dst)
+{
+    // This optimization makes processing of ASCII strings by about 20-30% faster
+    // C++ Note: works only with contiguous or random access input iterators
+
+    bool processed = false;
+
+    while (*s <= last - 4) // NOTE: 1% faster than while (*s + 4 <= last)
+    {
+        // There are 3 ways to perform unaligned load:
+        // 1. uint32_t = *((uint32_t*)uint8_t*); // Unsafe and not portable garbage.
+        // 2. memcpy(&uint32_t, uint8_t*, 4); // Better but won't work for us for many reasons.
+        // 3. Manual load. Harder to optimize for a compiler but safe and without potential function call in the worst case.
+        // So we use manual load here.
+        // In the best case scenario the following 4 lines will be optimized into one mov instruction
+        // in the worst case it won't but we only lose a bit performance, processing by 4 bytes is always faster.
+        // Note that manual load is endian agnostic too compared to other ways so we don't need to deal with that crap.
+        // This means the behaviour will be the same on little/big/middle endian systems the value c will be the same.
+        type_codept c = 0;
+        c |= ((type_codept)*(*s+0) & 0xFF);
+        c |= ((type_codept)*(*s+1) & 0xFF) << 8;
+        c |= ((type_codept)*(*s+2) & 0xFF) << 16;
+        c |= ((type_codept)*(*s+3) & 0xFF) << 24;
+
+        // If non-ASCII then drop from the function and proceed as usual
+        if ((c & 0x80808080) != 0)
+            break;
+
+        *s += 4;
+        processed = true;
+
+        // This is not unaligned store even so it looks like it
+        // we just do the usual thing here.
+        *(*dst)++ = (type_char16)(c & 0xFF);
+        *(*dst)++ = (type_char16)((c >> 8) & 0xFF);
+        *(*dst)++ = (type_char16)((c >> 16) & 0xFF);
+        *(*dst)++ = (type_char16)((c >> 24) & 0xFF);
+
+        // This is how unaligned store should look like it can be used for potential utf8to8 function.
+        // Even thought a compiler probably optimize both variants the same for such function.
+        //*(*dst+0) = (impl_char8)(c & 0xFF);
+        //*(*dst+1) = (impl_char8)((c >> 8) & 0xFF);
+        //*(*dst+2) = (impl_char8)((c >> 16) & 0xFF);
+        //*(*dst+3) = (impl_char8)((c >> 24) & 0xFF);
+        //*dst += 4;
+    }
+
+    return processed;
+
+    // NOTE from mg152:
+    // In my observations MSVC never optimize manual load, GCC and Clang optimize it starting with version 5.
+    // It is possible to make it faster by using long long and processing by 8 bytes or even insintrics like _mm_loadu_si128
+    // but it will be much less portable and the number of defines to handle it will be enormous.
+    // So the basic optimization should be enough it's over optimization anyway I just did it for fun. At least it's always safe.
+
+    // For reference: https://blog.quarkslab.com/unaligned-accesses-in-cc-what-why-and-solutions-to-do-it-properly.html
 }
 
 UNI_ALGO_IMPL_NAMESPACE_END
