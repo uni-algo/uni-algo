@@ -24,6 +24,11 @@ template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf16>
 #endif
 uaix_always_inline_tmpl
 uaix_static bool fast_ascii_utf8to16(it_in_utf8* s, it_end_utf8 last, it_out_utf16* dst);
+#ifdef __cplusplus
+template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf32>
+#endif
+uaix_always_inline_tmpl
+uaix_static bool fast_ascii_utf8to32(it_in_utf8* s, it_end_utf8 last, it_out_utf32* dst);
 
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf16>
@@ -298,6 +303,8 @@ uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf3
     it_in_utf8 s = first;
     it_in_utf8 prev = s;
     it_out_utf32 dst = result;
+
+    fast_ascii_utf8to32(&s, last, &dst);
 
     while (s != last)
     {
@@ -867,6 +874,38 @@ uaix_static bool fast_ascii_utf8to16(it_in_utf8* s, it_end_utf8 last, it_out_utf
 
     // For reference: https://blog.quarkslab.com/unaligned-accesses-in-cc-what-why-and-solutions-to-do-it-properly.html
 }
+
+#ifdef __cplusplus
+template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf32>
+#endif
+uaix_always_inline_tmpl
+uaix_static bool fast_ascii_utf8to32(it_in_utf8* s, it_end_utf8 last, it_out_utf32* dst)
+{
+    bool processed = false;
+
+    while (*s <= last - 4)
+    {
+        type_codept c = 0;
+        c |= ((type_codept)*(*s+0) & 0xFF);
+        c |= ((type_codept)*(*s+1) & 0xFF) << 8;
+        c |= ((type_codept)*(*s+2) & 0xFF) << 16;
+        c |= ((type_codept)*(*s+3) & 0xFF) << 24;
+
+        if ((c & 0x80808080) != 0)
+            break;
+
+        *s += 4;
+        processed = true;
+
+        *(*dst)++ = (type_char32)(c & 0xFF);
+        *(*dst)++ = (type_char32)((c >> 8) & 0xFF);
+        *(*dst)++ = (type_char32)((c >> 16) & 0xFF);
+        *(*dst)++ = (type_char32)((c >> 24) & 0xFF);
+    }
+
+    return processed;
+}
+
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
