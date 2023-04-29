@@ -5,6 +5,7 @@ See commit history between tags for details.
 ## v0.8.0 (TBD)
 - Added scripts and script extensions support ([UAX #24: Unicode Script Property](https://www.unicode.org/reports/tr24))
 - Added cursor support for text segmentation ([doc/CURSOR.md](doc/CURSOR.md))
+- Optimized UTF conversion of ASCII strings
 - Changed versions in namespace `una::version` to classes ([#18](https://github.com/uni-algo/uni-algo/issues/18))
 - File `uni_algo/version.h` is not included by other files anymore
 - Improved `una::error` class added `una::error::code`
