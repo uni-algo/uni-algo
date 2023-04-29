@@ -868,6 +868,7 @@ uaix_static bool fast_ascii_utf8to16(it_in_utf8* s, it_end_utf8 last, it_out_utf
 
     // NOTE from mg152:
     // In my observations MSVC never optimize manual load, GCC and Clang optimize it starting with version 5.
+    // See test/random_stuff/unaligned_load_store.h to check which compiler is able to optimize it properly.
     // It is possible to make it faster by using long long and processing by 8 bytes or even insintrics like _mm_loadu_si128
     // but it will be much less portable and the number of defines to handle it will be enormous.
     // So the basic optimization should be enough it's over optimization anyway I just did it for fun. At least it's always safe.
