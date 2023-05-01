@@ -172,7 +172,7 @@ uaiw_constexpr bool t_valid(const Src& src, una::error& error)
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
     const bool ret = FnValid(src.cbegin(), src.cend(), &err);
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    const bool ret = FnValid(src.data(), src.data() + source.size(), &err);
+    const bool ret = FnValid(src.data(), src.data() + src.size(), &err);
 #else // Safe layer
     const bool ret = FnValid(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, &err);
 #endif
