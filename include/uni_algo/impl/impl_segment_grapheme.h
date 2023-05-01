@@ -155,10 +155,7 @@ uaix_static bool segment_grapheme(struct impl_segment_grapheme_state* const stat
     return result;
 }
 
-#ifdef __cplusplus
-template<typename = void> // TODO: What is this? Why uaix_inline is not used here instead of this crap?
-#endif
-uaix_static bool impl_segment_grapheme(struct impl_segment_grapheme_state* const state, type_codept c)
+uaix_inline bool impl_segment_grapheme(struct impl_segment_grapheme_state* const state, type_codept c)
 {
     return segment_grapheme(state, c);
 }
