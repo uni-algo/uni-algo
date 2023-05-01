@@ -907,7 +907,6 @@ uaix_static bool fast_ascii_utf8to32(it_in_utf8* s, it_end_utf8 last, it_out_utf
     return processed;
 }
 
-
 UNI_ALGO_IMPL_NAMESPACE_END
 
 #include "internal_undefs.h"
