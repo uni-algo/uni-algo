@@ -106,13 +106,13 @@ uaiw_constexpr int t_comp(const Src& src1, const Src& src2, bool caseless)
 
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
 template<typename Src, bool(*FnFind)(typename Src::const_iterator, typename Src::const_iterator,
-                                       typename Src::const_iterator, typename Src::const_iterator, bool, size_t*, size_t*)>
+                                     typename Src::const_iterator, typename Src::const_iterator, bool, size_t*, size_t*)>
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
 template<typename Src, bool(*FnFind)(typename Src::const_pointer, typename Src::const_pointer,
-                                       typename Src::const_pointer, typename Src::const_pointer, bool, size_t*, size_t*)>
+                                     typename Src::const_pointer, typename Src::const_pointer, bool, size_t*, size_t*)>
 #else // Safe layer
 template<typename Src, bool(*FnFind)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>,
-                                       safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, bool, size_t*, size_t*)>
+                                     safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, bool, size_t*, size_t*)>
 #endif
 uaiw_constexpr una::found t_find(const Src& src1, const Src& src2, bool caseless)
 {
