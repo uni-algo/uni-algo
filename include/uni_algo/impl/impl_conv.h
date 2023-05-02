@@ -79,7 +79,7 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
         if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
         {
             // It is possible to use the fast ASCII function here instead of before the main loop
-            // but it can degrade the performance of UTF-8 convertion in some cases.
+            // but it can degrade the performance of UTF-8 conversion in some cases.
             // Note that uaix_likely must be removed too for better performance.
 #if 0
             if (fast_ascii_utf8to16(&s, last, &dst))
