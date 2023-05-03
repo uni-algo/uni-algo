@@ -21,7 +21,7 @@ See commit history between tags for details.
 
 ## [v0.7.0](https://github.com/uni-algo/uni-algo/tree/v0.7.0) (2023-02-07)
 - Renamed main namespace from `uni::` to `una::`
-- Splitted .h files with ranges and functions:
+- Splitted .h files with ranges and functions: ([#15](https://github.com/uni-algo/uni-algo/issues/15))
   - Added files: `uni_algo/ranges_norm.h` and `uni_algo/ranges_conv.h`
   - Renamed file `uni_algo/break_grapheme.h` to `uni_algo/ranges_grapheme.h`
   - Renamed file `uni_algo/break_word.h` to `uni_algo/ranges_word.h`
