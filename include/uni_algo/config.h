@@ -5,9 +5,6 @@
 #ifndef UNI_ALGO_CONFIG_H_UAIH
 #define UNI_ALGO_CONFIG_H_UAIH
 
-// TODO: Rename:
-// UNI_ALGO_ENABLE_SAFE_LAYER -> UNI_ALGO_SAFE_LAYER (Not sure about this one)
-
 // Note that you can just add the following defines to your project
 // instead of uncommenting the defines here.
 
