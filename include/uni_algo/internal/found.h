@@ -23,6 +23,10 @@ public:
     constexpr void reset() noexcept { found_pos = detail::impl_npos; found_end = detail::impl_npos; }
     constexpr std::size_t pos() const noexcept { assert(operator bool()); return found_pos; }
     constexpr std::size_t end_pos() const noexcept { assert(operator bool()); return found_end; }
+public:
+    friend constexpr bool operator==(const found& x, const found& y) noexcept
+    { return x.found_pos == y.found_pos && x.found_end == y.found_end; }
+    friend constexpr bool operator!=(const found& x, const found& y) noexcept { return !(x == y); }
 };
 
 } // namespace una
