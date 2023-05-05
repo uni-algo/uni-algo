@@ -2,8 +2,6 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See LICENSE.md */
 
-// Include all modules to check them with Clang-Tidy or Cppcheck
-//
 // Command line for Clang-Tidy and Cppcheck:
 //
 // clang-tidy test/clang-tidy/main.cpp -header-filter=.* -extra-arg=-std=c++17 --
@@ -24,6 +22,8 @@
 #ifndef UNI_ALGO_EXPERIMENTAL
 #define UNI_ALGO_EXPERIMENTAL
 #endif
+
+// Include all modules to check them with Clang-Tidy or Cppcheck
 
 #include "../../include/uni_algo/version.h"
 #include "../../include/uni_algo/conv.h"
