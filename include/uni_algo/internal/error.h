@@ -35,7 +35,7 @@ public:
     friend constexpr bool operator==(const error::code& x, const error& y) noexcept { return x == y.error_code; }
     friend constexpr bool operator!=(const error::code& x, const error& y) noexcept { return x != y.error_code; }
 #ifdef UNI_ALGO_EXPERIMENTAL
-    std::string_view to_string_view() const noexcept
+    constexpr std::string_view to_string_view() const noexcept
     {
         switch(error_code)
         {
