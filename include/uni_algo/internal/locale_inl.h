@@ -17,9 +17,10 @@ namespace una::detail {
 
 una::locale locale_syscall()
 {
-// Different threads may call this function at the same time
-// WINAPI is fine but POSIX std::getenv may be problematic
-// and nothing can be done with this.
+    // Different threads may call this function at the same time
+    // WINAPI is fine but POSIX std::getenv may be problematic
+    // and nothing can be done with this.
+
 #ifndef _WIN32
     // boost::locale tries to get default locale like this
     // so just follow the behaviour.
