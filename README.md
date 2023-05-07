@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Version-0.7.1-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.7.0)
+[![Version](https://img.shields.io/badge/Version-0.8.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.8.0)
 [![Unicode](https://img.shields.io/badge/Unicode-15.0.0-blue)](https://www.unicode.org/versions/Unicode15.0.0/)
 [![Language](https://img.shields.io/badge/C%2B%2B-17/20/23-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
 [![License](https://img.shields.io/badge/License-Unlicense/MIT-darkorchid.svg)](https://opensource.org/licenses/MIT)
@@ -189,15 +189,15 @@ Add to your CMakeLists.txt:
 include(FetchContent)
 
 FetchContent_Declare(uni-algo
-  URL https://github.com/uni-algo/uni-algo/archive/v0.7.1.tar.gz
-  FIND_PACKAGE_ARGS 0.7 CONFIG) # Download only if find_package(uni-algo 0.7 CONFIG)
+  URL https://github.com/uni-algo/uni-algo/archive/v0.8.0.tar.gz
+  FIND_PACKAGE_ARGS 0.8 CONFIG) # Download only if find_package(uni-algo 0.8 CONFIG)
                                 # is unsuccessful (requires CMake 3.24 or higher)
 
 # Or if you have Git installed (but it's always better to use the URL approach above)
 # FetchContent_Declare(uni-algo
 #   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
 #   GIT_SHALLOW ON  # Download the branch without its history
-#   GIT_TAG v0.7.1) # The version you want to download
+#   GIT_TAG v0.8.0) # The version you want to download
 
 # Be aware that FetchContent_MakeAvailable requires CMake 3.14 or higher
 FetchContent_MakeAvailable(uni-algo)
@@ -281,9 +281,9 @@ std::u16string str16 = una::strict::utf8to16<char, char16_t>("Te\xC2st", error);
 assert(str16.empty() && error && error.pos() == 2);
 
 // Note that most of the functions in the library have template versions because the low level
-// of the library is type-agnostic; it only requires that the UTF-16 type is enough to store 16-bit values
-// and the UTF-32 type is enough to store 32-bit values; aside from that, the low-level doesn't care about the types,
-// so with the template functions you can do some strange stuff like this:
+// of the library is type-agnostic; it only requires that the UTF-16 type is enough to store 16-bit
+// values and the UTF-32 type is enough to store 32-bit values; aside from that, the low-level doesn't
+// care about the types, so with the template functions you can do some strange stuff like this:
 
 std::basic_string<long long> str16 = una::utf8to16<char, long long>("😺");
 std::string str8 = una::utf16to8<long long, char>(str16);
