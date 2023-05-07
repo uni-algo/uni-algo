@@ -4,4 +4,4 @@
 // (VERSION / 1000000) is the major version 0..255.
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage, modernize-macro-to-enum)
-#define UNI_ALGO_CPP_LIB_VERSION 7001
+#define UNI_ALGO_CPP_LIB_VERSION 8000
