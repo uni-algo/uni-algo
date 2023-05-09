@@ -65,7 +65,7 @@
 // The define is only usefull if you need compatibility with legacy implementations
 // that don't expect that an UTF-16 string can grow in size.
 // Note that UTF-8 string still can grow in size even with simple case mapping.
-// Can be used to achive the maximum performance when you are 100% sure that you
+// Can be used to achieve the maximum performance when you are 100% sure that you
 // will be using the library with languages that don't need full case mapping.
 // In other words the define must be avoided at all cost.
 // The define affects only Case module.
