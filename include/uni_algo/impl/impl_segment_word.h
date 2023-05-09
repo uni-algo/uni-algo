@@ -20,6 +20,9 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
 // See generator_segment_word in gen/gen.h
 
+// NOTE: The order of the word properties is important here:
+// 1. New lines, punctuation, space etc. must be in this order:
+// CR/LF/Newline -> Extend -> ZWJ -> Format -> Punctuation -> WSegSpace
 uaix_const type_codept prop_WB_CR                    = 1;
 uaix_const type_codept prop_WB_LF                    = 2;
 uaix_const type_codept prop_WB_Newline               = 3;
@@ -33,8 +36,8 @@ uaix_const type_codept prop_WB_MidLetter             = 10;
 uaix_const type_codept prop_WB_MidNum                = 11;
 uaix_const type_codept prop_WB_ExtendNumLet          = 12;
 uaix_const type_codept prop_WB_WSegSpace             = 13;
-// For word properties everything else that can be considered a word
-// must be in this order: Numeric -> Alphabetic -> Kana -> Ideographic -> Emoji
+// 2. Everything else that can be considered a word must be in this order:
+// Numeric -> Alphabetic -> Kana -> Ideographic -> Emoji
 uaix_const type_codept prop_WB_Numeric               = 14;
 uaix_const type_codept prop_WB_ALetter               = 15;
 uaix_const type_codept prop_WB_Hebrew_Letter         = 16;
@@ -42,7 +45,8 @@ uaix_const type_codept prop_WX_Remaining_Alphabetic  = 17;
 uaix_const type_codept prop_WB_Katakana              = 18;
 uaix_const type_codept prop_WX_Remaining_Hiragana    = 19;
 uaix_const type_codept prop_WX_Remaining_Ideographic = 20;
-uaix_const type_codept prop_WB_Regional_Indicator    = 21; // Must be the last
+// 3. Regional_Indicator must be the last because it can be considered emoji
+uaix_const type_codept prop_WB_Regional_Indicator    = 21;
 
 uaix_const int state_segment_word_begin    = 0;
 uaix_const int state_segment_word_continue = 1;
