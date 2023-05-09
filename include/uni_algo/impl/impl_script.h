@@ -19,6 +19,8 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 uaix_always_inline
 uaix_static type_codept impl_script_get_script(type_codept c)
 {
+    // https://www.unicode.org/reports/tr24/tr24-34.html#Script
+
     // Treat all invalid as replacement character (U+FFFD)
     if (c > 0x10FFFF)
         return 0x5A797979; // Zyyy (Common script)
@@ -34,6 +36,8 @@ uaix_static type_codept impl_script_get_script(type_codept c)
 uaix_always_inline
 uaix_static bool impl_script_has_script(type_codept c, type_codept script)
 {
+    // https://www.unicode.org/reports/tr24/tr24-34.html#Script_Extensions
+
     // Treat all invalid as replacement character (U+FFFD)
     if (c > 0x10FFFF)
         return (script == 0x5A797979) ? true : false; // Zyyy (Common script)
