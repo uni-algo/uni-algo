@@ -254,11 +254,16 @@ int main7()
 
     std::cout << "DONE: Case Functions" << '\n';
 
-    STATIC_TESTX(test_translit_buffer());
-    STATIC_TESTX(test_translit_macedonian_to_latin_docs());
-    STATIC_TESTX(test_translit_japanese_kana_to_romaji_hepburn());
+    STATIC_TESTX(test_prop());
+    STATIC_TESTX(test_prop_case());
+    STATIC_TESTX(test_prop_norm());
 
-    std::cout << "DONE: Extension: Transliterators" << '\n';
+    std::cout << "DONE: Code Point Properties" << '\n';
+
+    STATIC_TESTX(test_script());
+    STATIC_TESTX(test_script_ext());
+
+    std::cout << "DONE: Scripts" << '\n';
 
     STATIC_TESTX(test_ascii_prop());
     STATIC_TESTX(test_ascii_upper_lower());
@@ -271,16 +276,11 @@ int main7()
 
     std::cout << "DONE: Extension: ASCII" << '\n';
 
-    STATIC_TESTX(test_prop());
-    STATIC_TESTX(test_prop_case());
-    STATIC_TESTX(test_prop_norm());
+    STATIC_TESTX(test_translit_buffer());
+    STATIC_TESTX(test_translit_macedonian_to_latin_docs());
+    STATIC_TESTX(test_translit_japanese_kana_to_romaji_hepburn());
 
-    std::cout << "DONE: Code Point Properties" << '\n';
-
-    STATIC_TESTX(test_script());
-    STATIC_TESTX(test_script_ext());
-
-    std::cout << "DONE: Scripts" << '\n';
+    std::cout << "DONE: Extension: Transliterators" << '\n';
 
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
     test_segment_grapheme();
