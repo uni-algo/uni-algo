@@ -258,7 +258,7 @@ int main7()
     STATIC_TESTX(test_translit_macedonian_to_latin_docs());
     STATIC_TESTX(test_translit_japanese_kana_to_romaji_hepburn());
 
-    std::cout << "DONE: Transliterators" << '\n';
+    std::cout << "DONE: Extension: Transliterators" << '\n';
 
     STATIC_TESTX(test_ascii_prop());
     STATIC_TESTX(test_ascii_upper_lower());
@@ -269,7 +269,7 @@ int main7()
     STATIC_TESTX(test_ascii_short_func());
     STATIC_TESTX(test_ascii_alloc_func());
 
-    std::cout << "DONE: ASCII Extension" << '\n';
+    std::cout << "DONE: Extension: ASCII" << '\n';
 
     STATIC_TESTX(test_prop());
     STATIC_TESTX(test_prop_case());
