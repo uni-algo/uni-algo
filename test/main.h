@@ -47,6 +47,14 @@
 #endif
 #endif
 
+// NOTE:
+// Lowest compiler versions for constexpr library:
+// GCC 12, Clang 15, MSVC 19.29 (MSVS 2019 16.10)
+// because constexpr library requires constexpr std::string
+// so __cpp_lib_constexpr_string needs to be defined.
+// For reference: https://en.cppreference.com/w/cpp/compiler_support
+// P0980R1: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p0980r1.pdf
+
 #if defined(TEST_MODE_CONSTEXPR) && !defined(UNI_ALGO_CONSTEXPR)
 #error "Test mode constexpr requires constexpr library (C++20 or higher and header-only enabled)"
 #undef TEST_MODE_CONSTEXPR
