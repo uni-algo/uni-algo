@@ -127,7 +127,7 @@ using is_range_contiguous = std::conditional_t<std::ranges::contiguous_range<Ran
 #endif
 
 // In C++17 std::string_view doesn't have iterators pair constructor
-// so we use this a bit ugly approach to make it work. It is only used in break ranges.
+// so we use this a bit ugly approach to make it work. It is only used in text segmentation ranges.
 // This helper function requeries contiguous range, but no checks here must be checked where used.
 #if !defined(__cpp_lib_ranges) || defined(UNI_ALGO_FORCE_CPP17_RANGES)
 template<class StringViewResult, class Range, class Iter>

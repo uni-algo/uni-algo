@@ -33,7 +33,7 @@
 //#define UNI_ALGO_DISABLE_SEGMENT_WORD
 // Disable Word segmentation module.
 // Reduces Unicode data size by ~35 KB.
-// Note that if Break Word module is disabled title case functions
+// Note that if Word segmentation module is disabled title case functions
 // in Case module will be disabled too because it is needed for them.
 
 //#define UNI_ALGO_DISABLE_COLLATE
