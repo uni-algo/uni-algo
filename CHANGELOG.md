@@ -2,6 +2,9 @@
 Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
+## [v0.8.1](https://github.com/uni-algo/uni-algo/tree/v0.8.0) (2023-05-15)
+- Fixed constexpr UTF conversion in Clang ([#27](https://github.com/uni-algo/uni-algo/issues/27))
+
 ## [v0.8.0](https://github.com/uni-algo/uni-algo/tree/v0.8.0) (2023-05-07)
 - Added scripts and script extensions support ([UAX #24: Unicode Script Property](https://www.unicode.org/reports/tr24))
 - Added cursor support for text segmentation ([doc/CURSOR.md](doc/CURSOR.md))
