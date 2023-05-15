@@ -96,17 +96,6 @@ private:
 public:
     uaiw_constexpr end() = delete;
     uaiw_constexpr explicit end(Iter iter) : it{iter} {}
-    // NOTE: The following is only used by fast ASCII functions
-    uaiw_constexpr end& operator-=(std::ptrdiff_t n)
-    {
-        it -= n;
-        return *this;
-    }
-    friend uaiw_constexpr end operator-(end x, std::ptrdiff_t n)
-    {
-        x -= n;
-        return x;
-    }
 };
 
 template<class Iter>
@@ -174,7 +163,6 @@ public:
     friend uaiw_constexpr bool operator==(const in& x, const safe::end<Iter>& y) { return x.it == friend_it(y); }
     friend uaiw_constexpr bool operator!=(const in& x, const safe::end<Iter>& y) { return x.it != friend_it(y); }
     // NOTE: The following is only used by fast ASCII functions
-    friend uaiw_constexpr bool operator<=(const in& x, const safe::end<Iter>& y) { return x.it <= friend_it(y); }
     friend uaiw_constexpr std::ptrdiff_t operator-(const safe::end<Iter>& x, const in& y) { return friend_it(x) - y.it; }
 };
 
