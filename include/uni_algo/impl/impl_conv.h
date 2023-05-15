@@ -824,7 +824,7 @@ uaix_static bool fast_ascii_utf8to16(it_in_utf8* s, it_end_utf8 last, it_out_utf
 
     bool processed = false;
 
-    while (*s <= last - 4) // NOTE: 1% faster than while (*s + 4 <= last)
+    for (it_in_utf8 end = *s + (last - *s) - ((last - *s) % 4); *s != end; *s += 4)
     {
         // There are 3 ways to perform unaligned load:
         // 1. uint32_t = *((uint32_t*)uint8_t*); // Unsafe and not portable garbage.
@@ -845,9 +845,6 @@ uaix_static bool fast_ascii_utf8to16(it_in_utf8* s, it_end_utf8 last, it_out_utf
         if ((c & 0x80808080) != 0)
             break;
 
-        *s += 4;
-        processed = true;
-
         // This is not unaligned store even so it looks like it
         // we just do the usual thing here.
         *(*dst)++ = (type_char16)(c & 0xFF);
@@ -862,6 +859,8 @@ uaix_static bool fast_ascii_utf8to16(it_in_utf8* s, it_end_utf8 last, it_out_utf
         //*(*dst+2) = (impl_char8)((c >> 16) & 0xFF);
         //*(*dst+3) = (impl_char8)((c >> 24) & 0xFF);
         //*dst += 4;
+
+        processed = true;
     }
 
     return processed;
@@ -884,7 +883,7 @@ uaix_static bool fast_ascii_utf8to32(it_in_utf8* s, it_end_utf8 last, it_out_utf
 {
     bool processed = false;
 
-    while (*s <= last - 4)
+    for (it_in_utf8 end = *s + (last - *s) - ((last - *s) % 4); *s != end; *s += 4)
     {
         type_codept c = 0;
         c |= ((type_codept)*(*s+0) & 0xFF);
@@ -895,13 +894,12 @@ uaix_static bool fast_ascii_utf8to32(it_in_utf8* s, it_end_utf8 last, it_out_utf
         if ((c & 0x80808080) != 0)
             break;
 
-        *s += 4;
-        processed = true;
-
         *(*dst)++ = (type_char32)(c & 0xFF);
         *(*dst)++ = (type_char32)((c >> 8) & 0xFF);
         *(*dst)++ = (type_char32)((c >> 16) & 0xFF);
         *(*dst)++ = (type_char32)((c >> 24) & 0xFF);
+
+        processed = true;
     }
 
     return processed;
