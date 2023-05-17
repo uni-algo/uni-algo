@@ -89,6 +89,7 @@
 #include "test_lenient2.h"
 #include "test_strict2.h"
 #include "test_valid.h"
+#include "test_fast_ascii.h"
 #include "test_extra.h"
 #include "test_visual.h"
 
@@ -207,6 +208,9 @@ int main7()
     STATIC_TESTX(test2_valid_utf8());
     STATIC_TESTX(test2_valid_utf16());
     STATIC_TESTX(test2_valid_utf32());
+
+    STATIC_TESTX(test_fast_ascii_utf8to16());
+    STATIC_TESTX(test_fast_ascii_utf8to32());
 
     STATIC_TESTX(test_overflow());
     STATIC_TESTX(test_alter_value());
