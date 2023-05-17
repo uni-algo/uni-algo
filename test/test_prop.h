@@ -423,27 +423,36 @@ test_constexpr bool test_prop_case()
 {
     TESTX(una::codepoint::is_lowercase(U'w'));
     TESTX(!una::codepoint::is_lowercase(U'W'));
+    TESTX(!una::codepoint::is_lowercase(U':'));
     TESTX(una::codepoint::is_uppercase(U'W'));
     TESTX(!una::codepoint::is_uppercase(U'w'));
+    TESTX(!una::codepoint::is_uppercase(U':'));
 
     TESTX(una::codepoint::is_lowercase(una::codepoint::prop_case{U'w'}));
     TESTX(!una::codepoint::is_lowercase(una::codepoint::prop_case{U'W'}));
+    TESTX(!una::codepoint::is_lowercase(una::codepoint::prop_case{U':'}));
     TESTX(una::codepoint::is_uppercase(una::codepoint::prop_case{U'W'}));
     TESTX(!una::codepoint::is_uppercase(una::codepoint::prop_case{U'w'}));
+    TESTX(!una::codepoint::is_uppercase(una::codepoint::prop_case{U':'}));
 
     TESTX(una::codepoint::prop_case{U'w'}.Lowercase());
     TESTX(!una::codepoint::prop_case{U'W'}.Lowercase());
+    TESTX(!una::codepoint::prop_case{U':'}.Lowercase());
     TESTX(una::codepoint::prop_case{U'W'}.Uppercase());
     TESTX(!una::codepoint::prop_case{U'w'}.Uppercase());
+    TESTX(!una::codepoint::prop_case{U':'}.Uppercase());
 
     TESTX(una::codepoint::prop_case{U'w'}.Cased());
     TESTX(una::codepoint::prop_case{U'W'}.Cased());
     TESTX(!una::codepoint::prop_case{U':'}.Cased());
+
     TESTX(una::codepoint::prop_case{U':'}.Case_Ignorable());
     TESTX(!una::codepoint::prop_case{U';'}.Case_Ignorable());
+    TESTX(!una::codepoint::prop_case{U'W'}.Case_Ignorable());
 
     TESTX(una::codepoint::prop_case{U'j'}.Soft_Dotted());
     TESTX(!una::codepoint::prop_case{U'J'}.Soft_Dotted());
+    TESTX(!una::codepoint::prop_case{U':'}.Soft_Dotted());
 
     TESTX(!una::codepoint::is_lowercase(0));
     TESTX(!una::codepoint::is_uppercase(0));
