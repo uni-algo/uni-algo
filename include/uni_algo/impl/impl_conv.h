@@ -845,15 +845,14 @@ uaix_static bool fast_ascii_utf8to16(it_in_utf8* s, it_end_utf8 last, it_out_utf
         if ((c & 0x80808080) != 0)
             break;
 
-        // This is not unaligned store even so it looks like it
-        // we just do the usual thing here.
+        // This is not unaligned store even though it looks like it, we just do the usual thing here.
         *(*dst)++ = (type_char16)(c & 0xFF);
         *(*dst)++ = (type_char16)((c >> 8) & 0xFF);
         *(*dst)++ = (type_char16)((c >> 16) & 0xFF);
         *(*dst)++ = (type_char16)((c >> 24) & 0xFF);
 
         // This is how unaligned store should look like it can be used for potential utf8to8 function.
-        // Even thought a compiler probably optimize both variants the same for such function.
+        // Even though a compiler probably optimize both variants the same for such function.
         //*(*dst+0) = (impl_char8)(c & 0xFF);
         //*(*dst+1) = (impl_char8)((c >> 8) & 0xFF);
         //*(*dst+2) = (impl_char8)((c >> 16) & 0xFF);
@@ -868,7 +867,7 @@ uaix_static bool fast_ascii_utf8to16(it_in_utf8* s, it_end_utf8 last, it_out_utf
     // NOTE from mg152:
     // In my observations MSVC never optimize manual load, GCC and Clang optimize it starting with version 5.
     // See test/random_stuff/unaligned_load_store.h to check which compiler is able to optimize it properly.
-    // It is possible to make it faster by using long long and processing by 8 bytes or even insintrics like _mm_loadu_si128
+    // It is possible to make it faster by using long long and processing by 8 bytes or even intrinsics like _mm_loadu_si128
     // but it will be much less portable and the number of defines to handle it will be enormous.
     // So the basic optimization should be enough it's over optimization anyway I just did it for fun. At least it's always safe.
 
