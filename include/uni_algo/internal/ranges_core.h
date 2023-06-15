@@ -19,16 +19,17 @@
 #include <utility> // std::forward
 #include <memory> // std::addressof
 #include <cassert>
-#if defined(__cpp_lib_ranges) && !defined(UNI_ALGO_FORCE_CPP17_RANGES)
-#include <ranges>
-#else
-#include <string_view>
-#endif
 #ifdef UNI_ALGO_LOG_CPP_ITER
 #include <iostream>
 #endif
 
 #include "../config.h"
+
+#if defined(__cpp_lib_ranges) && !defined(UNI_ALGO_FORCE_CPP17_RANGES)
+#include <ranges>
+#else
+#include <string_view>
+#endif
 
 namespace una {
 
