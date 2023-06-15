@@ -15,7 +15,6 @@
 #  endif
 #endif
 
-#include <type_traits>
 #include <iterator>
 #include <utility> // std::forward
 #include <memory> // std::addressof
