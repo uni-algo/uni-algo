@@ -113,7 +113,9 @@ void example_fstream_and_back_inserter()
 
     // Note that this function now always returns 0 because operator-() is no-op
     // but with back_inserter we don't need the result anyway so it's fine.
-    una::detail::impl_utf8to16(it_in, it_end, it_out, nullptr);
+    // Also we specify all template parameters here to disable ASCII optimization (last parameter false)
+    // because it requires contiguous iterators so it won't compile otherwise.
+    una::detail::impl_utf8to16<decltype(it_in), decltype(it_end), decltype(it_out), false>(it_in, it_end, it_out, nullptr);
 
     stream.close();
 
@@ -159,7 +161,8 @@ void example_sentinel()
 
     // And for sentinel we can just use null character.
     // Note that with this sentinel proxy iterator we don't need to count the length of str8 anymore.
-    una::detail::impl_utf8to32(it_in, '\0', it_out, nullptr);
+    // Also we specify all template parameters here for the same reason as in the previous example.
+    una::detail::impl_utf8to32<decltype(it_in), char, decltype(it_out), false>(it_in, '\0', it_out, nullptr);
 
     if (str32 == U"\x0410\x0411\x0412")
         std::cout << "Sentinel test" << '\n';
