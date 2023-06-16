@@ -31,7 +31,7 @@ uaix_always_inline_tmpl
 uaix_static bool fast_ascii_utf8to32(it_in_utf8* s, it_end_utf8 last, it_out_utf32* dst);
 
 #ifdef __cplusplus
-template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf16>
+template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf16, bool contiguous = true>
 #endif
 uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf16 result, size_t* const error)
 {
@@ -67,7 +67,10 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
     it_in_utf8 prev = s;
     it_out_utf16 dst = result;
 
-    fast_ascii_utf8to16(&s, last, &dst);
+#ifdef __cplusplus
+    if constexpr (contiguous)
+#endif
+        fast_ascii_utf8to16(&s, last, &dst);
 
     while (s != last)
     {
@@ -82,9 +85,12 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
             // but it can degrade the performance of UTF-8 conversion in some cases.
             // Note that uaix_likely must be removed too for better performance.
 #if 0
-            if (fast_ascii_utf8to16(&s, last, &dst))
-                continue;
+#ifdef __cplusplus
+            if constexpr (contiguous)
 #endif
+                if (fast_ascii_utf8to16(&s, last, &dst))
+                    continue;
+#endif // 0
 
             *dst++ = (type_char16)c;
             ++s;
@@ -220,7 +226,7 @@ uaix_static size_t impl_utf8to16(it_in_utf8 first, it_end_utf8 last, it_out_utf1
 }
 
 #ifdef __cplusplus
-template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf8>
+template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf8, bool = true>
 #endif
 uaix_static size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_utf8 result, size_t* const error)
 {
@@ -296,7 +302,7 @@ uaix_static size_t impl_utf16to8(it_in_utf16 first, it_end_utf16 last, it_out_ut
 }
 
 #ifdef __cplusplus
-template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf32>
+template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf32, bool contiguous = true>
 #endif
 uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf32 result, size_t* const error)
 {
@@ -304,7 +310,10 @@ uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf3
     it_in_utf8 prev = s;
     it_out_utf32 dst = result;
 
-    fast_ascii_utf8to32(&s, last, &dst);
+#ifdef __cplusplus
+    if constexpr (contiguous)
+#endif
+        fast_ascii_utf8to32(&s, last, &dst);
 
     while (s != last)
     {
@@ -433,7 +442,7 @@ uaix_static size_t impl_utf8to32(it_in_utf8 first, it_end_utf8 last, it_out_utf3
 }
 
 #ifdef __cplusplus
-template<typename it_in_utf32, typename it_end_utf32, typename it_out_utf8>
+template<typename it_in_utf32, typename it_end_utf32, typename it_out_utf8, bool = true>
 #endif
 uaix_static size_t impl_utf32to8(it_in_utf32 first, it_end_utf32 last, it_out_utf8 result, size_t* const error)
 {
@@ -498,7 +507,7 @@ uaix_static size_t impl_utf32to8(it_in_utf32 first, it_end_utf32 last, it_out_ut
 }
 
 #ifdef __cplusplus
-template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf32>
+template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf32, bool = true>
 #endif
 uaix_static size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_utf32 result, size_t* const error)
 {
@@ -553,7 +562,7 @@ uaix_static size_t impl_utf16to32(it_in_utf16 first, it_end_utf16 last, it_out_u
 }
 
 #ifdef __cplusplus
-template<typename it_in_utf32, typename it_end_utf32, typename it_out_utf16>
+template<typename it_in_utf32, typename it_end_utf32, typename it_out_utf16, bool = true>
 #endif
 uaix_static size_t impl_utf32to16(it_in_utf32 first, it_end_utf32 last, it_out_utf16 result, size_t* const error)
 {
