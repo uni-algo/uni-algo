@@ -208,6 +208,13 @@ uaix_const type_codept norm_bit_nfkc = 10;
 uaix_const type_codept norm_bit_nfkd = 11;
 #endif
 
+uaix_const type_codept norm_bound_nfc  = 0x0300;
+uaix_const type_codept norm_bound_nfd  = 0x00C0;
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+uaix_const type_codept norm_bound_nfkc = 0x00A0;
+uaix_const type_codept norm_bound_nfkd = 0x00A0;
+#endif
+
 uaix_always_inline
 uaix_static bool stages_qc_yes_impl(type_codept ccc_qc, type_codept bit)
 {
@@ -255,7 +262,7 @@ uaix_static bool stages_qc_yes_ns_nfc(type_codept c, size_t* const count_ns)
      * Quick_Check=Yes and Canonical_Combining_Class=0.
      */
 
-    if (c >= 0x00A0) // NFKD lower bound
+    if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
@@ -269,7 +276,7 @@ uaix_static bool stages_qc_yes_ns_nfc(type_codept c, size_t* const count_ns)
 uaix_always_inline
 uaix_static bool stages_qc_yes_ns_nfd(type_codept c, size_t* const count_ns)
 {
-    if (c >= 0x00A0) // NFKD lower bound
+    if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
@@ -285,7 +292,7 @@ uaix_static bool stages_qc_yes_ns_nfd(type_codept c, size_t* const count_ns)
 uaix_always_inline
 uaix_static bool stages_qc_yes_ns_nfkc(type_codept c, size_t* const count_ns)
 {
-    if (c >= 0x00A0) // NFKD lower bound
+    if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
@@ -299,7 +306,7 @@ uaix_static bool stages_qc_yes_ns_nfkc(type_codept c, size_t* const count_ns)
 uaix_always_inline
 uaix_static bool stages_qc_yes_ns_nfkd(type_codept c, size_t* const count_ns)
 {
-    if (c >= 0x00A0) // NFKD lower bound
+    if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
@@ -365,7 +372,7 @@ uaix_static bool stages_qc_yes_is_ccc_impl(type_codept ccc_qc, unsigned char* co
 uaix_always_inline
 uaix_static bool stages_qc_yes_is_nfc(type_codept c, unsigned char* const last_ccc)
 {
-    if (c >= 0x0300) // NFC lower bound
+    if (c >= norm_bound_nfc) // NFC lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
@@ -379,7 +386,7 @@ uaix_static bool stages_qc_yes_is_nfc(type_codept c, unsigned char* const last_c
 uaix_always_inline
 uaix_static bool stages_qc_yes_is_nfd(type_codept c, unsigned char* const last_ccc)
 {
-    if (c >= 0x00C0) // NFD lower bound
+    if (c >= norm_bound_nfd) // NFD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
@@ -395,7 +402,7 @@ uaix_static bool stages_qc_yes_is_nfd(type_codept c, unsigned char* const last_c
 uaix_always_inline
 uaix_static bool stages_qc_yes_is_nfkc(type_codept c, unsigned char* const last_ccc)
 {
-    if (c >= 0x00A0) // NFKC lower bound
+    if (c >= norm_bound_nfkc) // NFKC lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
@@ -409,7 +416,7 @@ uaix_static bool stages_qc_yes_is_nfkc(type_codept c, unsigned char* const last_
 uaix_always_inline
 uaix_static bool stages_qc_yes_is_nfkd(type_codept c, unsigned char* const last_ccc)
 {
-    if (c >= 0x00A0) // NFKD lower bound
+    if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
