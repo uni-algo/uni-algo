@@ -238,13 +238,13 @@ uaix_static bool stages_qc_yes_ns_impl(type_codept ccc_qc, size_t* const count_n
     {
         *count_ns += ccc_qc >> 14;
         if (*count_ns > impl_max_norm_non_starters)
-            return true;
+            return false;
     }
     else
     {
         *count_ns = ccc_qc >> 12; // Trailing non-starters in NFKD
     }
-    return false;
+    return true;
 }
 
 uaix_always_inline
@@ -265,7 +265,7 @@ uaix_static bool stages_qc_yes_ns_nfc(type_codept c, size_t* const count_ns)
     if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
+        if (!stages_qc_yes_ns_impl(ccc_qc, count_ns))
             return false;
         return stages_qc_yes_impl(ccc_qc, norm_bit_nfc);
     }
@@ -279,7 +279,7 @@ uaix_static bool stages_qc_yes_ns_nfd(type_codept c, size_t* const count_ns)
     if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
+        if (!stages_qc_yes_ns_impl(ccc_qc, count_ns))
             return false;
         return stages_qc_yes_impl(ccc_qc, norm_bit_nfd);
     }
@@ -295,7 +295,7 @@ uaix_static bool stages_qc_yes_ns_nfkc(type_codept c, size_t* const count_ns)
     if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
+        if (!stages_qc_yes_ns_impl(ccc_qc, count_ns))
             return false;
         return stages_qc_yes_impl(ccc_qc, norm_bit_nfkc);
     }
@@ -309,7 +309,7 @@ uaix_static bool stages_qc_yes_ns_nfkd(type_codept c, size_t* const count_ns)
     if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (stages_qc_yes_ns_impl(ccc_qc, count_ns))
+        if (!stages_qc_yes_ns_impl(ccc_qc, count_ns))
             return false;
         return stages_qc_yes_impl(ccc_qc, norm_bit_nfkd);
     }
