@@ -274,36 +274,11 @@ uaix_static bool stages_qc_yes_ns(type_codept c, size_t* const count_ns, type_co
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_nfc(type_codept c)
+uaix_static bool stages_qc_yes(type_codept c, type_codept norm_bit)
 {
     const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-    return stages_ccc_qc_yes(ccc_qc, norm_bit_nfc);
+    return stages_ccc_qc_yes(ccc_qc, norm_bit);
 }
-
-uaix_always_inline
-uaix_static bool stages_qc_yes_nfd(type_codept c)
-{
-    const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-    return stages_ccc_qc_yes(ccc_qc, norm_bit_nfd);
-}
-
-#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-
-uaix_always_inline
-uaix_static bool stages_qc_yes_nfkc(type_codept c)
-{
-    const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-    return stages_ccc_qc_yes(ccc_qc, norm_bit_nfkc);
-}
-
-uaix_always_inline
-uaix_static bool stages_qc_yes_nfkd(type_codept c)
-{
-    const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-    return stages_ccc_qc_yes(ccc_qc, norm_bit_nfkd);
-}
-
-#endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
 uaix_static bool stages_ccc_qc_order(type_codept ccc_qc, unsigned char* const last_ccc)
@@ -629,7 +604,7 @@ uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer
             {
                 buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
-                if (stages_qc_yes_nfc(buffer->cps[m->size]))
+                if (stages_qc_yes(buffer->cps[m->size], norm_bit_nfc))
                     m->last_qc = m->size;
             }
         }
@@ -641,7 +616,7 @@ uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer
     // in some cases we can stuck in slow loop a bit longer than needed and
     // we need the check to avoid it. This does not affect behaviour.
     // Test string: "\x005A\x0301\x0179\x0179\x0179\x0179\x0179"
-    if (stages_qc_yes_nfc(c))
+    if (stages_qc_yes(c, norm_bit_nfc))
     {
         buffer->cps[m->size] = c;
         buffer->ccc[m->size] = stages_ccc(c);
@@ -655,7 +630,7 @@ uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer
         {
             buffer->cps[m->size] = c;
             buffer->ccc[m->size] = stages_ccc(c);
-            if (stages_qc_yes_nfc(c))
+            if (stages_qc_yes(c, norm_bit_nfc))
                 m->last_qc = m->size;
             ++m->size;
         }
@@ -666,7 +641,7 @@ uaix_static bool norm_decomp_nfc(type_codept c, struct norm_buffer* const buffer
             {
                 buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
-                if (stages_qc_yes_nfc(buffer->cps[m->size]))
+                if (stages_qc_yes(buffer->cps[m->size], norm_bit_nfc))
                     m->last_qc = m->size;
             }
         }
@@ -695,7 +670,7 @@ uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* const buffer
         {
             buffer->cps[m->size] = c;
             buffer->ccc[m->size] = stages_ccc(c);
-            if (stages_qc_yes_nfd(c))
+            if (stages_qc_yes(c, norm_bit_nfd))
                 m->last_qc = m->size;
             ++m->size;
         }
@@ -706,7 +681,7 @@ uaix_static bool norm_decomp_nfd(type_codept c, struct norm_buffer* const buffer
             {
                 buffer->cps[m->size] = stages_decomp_nfd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
-                if (stages_qc_yes_nfd(buffer->cps[m->size]))
+                if (stages_qc_yes(buffer->cps[m->size], norm_bit_nfd))
                     m->last_qc = m->size;
             }
         }
@@ -735,13 +710,13 @@ uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* const buffe
             {
                 buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
-                if (stages_qc_yes_nfkc(buffer->cps[m->size]))
+                if (stages_qc_yes(buffer->cps[m->size], norm_bit_nfkc))
                     m->last_qc = m->size;
             }
         }
     }
 
-    if (stages_qc_yes_nfkc(c))
+    if (stages_qc_yes(c, norm_bit_nfkc))
     {
         buffer->cps[m->size] = c;
         buffer->ccc[m->size] = stages_ccc(c);
@@ -755,7 +730,7 @@ uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* const buffe
         {
             buffer->cps[m->size] = c;
             buffer->ccc[m->size] = stages_ccc(c);
-            if (stages_qc_yes_nfkc(c))
+            if (stages_qc_yes(c, norm_bit_nfkc))
                 m->last_qc = m->size;
             ++m->size;
         }
@@ -766,7 +741,7 @@ uaix_static bool norm_decomp_nfkc(type_codept c, struct norm_buffer* const buffe
             {
                 buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
-                if (stages_qc_yes_nfkc(buffer->cps[m->size]))
+                if (stages_qc_yes(buffer->cps[m->size], norm_bit_nfkc))
                     m->last_qc = m->size;
             }
         }
@@ -795,7 +770,7 @@ uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* const buffe
         {
             buffer->cps[m->size] = c;
             buffer->ccc[m->size] = stages_ccc(c);
-            if (stages_qc_yes_nfkd(c))
+            if (stages_qc_yes(c, norm_bit_nfkd))
                 m->last_qc = m->size;
             ++m->size;
         }
@@ -806,7 +781,7 @@ uaix_static bool norm_decomp_nfkd(type_codept c, struct norm_buffer* const buffe
             {
                 buffer->cps[m->size] = stages_decomp_nfkd_cp(offset, i);
                 buffer->ccc[m->size] = stages_ccc(buffer->cps[m->size]);
-                if (stages_qc_yes_nfkd(buffer->cps[m->size]))
+                if (stages_qc_yes(buffer->cps[m->size], norm_bit_nfkd))
                     m->last_qc = m->size;
             }
         }
@@ -834,7 +809,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, struct norm_buffer* const b
         {
             buffer->cps[m->size] = c;
             buffer->ccc[m->size] = stages_ccc(c);
-            if (stages_qc_yes_nfd(c))
+            if (stages_qc_yes(c, norm_bit_nfd))
                 m->last_qc = m->size;
             ++m->size;
         }
@@ -849,7 +824,7 @@ uaix_static bool norm_decomp_unaccent(type_codept c, struct norm_buffer* const b
             {
                 buffer->cps[m->size] = cp;
                 buffer->ccc[m->size] = stages_ccc(cp);
-                if (stages_qc_yes_nfd(cp))
+                if (stages_qc_yes(cp, norm_bit_nfd))
                     m->last_qc = m->size;
                 ++m->size;
             }
