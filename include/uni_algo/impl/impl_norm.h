@@ -216,21 +216,21 @@ uaix_const type_codept norm_bound_nfkd = 0x00A0;
 #endif
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_impl(type_codept ccc_qc, type_codept bit)
+uaix_static bool stages_ccc_qc_yes(type_codept ccc_qc, type_codept bit)
 {
     // Canonical_Combining_Class=0 && Quick_Check=Yes (!Quick_Check=No && !Quick_Check=Maybe)
     return (ccc_qc & 0xFF) == 0 && !(ccc_qc & (type_codept)1 << bit);
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_is_impl(type_codept ccc_qc, type_codept bit)
+uaix_static bool stages_ccc_qc_detect(type_codept ccc_qc, type_codept bit)
 {
     // Quick_Check=Yes (!Quick_Check=No && !Quick_Check=Maybe)
     return !(ccc_qc & (type_codept)1 << bit);
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_ns_impl(type_codept ccc_qc, size_t* const count_ns)
+uaix_static bool stages_ccc_qc_ns(type_codept ccc_qc, size_t* const count_ns)
 {
     // https://unicode.org/reports/tr15/#Stream_Safe_Text_Format
 
@@ -265,9 +265,9 @@ uaix_static bool stages_qc_yes_ns_nfc(type_codept c, size_t* const count_ns)
     if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_qc_yes_ns_impl(ccc_qc, count_ns))
+        if (!stages_ccc_qc_ns(ccc_qc, count_ns))
             return false;
-        return stages_qc_yes_impl(ccc_qc, norm_bit_nfc);
+        return stages_ccc_qc_yes(ccc_qc, norm_bit_nfc);
     }
     *count_ns = 0;
     return true;
@@ -279,9 +279,9 @@ uaix_static bool stages_qc_yes_ns_nfd(type_codept c, size_t* const count_ns)
     if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_qc_yes_ns_impl(ccc_qc, count_ns))
+        if (!stages_ccc_qc_ns(ccc_qc, count_ns))
             return false;
-        return stages_qc_yes_impl(ccc_qc, norm_bit_nfd);
+        return stages_ccc_qc_yes(ccc_qc, norm_bit_nfd);
     }
     *count_ns = 0;
     return true;
@@ -295,9 +295,9 @@ uaix_static bool stages_qc_yes_ns_nfkc(type_codept c, size_t* const count_ns)
     if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_qc_yes_ns_impl(ccc_qc, count_ns))
+        if (!stages_ccc_qc_ns(ccc_qc, count_ns))
             return false;
-        return stages_qc_yes_impl(ccc_qc, norm_bit_nfkc);
+        return stages_ccc_qc_yes(ccc_qc, norm_bit_nfkc);
     }
     *count_ns = 0;
     return true;
@@ -309,9 +309,9 @@ uaix_static bool stages_qc_yes_ns_nfkd(type_codept c, size_t* const count_ns)
     if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_qc_yes_ns_impl(ccc_qc, count_ns))
+        if (!stages_ccc_qc_ns(ccc_qc, count_ns))
             return false;
-        return stages_qc_yes_impl(ccc_qc, norm_bit_nfkd);
+        return stages_ccc_qc_yes(ccc_qc, norm_bit_nfkd);
     }
     *count_ns = 0;
     return true;
@@ -323,14 +323,14 @@ uaix_always_inline
 uaix_static bool stages_qc_yes_nfc(type_codept c)
 {
     const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-    return stages_qc_yes_impl(ccc_qc, norm_bit_nfc);
+    return stages_ccc_qc_yes(ccc_qc, norm_bit_nfc);
 }
 
 uaix_always_inline
 uaix_static bool stages_qc_yes_nfd(type_codept c)
 {
     const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-    return stages_qc_yes_impl(ccc_qc, norm_bit_nfd);
+    return stages_ccc_qc_yes(ccc_qc, norm_bit_nfd);
 }
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
@@ -339,20 +339,20 @@ uaix_always_inline
 uaix_static bool stages_qc_yes_nfkc(type_codept c)
 {
     const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-    return stages_qc_yes_impl(ccc_qc, norm_bit_nfkc);
+    return stages_ccc_qc_yes(ccc_qc, norm_bit_nfkc);
 }
 
 uaix_always_inline
 uaix_static bool stages_qc_yes_nfkd(type_codept c)
 {
     const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-    return stages_qc_yes_impl(ccc_qc, norm_bit_nfkd);
+    return stages_ccc_qc_yes(ccc_qc, norm_bit_nfkd);
 }
 
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_is_ccc_impl(type_codept ccc_qc, unsigned char* const last_ccc)
+uaix_static bool stages_ccc_qc_order(type_codept ccc_qc, unsigned char* const last_ccc)
 {
     // https://unicode.org/reports/tr15/#Detecting_Normalization_Forms
     // Note: "if (Character.isSupplementaryCodePoint(ch)) ++i;"
@@ -375,9 +375,9 @@ uaix_static bool stages_qc_yes_is_nfc(type_codept c, unsigned char* const last_c
     if (c >= norm_bound_nfc) // NFC lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
+        if (!stages_ccc_qc_order(ccc_qc, last_ccc))
             return false;
-        return stages_qc_yes_is_impl(ccc_qc, norm_bit_nfc);
+        return stages_ccc_qc_detect(ccc_qc, norm_bit_nfc);
     }
     *last_ccc = 0;
     return true;
@@ -389,9 +389,9 @@ uaix_static bool stages_qc_yes_is_nfd(type_codept c, unsigned char* const last_c
     if (c >= norm_bound_nfd) // NFD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
+        if (!stages_ccc_qc_order(ccc_qc, last_ccc))
             return false;
-        return stages_qc_yes_is_impl(ccc_qc, norm_bit_nfd);
+        return stages_ccc_qc_detect(ccc_qc, norm_bit_nfd);
     }
     *last_ccc = 0;
     return true;
@@ -405,9 +405,9 @@ uaix_static bool stages_qc_yes_is_nfkc(type_codept c, unsigned char* const last_
     if (c >= norm_bound_nfkc) // NFKC lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
+        if (!stages_ccc_qc_order(ccc_qc, last_ccc))
             return false;
-        return stages_qc_yes_is_impl(ccc_qc, norm_bit_nfkc);
+        return stages_ccc_qc_detect(ccc_qc, norm_bit_nfkc);
     }
     *last_ccc = 0;
     return true;
@@ -419,9 +419,9 @@ uaix_static bool stages_qc_yes_is_nfkd(type_codept c, unsigned char* const last_
     if (c >= norm_bound_nfkd) // NFKD lower bound
     {
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_qc_yes_is_ccc_impl(ccc_qc, last_ccc))
+        if (!stages_ccc_qc_order(ccc_qc, last_ccc))
             return false;
-        return stages_qc_yes_is_impl(ccc_qc, norm_bit_nfkd);
+        return stages_ccc_qc_detect(ccc_qc, norm_bit_nfkd);
     }
     *last_ccc = 0;
     return true;
