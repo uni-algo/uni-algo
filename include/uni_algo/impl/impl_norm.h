@@ -248,17 +248,17 @@ uaix_static bool stages_ccc_qc_ns(type_codept ccc_qc, size_t* const count_ns)
 }
 
 uaix_always_inline
-uaix_static bool stages_qc_yes_ns_nfc(type_codept c, size_t* const count_ns)
+uaix_static bool stages_qc_yes_ns(type_codept c, size_t* const count_ns, type_codept norm_bit)
 {
-    /* Note that we always use NFKD lower bound in these
-     * functions because we need to count initial/trailing
+    /* Note that we always use NFKD lower bound in this
+     * function because we need to count initial/trailing
      * non-starters in NFKD for Stream-Safe Text Process.
      * This disallow us to use NFC lower bound for example,
      * that is much higher, to achive a better performance,
      * but it cannot be done other way.
-     * We still can use real lower bounds in
-     * normalization detection functions below.
-     * Note: lower bound means everything below that has
+     * Note that we can still use real lower bounds
+     * in normalization detection functions.
+     * NOTE: Lower bound means everything below that has
      * Quick_Check=Yes and Canonical_Combining_Class=0.
      */
 
@@ -267,57 +267,11 @@ uaix_static bool stages_qc_yes_ns_nfc(type_codept c, size_t* const count_ns)
         const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
         if (!stages_ccc_qc_ns(ccc_qc, count_ns))
             return false;
-        return stages_ccc_qc_yes(ccc_qc, norm_bit_nfc);
+        return stages_ccc_qc_yes(ccc_qc, norm_bit);
     }
     *count_ns = 0;
     return true;
 }
-
-uaix_always_inline
-uaix_static bool stages_qc_yes_ns_nfd(type_codept c, size_t* const count_ns)
-{
-    if (c >= norm_bound_nfkd) // NFKD lower bound
-    {
-        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_ccc_qc_ns(ccc_qc, count_ns))
-            return false;
-        return stages_ccc_qc_yes(ccc_qc, norm_bit_nfd);
-    }
-    *count_ns = 0;
-    return true;
-}
-
-#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
-
-uaix_always_inline
-uaix_static bool stages_qc_yes_ns_nfkc(type_codept c, size_t* const count_ns)
-{
-    if (c >= norm_bound_nfkd) // NFKD lower bound
-    {
-        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_ccc_qc_ns(ccc_qc, count_ns))
-            return false;
-        return stages_ccc_qc_yes(ccc_qc, norm_bit_nfkc);
-    }
-    *count_ns = 0;
-    return true;
-}
-
-uaix_always_inline
-uaix_static bool stages_qc_yes_ns_nfkd(type_codept c, size_t* const count_ns)
-{
-    if (c >= norm_bound_nfkd) // NFKD lower bound
-    {
-        const type_codept ccc_qc = stages(c, stage1_ccc_qc, stage2_ccc_qc);
-        if (!stages_ccc_qc_ns(ccc_qc, count_ns))
-            return false;
-        return stages_ccc_qc_yes(ccc_qc, norm_bit_nfkd);
-    }
-    *count_ns = 0;
-    return true;
-}
-
-#endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 uaix_always_inline
 uaix_static bool stages_qc_yes_nfc(type_codept c)
@@ -952,7 +906,7 @@ uaix_static size_t impl_norm_to_nfc_utf8(it_in_utf8 first, it_end_utf8 last, it_
         while (src != last)
         {
             src = iter_utf8(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfc(c, &m.count_ns)))
+            if (uaix_likely(stages_qc_yes_ns(c, &m.count_ns, norm_bit_nfc)))
             {
                 if (uaix_likely(m.size == 1))
                 {
@@ -1010,7 +964,7 @@ uaix_static size_t impl_norm_to_nfd_utf8(it_in_utf8 first, it_end_utf8 last, it_
         while (src != last)
         {
             src = iter_utf8(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfd(c, &m.count_ns)))
+            if (uaix_likely(stages_qc_yes_ns(c, &m.count_ns, norm_bit_nfd)))
             {
                 if (uaix_likely(m.size == 1))
                 {
@@ -1066,7 +1020,7 @@ uaix_static size_t impl_norm_to_nfkc_utf8(it_in_utf8 first, it_end_utf8 last, it
         while (src != last)
         {
             src = iter_utf8(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfkc(c, &m.count_ns)))
+            if (uaix_likely(stages_qc_yes_ns(c, &m.count_ns, norm_bit_nfkc)))
             {
                 if (uaix_likely(m.size == 1))
                 {
@@ -1124,7 +1078,7 @@ uaix_static size_t impl_norm_to_nfkd_utf8(it_in_utf8 first, it_end_utf8 last, it
         while (src != last)
         {
             src = iter_utf8(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfkd(c, &m.count_ns)))
+            if (uaix_likely(stages_qc_yes_ns(c, &m.count_ns, norm_bit_nfkd)))
             {
                 if (uaix_likely(m.size == 1))
                 {
@@ -1182,7 +1136,7 @@ uaix_static size_t impl_norm_to_unaccent_utf8(it_in_utf8 first, it_end_utf8 last
         while (src != last)
         {
             src = iter_utf8(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfd(c, &m.count_ns)))
+            if (uaix_likely(stages_qc_yes_ns(c, &m.count_ns, norm_bit_nfd)))
             {
                 if (uaix_likely(m.size == 1))
                 {
@@ -1331,7 +1285,7 @@ uaix_static size_t impl_norm_to_nfc_utf16(it_in_utf16 first, it_end_utf16 last, 
         while (src != last)
         {
             src = iter_utf16(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfc(c, &m.count_ns)))
+            if (uaix_likely(stages_qc_yes_ns(c, &m.count_ns, norm_bit_nfc)))
             {
                 if (uaix_likely(m.size == 1))
                 {
@@ -1387,7 +1341,7 @@ uaix_static size_t impl_norm_to_nfd_utf16(it_in_utf16 first, it_end_utf16 last, 
         while (src != last)
         {
             src = iter_utf16(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfd(c, &m.count_ns)))
+            if (uaix_likely(stages_qc_yes_ns(c, &m.count_ns, norm_bit_nfd)))
             {
                 if (uaix_likely(m.size == 1))
                 {
@@ -1441,7 +1395,7 @@ uaix_static size_t impl_norm_to_nfkc_utf16(it_in_utf16 first, it_end_utf16 last,
         while (src != last)
         {
             src = iter_utf16(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfkc(c, &m.count_ns)))
+            if (uaix_likely(stages_qc_yes_ns(c, &m.count_ns, norm_bit_nfkc)))
             {
                 if (uaix_likely(m.size == 1))
                 {
@@ -1497,7 +1451,7 @@ uaix_static size_t impl_norm_to_nfkd_utf16(it_in_utf16 first, it_end_utf16 last,
         while (src != last)
         {
             src = iter_utf16(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfkd(c, &m.count_ns)))
+            if (uaix_likely(stages_qc_yes_ns(c, &m.count_ns, norm_bit_nfkd)))
             {
                 if (uaix_likely(m.size == 1))
                 {
@@ -1553,7 +1507,7 @@ uaix_static size_t impl_norm_to_unaccent_utf16(it_in_utf16 first, it_end_utf16 l
         while (src != last)
         {
             src = iter_utf16(src, last, &c, iter_replacement);
-            if (uaix_likely(stages_qc_yes_ns_nfd(c, &m.count_ns)))
+            if (uaix_likely(stages_qc_yes_ns(c, &m.count_ns, norm_bit_nfd)))
             {
                 if (uaix_likely(m.size == 1))
                 {
@@ -1755,7 +1709,7 @@ uaix_static bool inline_norm_iter_nfc(struct impl_norm_iter_state* const s, type
     // I hate myself so much sometimes.
 
     c = norm_safe_cp(c);
-    if (stages_qc_yes_ns_nfc(c, &s->m.count_ns))
+    if (stages_qc_yes_ns(c, &s->m.count_ns, norm_bit_nfc))
     {
         if (s->m.size == 1)
             return norm_state_fast_1(s, c);
@@ -1772,7 +1726,7 @@ uaix_always_inline
 uaix_static bool inline_norm_iter_nfd(struct impl_norm_iter_state* const s, type_codept c)
 {
     c = norm_safe_cp(c);
-    if (stages_qc_yes_ns_nfd(c, &s->m.count_ns))
+    if (stages_qc_yes_ns(c, &s->m.count_ns, norm_bit_nfd))
     {
         if (s->m.size == 1)
             return norm_state_fast_1(s, c);
@@ -1791,7 +1745,7 @@ uaix_always_inline
 uaix_static bool inline_norm_iter_nfkc(struct impl_norm_iter_state* const s, type_codept c)
 {
     c = norm_safe_cp(c);
-    if (stages_qc_yes_ns_nfkc(c, &s->m.count_ns))
+    if (stages_qc_yes_ns(c, &s->m.count_ns, norm_bit_nfkc))
     {
         if (s->m.size == 1)
             return norm_state_fast_1(s, c);
@@ -1808,7 +1762,7 @@ uaix_always_inline
 uaix_static bool inline_norm_iter_nfkd(struct impl_norm_iter_state* const s, type_codept c)
 {
     c = norm_safe_cp(c);
-    if (stages_qc_yes_ns_nfkd(c, &s->m.count_ns))
+    if (stages_qc_yes_ns(c, &s->m.count_ns, norm_bit_nfkd))
     {
         if (s->m.size == 1)
             return norm_state_fast_1(s, c);
