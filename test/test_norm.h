@@ -429,6 +429,39 @@ test_constexpr bool test_norm_detect()
     TESTX(una::norm::is_nfkc_utf16(u"\xDC00") == false);
     TESTX(una::norm::is_nfkd_utf16(u"\xDC00") == false);
 
+    // Not stream safe -> always false
+
+    // NOTE: U+0305 non-starter is used below instead of U+0300 or something because it can appear
+    // in all normalization forms, but for example U+0300 can only appear in NFD and NFKD.
+
+    std::u32string not_stream_safe_utf32 = std::u32string(31, 0x0305); // 31 non-starters = not stream-safe
+    std::string not_stream_safe_utf8 = una::utf32to8(not_stream_safe_utf32);
+    std::u16string not_stream_safe_utf16 = una::utf32to16u(not_stream_safe_utf32);
+
+    TESTX(una::norm::is_nfc_utf8(not_stream_safe_utf8) == false);
+    TESTX(una::norm::is_nfd_utf8(not_stream_safe_utf8) == false);
+    TESTX(una::norm::is_nfkc_utf8(not_stream_safe_utf8) == false);
+    TESTX(una::norm::is_nfkd_utf8(not_stream_safe_utf8) == false);
+
+    TESTX(una::norm::is_nfc_utf16(not_stream_safe_utf16) == false);
+    TESTX(una::norm::is_nfd_utf16(not_stream_safe_utf16) == false);
+    TESTX(una::norm::is_nfkc_utf16(not_stream_safe_utf16) == false);
+    TESTX(una::norm::is_nfkd_utf16(not_stream_safe_utf16) == false);
+
+    std::u32string stream_safe_utf32 = std::u32string(30, 0x0305); // 30 non-starters = stream-safe
+    std::string stream_safe_utf8 = una::utf32to8(stream_safe_utf32);
+    std::u16string stream_safe_utf16 = una::utf32to16u(stream_safe_utf32);
+
+    TESTX(una::norm::is_nfc_utf8(stream_safe_utf8) == true);
+    TESTX(una::norm::is_nfd_utf8(stream_safe_utf8) == true);
+    TESTX(una::norm::is_nfkc_utf8(stream_safe_utf8) == true);
+    TESTX(una::norm::is_nfkd_utf8(stream_safe_utf8) == true);
+
+    TESTX(una::norm::is_nfc_utf16(stream_safe_utf16) == true);
+    TESTX(una::norm::is_nfd_utf16(stream_safe_utf16) == true);
+    TESTX(una::norm::is_nfkc_utf16(stream_safe_utf16) == true);
+    TESTX(una::norm::is_nfkd_utf16(stream_safe_utf16) == true);
+
     return true;
 }
 
