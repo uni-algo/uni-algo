@@ -149,20 +149,20 @@ uaiw_constexpr Dst t_norm2(const Alloc& alloc, const Src& src)
 // Normalization detection
 
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-template<typename Src, int(*FnDetect)(typename Src::const_iterator, typename Src::const_iterator)>
+template<typename Src, int(*FnDetect)(typename Src::const_iterator, typename Src::const_iterator, bool)>
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
-template<typename Src, int(*FnDetect)(typename Src::const_pointer, typename Src::const_pointer)>
+template<typename Src, int(*FnDetect)(typename Src::const_pointer, typename Src::const_pointer, bool)>
 #else // Safe layer
-template<typename Src, int(*FnDetect)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>)>
+template<typename Src, int(*FnDetect)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, bool)>
 #endif
 uaiw_constexpr bool t_detect(const Src& src)
 {
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    return FnDetect(src.cbegin(), src.cend()) == detail::impl_norm_is_yes;
+    return FnDetect(src.cbegin(), src.cend(), true) == detail::impl_norm_is_yes;
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    return FnDetect(src.data(), src.data() + src.size()) == detail::impl_norm_is_yes;
+    return FnDetect(src.data(), src.data() + src.size(), true) == detail::impl_norm_is_yes;
 #else // Safe layer
-    return FnDetect(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}) == detail::impl_norm_is_yes;
+    return FnDetect(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, true) == detail::impl_norm_is_yes;
 #endif
 }
 
