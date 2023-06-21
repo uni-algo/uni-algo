@@ -2,7 +2,10 @@
 Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
-## [v0.8.1](https://github.com/uni-algo/uni-algo/tree/v0.8.0) (2023-05-15)
+## [v0.8.2](https://github.com/uni-algo/uni-algo/tree/v0.8.2) (2023-06-21)
+- Fixed normalization detection functions ([#28](https://github.com/uni-algo/uni-algo/issues/28))
+
+## [v0.8.1](https://github.com/uni-algo/uni-algo/tree/v0.8.1) (2023-05-15)
 - Fixed constexpr UTF conversion in Clang ([#27](https://github.com/uni-algo/uni-algo/issues/27))
 
 ## [v0.8.0](https://github.com/uni-algo/uni-algo/tree/v0.8.0) (2023-05-07)
