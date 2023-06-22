@@ -86,6 +86,9 @@ that can drastically reduce the size of Unicode data that must be compiled.
 Portability means:
 - The library works even if all available types are 64-bit with `sizeof == 1`
 and/or fixed width types are unavailable and/or `CHAR_BIT` is not 8.
+- The exact same behavior on all platforms, the library doesn't use `std::locale`
+and things related to it because most of that stuff is broken
+(see [P2020R0](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p2020r0.pdf)).
 
 ## Usage
 
