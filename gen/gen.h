@@ -1069,7 +1069,7 @@ static void new_generator_unicodedata_compose(const std::string& file1, const st
     }
 
     new_generator_output(file1, file2, 8, 16, true, map1, 0x10FFFF);
-    new_generator_output(file3, file4, 8, 16, true, map2, 0x10FFFF);
+    new_generator_output(file3, file4, 8, 8, true, map2, 0x10FFFF);
     new_generator_output3(file5, vec);
 }
 
