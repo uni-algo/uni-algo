@@ -15,7 +15,7 @@ UNI_ALGO_DLL extern const uaix_data_array(type_codept,    stage3_decomp_nfkd, 14
 UNI_ALGO_DLL extern const uaix_data_array(unsigned char,  stage1_comp_cp1, 8704);
 UNI_ALGO_DLL extern const uaix_data_array(unsigned short, stage2_comp_cp1, 4736);
 UNI_ALGO_DLL extern const uaix_data_array(unsigned char,  stage1_comp_cp2, 8704);
-UNI_ALGO_DLL extern const uaix_data_array(unsigned short, stage2_comp_cp2, 2560);
+UNI_ALGO_DLL extern const uaix_data_array(unsigned char,  stage2_comp_cp2, 2560);
 UNI_ALGO_DLL extern const uaix_data_array2(type_codept,   stage3_comp, 378, 64);
 UNI_ALGO_DLL extern const uaix_data_array(unsigned char,  stage1_ccc_qc, 8704);
 UNI_ALGO_DLL extern const uaix_data_array(unsigned short, stage2_ccc_qc, 20224);

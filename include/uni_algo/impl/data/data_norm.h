@@ -14078,7 +14078,7 @@ uaix_const_data uaix_data_array(unsigned char, stage1_comp_cp2, 8704) = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data uaix_data_array(unsigned short, stage2_comp_cp2, 2560) = {
+uaix_const_data uaix_data_array(unsigned char, stage2_comp_cp2, 2560) = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
