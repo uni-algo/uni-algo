@@ -168,18 +168,34 @@ uaix_static type_codept stages_decomp_nfkd_cp(size_t offset, size_t i)
 uaix_always_inline
 uaix_static type_codept stages_comp(type_codept c1, type_codept c2)
 {
-    // Note that we use two-dimensional array here as recommended in
+    // NOTE: The approach with two-dimensional array is used here as recommended in:
     // 14.1.2 Optimizing Tables for NFC Composition
-    // https://unicode.org/reports/tr15/#Optimization_Strategies
+    // https://unicode.org/reports/tr15/#NFC_Table_Optimization
+    // but two-dimensional array is packed into optimized one-dimensional array
+    // to reduce the size of the data.
 
     const size_t i1 = stages(c1, stage1_comp_cp1, stage2_comp_cp1);
-    if (i1)
+    if (i1 != 0)
     {
         const size_t i2 = stages(c2, stage1_comp_cp2, stage2_comp_cp2);
-        return stage3_comp[i1][i2];
+        if (i2 != 0 && i2 >= stage3_comp[i1] && i2 <= stage3_comp[i1 + 1])
+            return stage3_comp[i1 + 2 + (i2 - stage3_comp[i1])];
     }
-
     return 0;
+
+    // REMINDER: For reference this is the old version that use
+    // two-dimensional table instead of packed composition table.
+    // Also see function new_generator_unicodedata_compose in gen/gen.h
+/*
+    const size_t i1 = stages(c1, stage1_comp_cp1, stage2_comp_cp1);
+    if (i1 != 0)
+    {
+        const size_t i2 = stages(c2, stage1_comp_cp2, stage2_comp_cp2);
+        if (i2 != 0)
+            return stage3_comp[i1][i2];
+    }
+    return 0;
+*/
 }
 
 uaix_always_inline
