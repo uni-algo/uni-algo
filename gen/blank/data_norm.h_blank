@@ -40,8 +40,7 @@ new_stage1_comp_cp2.txt};
 uaix_const_data uaix_data_array(unsigned char, stage2_comp_cp2, new_stage2_comp_cp2.111) = {
 new_stage2_comp_cp2.txt};
 
-uaix_const_data uaix_data_array2(type_codept, stage3_comp, new_stage3_comp.111, new_stage3_comp.222) = {
-uaix_array_brace_ellison(type_codept, new_stage3_comp.222)
+uaix_const_data uaix_data_array(type_codept, stage3_comp, new_stage3_comp.111) = {
 new_stage3_comp.txt};
 
 UNI_ALGO_IMPL_NAMESPACE_END

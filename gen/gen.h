@@ -41,7 +41,6 @@ const std::string gen_header =
 // For example the data can be compressed: https://en.wikipedia.org/wiki/Trie -> Compressing tries
 // In this case for stage1/stage2 tables we need another table (?) for every stage1/stage2 with offsets
 // (sparse offsets) to get rid of all 0,0,0,0,0 in these tables (probably only in stage2?).
-// For stage3_comp that is actually enormous we can store the offsets inside the table.
 // For stage3_decomp_nfd/stage3_decomp_nfkd we can use UTF-16 instead of UTF-32.
 // etc.
 //
@@ -1006,9 +1005,9 @@ static void new_generator_unicodedata_compose(const std::string& file1, const st
     // To get the number for both code points use two-stage tables as usual (map1, map2) that is also O(1)
     // This is exactly as recommended here:
     // 14.1.2 Optimizing Tables for NFC Composition: https://unicode.org/reports/tr15/#Optimization_Strategies
-    // TODO: The size of the table can be optimized but it adds complexity so I don't care for now
 
     std::vector<std::vector<uint32_t>> vec(map1_vec.size() + 1, std::vector<uint32_t>(map2_vec.size() + 1));
+    std::vector<uint32_t> vec_temp(map1_vec.size() + 1);
 
     input.clear();
     input.seekg(0, std::ios::beg);
@@ -1055,6 +1054,7 @@ static void new_generator_unicodedata_compose(const std::string& file1, const st
                     map2.at(decomp[1]) = map2_vec.at(decomp[1]);
 
                     vec[map1_vec.at(decomp[0])][map2_vec.at(decomp[1])] = c;
+                    vec_temp[map1_vec.at(decomp[0])] = decomp[0];
 
                     // Test: decrease data size
                     //map1.at(decomp[0]) = (map1_vec.at(decomp[0]) << 5) | ((c >> 16) & 0x1F);
@@ -1068,9 +1068,47 @@ static void new_generator_unicodedata_compose(const std::string& file1, const st
         }
     }
 
+    // Pack 2-dimensional vector (vec) to 1-dimensional vector (new_vec)
+    // This reduces the size of the table by 4 times
+    // To achieve this, we store offsets inside the table (offset_first, offset_last below)
+
+    std::vector<uint32_t> new_vec(1, 0);
+
+    for (std::size_t i = 1; i < vec.size(); ++i)
+    {
+        // Update index of the first code point for the new packed data format
+        // Index of the second code point will be used as is so it's not changed
+        map1.at(vec_temp[i]) = new_vec.size();
+
+        // Find offsets by skipping zeros at the start and at the end
+        std::size_t offset_first = (std::size_t)-1;
+        std::size_t offset_last = 0;
+        for (std::size_t j = 1; j < vec[i].size(); ++j)
+        {
+            if (offset_first == (std::size_t)-1 && vec[i][j] != 0)
+                offset_first = j;
+            if (vec[i][j] != 0)
+                offset_last = j;
+        }
+
+        // Store offsets and data
+
+        new_vec.push_back(offset_first);
+        new_vec.push_back(offset_last);
+
+        for (std::size_t j = offset_first; j <= offset_last; ++j)
+            new_vec.push_back(vec[i][j]);
+    }
+
     new_generator_output(file1, file2, 8, 16, true, map1, 0x10FFFF);
     new_generator_output(file3, file4, 8, 8, true, map2, 0x10FFFF);
-    new_generator_output3(file5, vec);
+
+    new_generator_output2(file5, new_vec);
+
+    // REMINDER: This can be used for testing to generate old 2-dimensional table
+    // instead of function above that generates new packed table
+    // The old table demonstrates the algorithm better
+    //new_generator_output3(file5, vec);
 }
 
 static void new_generator_segment_grapheme(const std::string& file1, const std::string& file2)
@@ -2113,7 +2151,7 @@ static void new_merger()
     new_merger_replace_string(data1, data2, "new_stage2_comp_cp1.txt");
     new_merger_replace_string(data1, data2, "new_stage1_comp_cp2.txt");
     new_merger_replace_string(data1, data2, "new_stage2_comp_cp2.txt");
-    new_merger_replace_string(data1, data2, "new_stage3_comp.txt", 2);
+    new_merger_replace_string(data1, data2, "new_stage3_comp.txt");
     new_merger_add_header(data1, data2);
 
     output1.open("data_norm.h");
