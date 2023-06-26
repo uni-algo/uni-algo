@@ -14,7 +14,7 @@
 
 //#define UNI_ALGO_DISABLE_NORM
 // Disable Normalization module.
-// Reduces Unicode data size by ~300 KB.
+// Reduces Unicode data size by ~200 KB.
 
 //#define UNI_ALGO_DISABLE_PROP
 // Disable Code Point Properties module.
