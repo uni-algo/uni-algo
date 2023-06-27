@@ -331,6 +331,7 @@ int main7()
     std::cout << "SKIP: Normalization with test files" << '\n';
 #endif
     STATIC_TESTX(test_norm_detect());
+    STATIC_TESTX(test_norm_detect_error());
     std::cout << "DONE: Detecting Normalization Forms" << '\n';
     STATIC_TESTX(test_norm_stream_safe());
     std::cout << "DONE: Normalization Stream-Safe Text Format" << '\n';

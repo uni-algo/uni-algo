@@ -465,6 +465,100 @@ test_constexpr bool test_norm_detect()
     return true;
 }
 
+test_constexpr bool test_norm_detect_error()
+{
+    // NOTE: Copy-paste of the previous test function test_norm_detect but with una::error parameter
+
+    una::error error;
+
+    // Composition exclusion -> always false
+    TESTX(una::norm::is_nfc_utf8(una::utf32to8(U"\x0344"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfd_utf8(una::utf32to8(U"\x0344"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkc_utf8(una::utf32to8(U"\x0344"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkd_utf8(una::utf32to8(U"\x0344"), error) == false && error == una::error::code::not_normalized);
+
+    TESTX(una::norm::is_nfc_utf16(una::utf32to16u(U"\x0344"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfd_utf16(una::utf32to16u(U"\x0344"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkc_utf16(una::utf32to16u(U"\x0344"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkd_utf16(una::utf32to16u(U"\x0344"), error) == false && error == una::error::code::not_normalized);
+
+    // Must be in the correct order
+    TESTX(una::norm::is_nfc_utf8(una::utf32to8(U"\x0315\x0305"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfd_utf8(una::utf32to8(U"\x0315\x0305"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkc_utf8(una::utf32to8(U"\x0315\x0305"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkd_utf8(una::utf32to8(U"\x0315\x0305"), error) == false && error == una::error::code::not_normalized);
+
+    TESTX(una::norm::is_nfc_utf16(una::utf32to16u(U"\x0315\x0305"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfd_utf16(una::utf32to16u(U"\x0315\x0305"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkc_utf16(una::utf32to16u(U"\x0315\x0305"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkd_utf16(una::utf32to16u(U"\x0315\x0305"), error) == false && error == una::error::code::not_normalized);
+
+    // Must be decomposed in NFKC/NFKD
+    TESTX(una::norm::is_nfc_utf8(una::utf32to8(U"\x00A0"), error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfd_utf8(una::utf32to8(U"\x00A0"), error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfkc_utf8(una::utf32to8(U"\x00A0"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkd_utf8(una::utf32to8(U"\x00A0"), error) == false && error == una::error::code::not_normalized);
+
+    TESTX(una::norm::is_nfc_utf16(una::utf32to16u(U"\x00A0"), error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfd_utf16(una::utf32to16u(U"\x00A0"), error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfkc_utf16(una::utf32to16u(U"\x00A0"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkd_utf16(una::utf32to16u(U"\x00A0"), error) == false && error == una::error::code::not_normalized);
+
+    // Must be decomposed in NFD/NFKD
+    TESTX(una::norm::is_nfc_utf8(una::utf32to8(U"\x00C0"), error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfd_utf8(una::utf32to8(U"\x00C0"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkc_utf8(una::utf32to8(U"\x00C0"), error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfkd_utf8(una::utf32to8(U"\x00C0"), error) == false && error == una::error::code::not_normalized);
+
+    TESTX(una::norm::is_nfc_utf16(una::utf32to16u(U"\x00C0"), error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfd_utf16(una::utf32to16u(U"\x00C0"), error) == false && error == una::error::code::not_normalized);
+    TESTX(una::norm::is_nfkc_utf16(una::utf32to16u(U"\x00C0"), error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfkd_utf16(una::utf32to16u(U"\x00C0"), error) == false && error == una::error::code::not_normalized);
+
+    // Ill-formed -> always false
+    TESTX(una::norm::is_nfc_utf8("\x80", error) == false && error == una::error::code::ill_formed_utf);
+    TESTX(una::norm::is_nfd_utf8("\x80", error) == false && error == una::error::code::ill_formed_utf);
+    TESTX(una::norm::is_nfkc_utf8("\x80", error) == false && error == una::error::code::ill_formed_utf);
+    TESTX(una::norm::is_nfkd_utf8("\x80", error) == false && error == una::error::code::ill_formed_utf);
+
+    TESTX(una::norm::is_nfc_utf16(u"\xDC00", error) == false && error == una::error::code::ill_formed_utf);
+    TESTX(una::norm::is_nfd_utf16(u"\xDC00", error) == false && error == una::error::code::ill_formed_utf);
+    TESTX(una::norm::is_nfkc_utf16(u"\xDC00", error) == false && error == una::error::code::ill_formed_utf);
+    TESTX(una::norm::is_nfkd_utf16(u"\xDC00", error) == false && error == una::error::code::ill_formed_utf);
+
+    // Not stream safe -> always false
+
+    std::u32string not_stream_safe_utf32 = std::u32string(31, 0x0305); // 31 non-starters = not stream-safe
+    std::string not_stream_safe_utf8 = una::utf32to8(not_stream_safe_utf32);
+    std::u16string not_stream_safe_utf16 = una::utf32to16u(not_stream_safe_utf32);
+
+    TESTX(una::norm::is_nfc_utf8(not_stream_safe_utf8, error) == false && error == una::error::code::not_stream_safe);
+    TESTX(una::norm::is_nfd_utf8(not_stream_safe_utf8, error) == false && error == una::error::code::not_stream_safe);
+    TESTX(una::norm::is_nfkc_utf8(not_stream_safe_utf8, error) == false && error == una::error::code::not_stream_safe);
+    TESTX(una::norm::is_nfkd_utf8(not_stream_safe_utf8, error) == false && error == una::error::code::not_stream_safe);
+
+    TESTX(una::norm::is_nfc_utf16(not_stream_safe_utf16, error) == false && error == una::error::code::not_stream_safe);
+    TESTX(una::norm::is_nfd_utf16(not_stream_safe_utf16, error) == false && error == una::error::code::not_stream_safe);
+    TESTX(una::norm::is_nfkc_utf16(not_stream_safe_utf16, error) == false && error == una::error::code::not_stream_safe);
+    TESTX(una::norm::is_nfkd_utf16(not_stream_safe_utf16, error) == false && error == una::error::code::not_stream_safe);
+
+    std::u32string stream_safe_utf32 = std::u32string(30, 0x0305); // 30 non-starters = stream-safe
+    std::string stream_safe_utf8 = una::utf32to8(stream_safe_utf32);
+    std::u16string stream_safe_utf16 = una::utf32to16u(stream_safe_utf32);
+
+    TESTX(una::norm::is_nfc_utf8(stream_safe_utf8, error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfd_utf8(stream_safe_utf8, error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfkc_utf8(stream_safe_utf8, error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfkd_utf8(stream_safe_utf8, error) == true && error == una::error::code::success);
+
+    TESTX(una::norm::is_nfc_utf16(stream_safe_utf16, error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfd_utf16(stream_safe_utf16, error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfkc_utf16(stream_safe_utf16, error) == true && error == una::error::code::success);
+    TESTX(una::norm::is_nfkd_utf16(stream_safe_utf16, error) == true && error == una::error::code::success);
+
+    return true;
+}
+
 test_constexpr bool test_norm_stream_safe()
 {
     // Note: 0x034F is U+034F COMBINING GRAPHEME JOINER (CGJ) that must be inserted within long sequences (30) of non-starters

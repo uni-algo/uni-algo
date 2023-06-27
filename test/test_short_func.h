@@ -286,6 +286,15 @@ test_constexpr bool test_short_func_norm()
     TESTX(una::norm::is_nfkd_utf8(str));
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
+    una::error error;
+
+    TESTX(una::norm::is_nfc_utf8(str, error));
+    TESTX(una::norm::is_nfd_utf8(str, error));
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+    TESTX(una::norm::is_nfkc_utf8(str, error));
+    TESTX(una::norm::is_nfkd_utf8(str, error));
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
 // --------------
 // std::u16string
 // --------------
@@ -305,6 +314,13 @@ test_constexpr bool test_short_func_norm()
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
     TESTX(una::norm::is_nfkc_utf16(u16str));
     TESTX(una::norm::is_nfkd_utf16(u16str));
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
+    TESTX(una::norm::is_nfc_utf16(u16str, error));
+    TESTX(una::norm::is_nfd_utf16(u16str, error));
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+    TESTX(una::norm::is_nfkc_utf16(u16str, error));
+    TESTX(una::norm::is_nfkd_utf16(u16str, error));
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
@@ -329,6 +345,13 @@ test_constexpr bool test_short_func_norm()
     TESTX(una::norm::is_nfkd_utf16(wstr));
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
+    TESTX(una::norm::is_nfc_utf16(wstr, error));
+    TESTX(una::norm::is_nfd_utf16(wstr, error));
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+    TESTX(una::norm::is_nfkc_utf16(wstr, error));
+    TESTX(una::norm::is_nfkd_utf16(wstr, error));
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
 #ifdef __cpp_lib_char8_t
@@ -351,6 +374,13 @@ test_constexpr bool test_short_func_norm()
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
     TESTX(una::norm::is_nfkc_utf8(u8str));
     TESTX(una::norm::is_nfkd_utf8(u8str));
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
+    TESTX(una::norm::is_nfc_utf8(u8str, error));
+    TESTX(una::norm::is_nfd_utf8(u8str, error));
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+    TESTX(una::norm::is_nfkc_utf8(u8str, error));
+    TESTX(una::norm::is_nfkd_utf8(u8str, error));
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
 #endif // __cpp_lib_char8_t
