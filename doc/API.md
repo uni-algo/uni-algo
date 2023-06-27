@@ -133,16 +133,19 @@ where enum classes can be used for example in switch case.
 <a id="anchor-norm"></a>
 **`uni_algo/norm.h`** - normalization functions (requeries src/data.cpp)
 ```
-una::norm::to_nfc_utf8 - normalize a string to NFC normalization form
+una::norm::to_nfc_utf8 - normalize a string to NFC
 una::norm::to_nfd_utf8
 una::norm::to_nfkc_utf8
 una::norm::to_nfkd_utf8
-una::norm::is_nfc_utf8 - check if a string in NFC normalization form
+una::norm::is_nfc_utf8 - detect if a string is NFC normalized
 una::norm::is_nfd_utf8
 una::norm::is_nfkc_utf8
 una::norm::is_nfkd_utf8
 una::norm::to_unaccent_utf8 - remove all accents and normalize a string to NFC
 ```
+Normalization detection functions support `una::error`<br>
+that can be used to get extended error information.
+
 ---
 
 <a id="anchor-ranges"></a>
