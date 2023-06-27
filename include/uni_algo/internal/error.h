@@ -17,7 +17,13 @@ namespace una {
 class error
 {
 public:
-    enum class code : unsigned short {success = 0, ill_formed_utf};
+    enum class code : unsigned short
+    {
+        success = 0,
+        ill_formed_utf = 1,
+        not_normalized = 2,
+        not_stream_safe = 3,
+    };
 private:
     std::size_t error_pos = detail::impl_npos;
     error::code error_code = error::code::success;
@@ -41,6 +47,8 @@ public:
         {
             case code::success: return "success";
             case code::ill_formed_utf: return "ill-formed UTF";
+            case code::not_normalized: return "not normalized";
+            case code::not_stream_safe: return "not stream-safe";
             default: return "invalid error code";
         }
     }
