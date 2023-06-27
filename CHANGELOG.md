@@ -3,6 +3,7 @@ Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
 ## v1.0.0 (TBD)
+- Added support for `una::error` to normalization detection functions
 - Reduced the size of normalization Unicode data by 80 KB
 
 ## [v0.8.2](https://github.com/uni-algo/uni-algo/tree/v0.8.2) (2023-06-21)
