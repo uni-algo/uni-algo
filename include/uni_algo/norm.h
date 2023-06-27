@@ -15,6 +15,7 @@
 
 #include "config.h"
 #include "internal/safe_layer.h"
+#include "internal/error.h"
 
 #include "impl/impl_norm.h"
 
@@ -164,6 +165,38 @@ uaiw_constexpr bool t_detect(const Src& src)
 #else // Safe layer
     return FnDetect(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, true) == detail::impl_norm_is_yes;
 #endif
+}
+
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
+template<typename Src, int(*FnDetect)(typename Src::const_iterator, typename Src::const_iterator, bool)>
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+template<typename Src, int(*FnDetect)(typename Src::const_pointer, typename Src::const_pointer, bool)>
+#else // Safe layer
+template<typename Src, int(*FnDetect)(safe::in<typename Src::const_pointer>, safe::end<typename Src::const_pointer>, bool)>
+#endif
+uaiw_constexpr bool t_detect(const Src& src, una::error& error)
+{
+#if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
+    int ret = return FnDetect(src.cbegin(), src.cend(), true);
+#elif defined(UNI_ALGO_FORCE_C_POINTERS)
+    int ret = FnDetect(src.data(), src.data() + src.size(), true);
+#else // Safe layer
+    int ret = FnDetect(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, true);
+#endif
+
+    if (ret == detail::impl_norm_is_yes)
+    {
+        error.reset();
+        return true;
+    }
+    else if (ret == detail::impl_norm_is_ill_formed)
+        error = una::error{una::error::code::ill_formed_utf};
+    else if (ret == detail::impl_norm_is_not_stream_safe)
+        error = una::error{una::error::code::not_stream_safe};
+    else
+        error = una::error{una::error::code::not_normalized};
+
+    return false;
 }
 
 } // namespace detail
@@ -346,6 +379,74 @@ uaiw_constexpr bool is_nfkd_utf16(std::basic_string_view<UTF16> source)
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
+template<typename UTF8>
+uaiw_constexpr bool is_nfc_utf8(std::basic_string_view<UTF8> source, una::error& error)
+{
+    static_assert(std::is_integral_v<UTF8>);
+
+    return detail::t_detect<std::basic_string_view<UTF8>, detail::impl_norm_is_nfc_utf8>(source, error);
+}
+
+template<typename UTF8>
+uaiw_constexpr bool is_nfd_utf8(std::basic_string_view<UTF8> source, una::error& error)
+{
+    static_assert(std::is_integral_v<UTF8>);
+
+    return detail::t_detect<std::basic_string_view<UTF8>, detail::impl_norm_is_nfd_utf8>(source, error);
+}
+
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+template<typename UTF8>
+uaiw_constexpr bool is_nfkc_utf8(std::basic_string_view<UTF8> source, una::error& error)
+{
+    static_assert(std::is_integral_v<UTF8>);
+
+    return detail::t_detect<std::basic_string_view<UTF8>, detail::impl_norm_is_nfkc_utf8>(source, error);
+}
+
+template<typename UTF8>
+uaiw_constexpr bool is_nfkd_utf8(std::basic_string_view<UTF8> source, una::error& error)
+{
+    static_assert(std::is_integral_v<UTF8>);
+
+    return detail::t_detect<std::basic_string_view<UTF8>, detail::impl_norm_is_nfkd_utf8>(source, error);
+}
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
+template<typename UTF16>
+uaiw_constexpr bool is_nfc_utf16(std::basic_string_view<UTF16> source, una::error& error)
+{
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+
+    return detail::t_detect<std::basic_string_view<UTF16>, detail::impl_norm_is_nfc_utf16>(source, error);
+}
+
+template<typename UTF16>
+uaiw_constexpr bool is_nfd_utf16(std::basic_string_view<UTF16> source, una::error& error)
+{
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+
+    return detail::t_detect<std::basic_string_view<UTF16>, detail::impl_norm_is_nfd_utf16>(source, error);
+}
+
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+template<typename UTF16>
+uaiw_constexpr bool is_nfkc_utf16(std::basic_string_view<UTF16> source, una::error& error)
+{
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+
+    return detail::t_detect<std::basic_string_view<UTF16>, detail::impl_norm_is_nfkc_utf16>(source, error);
+}
+
+template<typename UTF16>
+uaiw_constexpr bool is_nfkd_utf16(std::basic_string_view<UTF16> source, una::error& error)
+{
+    static_assert(std::is_integral_v<UTF16> && sizeof(UTF16) >= sizeof(char16_t));
+
+    return detail::t_detect<std::basic_string_view<UTF16>, detail::impl_norm_is_nfkd_utf16>(source, error);
+}
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
 template<typename Iter, typename Sent, typename Dest>
 uaiw_constexpr void to_nfc_utf8(Iter first, Sent last, Dest result)
 {
@@ -468,6 +569,44 @@ inline uaiw_constexpr bool is_nfkd_utf16(std::u16string_view source)
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
+inline uaiw_constexpr bool is_nfc_utf8(std::string_view source, una::error& error)
+{
+    return is_nfc_utf8<char>(source, error);
+}
+inline uaiw_constexpr bool is_nfd_utf8(std::string_view source, una::error& error)
+{
+    return is_nfd_utf8<char>(source, error);
+}
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+inline uaiw_constexpr bool is_nfkc_utf8(std::string_view source, una::error& error)
+{
+    return is_nfkc_utf8<char>(source, error);
+}
+inline uaiw_constexpr bool is_nfkd_utf8(std::string_view source, una::error& error)
+{
+    return is_nfkd_utf8<char>(source, error);
+}
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
+inline uaiw_constexpr bool is_nfc_utf16(std::u16string_view source, una::error& error)
+{
+    return is_nfc_utf16<char16_t>(source, error);
+}
+inline uaiw_constexpr bool is_nfd_utf16(std::u16string_view source, una::error& error)
+{
+    return is_nfd_utf16<char16_t>(source, error);
+}
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+inline uaiw_constexpr bool is_nfkc_utf16(std::u16string_view source, una::error& error)
+{
+    return is_nfkc_utf16<char16_t>(source, error);
+}
+inline uaiw_constexpr bool is_nfkd_utf16(std::u16string_view source, una::error& error)
+{
+    return is_nfkd_utf16<char16_t>(source, error);
+}
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
 #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
 inline uaiw_constexpr std::wstring to_nfc_utf16(std::wstring_view source)
 {
@@ -512,6 +651,26 @@ inline uaiw_constexpr bool is_nfkd_utf16(std::wstring_view source)
     return is_nfkd_utf16<wchar_t>(source);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
+inline uaiw_constexpr bool is_nfc_utf16(std::wstring_view source, una::error& error)
+{
+    return is_nfc_utf16<wchar_t>(source, error);
+}
+inline uaiw_constexpr bool is_nfd_utf16(std::wstring_view source, una::error& error)
+{
+    return is_nfd_utf16<wchar_t>(source, error);
+}
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+inline uaiw_constexpr bool is_nfkc_utf16(std::wstring_view source, una::error& error)
+{
+    return is_nfkc_utf16<wchar_t>(source, error);
+}
+inline uaiw_constexpr bool is_nfkd_utf16(std::wstring_view source, una::error& error)
+{
+    return is_nfkd_utf16<wchar_t>(source, error);
+}
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
 #endif // WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF
 
 #ifdef __cpp_lib_char8_t
@@ -557,6 +716,25 @@ inline uaiw_constexpr bool is_nfkc_utf8(std::u8string_view source)
 inline uaiw_constexpr bool is_nfkd_utf8(std::u8string_view source)
 {
     return is_nfkd_utf8<char8_t>(source);
+}
+#endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
+inline uaiw_constexpr bool is_nfc_utf8(std::u8string_view source, una::error& error)
+{
+    return is_nfc_utf8<char8_t>(source, error);
+}
+inline uaiw_constexpr bool is_nfd_utf8(std::u8string_view source, una::error& error)
+{
+    return is_nfd_utf8<char8_t>(source, error);
+}
+#ifndef UNI_ALGO_DISABLE_NFKC_NFKD
+inline uaiw_constexpr bool is_nfkc_utf8(std::u8string_view source, una::error& error)
+{
+    return is_nfkc_utf8<char8_t>(source, error);
+}
+inline uaiw_constexpr bool is_nfkd_utf8(std::u8string_view source, una::error& error)
+{
+    return is_nfkd_utf8<char8_t>(source, error);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
