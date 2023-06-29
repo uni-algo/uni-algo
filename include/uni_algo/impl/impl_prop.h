@@ -74,7 +74,7 @@ uaix_const type_codept prop_Noncharacter_Code_Point = 1 << 7;
 
 uaix_const type_codept impl_prop_replacement_char = 0xFFFD;   // REPLACEMENT CHARACTER
 uaix_const type_codept impl_prop_max_value        = 0x10FFFF; // The last possible code point
-uaix_const size_t      impl_prop_total_number     = 0x110000; // Total number of code points
+uaix_const type_codept impl_prop_total_number     = 0x110000; // Total number of code points
 
 uaix_always_inline
 uaix_static type_codept impl_prop_get_prop(type_codept c)

@@ -21,7 +21,7 @@ inline constexpr char32_t replacement_char = detail::impl_prop_replacement_char;
 // The last possible code point U+10FFFF
 inline constexpr char32_t max_value = detail::impl_prop_max_value;
 // Total number of code points 0x110000
-inline constexpr std::size_t total_number = detail::impl_prop_total_number;
+inline constexpr char32_t total_number = detail::impl_prop_total_number;
 
 enum class general_category : unsigned char {Cn = 0,
                                              Lu,Ll,Lt,Lm,Lo,
