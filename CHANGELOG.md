@@ -5,6 +5,7 @@ See commit history between tags for details.
 ## v1.0.0 (TBD)
 - Added support for `una::error` to normalization detection functions
 - Reduced the size of normalization Unicode data by 80 KB
+- Removed config define `UNI_ALGO_DISABLE_FULL_CASE` (the define is still available for testing purposes but not supported anymore)
 
 ## [v0.8.2](https://github.com/uni-algo/uni-algo/tree/v0.8.2) (2023-06-21)
 - Fixed normalization detection functions ([#28](https://github.com/uni-algo/uni-algo/issues/28))
