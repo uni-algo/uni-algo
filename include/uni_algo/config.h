@@ -59,17 +59,6 @@
 // it might be better to disable it and do the call manually only when needed.
 // Note that ranges (una::ranges::to_utf8/to_utf16 and such) never do shring_to_fit() call.
 
-//#define UNI_ALGO_DISABLE_FULL_CASE
-// Note that this define can be deprecated in the future.
-// Disable full case mapping and use simple case mapping instead.
-// The define is only usefull if you need compatibility with legacy implementations
-// that don't expect that an UTF-16 string can grow in size.
-// Note that UTF-8 string still can grow in size even with simple case mapping.
-// Can be used to achieve the maximum performance when you are 100% sure that you
-// will be using the library with languages that don't need full case mapping.
-// In other words the define must be avoided at all cost.
-// The define affects only Case module.
-
 //#define UNI_ALGO_STATIC_DATA
 // Note that with CMake use UNI_ALGO_HEADER_ONLY=ON option instead.
 // The define can be used for header-only version of the library.
@@ -172,6 +161,9 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 
 //#define UNI_ALGO_EXPERIMENTAL // Enable experimental stuff for tests
 //#define UNI_ALGO_LOG_CPP_ITER // Enable logging for UTF-8/16 iterators
+
+// Disable full case mapping and use simple case mapping instead in Case module
+//#define UNI_ALGO_DISABLE_FULL_CASE
 
 // Can be enabled for testing and debugging aid and must be disabled in stable releases.
 // The define must only be used by the low-level and it must never rely on asserts.
