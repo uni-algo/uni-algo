@@ -89,36 +89,6 @@ struct norm_multi
     size_t count_ns;
 };
 
-/* TODO: from yesterdays me to tomorrows me.
- * Refactoring merge:
- * stages_decomp_nfd + stages_decomp_nfkd -> stages_decomp[_offset?] (use bool in if, inlined anyway)
- * stages_decomp_nfd_number + stages_decomp_nfkd_number -> stages_decomp_number (use the same)
- * stages_decomp_nfkd_cp + stages_decomp_nfkd_cp -> stages_decomp_cp (use the same)
- * stages_qc_yes_ns_nfc + stages_qc_yes_ns_nfd + stages_qc_yes_ns_nfkc + stages_qc_yes_ns_nfkd -> stages_qc_yes_ns
- * stages_qc_yes_nfc + stages_qc_yes_nfd + stages_qc_yes_nfkc + stages_qc_yes_nfkd -> stages_qc_yes
- * stages_qc_yes_is_nfc + stages_qc_yes_is_nfd + stages_qc_yes_is_nfkc + stages_qc_yes_is_nfkd -> stages_qc_yes_is
- * norm_decomp_nfc + norm_decomp_nfkc -> norm_decomp_c?
- * norm_decomp_nfd + norm_decomp_nfkd -> norm_decomp_d?
- * Add const variables norm_bound_nf[k][cd] for lower bounds for stages_qc_yes_is.
- * Then merge algorithm functions, always inline them and wrap with the functions with old names.
- * Everything is prepared for this. And it must be done in 1 step just use this checklist.
- * If done properly then must be the same code, the same performance, check to be sure and then recheck everything.
- * This should be the last step of the refactoring probably.
- * I'm done with normalization for now it just kills me inside.
- * ---
- * Gee thanks me, like I even remember what all of this means.
- * I just pretend this todo doesn't exist for now. The refatoring will make some things uglier.
- * ---
- * Some things changed already so the plan won't work probably.
- * But I still leave the TODO some good ideas still here.
- * ---
- * Stop talking to yourself already and rewrite this crap.
- * ---
- * NYOOO
- * ---
- * Only normalization detection functions can be refactored like this at this point.
- */
-
 uaix_always_inline
 uaix_static size_t stages_decomp_nfd(type_codept c)
 {
@@ -1675,10 +1645,6 @@ uaix_static bool inline_norm_iter_nfc(struct impl_norm_iter_state* const s, type
 {
     // Note that we cannot implement a fast loop inside the normalization iterators
     // but we can use the same idea to make them a bit faster.
-    // TODO: we can emulate the fast loop from impl_utf8_nfc much better.
-    // ---
-    // Very usefull todo. Much better how? I don't remember what I meant by this.
-    // I hate myself so much sometimes.
 
     c = norm_safe_cp(c);
     if (stages_qc_yes_ns(c, &s->m.count_ns, norm_bit_nfc))

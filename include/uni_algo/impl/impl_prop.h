@@ -66,12 +66,6 @@ uaix_const type_codept prop_Alphabetic              = 1 << 5;
 uaix_const type_codept prop_White_Space             = 1 << 6;
 uaix_const type_codept prop_Noncharacter_Code_Point = 1 << 7;
 
-//uaix_always_inline
-//uaix_static type_codept stages_prop(type_codept c)
-//{
-//    return stages(c, stage1_prop, stage2_prop);
-//}
-
 uaix_const type_codept impl_prop_replacement_char = 0xFFFD;   // REPLACEMENT CHARACTER
 uaix_const type_codept impl_prop_max_value        = 0x10FFFF; // The last possible code point
 uaix_const type_codept impl_prop_total_number     = 0x110000; // Total number of code points
