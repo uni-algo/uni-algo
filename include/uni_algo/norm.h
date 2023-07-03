@@ -447,10 +447,11 @@ uaiw_constexpr bool is_nfkd_utf16(std::basic_string_view<UTF16> source, una::err
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
 
+#ifdef UNI_ALGO_EXPERIMENTAL
+
 template<typename Iter, typename Sent, typename Dest>
 uaiw_constexpr void to_nfc_utf8(Iter first, Sent last, Dest result)
 {
-    // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
     detail::impl_norm_to_nfc_utf8(first, last, it_out);
 }
@@ -458,7 +459,6 @@ uaiw_constexpr void to_nfc_utf8(Iter first, Sent last, Dest result)
 template<typename Iter, typename Sent, typename Dest>
 uaiw_constexpr void to_nfd_utf8(Iter first, Sent last, Dest result)
 {
-    // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
     detail::impl_norm_to_nfd_utf8(first, last, it_out);
 }
@@ -467,7 +467,6 @@ uaiw_constexpr void to_nfd_utf8(Iter first, Sent last, Dest result)
 template<typename Iter, typename Sent, typename Dest>
 uaiw_constexpr void to_nfkc_utf8(Iter first, Sent last, Dest result)
 {
-    // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
     detail::impl_norm_to_nfkc_utf8(first, last, it_out);
 }
@@ -475,11 +474,12 @@ uaiw_constexpr void to_nfkc_utf8(Iter first, Sent last, Dest result)
 template<typename Iter, typename Sent, typename Dest>
 uaiw_constexpr void to_nfkd_utf8(Iter first, Sent last, Dest result)
 {
-    // TODO: static_assert for Dest is output iterator
     detail::proxy_it_out it_out(result);
     detail::impl_norm_to_nfkd_utf8(first, last, it_out);
 }
 #endif // UNI_ALGO_DISABLE_NFKC_NFKD
+
+#endif // UNI_ALGO_EXPERIMENTAL
 
 inline uaiw_constexpr std::string to_nfc_utf8(std::string_view source)
 {
