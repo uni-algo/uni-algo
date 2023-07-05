@@ -168,10 +168,17 @@ std::string amalgam_license_footer()
     return license;
 }
 
-void amalgam()
+void amalgam(bool with_ext)
 {
-    std::ofstream output{"uni_algo.h"};
-    NOTFOUND(output.is_open(), "uni_algo.h");
+    std::string output_file;
+
+    if (with_ext)
+        output_file = "uni_algo_ext.h";
+    else
+        output_file = "uni_algo.h";
+
+    std::ofstream output{output_file};
+    NOTFOUND(output.is_open(), output_file);
 
     output << amalgam_license_header() << '\n';
 
@@ -254,14 +261,15 @@ void amalgam()
     // WRAPPER END
 
     // EXTENSIONS BEGIN
+    if (with_ext)
+    {
+        // ASCII
+        output << amalgam_part("uni_algo/ext/ascii.h");
 
-    // ASCII
-    output << amalgam_part("uni_algo/ext/ascii.h");
-
-    // Transliterators
-    output << amalgam_part("uni_algo/ext/translit/macedonian_to_latin_docs.h");
-    output << amalgam_part("uni_algo/ext/translit/japanese_kana_to_romaji_hepburn.h");
-
+        // Transliterators
+        output << amalgam_part("uni_algo/ext/translit/macedonian_to_latin_docs.h");
+        output << amalgam_part("uni_algo/ext/translit/japanese_kana_to_romaji_hepburn.h");
+    }
     // EXTENSIONS END
 
     // Include guard
