@@ -3,8 +3,11 @@ Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
 ## v1.0.0 (TBD)
+- Stabilized API ([doc/API_API_STABILITY.md](doc/API_API_STABILITY.md))
+- Added more documentation (see `doc` directory)
 - Added support for `una::error` to normalization detection functions
 - Reduced the size of normalization Unicode data by 80 KB
+- Removed normalization functions that work with iterators (they are experimental for now)
 - Removed config define `UNI_ALGO_DISABLE_FULL_CASE` (the define is still available for testing purposes but not supported anymore)
 
 ## [v0.8.2](https://github.com/uni-algo/uni-algo/tree/v0.8.2) (2023-06-21)
