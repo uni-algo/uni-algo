@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Version-0.8.2-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v0.8.2)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v1.0.0)
 [![Unicode](https://img.shields.io/badge/Unicode-15.0.0-blue)](https://www.unicode.org/versions/Unicode15.0.0/)
 [![Language](https://img.shields.io/badge/C%2B%2B-17/20/23-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
 [![License](https://img.shields.io/badge/License-Unlicense/MIT-darkorchid.svg)](https://opensource.org/licenses/MIT)
@@ -192,15 +192,15 @@ Add to your CMakeLists.txt:
 include(FetchContent)
 
 FetchContent_Declare(uni-algo
-  URL https://github.com/uni-algo/uni-algo/archive/v0.8.2.tar.gz
-  FIND_PACKAGE_ARGS 0.8 CONFIG) # Download only if find_package(uni-algo 0.8 CONFIG)
+  URL https://github.com/uni-algo/uni-algo/archive/v1.0.0.tar.gz
+  FIND_PACKAGE_ARGS 1.0 CONFIG) # Download only if find_package(uni-algo 1.0 CONFIG)
                                 # is unsuccessful (requires CMake 3.24 or higher)
 
 # Or if you have Git installed (but it's always better to use the URL approach above)
 # FetchContent_Declare(uni-algo
 #   GIT_REPOSITORY https://github.com/uni-algo/uni-algo.git
 #   GIT_SHALLOW ON  # Download the branch without its history
-#   GIT_TAG v0.8.2) # The version you want to download
+#   GIT_TAG v1.0.0) # The version you want to download
 
 # Be aware that FetchContent_MakeAvailable requires CMake 3.14 or higher
 FetchContent_MakeAvailable(uni-algo)
@@ -382,31 +382,20 @@ vec8.erase(it, vec8.end());
 ```cpp
 #include "uni_algo/norm.h"
 
+// Normalization Form C (NFC)
+
 // "W" with circumflex == "Ŵ"
 assert(una::norm::to_nfc_utf8("W\u0302") == "Ŵ");
 
 assert(una::norm::is_nfc_utf8("Ŵ") == true);
 assert(una::norm::is_nfc_utf8("W\u0302") == false);
 
-// Note that the normalization algorithm in the library supports streams,
-// so you can use the same function to normalize a file with 0 allocations.
+// Normalization Form D (NFD)
 
-std::ifstream input{"random_file.txt", std::ios::binary};
-std::ofstream output{"random_file_normalized.txt", std::ios::binary};
+assert(una::norm::to_nfd_utf8("Ŵ") == "W\u0302");
 
-std::istreambuf_iterator<char> it{input.rdbuf()};
-std::istreambuf_iterator<char> end;
-
-std::ostreambuf_iterator<char> out{output.rdbuf()};
-
-una::norm::to_nfc_utf8(it, end, out);
-
-// The function always produces well-formed normalized UTF-8 text in Stream-Safe Text Format
-// even if the input is a binary file; of course, in such degenerate case the output will be
-// some random UTF-8 code points with a bunch of U+FFFD (replacement characters).
-// It just means it is safe to use the function with everything.
-
-// Note that the same result can be achieved with normalization ranges.
+assert(una::norm::is_nfd_utf8("Ŵ") == false);
+assert(una::norm::is_nfd_utf8("W\u0302") == true);
 ```
 ## Code Point Properties
 ```cpp
@@ -700,10 +689,10 @@ A very complex algorithm to sort strings in many different ways with many differ
 Bidirectional Algorithm (UBA) (UAX #9)<br>
 Specifications for the positioning of characters from right to left, such as Arabic or Hebrew.
 
-Line Breaking Algorithm (UAX #14)
+Line Breaking Algorithm (UAX #14)<br>
+Line breaking, also known as word wrapping, is the process of breaking a section of text into lines.
 
-If you need these algorithms, you should probably just use
-the ICU (International Components for Unicode) library.
+These algorithms are planned for future versions of the library. UCA is long-term plan.
 
 ## Performance
 
