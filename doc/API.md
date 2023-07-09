@@ -28,8 +28,10 @@ Things that are not listed in this file:
 **`src/data.cpp`**
 
 The only file that you need to compile.<br>
-Contains Unicode data tables.<br>
-If you are using CMake ignore this file.
+Contains Unicode data tables.
+
+If you are using a package manager<br>
+or header-only version then ignore this file.
 
 ---
 
@@ -223,7 +225,7 @@ una::codepoint::has_script - check if a code point has script extensions propert
 The functions use `una::locale::script` class for script property and `char32_t` for code point.<br>
 Example: `assert(una::codepoint::get_script(U'W') == una::locale::script{"Latn"})`<br>
 The algorithm uses [UAX #24: Unicode Script Property](https://www.unicode.org/reports/tr24)<br>
-List of all scripts: https://en.wikipedia.org/wiki/Script_(Unicode)
+List of all scripts: https://en.wikipedia.org/wiki/Script_(Unicode)#List_of_scripts_in_Unicode
 
 ---
 
@@ -287,7 +289,7 @@ una::codepoint::to_decompose_compat_u32 - full compatibility decomposition
 
 una::codepoint::to_compose              - composes two code points
 
-class una::codepoint::prop_norm         - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Combining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a> functions
+class una::codepoint::prop_norm         - provides <a href="https://www.unicode.org/reports/tr44/#Canonical_Combining_Class_Values">Canonical_Combining_Class</a> and <a href="https://www.unicode.org/reports/tr44/#QC_Values_Table">Quick_Check</a> functions
 </code></pre>
 
 ---
