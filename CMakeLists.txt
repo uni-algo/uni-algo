@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12...3.26)
+cmake_minimum_required(VERSION 3.12...3.27)
 
 project("uni-algo" VERSION 1.0.0 LANGUAGES CXX)
 
