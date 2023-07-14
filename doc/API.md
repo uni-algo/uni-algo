@@ -25,7 +25,7 @@ Things that are not listed in this file:
 ---
 
 <a id="anchor-data"></a>
-**`src/data.cpp`**
+#### `src/data.cpp`
 
 The only file that you need to compile.<br>
 Contains Unicode data tables.
@@ -36,14 +36,14 @@ or header-only version then ignore this file.
 ---
 
 <a id="anchor-all"></a>
-**`uni_algo/all.h`**
+#### `uni_algo/all.h`
 
 Includes all enabled modules.
 
 ---
 
 <a id="anchor-version"></a>
-**`uni_algo/version.h`** - version (header-only)
+#### `uni_algo/version.h` - version (header-only)
 
 Provides information about the library version and Unicode version.<br>
 See comments inside the file for more info.
@@ -51,14 +51,15 @@ See comments inside the file for more info.
 ---
 
 <a id="anchor-config"></a>
-**`uni_algo/config.h`** - configuration
+#### `uni_algo/config.h` - configuration
 
 See comments inside the file for more info.
 
 ---
 
 <a id="anchor-conv"></a>
-**`uni_algo/conv.h`** - conversion functions (header-only)
+#### `uni_algo/conv.h` - conversion functions (header-only)
+
 ```
 una::utf8to16 - convert a string from UTF-8 to UTF-16
 una::utf16to8
@@ -71,6 +72,7 @@ una::is_valid_utf8 - check if UTF-8 string is well-formed
 una::is_valid_utf16
 una::is_valid_utf32
 ```
+
 The same functions but when end with `u`<br>
 then output `std::u8string` / `std::u16string` / `std::u32string`<br>
 instead of `std::string` / `std::wstring`
@@ -84,7 +86,8 @@ can be used to find out the position where an error occured.
 ---
 
 <a id="anchor-case"></a>
-**`uni_algo/case.h`** - case functions (requeries src/data.cpp)
+#### `uni_algo/case.h` - case functions (requeries src/data.cpp)
+
 ```
 una::cases::to_lowercase_utf8 - convert a string to lower case
 una::cases::to_uppercase_utf8 - upper case
@@ -99,6 +102,7 @@ una::casesens::compare_utf8 - case sensitive comparison
 una::casesens::collate_utf8 - collation
 una::casesens::find_utf8    - search
 ```
+
 Lower, upper, title case support `una::locale`<br>
 Case folding is always locale-independent and<br>
 others are based on Default Case Matching and always locale-independent too.<br>
@@ -107,7 +111,8 @@ Find functions return result in `una::found` class.
 ---
 
 <a id="anchor-locale"></a>
-**`uni_algo/locale.h`** - locale class (requeries src/data.cpp)
+#### `uni_algo/locale.h` - locale class (requeries src/data.cpp)
+
 ```
 una::locale::system - get system locale (static function)
 
@@ -125,6 +130,7 @@ una::locale::language - language subtag
 una::locale::script   - script subtag
 una::locale::region   - region subtag
 ```
+
 You can treat subtag classes the same as enum classes with a bit different syntax:<br>
 `una::locale::language{"en"}` instead of `una::locale::language::en`<br>
 They are constexpr so it's possible to use them in all places<br>
@@ -133,7 +139,8 @@ where enum classes can be used for example in switch case.
 ---
 
 <a id="anchor-norm"></a>
-**`uni_algo/norm.h`** - normalization functions (requeries src/data.cpp)
+#### `uni_algo/norm.h` - normalization functions (requeries src/data.cpp)
+
 ```
 una::norm::to_nfc_utf8 - normalize a string to NFC
 una::norm::to_nfd_utf8
@@ -145,13 +152,15 @@ una::norm::is_nfkc_utf8
 una::norm::is_nfkd_utf8
 una::norm::to_unaccent_utf8 - remove all accents and normalize a string to NFC
 ```
+
 Normalization detection functions support `una::error`<br>
 that can be used to get extended error information.
 
 ---
 
 <a id="anchor-ranges"></a>
-**`uni_algo/ranges.h`** - basic ranges (header-only)
+#### `uni_algo/ranges.h` - basic ranges (header-only)
+
 ```
 una::views::reverse   - always use this instead of std::views::reverse
 una::views::filter    - similar to std::views::filter
@@ -159,40 +168,48 @@ una::views::transform - similar to std::views::transform
 una::views::drop      - similar to std::views::drop
 una::views::take      - similar to std::views::take
 ```
+
 ---
 
 <a id="anchor-ranges-conv"></a>
-**`uni_algo/ranges_conv.h`** - conversion ranges (header-only)
+#### `uni_algo/ranges_conv.h` - conversion ranges (header-only)
+
 ```
 una::views::utf8 - requires integral UTF-8 range produces char32_t range
 
 una::ranges::to_utf8<type>() - requires char32_t range produces type range
 una::ranges::to_utf8_reserve<type>(n) - same as previous but with reserve(n) call
 ```
+
 ---
 
 <a id="anchor-ranges-norm"></a>
-**`uni_algo/ranges_norm.h`** - normalization ranges (requeries src/data.cpp)
+#### `uni_algo/ranges_norm.h` - normalization ranges (requeries src/data.cpp)
+
 ```
 una::views::norm::nfc - requires char32_t range produces char32_t NFC normalized range
 una::views::norm::nfd
 una::views::norm::nfkc
 una::views::norm::nfkd
 ```
+
 ---
 
 <a id="anchor-ranges-grapheme"></a>
-**`uni_algo/ranges_grapheme.h`** - grapheme ranges (requeries src/data.cpp)
+#### `uni_algo/ranges_grapheme.h` - grapheme ranges (requeries src/data.cpp)
+
 ```
 una::views::grapheme::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges of graphemes
 ```
+
 The algorithm uses [UAX #29: Unicode Text Segmentation -> Grapheme Cluster Boundary Rules](https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries)<br>
 The grapheme range supports cursor. For details see [doc/CURSOR.md](CURSOR.md)
 
 ---
 
 <a id="anchor-ranges-word"></a>
-**`uni_algo/ranges_word.h`** - word ranges (requeries src/data.cpp)
+#### `uni_algo/ranges_word.h` - word ranges (requeries src/data.cpp)
+
 ```
 una::views::word::utf8 - requires integral UTF-8 range produces UTF-8 std::string_view subranges of words
 una::views::word_only::utf8
@@ -209,6 +226,7 @@ is_punctuation      - includes only punctuation
 is_segspace         - includes only spaces
 is_newline          - includes only new lines
 ```
+
 The algorithm uses [UAX #29: Unicode Text Segmentation -> Word Boundary Rules](https://unicode.org/reports/tr29/#Word_Boundaries)<br>
 `word_only` is a special case of UAX #29 that takes only words and skips all punctuation and such.<br>
 The word range supports cursor. For details see [doc/CURSOR.md](CURSOR.md)
@@ -216,7 +234,7 @@ The word range supports cursor. For details see [doc/CURSOR.md](CURSOR.md)
 ---
 
 <a id="anchor-script"></a>
-**`uni_algo/script.h`** - code point script property (requeries src/data.cpp)
+#### `uni_algo/script.h` - code point script property (requeries src/data.cpp)
 
 ```
 una::codepoint::get_script - get code point script property
@@ -230,7 +248,7 @@ List of all scripts: https://en.wikipedia.org/wiki/Script_(Unicode)#List_of_scri
 ---
 
 <a id="anchor-prop"></a>
-**`uni_algo/prop.h`** - code point properties (requeries src/data.cpp)
+#### `uni_algo/prop.h` - code point properties (requeries src/data.cpp)
 
 The documentation contains links to:<br>
 Unicode character database: https://www.unicode.org/reports/tr44 <br>
@@ -295,7 +313,8 @@ class una::codepoint::prop_norm         - provides <a href="https://www.unicode.
 ---
 
 <a id="anchor-other"></a>
-**`other classes`**
+#### `other classes`
+
 ```
 class una::error    - error status, used by validation functions
 class una::found    - search result, used by find functions
