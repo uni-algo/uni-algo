@@ -106,28 +106,26 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src, una::error& error)
 
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
         dst.resize(length * SizeX);
-        const std::size_t size = FnUTF(src.cbegin(), src.cend(), dst.begin(), &err);
+        dst.resize(FnUTF(src.cbegin(), src.cend(), dst.begin(), &err));
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
         dst.resize(length * SizeX);
-        const std::size_t size = FnUTF(src.data(), src.data() + src.size(), dst.data(), &err);
+        dst.resize(FnUTF(src.data(), src.data() + src.size(), dst.data(), &err));
 #else // Safe layer
 #  if !defined(__cpp_lib_string_resize_and_overwrite)
         dst.resize(length * SizeX);
-        const std::size_t size = FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, &err);
+        dst.resize(FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, &err));
 #  else
-        std::size_t size = 0;
-        dst.resize_and_overwrite(length * SizeX, [&src, &size, &err](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
-            size = FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n}, &err);
-            return size;
+        dst.resize_and_overwrite(length * SizeX, [&src, &err](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+            return FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n}, &err);
         });
 #  endif
 #endif
-        if (err == impl_npos)
-            dst.resize(size);
-        else
+
+        if (err != impl_npos)
         {
-            dst.clear();
             error = una::error{una::error::code::ill_formed_utf, err};
+
+            dst.clear();
         }
 
 #ifndef UNI_ALGO_NO_SHRINK_TO_FIT
