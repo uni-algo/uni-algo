@@ -125,7 +125,10 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src, una::error& error)
         {
             error = una::error{una::error::code::ill_formed_utf, err};
 
+            // Return valid part of a string if the define is defined
+#ifndef UNI_ALGO_STRICT_CONV_RET_VALID_PART
             dst.clear();
+#endif
         }
 
 #ifndef UNI_ALGO_NO_SHRINK_TO_FIT
