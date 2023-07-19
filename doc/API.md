@@ -1,22 +1,22 @@
 ## API Reference
 
 The uni-algo library API consists of the following parts:
-- [**src/data.cpp**](#anchor-data)
-- [**uni_algo/all.h**](#anchor-all)
-- [**uni_algo/version.h**](#anchor-version) - version
-- [**uni_algo/config.h**](#anchor-config) - configuration
-- [**uni_algo/conv.h**](#anchor-conv) - conversion functions
-- [**uni_algo/case.h**](#anchor-case) - case functions
-- [**uni_algo/locale.h**](#anchor-locale) - locale class
-- [**uni_algo/norm.h**](#anchor-norm) - normalization functions
-- [**uni_algo/ranges.h**](#anchor-ranges) - basic ranges
-- [**uni_algo/ranges_conv.h**](#anchor-ranges-conv) - conversion ranges
-- [**uni_algo/ranges_norm.h**](#anchor-ranges-norm) - normalization ranges
-- [**uni_algo/ranges_grapheme.h**](#anchor-ranges-grapheme) - grapheme ranges
-- [**uni_algo/ranges_word.h**](#anchor-ranges-word) - word ranges
-- [**uni_algo/script.h**](#anchor-script) - code point script property
-- [**uni_algo/prop.h**](#anchor-prop) - code point properties
-- [**other classes**](#anchor-other)
+- **[src/data.cpp](#anchor-data)**
+- **[uni_algo/all.h](#anchor-all)**
+- **[uni_algo/version.h](#anchor-version)** - version
+- **[uni_algo/config.h](#anchor-config)** - configuration
+- **[uni_algo/conv.h](#anchor-conv)** - conversion functions
+- **[uni_algo/case.h](#anchor-case)** - case functions
+- **[uni_algo/locale.h](#anchor-locale)** - locale class
+- **[uni_algo/norm.h](#anchor-norm)** - normalization functions
+- **[uni_algo/ranges.h](#anchor-ranges)** - basic ranges
+- **[uni_algo/ranges_conv.h](#anchor-ranges-conv)** - conversion ranges
+- **[uni_algo/ranges_norm.h](#anchor-ranges-norm)** - normalization ranges
+- **[uni_algo/ranges_grapheme.h](#anchor-ranges-grapheme)** - grapheme ranges
+- **[uni_algo/ranges_word.h](#anchor-ranges-word)** - word ranges
+- **[uni_algo/script.h](#anchor-script)** - code point script property
+- **[uni_algo/prop.h](#anchor-prop)** - code point properties
+- **[other classes](#anchor-other)**
 
 Things that are not listed in this file:
 - Functions and ranges that work with UTF end with `utf8` and `utf16` only UTF-8 functions and ranges are listed
