@@ -170,12 +170,7 @@ std::string amalgam_license_footer()
 
 void amalgam(bool with_ext)
 {
-    std::string output_file;
-
-    if (with_ext)
-        output_file = "uni_algo_ext.h";
-    else
-        output_file = "uni_algo.h";
+    std::string output_file = with_ext ? "uni_algo_ext.h" : "uni_algo.h";
 
     std::ofstream output{output_file};
     NOTFOUND(output.is_open(), output_file);
