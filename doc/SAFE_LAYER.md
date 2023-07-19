@@ -1,5 +1,3 @@
-**DRAFT**
-
 ## Design
 
 The safe layer is similar to [Debug Mode in GCC](https://gcc.gnu.org/onlinedocs/libstdc++/manual/debug_mode.html)
