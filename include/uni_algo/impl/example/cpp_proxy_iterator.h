@@ -142,7 +142,7 @@ public:
     explicit proxy_it_in_sentinel(Iter iter) : it{iter} {}
     decltype(*it) operator*() const { return *it; }
     bool operator!=(const Sent& sentinel) { return *it != sentinel; } // sentinel
-    std::size_t operator-(const proxy_it_in_sentinel&) { return 0; } // no-op
+    std::size_t operator-(const proxy_it_in_sentinel&) { return 1; } // no-op but make it return smth to avoid incorrect usage
     proxy_it_in_sentinel& operator++()
     {
         ++it;
