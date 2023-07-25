@@ -49,8 +49,9 @@ public:
     // And No, I don't want to change low-level for this I want low-level always to return
     // property data in type_codept because everything related to code point uses it there.
     // --- Added later ---
-    // Actually it might be better to redesign the low-level for this, there are some parts
-    // of the low-level where it will make structs smaller too for example breaks.
+    // Actually it might be better to redesign the low-level for this and use different types for properties there,
+    // there are some parts of the low-level where it will make structs smaller too for example text segmentation.
+    // Or it might be better to fix problems with structs with casts and keep property type always 32-bit for consistency.
 
     // https://www.unicode.org/reports/tr44/#General_Category_Values
 
