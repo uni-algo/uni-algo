@@ -22,11 +22,13 @@
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
-// The buffer must not be less than 4+30+18=52
-// 4 is 4 starters, check norm_decomp_return why 4
+// The buffer must not be less than 4(3)+30+18=52(51)
+// 4 is 4 starters, check norm_decomp_return why 4(3)
 // 30 is the max number of non-starters
 // 18 is max decomposition (we use the end of the buffer to store the next decomposed code point)
-// Use 70 just because it means we need 70*4+70=260 bytes on stack for any normalization
+// Use 70 just because it means we need 70*4+70=350 bytes on stack for any normalization
+// TODO: 70 is too much, now we have better safe facilities to guarantee that the size of the buffer will be enough in future Unicode versions
+// and smaller buffer gives a bit better performance for some strange reason (CPU cache maybe? Needs more testing).
 #ifdef __cplusplus
 uaix_const size_t norm_buffer_size = 70; // tag_unicode_unstable_value
 #else // tag_synchronize
