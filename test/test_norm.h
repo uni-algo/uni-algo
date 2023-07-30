@@ -845,6 +845,27 @@ test_constexpr bool test_norm_stream_safe()
     TESTX(una::utf32to16u(NFKC_CGJ) == to_nfkc_utf16(una::utf32to16u(NFKC)));
     TESTX(una::utf32to16u(NFKD_CGJ) == to_nfkd_utf16(una::utf32to16u(NFKD)));
 
+    // Extra test to test that the size of the internal normalization buffer is enough.
+    // The following BUF_NFC when decomposes to BUF_NFKD uses the max size of the buffer 51.
+    // U+AC01 is LVT hangul that decomposes to 3 starters, U+0300 is non-starter and U+FDFA decomposes to 18 code points.
+    // The test only performed for NFKD because other forms require smaller buffer anyway.
+    // REMINDER: To make this test fail change buffer size (norm_buffer_size variable) in impl/impl_norm.h to less than 51,
+    // it will fail because norm_decomp_return function there has extra safe measures for this case and even without them
+    // it still fail but in the safe layer so it should be impossible to get UB if the buffer size won't be enough by a mistake.
+    // TODO: This function is not a good place for the test because it has nothing to do with stream-safe.
+
+    std::u32string BUF_NFC = std::u32string(1, 0xAC01) + std::u32string(30, 0x0300) + std::u32string(1, 0xFDFA);
+    std::u32string BUF_NFKD = U"\x1100\x1161\x11A8" + std::u32string(30, 0x0300) +
+            U"\x0635\x0644\x0649\x0020\x0627\x0644\x0644\x0647\x0020\x0639\x0644\x064A\x0647\x0020\x0648\x0633\x0644\x0645";
+
+    TESTX(una::utf32to8(BUF_NFKD) == una::norm::to_nfkd_utf8(una::utf32to8(BUF_NFC)));
+
+    TESTX(una::utf32to16u(BUF_NFKD) == una::norm::to_nfkd_utf16(una::utf32to16u(BUF_NFC)));
+
+    TESTX(una::utf32to8(BUF_NFKD) == to_nfkd_utf8(una::utf32to8(BUF_NFC)));
+
+    TESTX(una::utf32to16u(BUF_NFKD) == to_nfkd_utf16(una::utf32to16u(BUF_NFC)));
+
     return true;
 }
 
