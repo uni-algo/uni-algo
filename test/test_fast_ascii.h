@@ -3,8 +3,8 @@
  * See LICENSE.md */
 
 // Test functions that use fast ASCII optimization
-// with strings that can be divided by 4 with no remainder (strings that start with 0)
-// and just in case with a remainder (strings that start with 1 and end with a remainder)
+// with strings that can be divided by 4 with no remainder (strings below that start with 0)
+// and just in case with a remainder (strings below that start with 1 and end with a remainder)
 // to make sure the optimization doesn't break something.
 
 test_constexpr bool test_fast_ascii_utf8to16()
