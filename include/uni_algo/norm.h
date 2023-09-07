@@ -177,11 +177,11 @@ template<typename Src, int(*FnDetect)(safe::in<typename Src::const_pointer>, saf
 uaiw_constexpr bool t_detect(const Src& src, una::error& error)
 {
 #if defined(UNI_ALGO_FORCE_CPP_ITERATORS)
-    int ret = FnDetect(src.cbegin(), src.cend(), true);
+    const int ret = FnDetect(src.cbegin(), src.cend(), true);
 #elif defined(UNI_ALGO_FORCE_C_POINTERS)
-    int ret = FnDetect(src.data(), src.data() + src.size(), true);
+    const int ret = FnDetect(src.data(), src.data() + src.size(), true);
 #else // Safe layer
-    int ret = FnDetect(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, true);
+    const int ret = FnDetect(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, true);
 #endif
 
     if (ret == detail::impl_norm_is_yes)
