@@ -13,7 +13,7 @@
 // This header will be added to all generated files
 const std::string gen_header =
         "// GENERATED. DO NOT EDIT.\n\n"
-        "// Unicode 15.0.0\n\n";
+        "// Unicode 15.1.0\n\n";
 
 // How to use: just copy paste this file into your Hello World or whatever and download Unicode data files.
 // Check generator() function at the end of the file for a list of the files that are needed for the generator.
@@ -1233,6 +1233,51 @@ static void new_generator_segment_grapheme(const std::string& file1, const std::
                     ASSERTX(map.at(i) == 0);
 
                     if (Extended_Pictographic) map.at(i) = 14;
+                }
+            }
+        }
+    }
+
+    input.close();
+    line.clear();
+
+    // InCB property for GB9c rule
+    input.open("DerivedCoreProperties.txt", std::ios::binary);
+    ASSERTX(input.is_open());
+
+    while (std::getline(input, line))
+    {
+        std::size_t semicolon = line.find(';');
+
+        if (line.size() > 15 && semicolon != std::string::npos)
+        {
+            bool InCB_Linker = false;
+            bool InCB_Consonant = false;
+            bool InCB_Extend = false;
+
+            if (line.find("; InCB; Linker #", semicolon) == semicolon)
+                InCB_Linker = true;
+            if (line.find("; InCB; Consonant #", semicolon) == semicolon)
+                InCB_Consonant = true;
+            if (line.find("; InCB; Extend #", semicolon) == semicolon)
+                InCB_Extend = true;
+
+            if (InCB_Linker || InCB_Consonant || InCB_Extend)
+            {
+                uint32_t c1 = (uint32_t)strtoul(line.c_str(), 0, 16);
+                uint32_t c2 = c1;
+                std::size_t dots = line.find("..");
+                if (dots != std::string::npos)
+                    c2 = (uint32_t)strtoul(line.c_str()+dots+2, 0, 16);
+
+                for (uint32_t i = c1; i <= c2; ++i)
+                {
+                    // These values do not intersect with each other
+                    ASSERTX(map.at(i) >> 6 == 0);
+
+                    if (InCB_Linker)    map.at(i) = (1 << 6) | map.at(i);
+                    if (InCB_Consonant) map.at(i) = (2 << 6) | map.at(i);
+                    if (InCB_Extend)    map.at(i) = (3 << 6) | map.at(i);
                 }
             }
         }
