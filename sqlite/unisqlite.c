@@ -23,11 +23,11 @@
 #include "../include/uni_algo/impl/impl_unicode_version.h"
 
 // Collation names
-#if UNI_ALGO_UNICODE_VERSION != 15000000
+#if UNI_ALGO_UNICODE_VERSION != 15001000
 #error "Fix collation name"
 #endif
-#define UNI_SQLITE_COLLATION "UNI_1500"
-#define UNI_SQLITE_COLLATION_NOCASE "UNI_1500_NOCASE"
+#define UNI_SQLITE_COLLATION "UNI_1501"
+#define UNI_SQLITE_COLLATION_NOCASE "UNI_1501_NOCASE"
 
 // ----------------
 // uni_sqlite3_init

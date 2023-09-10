@@ -116,7 +116,7 @@ endif()
 target_sources(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/main.cpp")
 
 if(DOWNLOAD_UNICODE_TEST_FILES)
-    set(UNICODE_TEST_FILES_VERSION "15.0.0")
+    set(UNICODE_TEST_FILES_VERSION "15.1.0")
 
     # if Unicode test files are not already downloaded
     if(NOT UNICODE_TEST_FILES_VERSION STREQUAL UNICODE_TEST_FILES_CACHE)

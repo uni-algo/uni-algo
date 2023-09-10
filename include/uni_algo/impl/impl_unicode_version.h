@@ -5,4 +5,4 @@
 // For reference see The Unicode Standard: 3.1 Versions of the Unicode Standard -> Version Numbering
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage, modernize-macro-to-enum)
-#define UNI_ALGO_UNICODE_VERSION 15000000
+#define UNI_ALGO_UNICODE_VERSION 15001000
