@@ -1,6 +1,6 @@
 // GENERATED. DO NOT EDIT.
 
-// Unicode 15.0.0
+// Unicode 15.1.0
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
@@ -13,7 +13,7 @@ UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_title, 8704);
 UNI_ALGO_DLL extern const uaix_data_array(type_codept,     stage2_title, 5248);
 #endif
 UNI_ALGO_DLL extern const uaix_data_array(unsigned char,   stage1_fold, 8704);
-UNI_ALGO_DLL extern const uaix_data_array(type_codept,     stage2_fold, 4864);
+UNI_ALGO_DLL extern const uaix_data_array(type_codept,     stage2_fold, 4992);
 UNI_ALGO_DLL extern const uaix_data_array(unsigned short,  stage1_order, 8704);
 UNI_ALGO_DLL extern const uaix_data_array(unsigned short,  stage2_order, 40320);
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
