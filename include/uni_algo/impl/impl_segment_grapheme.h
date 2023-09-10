@@ -35,17 +35,37 @@ uaix_const type_codept prop_GB_LVT                   = 12;
 uaix_const type_codept prop_GB_ZWJ                   = 13;
 uaix_const type_codept prop_GB_Extended_Pictographic = 14;
 
+uaix_const type_codept prop_GB_InCB_Linker           = 1;
+uaix_const type_codept prop_GB_InCB_Consonant        = 2;
+uaix_const type_codept prop_GB_InCB_Extend           = 3;
+
 uaix_const int state_segment_grapheme_begin    = 0;
 uaix_const int state_segment_grapheme_continue = 1;
 uaix_const int state_segment_grapheme_RI       = 2;
 uaix_const int state_segment_grapheme_RI_RI    = 3;
 uaix_const int state_segment_grapheme_EP       = 4;
 uaix_const int state_segment_grapheme_EP_ZWJ   = 5;
+uaix_const int state_segment_grapheme_InCB_C   = 6;
+uaix_const int state_segment_grapheme_InCB_CL  = 7;
 
 uaix_always_inline
 uaix_static type_codept stages_segment_grapheme_prop(type_codept c)
 {
+    // This function returns raw property that contains property with InCB (see GB9c rule)
+    // Two functions below must be used to get the real property and InCB
     return stages(c, stage1_segment_grapheme, stage2_segment_grapheme);
+}
+
+uaix_always_inline
+uaix_static type_codept segment_grapheme_prop(type_codept prop)
+{
+    return (prop & 0x3F); // 6 right bits are used for properties
+}
+
+uaix_always_inline
+uaix_static type_codept segment_grapheme_prop_inCB(type_codept prop)
+{
+    return (prop >> 6); // 2 first (left) bits are used for InCB
 }
 
 struct impl_segment_grapheme_state
@@ -96,13 +116,17 @@ uaix_static bool segment_grapheme(struct impl_segment_grapheme_state* const stat
     // See state table above.
     // Compared the performance with ICU it's already much faster so it can wait.
 
-    const type_codept c_prop = stages_segment_grapheme_prop(c);
-    const type_codept p_prop = state->prev_cp_prop;
+    const type_codept raw_prop = stages_segment_grapheme_prop(c);
+
+    const type_codept c_prop = segment_grapheme_prop(raw_prop);
+    const type_codept p_prop = segment_grapheme_prop(state->prev_cp_prop);
+
+    const type_codept c_inCB = segment_grapheme_prop_inCB(raw_prop);
 
     bool result = false; // tag_can_be_uninitialized
 
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
-    // Unicode 11.0 - 15.0 rules
+    // Unicode 15.1 rules
 
     if (state->state == state_segment_grapheme_begin)
         state->state = state_segment_grapheme_continue;
@@ -123,6 +147,8 @@ uaix_static bool segment_grapheme(struct impl_segment_grapheme_state* const stat
     else if (c_prop == prop_GB_SpacingMark) // GB9a
         result = false; // NOLINT
     else if (p_prop == prop_GB_Prepend) // GB9b
+        result = false; // NOLINT
+    else if (state->state == state_segment_grapheme_InCB_CL && c_inCB == prop_GB_InCB_Consonant) // GB9c
         result = false; // NOLINT
     else if (state->state == state_segment_grapheme_EP_ZWJ && c_prop == prop_GB_Extended_Pictographic) // GB11
         result = false; // NOLINT
@@ -146,11 +172,21 @@ uaix_static bool segment_grapheme(struct impl_segment_grapheme_state* const stat
         state->state = state_segment_grapheme_EP; // NOLINT
     else if (state->state == state_segment_grapheme_EP && c_prop == prop_GB_ZWJ)
         state->state = state_segment_grapheme_EP_ZWJ;
+    // GB9c
+    else if (c_inCB == prop_GB_InCB_Consonant)
+        state->state = state_segment_grapheme_InCB_C; // NOLINT
+    else if (state->state == state_segment_grapheme_InCB_C && c_inCB == prop_GB_InCB_Linker)
+        state->state = state_segment_grapheme_InCB_CL; // NOLINT
+    else if (state->state == state_segment_grapheme_InCB_C && (c_inCB == prop_GB_InCB_Extend || c_inCB == prop_GB_InCB_Linker))
+        state->state = state_segment_grapheme_InCB_C; // NOLINT
+    else if (state->state == state_segment_grapheme_InCB_CL && (c_inCB == prop_GB_InCB_Extend || c_inCB == prop_GB_InCB_Linker))
+        state->state = state_segment_grapheme_InCB_CL; // NOLINT
+    // Otherwise state continue
     else
         state->state = state_segment_grapheme_continue;
 
     state->prev_cp = c;
-    state->prev_cp_prop = c_prop;
+    state->prev_cp_prop = raw_prop;
 
     return result;
 }
@@ -182,7 +218,7 @@ uaix_static bool segment_grapheme_rev_EP_utf8(it_in_utf8 first, it_in_utf8 last)
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        const type_codept prop = stages_segment_grapheme_prop(c);
+        const type_codept prop = segment_grapheme_prop(stages_segment_grapheme_prop(c));
 
         if (prop == prop_GB_Extend)
             continue;
@@ -207,7 +243,7 @@ uaix_static bool segment_grapheme_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
     {
         src = iter_rev_utf8(first, src, &c, iter_replacement);
 
-        const type_codept prop = stages_segment_grapheme_prop(c);
+        const type_codept prop = segment_grapheme_prop(stages_segment_grapheme_prop(c));
 
         if (prop == prop_GB_Regional_Indicator)
             ++count_RI;
@@ -220,17 +256,51 @@ uaix_static bool segment_grapheme_rev_RI_utf8(it_in_utf8 first, it_in_utf8 last)
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
+uaix_static bool segment_grapheme_rev_inCB_utf8(it_in_utf8 first, it_in_utf8 last, bool inCB_Linker)
+{
+    it_in_utf8 src = last;
+    type_codept c = 0; // tag_can_be_uninitialized
+
+    while (src != first)
+    {
+        src = iter_rev_utf8(first, src, &c, iter_replacement);
+
+        const type_codept inCB = segment_grapheme_prop_inCB(stages_segment_grapheme_prop(c));
+
+        if (inCB == prop_GB_InCB_Consonant && inCB_Linker)
+            return false;
+
+        if (inCB == prop_GB_InCB_Linker)
+        {
+            inCB_Linker = true;
+            continue;
+        }
+        if (inCB == prop_GB_InCB_Extend)
+            continue;
+
+        break;
+    }
+    return true;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf8>
+#endif
 uaix_always_inline_tmpl
 uaix_static bool segment_grapheme_rev_utf8(struct impl_segment_grapheme_state* const state, type_codept c,
                                            it_in_utf8 first, it_in_utf8 last)
 {
-    const type_codept c_prop = stages_segment_grapheme_prop(c);
-    const type_codept p_prop = state->prev_cp_prop;
+    const type_codept raw_prop = stages_segment_grapheme_prop(c);
+
+    const type_codept c_prop = segment_grapheme_prop(raw_prop);
+    const type_codept p_prop = segment_grapheme_prop(state->prev_cp_prop);
+
+    const type_codept c_inCB = segment_grapheme_prop_inCB(raw_prop);
 
     bool result = false; // tag_can_be_uninitialized
 
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
-    // Unicode 11.0 - 15.0 rules
+    // Unicode 15.1 rules
 
     if (state->state == state_segment_grapheme_begin)
         state->state = state_segment_grapheme_continue;
@@ -252,6 +322,9 @@ uaix_static bool segment_grapheme_rev_utf8(struct impl_segment_grapheme_state* c
         result = false; // NOLINT
     else if (c_prop == prop_GB_Prepend) // GB9b
         result = false; // NOLINT
+    else if ((c_inCB == prop_GB_InCB_Linker || c_inCB == prop_GB_InCB_Extend) &&
+             segment_grapheme_prop_inCB(state->prev_cp_prop) == prop_GB_InCB_Consonant) // GB9c
+        result = segment_grapheme_rev_inCB_utf8(first, last, c_inCB == prop_GB_InCB_Linker);
     else if (c_prop == prop_GB_ZWJ && p_prop == prop_GB_Extended_Pictographic) // GB11
         result = segment_grapheme_rev_EP_utf8(first, last);
     else if (c_prop == prop_GB_Regional_Indicator && p_prop == prop_GB_Regional_Indicator) // GB12/GB13
@@ -260,7 +333,7 @@ uaix_static bool segment_grapheme_rev_utf8(struct impl_segment_grapheme_state* c
         result = true; // NOLINT
 
     state->prev_cp = c;
-    state->prev_cp_prop = c_prop;
+    state->prev_cp_prop = raw_prop;
 
     return result;
 }
@@ -299,7 +372,7 @@ uaix_static bool segment_grapheme_rev_EP_utf16(it_in_utf16 first, it_in_utf16 la
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        const type_codept prop = stages_segment_grapheme_prop(c);
+        const type_codept prop = segment_grapheme_prop(stages_segment_grapheme_prop(c));
 
         if (prop == prop_GB_Extend)
             continue;
@@ -324,7 +397,7 @@ uaix_static bool segment_grapheme_rev_RI_utf16(it_in_utf16 first, it_in_utf16 la
     {
         src = iter_rev_utf16(first, src, &c, iter_replacement);
 
-        const type_codept prop = stages_segment_grapheme_prop(c);
+        const type_codept prop = segment_grapheme_prop(stages_segment_grapheme_prop(c));
 
         if (prop == prop_GB_Regional_Indicator)
             ++count_RI;
@@ -337,17 +410,51 @@ uaix_static bool segment_grapheme_rev_RI_utf16(it_in_utf16 first, it_in_utf16 la
 #ifdef __cplusplus
 template<typename it_in_utf16>
 #endif
+uaix_static bool segment_grapheme_rev_inCB_utf16(it_in_utf16 first, it_in_utf16 last, bool inCB_Linker)
+{
+    it_in_utf16 src = last;
+    type_codept c = 0; // tag_can_be_uninitialized
+
+    while (src != first)
+    {
+        src = iter_rev_utf16(first, src, &c, iter_replacement);
+
+        const type_codept inCB = segment_grapheme_prop_inCB(stages_segment_grapheme_prop(c));
+
+        if (inCB == prop_GB_InCB_Consonant && inCB_Linker)
+            return false;
+
+        if (inCB == prop_GB_InCB_Linker)
+        {
+            inCB_Linker = true;
+            continue;
+        }
+        if (inCB == prop_GB_InCB_Extend)
+            continue;
+
+        break;
+    }
+    return true;
+}
+
+#ifdef __cplusplus
+template<typename it_in_utf16>
+#endif
 uaix_always_inline_tmpl
 uaix_static bool segment_grapheme_rev_utf16(struct impl_segment_grapheme_state* const state, type_codept c,
                                             it_in_utf16 first, it_in_utf16 last)
 {
-    const type_codept c_prop = stages_segment_grapheme_prop(c);
-    const type_codept p_prop = state->prev_cp_prop;
+    const type_codept raw_prop = stages_segment_grapheme_prop(c);
+
+    const type_codept c_prop = segment_grapheme_prop(raw_prop);
+    const type_codept p_prop = segment_grapheme_prop(state->prev_cp_prop);
+
+    const type_codept c_inCB = segment_grapheme_prop_inCB(raw_prop);
 
     bool result = false; // tag_can_be_uninitialized
 
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
-    // Unicode 11.0 - 15.0 rules
+    // Unicode 15.1 rules
 
     if (state->state == state_segment_grapheme_begin)
         state->state = state_segment_grapheme_continue;
@@ -369,6 +476,9 @@ uaix_static bool segment_grapheme_rev_utf16(struct impl_segment_grapheme_state* 
         result = false; // NOLINT
     else if (c_prop == prop_GB_Prepend) // GB9b
         result = false; // NOLINT
+    else if ((c_inCB == prop_GB_InCB_Linker || c_inCB == prop_GB_InCB_Extend) &&
+             segment_grapheme_prop_inCB(state->prev_cp_prop) == prop_GB_InCB_Consonant) // GB9c
+        result = segment_grapheme_rev_inCB_utf16(first, last, c_inCB == prop_GB_InCB_Linker);
     else if (c_prop == prop_GB_ZWJ && p_prop == prop_GB_Extended_Pictographic) // GB11
         result = segment_grapheme_rev_EP_utf16(first, last);
     else if (c_prop == prop_GB_Regional_Indicator && p_prop == prop_GB_Regional_Indicator) // GB12/GB13
@@ -377,7 +487,7 @@ uaix_static bool segment_grapheme_rev_utf16(struct impl_segment_grapheme_state* 
         result = true; // NOLINT
 
     state->prev_cp = c;
-    state->prev_cp_prop = c_prop;
+    state->prev_cp_prop = raw_prop;
 
     return result;
 }
