@@ -2,6 +2,9 @@
 Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
+## [v1.1.0](https://github.com/uni-algo/uni-algo/tree/v1.1.0) (2023-09-12)
+- Updated to Unicode 15.1.0
+
 ## [v1.0.0](https://github.com/uni-algo/uni-algo/tree/v1.0.0) (2023-07-07)
 - Stabilized API ([doc/API_API_STABILITY.md](doc/API_API_STABILITY.md))
 - Added more documentation (see `doc` directory)
