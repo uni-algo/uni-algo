@@ -66,7 +66,7 @@ uaiw_constexpr Dst t_map(const Alloc& alloc, const Src& src, int mode, type_code
         dst.resize(length * SizeX);
         dst.resize(FnMap(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, mode, loc));
 #  else
-        dst.resize_and_overwrite(length * SizeX, [&src, mode, loc](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+        dst.resize_and_overwrite(length * SizeX, [&src, mode, loc](typename Dst::pointer p, std::size_t n) noexcept -> std::size_t {
             return FnMap(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n}, mode, loc);
         });
 #  endif
