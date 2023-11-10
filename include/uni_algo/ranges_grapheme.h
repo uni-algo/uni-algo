@@ -187,12 +187,14 @@ public:
     {
         range = std::move(oth.range);
         cached_begin = false;
+        return *this;
     }
 
     utf8_view& operator=(const utf8_view& oth)
     {
         range = oth.range;
         cached_begin = false;
+        return *this;
     }
 
     ~utf8_view() = default;
@@ -388,12 +390,14 @@ public:
     {
         range = std::move(oth.range);
         cached_begin = false;
+        return *this;
     }
 
     utf16_view& operator=(const utf16_view& oth)
     {
         range = oth.range;
         cached_begin = false;
+        return *this;
     }
 
     ~utf16_view() = default;
