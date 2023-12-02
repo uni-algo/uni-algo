@@ -59,7 +59,7 @@ uaiw_constexpr Dst t_norm(const Alloc& alloc, const Src& src)
         dst.resize(length * SizeX);
         dst.resize(FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}));
 #  else
-        dst.resize_and_overwrite(length * SizeX, [&src](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+        dst.resize_and_overwrite(length * SizeX, [&src](typename Dst::pointer p, std::size_t n) noexcept -> std::size_t {
             return FnNorm(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n});
         });
 #  endif
