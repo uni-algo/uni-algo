@@ -27,7 +27,7 @@
 #include "../include/uni_algo/ext/translit/macedonian_to_latin_docs.h"
 #include "../include/uni_algo/ext/translit/japanese_kana_to_romaji_hepburn.h"
 #else
-#include "uni_algo.h"
+#include "uni_algo_ext.h"
 #endif
 
 // Additional C++ Standard Library includes that are needed for tests

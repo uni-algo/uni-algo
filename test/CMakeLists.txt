@@ -10,7 +10,7 @@ option(DOWNLOAD_UNICODE_TEST_FILES "Download Unicode test files and test with th
 option(BUILD_UNI_ALGO "Build the library before testing otherwise build together with tests (manual use)" OFF)
 option(TEST_CONSTEXPR "Test in constexpr mode (implies header-only and requeries C++20 or higher)" OFF)
 option(TEST_HEADER_ONLY "Test with header-only library" OFF)
-option(TEST_SINGLE_INCLUDE "Test with single include library (copy uni_algo.h to test folder)" OFF)
+option(TEST_SINGLE_INCLUDE "Test with single include library (copy uni_algo_ext.h to test folder)" OFF)
 option(TEST_STANDALONE "Test that every file can be compiled as standalone include" OFF)
 option(TEST_EXPERIMENTAL "Test experimental stuff" OFF)
 
