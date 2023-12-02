@@ -2,6 +2,9 @@
 Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
+## v1.1.1 (TBD)
+- Fixed compilation with old versions of Clang compiler ([#34](https://github.com/uni-algo/uni-algo/pull/34)). Thanks [@psiha](https://github.com/psiha).
+
 ## [v1.1.0](https://github.com/uni-algo/uni-algo/tree/v1.1.0) (2023-09-12)
 - Updated to Unicode 15.1.0
 
