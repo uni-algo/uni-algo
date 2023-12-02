@@ -29,14 +29,15 @@ test_constexpr bool test_locale()
     TESTX(una::locale::region{} != una::locale::region{"1234"});
     TESTX(una::locale::region{} == una::locale::region{"12345"});
 
-    // Locale string parser must normalize locale tags always
-
+    // Helper for the test below
     auto eq = [](const una::locale& loc1, const una::locale& loc2) -> bool
     {
         return loc1.get_language() == loc2.get_language() &&
                loc1.get_script() == loc2.get_script() &&
                loc1.get_region() == loc2.get_region();
     };
+
+    // Locale string parser must normalize locale tags always
 
     TESTX(eq(una::locale{}, una::locale{{}, {}, {}}));
     TESTX(eq(una::locale{}, una::locale{{}, una::locale::script{}}));
