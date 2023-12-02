@@ -16,7 +16,7 @@ test_constexpr bool test_segment_cursor_grapheme()
     std::string result;
     for (std::size_t i = 0; i <= str.size(); ++i)
     {
-        result += *range.cursor(str.begin() + i);
+        result += *range.cursor(str.begin() + static_cast<std::ptrdiff_t>(i));
         result += '\n';
     }
 
@@ -58,7 +58,7 @@ test_constexpr bool test_segment_cursor_grapheme()
     std::u16string result16;
     for (std::size_t i = 0; i <= str16.size(); ++i)
     {
-        result16 += *range16.cursor(str16.begin() + i);
+        result16 += *range16.cursor(str16.begin() + static_cast<std::ptrdiff_t>(i));
         result16 += '\n';
     }
 
@@ -100,7 +100,7 @@ test_constexpr bool test_segment_cursor_word()
     std::string result;
     for (std::size_t i = 0; i <= str.size(); ++i)
     {
-        result += *range.cursor(str.begin() + i);
+        result += *range.cursor(str.begin() + static_cast<std::ptrdiff_t>(i));
         result += '\n';
     }
 
@@ -142,7 +142,7 @@ test_constexpr bool test_segment_cursor_word()
     std::u16string result16;
     for (std::size_t i = 0; i <= str16.size(); ++i)
     {
-        result16 += *range16.cursor(str16.begin() + i);
+        result16 += *range16.cursor(str16.begin() + static_cast<std::ptrdiff_t>(i));
         result16 += '\n';
     }
 
@@ -184,7 +184,7 @@ test_constexpr bool test_segment_cursor_word_only()
     std::string result;
     for (std::size_t i = 0; i <= str.size(); ++i)
     {
-        result += *range.cursor(str.begin() + i);
+        result += *range.cursor(str.begin() + static_cast<std::ptrdiff_t>(i));
         result += '\n';
     }
 
@@ -226,7 +226,7 @@ test_constexpr bool test_segment_cursor_word_only()
     std::u16string result16;
     for (std::size_t i = 0; i <= str16.size(); ++i)
     {
-        result16 += *range16.cursor(str16.begin() + i);
+        result16 += *range16.cursor(str16.begin() + static_cast<std::ptrdiff_t>(i));
         result16 += '\n';
     }
 
@@ -268,7 +268,7 @@ test_constexpr bool test2_segment_cursor_grapheme()
     std::string result;
     for (std::size_t i = 0; i <= str.size(); ++i)
     {
-        result += *range.cursor(str.begin() + i);
+        result += *range.cursor(str.begin() + static_cast<std::ptrdiff_t>(i));
         result += '\n';
     }
 
@@ -305,7 +305,7 @@ test_constexpr bool test2_segment_cursor_grapheme()
     std::u16string result16;
     for (std::size_t i = 0; i <= str16.size(); ++i)
     {
-        result16 += *range16.cursor(str16.begin() + i);
+        result16 += *range16.cursor(str16.begin() + static_cast<std::ptrdiff_t>(i));
         result16 += '\n';
     }
 
@@ -343,7 +343,7 @@ test_constexpr bool test2_segment_cursor_word()
     std::string result;
     for (std::size_t i = 0; i <= str.size(); ++i)
     {
-        result += *range.cursor(str.begin() + i);
+        result += *range.cursor(str.begin() + static_cast<std::ptrdiff_t>(i));
         result += '\n';
     }
 
@@ -380,7 +380,7 @@ test_constexpr bool test2_segment_cursor_word()
     std::u16string result16;
     for (std::size_t i = 0; i <= str16.size(); ++i)
     {
-        result16 += *range16.cursor(str16.begin() + i);
+        result16 += *range16.cursor(str16.begin() + static_cast<std::ptrdiff_t>(i));
         result16 += '\n';
     }
 
@@ -418,7 +418,7 @@ test_constexpr bool test2_segment_cursor_word_only()
     std::string result;
     for (std::size_t i = 0; i <= str.size(); ++i)
     {
-        result += *range.cursor(str.begin() + i);
+        result += *range.cursor(str.begin() + static_cast<std::ptrdiff_t>(i));
         result += '\n';
     }
 
@@ -455,7 +455,7 @@ test_constexpr bool test2_segment_cursor_word_only()
     std::u16string result16;
     for (std::size_t i = 0; i <= str16.size(); ++i)
     {
-        result16 += *range16.cursor(str16.begin() + i);
+        result16 += *range16.cursor(str16.begin() + static_cast<std::ptrdiff_t>(i));
         result16 += '\n';
     }
 
