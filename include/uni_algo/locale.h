@@ -58,7 +58,7 @@ public:
         constexpr void set_value(char32_t v) noexcept { value = v; }
         constexpr char32_t get_value() const noexcept { return value; }
     public:
-        constexpr language() noexcept = default;
+        constexpr language() = default;
         template <std::size_t N> // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
         constexpr explicit language(const char (&s)[N]) noexcept : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
         uaiw_constexpr explicit language(std::string_view s) noexcept : value{detail::impl_locate_from_tag(s, s.size())} {}
@@ -93,7 +93,7 @@ public:
         constexpr void set_value(char32_t v) noexcept { value = v; }
         constexpr char32_t get_value() const noexcept { return value; }
     public:
-        constexpr region() noexcept = default;
+        constexpr region() = default;
         template <std::size_t N> // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
         constexpr explicit region(const char (&s)[N]) noexcept : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
         uaiw_constexpr explicit region(std::string_view s) noexcept : value{detail::impl_locate_from_tag(s, s.size())} {}
@@ -126,7 +126,7 @@ public:
         constexpr void set_value(char32_t v) noexcept { value = v; }
         constexpr char32_t get_value() const noexcept { return value; }
     public:
-        constexpr script() noexcept = default;
+        constexpr script() = default;
         template <std::size_t N> // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
         constexpr explicit script(const char (&s)[N]) noexcept : value{detail::impl_locate_from_tag(s, N ? N - 1 : 0)} {}
         uaiw_constexpr explicit script(std::string_view s) noexcept : value{detail::impl_locate_from_tag(s, s.size())} {}
@@ -155,7 +155,7 @@ private:
     region regn; //{detail::impl_locale_region_ZZ};
 
 public:
-    constexpr locale() noexcept = default;
+    constexpr locale() = default;
     // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
     constexpr locale(language l) noexcept : lang{l} {}
     constexpr locale(language l, region r) noexcept : lang{l}, regn{r} {}
