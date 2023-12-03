@@ -15,4 +15,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Run Clang-Tidy
-        run: clang-tidy-14 test/clang-tidy/main.cpp -warnings-as-errors=* -header-filter=.* -extra-arg=-std=c++17 --
+        run: clang-tidy-15 test/clang-tidy/main.cpp -warnings-as-errors=* -header-filter=.* -extra-arg=-std=c++20 --

@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        cxx: [g++-12, clang++-14, clang++-12]
+        cxx: [g++-12, clang++-15, clang++-14]
     env:
         CXX: ${{matrix.cxx}}
 
