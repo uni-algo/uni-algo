@@ -2,9 +2,9 @@
 [![Unicode](https://img.shields.io/badge/Unicode-15.1.0-blue)](https://www.unicode.org/versions/Unicode15.1.0/)
 [![Language](https://img.shields.io/badge/C%2B%2B-17/20/23-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
 [![License](https://img.shields.io/badge/License-Unlicense/MIT-darkorchid.svg)](https://opensource.org/licenses/MIT)
-[![Linux](https://github.com/uni-algo/uni-algo/workflows/Linux/badge.svg)](https://github.com/uni-algo/uni-algo/actions?query=workflow%3ALinux)
-[![Windows](https://github.com/uni-algo/uni-algo/workflows/Windows/badge.svg)](https://github.com/uni-algo/uni-algo/actions?query=workflow%3AWindows)
-[![macOS](https://github.com/uni-algo/uni-algo/workflows/macOS/badge.svg)](https://github.com/uni-algo/uni-algo/actions?query=workflow%3AmacOS)
+[![Linux](https://github.com/uni-algo/uni-algo/actions/workflows/linux.yml/badge.svg?branch=main)](https://github.com/uni-algo/uni-algo/actions/workflows/linux.yml)
+[![Windows](https://github.com/uni-algo/uni-algo/actions/workflows/windows.yml/badge.svg?branch=main)](https://github.com/uni-algo/uni-algo/actions/workflows/windows.yml)
+[![macOS](https://github.com/uni-algo/uni-algo/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/uni-algo/uni-algo/actions/workflows/macos.yml)
 
 ## Table of Contents
 
