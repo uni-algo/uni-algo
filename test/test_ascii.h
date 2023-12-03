@@ -219,7 +219,9 @@ test_constexpr bool test_ascii_collate()
         str_ascii.push_back(static_cast<char>(c));
 
     // Shuffle
-    auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    // TODO: Disable chrono for now. See comment in file: test/main.h
+    //auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    auto seed = 777;
     std::shuffle(str_ascii.begin(), str_ascii.end(), std::mt19937{static_cast<std::mt19937::result_type>(seed)});
 
     std::string test_ascii = str_ascii;

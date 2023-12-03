@@ -38,8 +38,11 @@
 #include <list>
 #include <iostream>
 #include <fstream>
-#include <chrono>
 #include <random>
+// TODO: Disable chrono for now because it's completely broken in Clang 14 GitHub runner:
+// https://github.com/actions/runner-images/issues/8659
+// Should be re-enabled later here and in file: test/test_ascii.h
+//#include <chrono>
 
 #ifdef TEST_MODE_CONSTEXPR
 #ifndef TEST_MODE_WITHOUT_UNICODE_TEST_FILES
