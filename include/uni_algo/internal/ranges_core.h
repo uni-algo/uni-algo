@@ -144,6 +144,51 @@ constexpr StringViewResult to_string_view(const Range&, Iter it_begin, Iter it_p
 }
 #endif
 
+// Non-propagating cache from C++23 Standard (26.7.4)
+// TODO: std::optional here instead of value/bool would be better, but as I remember std::optional
+// is not constexpr in old compilers where we need it to be. But our constexpr library already
+// requires pretty fresh compilers so it can be fine, need to recheck it and use it if possible.
+template<class T>
+class cache {
+private:
+    T val;
+    bool has_val = false;
+
+public:
+    cache() = default;
+    ~cache() = default;
+    constexpr cache(const cache&) noexcept {}
+    constexpr cache(cache&& other) noexcept { other.has_val = false; }
+
+    constexpr cache& operator=(const cache& other) noexcept
+    {
+        if (std::addressof(other) != this)
+            val.has_val = false;
+        return *this;
+    }
+
+    constexpr cache& operator=(cache&& other) noexcept
+    {
+        has_val = false;
+        other.has_val = false;
+        return *this;
+    }
+
+    constexpr bool has_value() const noexcept { return has_val; }
+
+    // No need this, use get_value instead
+    //constexpr T& operator*() noexcept { return val; }
+    //constexpr const T& operator*() const noexcept { return val; }
+
+    constexpr T& get_value() noexcept { return val; }
+    constexpr const T& get_value() const noexcept { return val; }
+    constexpr void set_value(const T& value) noexcept
+    {
+        val = value;
+        has_val = true;
+    }
+};
+
 } // namespace detail::rng
 
 namespace ranges {
