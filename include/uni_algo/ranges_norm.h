@@ -89,8 +89,7 @@ private:
     using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
-    nfc<iter_t, sent_t> cached_begin_value;
-    bool cached_begin = false;
+    detail::rng::cache<nfc<iter_t, sent_t>> cached_begin;
 
 public:
     uaiw_constexpr nfc_view() = default;
@@ -99,13 +98,12 @@ public:
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
     {
-        if (cached_begin)
-            return cached_begin_value;
+        if (cached_begin.has_value())
+            return cached_begin.get_value();
 
-        cached_begin_value = nfc<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
-        cached_begin = true;
+        cached_begin.set_value(nfc<iter_t, sent_t>{*this, std::begin(range), std::end(range)});
 
-        return cached_begin_value;
+        return cached_begin.get_value();
     }
     uaiw_constexpr auto end()
     {
@@ -185,8 +183,7 @@ private:
     using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
-    nfd<iter_t, sent_t> cached_begin_value;
-    bool cached_begin = false;
+    detail::rng::cache<nfd<iter_t, sent_t>> cached_begin;
 
 public:
     uaiw_constexpr nfd_view() = default;
@@ -195,13 +192,12 @@ public:
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
     {
-        if (cached_begin)
-            return cached_begin_value;
+        if (cached_begin.has_value())
+            return cached_begin.get_value();
 
-        cached_begin_value = nfd<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
-        cached_begin = true;
+        cached_begin.set_value(nfd<iter_t, sent_t>{*this, std::begin(range), std::end(range)});
 
-        return cached_begin_value;
+        return cached_begin.get_value();
     }
     uaiw_constexpr auto end()
     {
@@ -283,8 +279,7 @@ private:
     using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
-    nfkc<iter_t, sent_t> cached_begin_value;
-    bool cached_begin = false;
+    detail::rng::cache<nfkc<iter_t, sent_t>> cached_begin;
 
 public:
     uaiw_constexpr nfkc_view() = default;
@@ -293,13 +288,12 @@ public:
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
     {
-        if (cached_begin)
-            return cached_begin_value;
+        if (cached_begin.has_value())
+            return cached_begin.get_value();
 
-        cached_begin_value = nfkc<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
-        cached_begin = true;
+        cached_begin.set_value(nfkc<iter_t, sent_t>{*this, std::begin(range), std::end(range)});
 
-        return cached_begin_value;
+        return cached_begin.get_value();
     }
     uaiw_constexpr auto end()
     {
@@ -379,8 +373,7 @@ private:
     using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
-    nfkd<iter_t, sent_t> cached_begin_value;
-    bool cached_begin = false;
+    detail::rng::cache<nfkd<iter_t, sent_t>> cached_begin;
 
 public:
     uaiw_constexpr nfkd_view() = default;
@@ -389,13 +382,12 @@ public:
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
     {
-        if (cached_begin)
-            return cached_begin_value;
+        if (cached_begin.has_value())
+            return cached_begin.get_value();
 
-        cached_begin_value = nfkd<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
-        cached_begin = true;
+        cached_begin.set_value(nfkd<iter_t, sent_t>{*this, std::begin(range), std::end(range)});
 
-        return cached_begin_value;
+        return cached_begin.get_value();
     }
     uaiw_constexpr auto end()
     {

@@ -114,8 +114,7 @@ private:
     using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
-    utf8<iter_t, sent_t> cached_begin_value;
-    bool cached_begin = false;
+    detail::rng::cache<utf8<iter_t, sent_t>> cached_begin;
 
 public:
     uaiw_constexpr utf8_view() = default;
@@ -124,13 +123,12 @@ public:
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
     {
-        if (cached_begin)
-            return cached_begin_value;
+        if (cached_begin.has_value())
+            return cached_begin.get_value();
 
-        cached_begin_value = utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
-        cached_begin = true;
+        cached_begin.set_value(utf8<iter_t, sent_t>{*this, std::begin(range), std::end(range)});
 
-        return cached_begin_value;
+        return cached_begin.get_value();
     }
     uaiw_constexpr auto end()
     {
@@ -240,8 +238,7 @@ private:
     using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
-    utf16<iter_t, sent_t> cached_begin_value;
-    bool cached_begin = false;
+    detail::rng::cache<utf16<iter_t, sent_t>> cached_begin;
 
 public:
     uaiw_constexpr utf16_view() = default;
@@ -250,13 +247,12 @@ public:
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
     {
-        if (cached_begin)
-            return cached_begin_value;
+        if (cached_begin.has_value())
+            return cached_begin.get_value();
 
-        cached_begin_value = utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
-        cached_begin = true;
+        cached_begin.set_value(utf16<iter_t, sent_t>{*this, std::begin(range), std::end(range)});
 
-        return cached_begin_value;
+        return cached_begin.get_value();
     }
     uaiw_constexpr auto end()
     {

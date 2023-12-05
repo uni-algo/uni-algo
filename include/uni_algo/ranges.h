@@ -110,8 +110,7 @@ private:
     using sent_t = detail::rng::sentinel_t<Range>;
 
     Range range = Range{};
-    reverse<iter_t, iter_t> cached_begin_value;
-    bool cached_begin = false;
+    detail::rng::cache<reverse<iter_t, iter_t>> cached_begin;
 
 public:
     uaiw_constexpr reverse_view() = default;
@@ -120,11 +119,11 @@ public:
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
     {
-        if (cached_begin)
-            return cached_begin_value;
+        if (cached_begin.has_value())
+            return cached_begin.get_value();
 
         if constexpr (std::is_same_v<iter_t, sent_t>)
-            cached_begin_value = reverse<iter_t, iter_t>{*this, std::begin(range), std::end(range)};
+            cached_begin.set_value(reverse<iter_t, iter_t>{*this, std::begin(range), std::end(range)});
         else
         {
             // This is to handle case when Range is bidirectional and not std::ranges::common_range
@@ -133,15 +132,14 @@ public:
             // auto it = std::ranges::next(std::ranges::begin(range), std::ranges::end(range));
             auto it = std::begin(range);
             for (auto end = std::end(range); it != end; ++it);
-            cached_begin_value = reverse<iter_t, iter_t>{*this, std::begin(range), it};
+            cached_begin.set_value(reverse<iter_t, iter_t>{*this, std::begin(range), it});
 
             // std::string_view{"12345678900"} | una::views::utf8
             // | una::views::reverse | std::views::take(7) | una::views::reverse
             // | una::views::drop(2) | una::views::reverse -> 00987 (48 48 57 56 55)
         }
-        cached_begin = true;
 
-        return cached_begin_value;
+        return cached_begin.get_value();
     }
     uaiw_constexpr auto end()
     {
@@ -234,8 +232,7 @@ private:
 
     Range range = Range{};
     Pred func_filter;
-    filter<iter_t, sent_t> cached_begin_value;
-    bool cached_begin = false;
+    detail::rng::cache<filter<iter_t, sent_t>> cached_begin;
 
 public:
     uaiw_constexpr filter_view() = default;
@@ -245,13 +242,12 @@ public:
     //uaiw_constexpr const Pred& pred() const { return func_filter; }
     uaiw_constexpr auto begin()
     {
-        if (cached_begin)
-            return cached_begin_value;
+        if (cached_begin.has_value())
+            return cached_begin.get_value();
 
-        cached_begin_value = filter<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
-        cached_begin = true;
+        cached_begin.set_value(filter<iter_t, sent_t>{*this, std::begin(range), std::end(range)});
 
-        return cached_begin_value;
+        return cached_begin.get_value();
     }
     uaiw_constexpr auto end()
     {
@@ -555,8 +551,7 @@ private:
 
     Range range = Range{};
     std::size_t count = 0;
-    drop<iter_t, sent_t> cached_begin_value;
-    bool cached_begin = false;
+    detail::rng::cache<drop<iter_t, sent_t>> cached_begin;
 
 public:
     uaiw_constexpr drop_view() = default;
@@ -565,13 +560,12 @@ public:
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
     {
-        if (cached_begin)
-            return cached_begin_value;
+        if (cached_begin.has_value())
+            return cached_begin.get_value();
 
-        cached_begin_value = drop<iter_t, sent_t>{*this, std::begin(range), std::end(range), count};
-        cached_begin = true;
+        cached_begin.set_value(drop<iter_t, sent_t>{*this, std::begin(range), std::end(range), count});
 
-        return cached_begin_value;
+        return cached_begin.get_value();
     }
     uaiw_constexpr auto end()
     {

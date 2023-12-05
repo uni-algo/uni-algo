@@ -311,8 +311,7 @@ private:
     Range range = Range{};
     Func func_translit;
     std::size_t buf_size = 1;
-    translit<iter_t, sent_t> cached_begin_value;
-    bool cached_begin = false;
+    detail::rng::cache<translit<iter_t, sent_t>> cached_begin;
 
 public:
     uaiw_constexpr translit_view() = default;
@@ -322,13 +321,12 @@ public:
     //uaiw_constexpr Range base() && { return std::move(range); }
     uaiw_constexpr auto begin()
     {
-        if (cached_begin)
-            return cached_begin_value;
+        if (cached_begin.has_value())
+            return cached_begin.get_value();
 
-        cached_begin_value = translit<iter_t, sent_t>{*this, std::begin(range), std::end(range)};
-        cached_begin = true;
+        cached_begin.set_value(translit<iter_t, sent_t>{*this, std::begin(range), std::end(range)});
 
-        return cached_begin_value;
+        return cached_begin.get_value();
     }
     uaiw_constexpr auto end()
     {
