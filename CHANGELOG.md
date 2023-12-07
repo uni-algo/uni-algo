@@ -3,6 +3,7 @@ Only the most important stuff is listed here.<br>
 See commit history between tags for details.
 
 ## v1.1.1 (TBD)
+- Fixed lifetime issue with ranges in some cases ([#35](https://github.com/uni-algo/uni-algo/pull/35)). Thanks [@unixod](https://github.com/unixod).
 - Fixed compilation with old versions of Clang compiler ([#34](https://github.com/uni-algo/uni-algo/pull/34)). Thanks [@psiha](https://github.com/psiha).
 
 ## [v1.1.0](https://github.com/uni-algo/uni-algo/tree/v1.1.0) (2023-09-12)
