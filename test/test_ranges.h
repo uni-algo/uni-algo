@@ -267,3 +267,37 @@ test_constexpr bool test_ranges_static_assert()
 
     return true;
 }
+
+test_constexpr bool test_ranges_cache()
+{
+    // Check that non-propagating cache works properly
+    // https://github.com/uni-algo/uni-algo/pull/35
+
+    struct lifetime
+    {
+        static test_constexpr auto foo(std::string_view str)
+        {
+            auto view = una::views::reverse(str); // Test only one range, all our ranges use the cache anyway
+            auto iter = view.begin(); // Prevent NRVO
+            static_cast<void>(iter); // Suppress unused variable warning
+            auto other = view;
+            return other;
+        }
+
+        static test_constexpr char test()
+        {
+            auto str = std::string{"abcde"};
+            auto view = foo(str);
+            auto iter = view.begin();
+            ++iter;
+            return *iter;
+        }
+    };
+
+    // Note that only constexpr test with Clang 15+ can catch this for sure
+    // If the test fails then in Clang: member call on variable whose lifetime has ended
+    // AddressSanitizer (-fsanitize=address) may catch this too without constexpr test
+    TESTX(lifetime::test() == 'd');
+
+    return true;
+}

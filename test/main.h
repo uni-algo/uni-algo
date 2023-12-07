@@ -245,6 +245,7 @@ int main7()
     STATIC_TESTX(test_ranges_to());
     STATIC_TESTX(test_ranges_ctad());
     STATIC_TESTX(test_ranges_static_assert());
+    STATIC_TESTX(test_ranges_cache());
 
     std::cout << "DONE: Ranges" << '\n';
 
