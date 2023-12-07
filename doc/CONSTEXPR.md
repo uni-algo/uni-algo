@@ -17,6 +17,10 @@ When constexpr library is enabled then almost every function in the library will
 #include "uni_algo/norm.h"
 #include "uni_algo/ranges_conv.h"
 
+#ifndef UNI_ALGO_CONSTEXPR
+#error "The library is not constexpr"
+#endif
+
 static_assert(una::cases::to_uppercase_utf8("Test", una::locale{"en-US"}) == "TEST");
 static_assert(una::norm::to_nfc_utf8("W\u0302") == "Ŵ");
 static_assert((std::string_view{"Test"} | una::views::utf8 | una::ranges::to_utf16<std::u16string>()) == u"Test");
