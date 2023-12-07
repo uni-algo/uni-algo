@@ -1606,16 +1606,6 @@ uaix_static bool inline_norm_iter_ready(struct impl_norm_iter_state* const s)
     return s->pos == 0 ? false : true;
 }
 
-// TODO: move it to internal_stages.h and name it stages_safe_cp()?
-// Bad idea leave it here or maybe even inline into functions that use it.
-uaix_always_inline
-uaix_static type_codept norm_safe_cp(type_codept c)
-{
-    if (c > 0x10FFFF || (c >= 0xD800 && c <= 0xDFFF))
-        c = 0xFFFD;
-    return c;
-}
-
 uaix_always_inline
 uaix_static bool norm_state_fast_1(struct impl_norm_iter_state* const s, type_codept c)
 {
@@ -1647,7 +1637,8 @@ uaix_static bool inline_norm_iter_nfc(struct impl_norm_iter_state* const s, type
     // Note that we cannot implement a fast loop inside the normalization iterators
     // but we can use the same idea to make them a bit faster.
 
-    c = norm_safe_cp(c);
+    c = (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? c : 0xFFFD;
+
     if (stages_qc_yes_ns(c, &s->m.count_ns, norm_bit_nfc))
     {
         if (s->m.size == 1)
@@ -1664,7 +1655,8 @@ uaix_static bool inline_norm_iter_nfc(struct impl_norm_iter_state* const s, type
 uaix_always_inline
 uaix_static bool inline_norm_iter_nfd(struct impl_norm_iter_state* const s, type_codept c)
 {
-    c = norm_safe_cp(c);
+    c = (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? c : 0xFFFD;
+
     if (stages_qc_yes_ns(c, &s->m.count_ns, norm_bit_nfd))
     {
         if (s->m.size == 1)
@@ -1683,7 +1675,8 @@ uaix_static bool inline_norm_iter_nfd(struct impl_norm_iter_state* const s, type
 uaix_always_inline
 uaix_static bool inline_norm_iter_nfkc(struct impl_norm_iter_state* const s, type_codept c)
 {
-    c = norm_safe_cp(c);
+    c = (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? c : 0xFFFD;
+
     if (stages_qc_yes_ns(c, &s->m.count_ns, norm_bit_nfkc))
     {
         if (s->m.size == 1)
@@ -1700,7 +1693,8 @@ uaix_static bool inline_norm_iter_nfkc(struct impl_norm_iter_state* const s, typ
 uaix_always_inline
 uaix_static bool inline_norm_iter_nfkd(struct impl_norm_iter_state* const s, type_codept c)
 {
-    c = norm_safe_cp(c);
+    c = (c <= 0x10FFFF && !(c >= 0xD800 && c <= 0xDFFF)) ? c : 0xFFFD;
+
     if (stages_qc_yes_ns(c, &s->m.count_ns, norm_bit_nfkd))
     {
         if (s->m.size == 1)
