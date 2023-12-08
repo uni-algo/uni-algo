@@ -79,6 +79,20 @@ std::string compiler_clang_stdlib()
     // macOS (Xcode) AppleClang uses -stdlib=libc++ by default -stdlib=libstdc++ is deprecated
 }
 
+std::string compiler_gcc_stdlib()
+{
+    // Just in case output libstdc++ version for GCC too
+    std::string result;
+#if defined(__GLIBCXX__)
+#  if defined(_GLIBCXX_RELEASE)
+    result += " libstdc++ " + std::to_string(_GLIBCXX_RELEASE);
+#  else
+    result += " libstdc++ " + std::to_string(__GLIBCXX__);
+#  endif
+#endif
+    return result;
+}
+
 std::string test_version_compiler()
 {
     std::string result;
@@ -105,7 +119,7 @@ std::string test_version_compiler()
     result += "GCC " +
             std::to_string(__GNUC__) + '.' +
             std::to_string(__GNUC_MINOR__) + '.' +
-            std::to_string(__GNUC_PATCHLEVEL__) + processor_architecture();
+            std::to_string(__GNUC_PATCHLEVEL__) + compiler_gcc_stdlib() + processor_architecture();
 #elif defined(_MSC_VER)
     result += "MSVC " +
             std::to_string(_MSC_VER / 100) + '.' +
