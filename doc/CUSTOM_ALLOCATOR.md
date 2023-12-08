@@ -7,6 +7,7 @@ for all allocations any hidden allocations that use something other than the pro
 By default the library uses `std::allocator` for all allocations as long as a custom allocator for a specific function is not provided.<br>
 Only functions that really need the memory allocation will allocate the memory and the default allocator for such functions can be changed
 in all other cases the library will perform all operations on the stack.
+Also note that range views never allocate the memory and always perform all operations on the stack.
 
 The library uses `std::back_inserter` or `std::string::resize` (C++17, C++20) or `std::string::resize_and_overwrite` (C++23 or higher)
 with `shrink_to_fit` call after for allocations. It is a good balance between the performance and the memory usage in most cases.
