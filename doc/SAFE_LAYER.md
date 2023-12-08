@@ -47,14 +47,16 @@ Logic errors are the worst but we try to test all corner cases with tests.
 For a reference other tools that was used in development and theirs flaws.<br>
 Note that this text are not made to criticize the tools but to describe why they are not that good for our use cases.
 
-[**Debug Mode in GCC**](https://gcc.gnu.org/onlinedocs/libstdc++/manual/debug_mode.html)<br>
+**[Debug Mode in GCC](https://gcc.gnu.org/onlinedocs/libstdc++/manual/debug_mode.html)**<br>
 No debug iterators for std::string and std::string_view ([details](https://gcc.gnu.org/onlinedocs/libstdc++/manual/debug_mode_semantics.html))
 and we need them the most because this is Unicode library that works with strings most of the time.
 
-[**Debug Iterator Support in MSVC**](https://learn.microsoft.com/en-us/cpp/standard-library/debug-iterator-support?view=msvc-170)<br>
+**[Debug Iterator Support in MSVC](https://learn.microsoft.com/en-us/cpp/standard-library/debug-iterator-support?view=msvc-170)**<br>
 Super slow in debug it needs like 10 minutes to pass tests that require 10 seconds aside from that it's good and better than Debug Mode in GCC.
 
-[**C++ Buffer Hardening in Clang**](https://discourse.llvm.org/t/rfc-c-buffer-hardening/65734)<br>
+**[C++ Buffer Hardening in Clang](https://discourse.llvm.org/t/rfc-c-buffer-hardening/65734)**
+and
+**[RFC Hardening in libc++](https://discourse.llvm.org/t/rfc-hardening-in-libc/73925)**<br>
 Just for a reference. It doesn't exist at the time of writing this text.
 
 The safe layer made these tools irrelevant because it is designed especially for the library
@@ -67,3 +69,8 @@ These tools are very good to find bugs in an old code base but the library was d
 with different things in mind from the very beginning.
 
 Note that we still use all of these tools but do not rely on them anymore.
+
+## Extra useful links
+**[Compiler Options Hardening Guide for C and C++](https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html)**<br>
+**[P2723R1 Zero-initialize objects of automatic storage duration](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2723r1.html)**<br>
+
