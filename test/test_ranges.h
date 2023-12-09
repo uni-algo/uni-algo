@@ -186,9 +186,9 @@ test_constexpr bool test_ranges_ctad()
     TESTX(*("123 789" | una::views::word::utf8).begin() == "123");
     TESTX(*(" 123 789" | una::views::word_only::utf8).begin() == "123");
 
-    TESTX(*(u"123" | una::views::grapheme::utf8).begin() == u"1");
-    TESTX(*(u"123 789" | una::views::word::utf8).begin() == u"123");
-    TESTX(*(u" 123 789" | una::views::word_only::utf8).begin() == u"123");
+    TESTX(*(u"123" | una::views::grapheme::utf16).begin() == u"1");
+    TESTX(*(u"123 789" | una::views::word::utf16).begin() == u"123");
+    TESTX(*(u" 123 789" | una::views::word_only::utf16).begin() == u"123");
 
     return true;
 }
