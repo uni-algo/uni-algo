@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Version-1.1.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v1.1.0)
+[![Version](https://img.shields.io/badge/Version-1.2.0-blue)](https://github.com/uni-algo/uni-algo/releases/tag/v1.2.0)
 [![Unicode](https://img.shields.io/badge/Unicode-15.1.0-blue)](https://www.unicode.org/versions/Unicode15.1.0/)
 [![Language](https://img.shields.io/badge/C%2B%2B-17/20/23-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
 [![License](https://img.shields.io/badge/License-Unlicense/MIT-darkorchid.svg)](https://opensource.org/licenses/MIT)
