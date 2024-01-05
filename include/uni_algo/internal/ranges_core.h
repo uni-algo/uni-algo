@@ -163,7 +163,7 @@ public:
     constexpr cache& operator=(const cache& other) noexcept
     {
         if (std::addressof(other) != this)
-            val.has_val = false;
+            has_val = false;
         return *this;
     }
 
